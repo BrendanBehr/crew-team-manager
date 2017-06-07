@@ -1,0 +1,152 @@
+{
+    "athleteErgs": {
+        "athlete1": {
+            "erg1": true
+        }
+    },
+    "athleteFinances": {
+        "athlete1": {
+            "finance1": true
+        }
+    },
+    "athletes": {
+        "athlete1": {
+            "team": "team1",
+            "city": "CityName",
+            "driver": "yes or no",
+            "emailAddress": "johndoe@something.com",
+            "ergScore": "6:30",
+            "firstName": "John",
+            "fundraising": 400,
+            "gender": "M/F",
+            "height": "6'",
+            "lastName": "Doe",
+            "phoneNumber": 1234567890,
+            "side": "Starboard/Port/Sculling",
+            "state": "The Garden State",
+            "streetAddress": "123 NameGoesHere Road",
+            "weightInPounds": 180,
+            "year": "Junior"
+        }
+    },
+    "boatAthletes": {
+        "boat1": {
+            "athlete1": true,
+            "athlete2": true
+        }
+    },
+    "boatRiggers": {
+        "boat1": {
+            "rigger1": true
+        }
+    },
+    "boats": {
+        "boat1": {
+            "team": "team1",
+            "name": "Something Clever",
+            "rigging": "port or starboard or bucket",
+            "size": 8,
+            "type": "Sweep or Scull"
+        }
+    },
+    "ergs": {
+        "erg1": {
+            "team": "team1",
+            "condition": "below average",
+            "location": "REC Center",
+            "model": "D",
+            "number": 1,
+            "screen": "pm5"
+        }
+    },
+    "finances": {
+        "finance1": {
+            "team": "team1",
+            "expenses": 14500,
+            "gross": 500,
+            "income": 15000,
+            "reason": "person"
+        }
+    },
+    "boatOars": {
+        "boat1": {
+            "Oar1": true
+        }
+    },
+    "oars": {
+        "oar1": {
+            "team": "team1",
+            "bladeColor": "blue",
+            "bladeShape": "square",
+            "handleType": "rubber",
+            "length": "12'4"
+        }
+    },
+    "pictures": {
+        "picture1": {
+            "team": "team1",
+            "regatta": "regatta1",
+            "url": "fatergos.com"
+        }
+    },
+    "races": {
+        "race1": {
+            "eventName": "Event Name",
+            "raceTime": "9:00",
+            "suggestedLaunchTime": "8:15",
+            "bowNumber": 1
+        }
+    },
+    "regattaRaces": {
+        "regatta1": {
+            "athlete": "athlete1",
+            "boat": "boat1",
+            "races": "race1",
+            "oar": "oar1"
+        }
+    },
+    "regattas": {
+        "regatta1": {
+            "team": "team1",
+            "city": "City Name",
+            "cost": "$1000",
+            "locationImage": "imageURL",
+            "name": "Head of The Coding",
+            "state": "NJ",
+            "streetAddress": "456 NameGoesHere Road"
+        }
+    },
+    "riggers": {
+        "rigger1": {
+            "side": "Starboard, port, or both",
+            "style": "Scull or Sweep",
+            "type": "Wing or European"
+        }
+    },
+    "teams": {
+        "team1": {
+            "name": "TeamName"
+        }
+    },
+    "users": {
+        "user1": {
+            "team": "team1",
+            "firstName": "John",
+            "lastName": "Doe",
+            "username": "JDoe"
+        }
+    },
+    "emals": {
+        "email1": {
+            "athlete": "athlete1",
+            "email": "test@test.org"
+        }
+    },
+    "credentials": {
+        "credential1": {
+            "user": "user1",
+            "hashPasswordSalt": "a122ef214ff",
+            "salt": "ab784be45f"
+        }
+    }
+}
