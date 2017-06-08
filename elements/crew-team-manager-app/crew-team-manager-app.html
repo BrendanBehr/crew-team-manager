@@ -1,0 +1,132 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../crew-team-manager-login/crew-team-manager-login.html">
+<link rel="import" href="../crew-team-manager-stage/crew-team-manager-stage.html">
+
+<dom-module id="crew-team-manager-app">
+    <template>
+        <style>
+             :host {
+                display: block;
+                background-color: blue;
+            }
+
+            iron-pages {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                position: relative;
+            }
+
+            iron-pages:nth-child(0) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-login:nth-child(1) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-stage:nth-child(2) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            button {
+                position: absolute;
+                top: calc(10% - 20px);
+                padding: 0;
+                line-height: 40px;
+                border: none;
+                background: none;
+                color: #DDD;
+                background-color: #333;
+                font-size: 40px;
+                font-weight: bold;
+                opacity: 0.7;
+            }
+
+            button:hover,
+            button:focus {
+                opacity: 1;
+            }
+
+            button[disabled] {
+                opacity: 0.4;
+            }
+        </style>
+
+        <iron-pages id="pages" selected='0'>
+            <crew-team-manager-login id="login"></crew-team-manager-login>
+            <crew-team-manager-stage id="stage"></crew-team-manager-stage>
+        </iron-pages>
+
+        <button id="loginBtn" on-click="login">login</button>
+        <button id="logoutBtn" on-click="logout">logout</button>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerApp extends Polymer.Element {
+
+            static get is() { return 'crew-team-manager-app' }
+
+            connectedCallback() {
+
+                super.connectedCallback();
+                this.$.logoutBtn.hidden = true;
+
+            }
+
+            login() {
+                console.log('login');
+                const elem = this.selected && this.selected.nextElementSibling;
+                if (elem) {
+                    console.log('reached?');
+                    this.selected = elem;
+                }
+                this.$.logoutBtn.disabled = false;
+                this.$.logoutBtn.hidden = false;
+
+                this.$.loginBtn.disabled = true;
+                this.$.loginBtn.hidden = true;
+
+                let pages = this.$.pages;
+                pages.selectNext();
+            }
+
+            logout() {
+                console.log('logout');
+                const elem = this.selected && this.selected.previousElementSibling;
+                if (elem) {
+                    this.selected = elem;
+                }
+                this.$.logoutBtn.disabled = true;
+                this.$.logoutBtn.hidden = true;
+
+                this.$.loginBtn.disabled = false;
+                this.$.loginBtn.hidden = false;
+                let pages = this.$.pages;
+                pages.selectPrevious();
+            }
+
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerApp.is, crewTeamManagerApp);
+    </script>
+</dom-module>

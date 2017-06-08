@@ -1,0 +1,264 @@
+<!--bower web components-->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<!--
+<link rel="import" href="../../bower_components/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-toolbat/app-toolbat.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">-->
+
+<!--my web components-->
+<link rel="import" href="../crew-team-manager-home/crew-team-manager-home.html">
+<link rel="import" href="../crew-team-manager-roster/crew-team-manager-roster.html">
+<link rel="import" href="../crew-team-manager-compare/crew-team-manager-compare.html">
+<link rel="import" href="../crew-team-manager-pictures/crew-team-manager-pictures.html">
+<link rel="import" href="../crew-team-manager-feedback/crew-team-manager-feedback.html">
+<link rel="import" href="../crew-team-manager-settings/crew-team-manager-settings.html">
+<link rel="import" href="../crew-team-manager-help/crew-team-manager-help.html">
+<link rel="import" href="../crew-team-manager-finances/crew-team-manager-finances.html">
+<link rel="import" href="../crew-team-manager-schedule/crew-team-manager-schedule.html">
+<link rel="import" href="../crew-team-manager-fleet/crew-team-manager-fleet.html">
+
+<dom-module id="crew-team-manager-stage">
+    <template>
+        <style>
+             :host {
+                display: block;
+                background-color: green;
+            }
+            /*
+            html,
+            body {
+                margin: 0;
+                font-family: 'Roboto', 'Noto', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                background: #f1f1f1;
+                max-height: 368px;
+            }
+
+            app-toolbar {
+                background-color: red;
+                color: #fff;
+            }
+
+            paper-icon-button {
+                --paper-icon-button-ink-color: white;
+            }
+
+            paper-icon-button+[main-title] {
+                margin-left: 24px;
+            }
+
+            paper-progress {
+                display: block;
+                width: 100%;
+                --paper-progress-active-color: rgba(255, 255, 255, 0.5);
+                --paper-progress-container-color: transparent;
+            }
+
+            app-header {
+                @apply --layout-fixed-top;
+                color: #fff;
+                --app-header-background-rear-layer: {
+                    background-color: #ef6c00;
+                }
+                ;
+            }
+
+            app-drawer {
+                --app-drawer-scrim-background: rgba(0, 0, 100, 0.8);
+                --app-drawer-content-container: {
+                    background-color: #B0BEC5;
+                }
+            }*/
+
+            iron-pages {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                position: relative;
+            }
+
+            iron-pages crew-team-manager-home:nth-child(1) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-roster:nth-child(2) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-fleet:nth-child(3) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-compare:nth-child(4) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-schedule:nth-child(5) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-finances:nth-child(6) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-pictures:nth-child(7) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-help:nth-child(8) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-settings:nth-child(9) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            iron-pages crew-team-manager-feedback:nth-child(10) {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+
+            button {
+                position: absolute;
+                top: calc(50% - 20px);
+                padding: 0;
+                line-height: 40px;
+                border: none;
+                background: none;
+                color: #DDD;
+                font-size: 40px;
+                font-weight: bold;
+                opacity: 0.7;
+            }
+
+            button:hover,
+            button:focus {
+                opacity: 1;
+            }
+
+            #prevBtn {
+                left: 12px;
+            }
+
+            #nextBtn {
+                right: 12px;
+            }
+
+            button[disabled] {
+                opacity: 0.4;
+            }
+        </style>
+
+
+        <iron-pages id="pages" selected='0'>
+            <crew-team-manager-home id="home"></crew-team-manager-home>
+            <crew-team-manager-roster id="roster"></crew-team-manager-roster>
+            <crew-team-manager-fleet id="fleet"></crew-team-manager-fleet>
+            <crew-team-manager-compare id="compare"></crew-team-manager-compare>
+            <crew-team-manager-schedule id="schedule"></crew-team-manager-schedule>
+            <crew-team-manager-finances id="finances"></crew-team-manager-finances>
+            <crew-team-manager-pictures id="pictures"></crew-team-manager-pictures>
+            <crew-team-manager-help id="help"></crew-team-manager-help>
+            <crew-team-manager-settings id="settings"></crew-team-manager-settings>
+            <crew-team-manager-feedback id="feedback"></crew-team-manager-feedback>
+        </iron-pages>-
+
+
+        <button id="prevBtn" on-click="previous">&#x276E;</button>
+        <button id="nextBtn" on-click="next">&#x276F;</button>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerStage extends Polymer.Element {
+
+            static get is() { return 'crew-team-manager-stage' }
+
+            connectedCallback() {
+                super.connectedCallback();
+            }
+
+            previous() {
+                console.log('back');
+                const elem = this.selected && this.selected.previousElementSibling;
+                if (elem) {
+                    this.selected = elem;
+                }
+
+                let pages = this.$.pages;
+                pages.selectPrevious();
+            }
+
+            next() {
+                console.log('forward');
+                const elem = this.selected && this.selected.nextElementSibling;
+                if (elem) {
+                    this.selected = elem;
+                }
+                let pages = this.$.pages;
+                pages.selectNext();
+            }
+
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerStage.is, crewTeamManagerStage);
+    </script>
+</dom-module>

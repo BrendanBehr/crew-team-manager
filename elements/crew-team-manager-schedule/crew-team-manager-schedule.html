@@ -1,0 +1,28 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="crew-team-manager-schedule">
+    <template>
+        <style>
+             :host {
+                display: block;
+                background-color: #4CAF50;
+            }
+        </style>
+
+        <div>
+            <h1>Stage 5: schedule</h1>
+        </div>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerSchedule extends Polymer.Element {
+
+            static get is() { return 'crew-team-manager-schedule' }
+
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerSchedule.is, crewTeamManagerSchedule);
+    </script>
+</dom-module>

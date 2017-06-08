@@ -1,0 +1,19 @@
+{
+  "name": "crew-team-manager-app",
+  "description": "An app to manage a rowing team",
+  "main": "index.js",
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "app-layout": "PolymerElements/app-layout#^2.0.0",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.0"
+  }
+}

@@ -1,0 +1,28 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="crew-team-manager-settings">
+    <template>
+        <style>
+             :host {
+                display: block;
+                background-color: #9E9E9E;
+            }
+        </style>
+
+        <div>
+            <h1>Stage 9: settings</h1>
+        </div>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerSettings extends Polymer.Element {
+
+            static get is() { return 'crew-team-manager-settings' }
+
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerSettings.is, crewTeamManagerSettings);
+    </script>
+</dom-module>
