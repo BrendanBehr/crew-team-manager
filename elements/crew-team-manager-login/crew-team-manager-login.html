@@ -1,17 +1,64 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+
 <dom-module id="crew-team-manager-login">
     <template>
         <style>
              :host {
-                display: block;
-                background-color: red;
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                background-color: #B71C1C;
+            }
+
+
+            #container {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+                min-width: 280px;
+            }
+
+
+
+            #card {
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                @apply(--layout-flex);
+                min-height: 112px;
+                background-color: #FFCDD2;
+                padding: 24px;
+            }
+
+            paper-button.custom:hover {
+                background-color: var(--paper-indigo-100);
+            }
+
+            #login {
+                background-color: var(--paper-indigo-500);
+                color: white;
+                --paper-button-raised-keyboard-focus: {
+                    background-color: var(--paper-pink-a200);
+                    color: white;
+                }
+                ;
             }
         </style>
 
-        <div>
-            <h1>Login</h1>
+        <div id="container">
+            <paper-card id="card">
+                <paper-input id="username" label="username"></paper-input>
+                <paper-input id="password" label="password"></paper-input>
+                <paper-button id="login" on-click="_handleLogin">Login</paper-button>
+            </paper-card>
         </div>
+
     </template>
 
     <script>
@@ -20,6 +67,10 @@
 
             static get is() { return 'crew-team-manager-login' }
 
+
+            _handleLogin() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerLogin.is + '-action-login', { bubbles: true, composed: true }));
+            }
         }
 
         // Register custom element definition using standard platform API

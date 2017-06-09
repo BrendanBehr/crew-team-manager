@@ -1,14 +1,14 @@
 <!--bower web components-->
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-<!--
-<link rel="import" href="../../bower_components/app-drawer/app-drawer.html">
-<link rel="import" href="../../bower_components/app-header/app-header.html">
-<link rel="import" href="../../bower_components/app-toolbat/app-toolbat.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">-->
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 
 <!--my web components-->
 <link rel="import" href="../crew-team-manager-home/crew-team-manager-home.html">
@@ -27,9 +27,8 @@
         <style>
              :host {
                 display: block;
-                background-color: green;
             }
-            /*
+
             html,
             body {
                 margin: 0;
@@ -39,8 +38,12 @@
                 max-height: 368px;
             }
 
+            crew-team-manager-home {
+                padding: 64 px;
+            }
+
             app-toolbar {
-                background-color: red;
+                background-color: navy;
                 color: #fff;
             }
 
@@ -73,7 +76,7 @@
                 --app-drawer-content-container: {
                     background-color: #B0BEC5;
                 }
-            }*/
+            }
 
             iron-pages {
                 width: 100%;
@@ -193,19 +196,48 @@
                 opacity: 1;
             }
 
-            #prevBtn {
-                left: 12px;
+            #homeBtn {
+                left: 0px;
+                top: 32px;
+                line-height: 18px;
+                font-size: 18px;
             }
 
-            #nextBtn {
-                right: 12px;
+            #rosterBtn {
+                left: 0px;
+                top: 32px;
+                line-height: 18px;
+                font-size: 18px;
             }
 
             button[disabled] {
                 opacity: 0.4;
             }
         </style>
+        </custom-style>
+        <app-header reveals>
+            <app-toolbar>
+                <paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button>
+                <div main-title>Crew Team Manager</div>
+                <paper-progress value="10" indeterminate bottom-item></paper-progress>
+            </app-toolbar>
+        </app-header>
+        <app-drawer id="drawer" opened>
 
+
+            <button id="homeBtn" on-click="home">&#x276E;</button>
+            <button id="rosterBtn" on-click="roster">&#x276F;</button>
+            <button id="fleetBtn" on-click="fleet">&#x276E;</button>
+            <button id="compareBtn" on-click="compare">&#x276F;</button>
+            <button id="scheduleBtn" on-click="schedule">&#x276E;</button>
+            <button id="financesBtn" on-click="finances">&#x276F;</button>
+            <button id="picturesBtn" on-click="pictures">&#x276E;</button>
+            <hr>
+            <button id="helpBtn" on-click="help">&#x276F;</button>
+            <button id="settingsBtn" on-click="settings">&#x276E;</button>
+            <button id="feedbackBtn" on-click="feedback">&#x276F;</button>
+
+        </app-drawer>
 
         <iron-pages id="pages" selected='0'>
             <crew-team-manager-home id="home"></crew-team-manager-home>
@@ -218,11 +250,11 @@
             <crew-team-manager-help id="help"></crew-team-manager-help>
             <crew-team-manager-settings id="settings"></crew-team-manager-settings>
             <crew-team-manager-feedback id="feedback"></crew-team-manager-feedback>
-        </iron-pages>-
+        </iron-pages>
 
-
+        <!--
         <button id="prevBtn" on-click="previous">&#x276E;</button>
-        <button id="nextBtn" on-click="next">&#x276F;</button>
+        <button id="nextBtn" on-click="next">&#x276F;</button>-->
     </template>
 
     <script>
