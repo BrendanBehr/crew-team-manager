@@ -1,0 +1,29 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="crew-team-manager-roster-results">
+    <template>
+        <style>
+
+        </style>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerRosterResults extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-roster-results'
+            }
+
+            _handleActionMenu() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterResults.is + '-action-menu', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerRosterResults.is, crewTeamManagerRosterResults);
+    </script>
+</dom-module>

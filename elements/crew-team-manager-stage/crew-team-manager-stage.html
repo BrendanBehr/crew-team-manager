@@ -1,16 +1,18 @@
-<!--bower web components-->
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
+
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 
-<!--my web components-->
 <link rel="import" href="../crew-team-manager-home/crew-team-manager-home.html">
 <link rel="import" href="../crew-team-manager-roster/crew-team-manager-roster.html">
 <link rel="import" href="../crew-team-manager-compare/crew-team-manager-compare.html">
@@ -26,268 +28,86 @@
     <template>
         <style>
              :host {
-                display: block;
+                @apply(--layout-horizontal);
             }
 
-            html,
-            body {
-                margin: 0;
-                font-family: 'Roboto', 'Noto', sans-serif;
-                -webkit-font-smoothing: antialiased;
-                background: #f1f1f1;
-                max-height: 368px;
+
+            app-drawer-layout {
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
             }
 
-            crew-team-manager-home {
-                padding: 64 px;
+            #pages {
+                @apply(--layout-flex);
+                background-color: #2E7D32;
             }
 
-            app-toolbar {
-                background-color: navy;
-                color: #fff;
+            #drawer {
+                --app-drawer-scrim-background: rgba(36, 98, 40, 0.8);
             }
 
-            paper-icon-button {
-                --paper-icon-button-ink-color: white;
+            #roster {
+                @apply(--layout-flex);
             }
 
-            paper-icon-button+[main-title] {
-                margin-left: 24px;
+            #fleet {
+                @apply(--layout-flex);
             }
-
-            paper-progress {
-                display: block;
-                width: 100%;
-                --paper-progress-active-color: rgba(255, 255, 255, 0.5);
-                --paper-progress-container-color: transparent;
-            }
-
-            app-header {
-                @apply --layout-fixed-top;
-                color: #fff;
-                --app-header-background-rear-layer: {
-                    background-color: #ef6c00;
-                }
-                ;
-            }
-
-            app-drawer {
-                --app-drawer-scrim-background: rgba(0, 0, 100, 0.8);
-                --app-drawer-content-container: {
-                    background-color: #B0BEC5;
-                }
-            }
-
-            iron-pages {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                position: relative;
-            }
-
-            iron-pages crew-team-manager-home:nth-child(1) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-roster:nth-child(2) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-fleet:nth-child(3) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-compare:nth-child(4) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-schedule:nth-child(5) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-finances:nth-child(6) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-pictures:nth-child(7) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-help:nth-child(8) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-settings:nth-child(9) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            iron-pages crew-team-manager-feedback:nth-child(10) {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                flex-direction: row;
-                justify-content: center;
-            }
-
 
             button {
-                position: absolute;
-                top: calc(50% - 20px);
-                padding: 0;
-                line-height: 40px;
-                border: none;
-                background: none;
-                color: #DDD;
-                font-size: 40px;
-                font-weight: bold;
-                opacity: 0.7;
-            }
-
-            button:hover,
-            button:focus {
-                opacity: 1;
-            }
-
-            #homeBtn {
-                left: 0px;
-                top: 32px;
-                line-height: 18px;
                 font-size: 18px;
-            }
-
-            #rosterBtn {
-                left: 0px;
-                top: 32px;
-                line-height: 18px;
-                font-size: 18px;
-            }
-
-            button[disabled] {
-                opacity: 0.4;
             }
         </style>
-        </custom-style>
-        <app-header reveals>
-            <app-toolbar>
-                <paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button>
-                <div main-title>Crew Team Manager</div>
-                <paper-progress value="10" indeterminate bottom-item></paper-progress>
-            </app-toolbar>
-        </app-header>
-        <app-drawer id="drawer" opened>
 
+        <app-drawer-layout>
+            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+                <crew-team-manager-roster id="roster" on-crew-team-manager-roster-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-roster>
+                <crew-team-manager-fleet id="fleet" on-crew-team-manager-fleet-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-fleet>
+            </iron-pages>
 
-            <button id="homeBtn" on-click="home">&#x276E;</button>
-            <button id="rosterBtn" on-click="roster">&#x276F;</button>
-            <button id="fleetBtn" on-click="fleet">&#x276E;</button>
-            <button id="compareBtn" on-click="compare">&#x276F;</button>
-            <button id="scheduleBtn" on-click="schedule">&#x276E;</button>
-            <button id="financesBtn" on-click="finances">&#x276F;</button>
-            <button id="picturesBtn" on-click="pictures">&#x276E;</button>
-            <hr>
-            <button id="helpBtn" on-click="help">&#x276F;</button>
-            <button id="settingsBtn" on-click="settings">&#x276E;</button>
-            <button id="feedbackBtn" on-click="feedback">&#x276F;</button>
-
-        </app-drawer>
-
-        <iron-pages id="pages" selected='0'>
-            <crew-team-manager-home id="home"></crew-team-manager-home>
-            <crew-team-manager-roster id="roster"></crew-team-manager-roster>
-            <crew-team-manager-fleet id="fleet"></crew-team-manager-fleet>
-            <crew-team-manager-compare id="compare"></crew-team-manager-compare>
-            <crew-team-manager-schedule id="schedule"></crew-team-manager-schedule>
-            <crew-team-manager-finances id="finances"></crew-team-manager-finances>
-            <crew-team-manager-pictures id="pictures"></crew-team-manager-pictures>
-            <crew-team-manager-help id="help"></crew-team-manager-help>
-            <crew-team-manager-settings id="settings"></crew-team-manager-settings>
-            <crew-team-manager-feedback id="feedback"></crew-team-manager-feedback>
-        </iron-pages>
-
-        <!--
-        <button id="prevBtn" on-click="previous">&#x276E;</button>
-        <button id="nextBtn" on-click="next">&#x276F;</button>-->
+            <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
+                <button page="roster" on-click="_handleMenuClick">roster</button>
+                <button page="fleet" on-click="_handleMenuClick">fleet</button>
+            </app-drawer>
+            <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
         class crewTeamManagerStage extends Polymer.Element {
 
-            static get is() { return 'crew-team-manager-stage' }
+            static get is() {
+                return 'crew-team-manager-stage'
+            }
+
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'roster'
+                    },
+                    _wideLayout: {
+                        type: Boolean,
+                        value: false,
+                    },
+
+                }
+            }
 
             connectedCallback() {
                 super.connectedCallback();
             }
 
-            previous() {
-                console.log('back');
-                const elem = this.selected && this.selected.previousElementSibling;
-                if (elem) {
-                    this.selected = elem;
+            _toggleDrawer() {
+                if (!this._wideLayout) {
+                    this.$.drawer.toggle();
                 }
-
-                let pages = this.$.pages;
-                pages.selectPrevious();
             }
 
-            next() {
-                console.log('forward');
-                const elem = this.selected && this.selected.nextElementSibling;
-                if (elem) {
-                    this.selected = elem;
-                }
-                let pages = this.$.pages;
-                pages.selectNext();
+            _handleMenuClick(e) {
+                this._page = e.target.getAttribute('page');
+                this._toggleDrawer();
             }
-
         }
 
         // Register custom element definition using standard platform API

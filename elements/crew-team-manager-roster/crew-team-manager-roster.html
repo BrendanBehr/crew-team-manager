@@ -1,25 +1,70 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
 <dom-module id="crew-team-manager-roster">
     <template>
         <style>
              :host {
-                display: block;
-                background-color: #2E7D32;
+                @apply(--layout-vertical-reverse);
+                background-color: #388E3C;
+            }
+
+             :host([menu-hidden]) #menu {
+                display: none;
+            }
+
+
+             :host([menu-hiddem]) #title {
+                left: 256px;
+            }
+
+            #page {
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+            }
+
+            app-header {}
+
+            app-toolbar {
+                background-color: #164410;
+                color: #fff;
             }
         </style>
 
-        <div>
-            <h1>Stage 2: roster</h1>
+        <div id="page">
+            test
         </div>
+
+        <app-header reveals>
+            <app-toolbar>
+                <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
+                <div main-title id="title">Athletes</div>
+            </app-toolbar>
+        </app-header>
+
+
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
         class crewTeamManagerRoster extends Polymer.Element {
 
-            static get is() { return 'crew-team-manager-roster' }
+            static get is() {
+                return 'crew-team-manager-roster'
+            }
 
+            _handleActionMenu() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRoster.is + '-action-menu', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
         }
 
         // Register custom element definition using standard platform API

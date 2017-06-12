@@ -4,22 +4,57 @@
     <template>
         <style>
              :host {
-                display: block;
+                @apply(--layout-vertical-reverse);
                 background-color: #388E3C;
+            }
+
+
+             :host([menu-hidden]) #menu {
+                display: none;
+            }
+
+             :host([menu-hiddem]) #title {
+                left: 256px;
+            }
+
+            #page {
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+            }
+
+            app-header {
+                @apply(--layout-flex);
+            }
+
+            app-toolbar {
+                background-color: #164410;
+                color: #fff;
             }
         </style>
 
-        <div>
-            <h1>Stage 3: fleet</h1>
-        </div>
+
+        <app-header reveals>
+            <app-toolbar>
+                <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
+                <div main-title id="title">Boats</div>
+            </app-toolbar>
+        </app-header>
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
         class crewTeamManagerFleet extends Polymer.Element {
 
-            static get is() { return 'crew-team-manager-fleet' }
+            static get is() {
+                return 'crew-team-manager-fleet'
+            }
 
+            _handleActionMenu() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleet.is + '-action-menu', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
         }
 
         // Register custom element definition using standard platform API

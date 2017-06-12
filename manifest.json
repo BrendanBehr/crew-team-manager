@@ -1,0 +1,6 @@
+{
+    "name": "crew-team-manager",
+    "short_name": "crew-team-manager",
+    "start_url": "/",
+    "display": "standalone"
+}
