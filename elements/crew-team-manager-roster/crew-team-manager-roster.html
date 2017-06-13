@@ -6,47 +6,70 @@
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+
+<link rel="import" href="crew-team-manager-roster-loading.html">
+<link rel="import" href="crew-team-manager-roster-results.html">
+<link rel="import" href="crew-team-manager-roster-message.html">
 
 <dom-module id="crew-team-manager-roster">
     <template>
         <style>
              :host {
-                @apply(--layout-vertical-reverse);
-                background-color: #388E3C;
+                @apply(--layout-vertical);
+                background-color: white;
             }
 
              :host([menu-hidden]) #menu {
                 display: none;
             }
 
-
-             :host([menu-hiddem]) #title {
-                left: 256px;
-            }
-
-            #page {
+            #layout {
                 @apply(--layout-vertical);
                 @apply(--layout-flex);
             }
 
-            app-header {}
+            #pages {
+                @apply(--layout-flex);
+                @apply(--layout-horizontal);
+            }
 
-            app-toolbar {
+            #loading {
+                @apply(--layout-flex);
+            }
+
+            #message {
+                @apply(--layout-flex);
+            }
+
+            #toolbar {
                 background-color: #164410;
                 color: #fff;
             }
         </style>
 
-        <div id="page">
-            test
-        </div>
+        <firebase-query id="query" app-name="notes" path="/athletes//[[uid]]" data="{{data}}">
+        </firebase-query>
 
-        <app-header reveals>
-            <app-toolbar>
-                <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
-                <div main-title id="title">Athletes</div>
-            </app-toolbar>
-        </app-header>
+        <app-layout id="layout">
+
+            <app-header reveals>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
+                    <div main-title id="title">Athletes</div>
+                </app-toolbar>
+            </app-header>
+
+            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+                <crew-team-manager-roster-loading id="loading" data="{{data}}"></crew-team-manager-roster-loading>
+                <crew-team-manager-roster-results id="results"></crew-team-manager-roster-results>
+                <crew-team-manager-roster-message id="message"></crew-team-manager-roster-message>
+            </iron-pages>
+
+
+        </app-layout>
 
 
     </template>
@@ -59,6 +82,19 @@
                 return 'crew-team-manager-roster'
             }
 
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'loading'
+                    },
+
+                    data: {
+                        type: Object
+                    }
+                }
+            }
+
             _handleActionMenu() {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRoster.is + '-action-menu', {
                     bubbles: true,
@@ -66,6 +102,8 @@
                 }));
             }
         }
+
+
 
         // Register custom element definition using standard platform API
         customElements.define(crewTeamManagerRoster.is, crewTeamManagerRoster);

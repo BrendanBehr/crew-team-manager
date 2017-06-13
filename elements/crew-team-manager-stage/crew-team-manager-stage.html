@@ -32,22 +32,23 @@
             }
 
 
-            app-drawer-layout {
-                @apply(--layout-vertical);
+            #layout {
                 @apply(--layout-flex);
             }
 
             #pages {
-                @apply(--layout-flex);
-                background-color: #2E7D32;
-            }
 
-            #drawer {
-                --app-drawer-scrim-background: rgba(36, 98, 40, 0.8);
+                @apply(--layout-fit);
+                background-color: #2E7D32;
+                @apply(--layout-horizontal);
             }
 
             #roster {
                 @apply(--layout-flex);
+            }
+
+            #drawer {
+                box-shadow: var(--app-drawer-content-container_-_box-shadow);
             }
 
             #fleet {
@@ -59,9 +60,11 @@
             }
         </style>
 
-        <app-drawer-layout>
+        <app-drawer-layout id="layout">
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+
                 <crew-team-manager-roster id="roster" on-crew-team-manager-roster-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-roster>
+
                 <crew-team-manager-fleet id="fleet" on-crew-team-manager-fleet-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-fleet>
             </iron-pages>
 
@@ -75,7 +78,6 @@
     <script>
         // Extend Polymer.Element with MyMixin
         class crewTeamManagerStage extends Polymer.Element {
-
             static get is() {
                 return 'crew-team-manager-stage'
             }
@@ -90,9 +92,10 @@
                         type: Boolean,
                         value: false,
                     },
-
                 }
             }
+
+
 
             connectedCallback() {
                 super.connectedCallback();

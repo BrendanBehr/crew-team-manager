@@ -1,10 +1,28 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
 <dom-module id="crew-team-manager-roster-results">
     <template>
         <style>
+             :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+                @apply(--layout-flex;
+            }
 
+            #list {
+                background-color: lightslategray;
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+            }
         </style>
+
+        <iron-list id="list" items="[[_athletes]]" on-click="_handleClick">
+            <template>
+                <div></div>
+            </template>
+        </iron-list>
     </template>
 
     <script>
@@ -15,11 +33,17 @@
                 return 'crew-team-manager-roster-results'
             }
 
-            _handleActionMenu() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterResults.is + '-action-menu', {
-                    bubbles: true,
-                    composed: true
-                }));
+            static get properties() {
+                return {
+                    data: {
+                        type: Object
+                    }
+                }
+            }
+
+
+            _handleClick(e) {
+                console.log(this.data);
             }
         }
 

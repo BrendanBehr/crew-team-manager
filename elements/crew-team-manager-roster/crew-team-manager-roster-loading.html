@@ -1,10 +1,32 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
 <dom-module id="crew-team-manager-roster-loading">
     <template>
         <style>
+         :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+            }
 
+            #layout {
+                @apply(--layout-vertical);
+                @apply(--layout-center-justified);
+            }
+
+            #spinner {
+                --paper-spinner-color: var(--paper-green-700);
+                /*--paper-spinner-stroke-width: 6px;*/
+            }
+        }
         </style>
+
+        <div id="layout" on-click="_handleClick">
+            <paper-spinner-lite active id="spinner"></paper-spinner-lite>
+        </div>
+
     </template>
 
     <script>
@@ -15,11 +37,8 @@
                 return 'crew-team-manager-roster-loading'
             }
 
-            _handleActionMenu() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterLoading.is + '-action-menu', {
-                    bubbles: true,
-                    composed: true
-                }));
+            _handleClick() {
+                console.log(this.firebase.Query);
             }
         }
 
