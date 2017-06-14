@@ -1,0 +1,137 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+
+<link rel="import" href="crew-team-manager-roster-list-loading.html">
+<link rel="import" href="crew-team-manager-roster-list-results.html">
+<link rel="import" href="crew-team-manager-roster-list-message.html">
+
+
+<dom-module id="crew-team-manager-roster-list">
+    <template>
+        <style>
+             :host {
+                background-color: lightslategray;
+                @apply(--layout-vertical);
+            }
+
+             :host([menu-hidden]) #menu {
+                display: none;
+            }
+
+            #pages {
+                @apply(--layout-flex);
+                @apply(--layout-horizontal);
+            }
+
+            #loading {
+                @apply(--layout-flex);
+            }
+
+            #list {
+                @apply(--layout-flex);
+            }
+
+            #message {
+                @apply(--layout-flex);
+            }
+
+            #toolbar {
+                background-color: #164410;
+                color: #fff;
+            }
+        </style>
+
+        <firebase-query app-name="crew-team-manager" id="query" path="/athletes" data="{{_data}}">
+        </firebase-query>
+
+        <app-layout id="layout">
+
+            <app-header reveals>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
+                    <div main-title id="title">Athletes</div>
+                </app-toolbar>
+            </app-header>
+            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+                <crew-team-manager-roster-list-loading id="loading"></crew-team-manager-roster-list-loading>
+                <crew-team-manager-roster-list-results id="list" data="[[_data]]"></crew-team-manager-roster-list-results>
+                <crew-team-manager-roster-list-message id="message"></crew-team-manager-roster-list-message>
+            </iron-pages>
+
+
+        </app-layout>
+
+
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerRosterList extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-roster-list'
+            }
+
+            static get observers() {
+                return [
+                    '_updatePage(_data.splices)'
+                ]
+            }
+
+
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'loading'
+                    },
+
+                    _data: {
+                        type: Object
+                    }
+
+                }
+            }
+
+            _handleActionMenu() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterList.is + '-action-menu', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionDetail(e) {
+                console.log(e);
+            }
+
+            _updatePage(dataSplices) {
+
+                let page = 'message';
+
+                if (dataSplices) {
+                    if (dataSplices.indexSplices[0].object.length) {
+                        page = 'list';
+                    }
+                }
+
+                this._page = page;
+
+            }
+
+        }
+
+
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerRosterList.is, crewTeamManagerRosterList);
+    </script>
+</dom-module>

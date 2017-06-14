@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
-<link rel="import" href="../../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="../crew-team-manager-login/crew-team-manager-login.html">
 <link rel="import" href="../crew-team-manager-stage/crew-team-manager-stage.html">
@@ -30,10 +30,11 @@
             }
         </style>
 
-        <firebase-app apiKey: "AIzaSyC9hRU3H5E-8jPEC84CZJVXxW1-2DL1Idc", authDomain: "crew-team-manager.firebaseapp.com", databaseURL:
-            "https://crew-team-manager.firebaseio.com", projectId: "crew-team-manager", storageBucket: "crew-team-manager.appspot.com", messagingSenderId:
-            "629517639732">
+        <firebase-app id="app" name="crew-team-manager" api-key="AIzaSyC9hRU3H5E-8jPEC84CZJVXxW1-2DL1Idc" auth-domain="crew-team-manager.firebaseapp.com"
+            database-url="https://crew-team-manager.firebaseio.com" project-id="crew-team-manager" storage-bucket="crew-team-manager.appspot.com"
+            messaging-sender-id="629517639732">
         </firebase-app>
+
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
             <crew-team-manager-login id="login" on-crew-team-manager-login-action-login="_handleActionLogin"></crew-team-manager-login>
@@ -57,29 +58,15 @@
                         type: String,
                         value: 'stage'
                     },
+
+
                 }
             }
-
-            // connectedCallback() {
-
-            //     super.connectedCallback();
-
-            //     var config = {
-            //         apiKey: "AIzaSyC9hRU3H5E-8jPEC84CZJVXxW1-2DL1Idc",
-            //         authDomain: "crew-team-manager.firebaseapp.com",
-            //         databaseURL: "https://crew-team-manager.firebaseio.com",
-            //         projectId: "crew-team-manager",
-            //         storageBucket: "crew-team-manager.appspot.com",
-            //         messagingSenderId: "629517639732"
-            //     };
-
-            //     firebase.initializeApp(config);
-
-            // }
 
             _handleActionLogin() {
                 this._page = 'stage';
             }
+
         }
 
         // Register custom element definition using standard platform API

@@ -1,0 +1,84 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<dom-module id="crew-team-manager-roster-list-results">
+    <template>
+        <style>
+             :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+                @apply(--layout-flex;
+            }
+
+            #list {
+                background-color: lightslategray;
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+            }
+
+            #slot {
+                padding: 4px;
+                background-color: white;
+                @apply(--layout-flex);
+                min-height: 75px;
+            }
+
+            #title {
+                background-color: #388e3c;
+                font-size: 18px;
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                text-align: center;
+            }
+        </style>
+
+        <iron-list id="list" items="[[data]]" as="item">
+            <template>
+                <div id="slot" on-click="_handleItemClick">
+                    <div id="title">
+                        [[item.firstName]] [[item.lastName]]
+                    </div>
+                    <div id="contents">
+                        Stuff goes here
+                    </div>
+                </div>
+            </template>
+        </iron-list>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerRosterListResults extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-roster-list-results'
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                    },
+                }
+            }
+            _handleClick(e) {
+                console.log(e);
+            }
+
+            _handleItemClick(e) {
+
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterListResults.is + '-action-detail', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        athlete: e.model.item.$key
+                    }
+                }));
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerRosterListResults.is, crewTeamManagerRosterListResults);
+    </script>
+</dom-module>

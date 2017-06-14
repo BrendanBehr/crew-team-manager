@@ -1,29 +1,20 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<link rel="import" href="../../bower_components/app-layout/app-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
-
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 
-<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-roster-loading.html">
-<link rel="import" href="crew-team-manager-roster-results.html">
-<link rel="import" href="crew-team-manager-roster-message.html">
+<link rel="import" href="crew-team-manager-roster-list.html">
+<link rel="import" href="crew-team-manager-roster-detail.html">
+
 
 <dom-module id="crew-team-manager-roster">
     <template>
         <style>
              :host {
+                background-color: lightslategray;
                 @apply(--layout-vertical);
-                background-color: white;
-            }
-
-             :host([menu-hidden]) #menu {
-                display: none;
             }
 
             #layout {
@@ -36,11 +27,7 @@
                 @apply(--layout-horizontal);
             }
 
-            #loading {
-                @apply(--layout-flex);
-            }
-
-            #message {
+            #list {
                 @apply(--layout-flex);
             }
 
@@ -50,26 +37,14 @@
             }
         </style>
 
-        <firebase-query id="query" app-name="notes" path="/athletes//[[uid]]" data="{{data}}">
-        </firebase-query>
-
-        <app-layout id="layout">
-
-            <app-header reveals>
-                <app-toolbar id="toolbar">
-                    <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
-                    <div main-title id="title">Athletes</div>
-                </app-toolbar>
-            </app-header>
-
-            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-roster-loading id="loading" data="{{data}}"></crew-team-manager-roster-loading>
-                <crew-team-manager-roster-results id="results"></crew-team-manager-roster-results>
-                <crew-team-manager-roster-message id="message"></crew-team-manager-roster-message>
-            </iron-pages>
 
 
-        </app-layout>
+        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+
+            <crew-team-manager-roster-list id="list" data="[[_data]]" menu-hidden$="[[wideLayout]]" on-crew-team-manager-roster-list-results-action-detail="_handleActionDetail"></crew-team-manager-roster-list>
+            <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]"></crew-team-manager-roster-detail>
+        </iron-pages>
+
 
 
     </template>
@@ -82,24 +57,32 @@
                 return 'crew-team-manager-roster'
             }
 
+
             static get properties() {
                 return {
                     _page: {
                         type: String,
-                        value: 'loading'
+                        value: 'list'
                     },
 
-                    data: {
+                    _data: {
                         type: Object
+                    },
+
+                    wideLayout: {
+                        type: Boolean,
+                        value: false,
+                    },
+
+                    _athlete: {
+                        type: String
                     }
                 }
             }
 
-            _handleActionMenu() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRoster.is + '-action-menu', {
-                    bubbles: true,
-                    composed: true
-                }));
+            _handleActionDetail(e) {
+                console.log(e.detail);
+                this._athlete = e.detail.athlete;
             }
         }
 

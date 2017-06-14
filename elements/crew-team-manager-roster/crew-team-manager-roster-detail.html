@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<dom-module id="crew-team-manager-roster-detail">
+    <template>
+        <style>
+             :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+                @apply(--layout-flex;
+            }
+        </style>
+        <script>
+            // Extend Polymer.Element with MyMixin
+            class crewTeamManagerRosterDetail extends Polymer.Element {
+
+                static get is() {
+                    return 'crew-team-manager-roster-detail'
+                }
+
+                static get properties() {
+                    return {
+                        data: {
+                            type: Object
+                        },
+
+                        athlete: {
+                            type: String,
+                            observer: '_athleteChanged'
+                        }
+                    }
+                }
+
+                _atheleteChanged(newValue, oldValue) {
+                    console.log(newValue);
+
+                }
+            }
+
+            // Register custom element definition using standard platform API
+            customElements.define(crewTeamManagerRosterDetail.is, crewTeamManagerRosterDetail);
+        </script>
+</dom-module>

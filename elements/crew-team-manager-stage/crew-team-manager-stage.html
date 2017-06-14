@@ -63,7 +63,7 @@
         <app-drawer-layout id="layout">
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
 
-                <crew-team-manager-roster id="roster" on-crew-team-manager-roster-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-roster>
+                <crew-team-manager-roster id="roster" on-crew-team-manager-roster-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-roster>
 
                 <crew-team-manager-fleet id="fleet" on-crew-team-manager-fleet-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-fleet>
             </iron-pages>

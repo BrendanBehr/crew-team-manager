@@ -8,12 +8,16 @@ const generator = new Generator();
 //Creates 2 team objects
 const team1 = generator.createTeam();
 const team2 = generator.createTeam();
+const team3 = generator.createTeam();
 
 //Creates 3 athletes objects, the first and third athlete belong to the
 //first team object, the second athlete belongs to the second team object
 const team1Athlete1 = team1.createAthlete();
 const team2Athlete2 = team2.createAthlete();
 const team1Athlete3 = team1.createAthlete();
+const team1Athlete4 = team2.createAthlete();
+const team2Athlete5 = team3.createAthlete();
+const team1Athlete6 = team2.createAthlete();
 
 //Creates user objects for the respective athlete objects
 const team1User1 = team1Athlete1.createUser();
