@@ -1,5 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 
@@ -7,6 +10,7 @@
 
 <link rel="import" href="crew-team-manager-roster-list.html">
 <link rel="import" href="crew-team-manager-roster-detail.html">
+<link rel="import" href="crew-team-manager-roster-edit.html">
 
 
 <dom-module id="crew-team-manager-roster">
@@ -14,20 +18,22 @@
         <style>
              :host {
                 background-color: lightslategray;
-                @apply(--layout-vertical);
-            }
-
-            #layout {
-                @apply(--layout-vertical);
-                @apply(--layout-flex);
+                @apply(--layout-horizontal);
             }
 
             #pages {
                 @apply(--layout-flex);
-                @apply(--layout-horizontal);
             }
 
             #list {
+                @apply(--layout-flex);
+            }
+
+            #detail {
+                @apply(--layout-flex);
+            }
+
+            #edit {
                 @apply(--layout-flex);
             }
 
@@ -40,9 +46,15 @@
 
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+            <crew-team-manager-roster-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-roster-list-results-action-detail="_handleActionDetail">
+            </crew-team-manager-roster-list>
 
-            <crew-team-manager-roster-list id="list" data="[[_data]]" menu-hidden$="[[wideLayout]]" on-crew-team-manager-roster-list-results-action-detail="_handleActionDetail"></crew-team-manager-roster-list>
-            <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]"></crew-team-manager-roster-detail>
+            <crew-team-manager-roster-detail id="detail" copy="{{_copy}}" athlete="[[_athlete]]" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
+                on-crew-team-manager-roster-detail-action-edit="_handleActionEdit">
+            </crew-team-manager-roster-detail>
+
+            <crew-team-manager-roster-edit data="{{_data}}" id="edit" athlete="[[_athlete]]" on-crew-team-manager-roster-edit-action-back="_handleActionBackOnce">
+            </crew-team-manager-roster-edit>
         </iron-pages>
 
 
@@ -57,6 +69,12 @@
                 return 'crew-team-manager-roster'
             }
 
+            static get observer() {
+                return [
+                    '_copyData(_copy)'
+                ]
+            }
+
 
             static get properties() {
                 return {
@@ -66,6 +84,10 @@
                     },
 
                     _data: {
+                        type: Object
+                    },
+
+                    _copy: {
                         type: Object
                     },
 
@@ -80,9 +102,26 @@
                 }
             }
 
+            _copyData(copy) {
+                this._copy = copy;
+                console.log(this._copy);
+            }
+
             _handleActionDetail(e) {
-                console.log(e.detail);
                 this._athlete = e.detail.athlete;
+                this._page = 'detail';
+            }
+
+            _handleActionBack(e) {
+                this._page = 'list';
+            }
+
+            _handleActionBackOnce(e) {
+                this._page = 'detail';
+            }
+
+            _handleActionEdit(e) {
+                this._page = 'edit';
             }
         }
 

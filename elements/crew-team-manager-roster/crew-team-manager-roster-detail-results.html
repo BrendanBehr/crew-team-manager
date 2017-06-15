@@ -1,0 +1,92 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<dom-module id="crew-team-manager-roster-detail-results">
+    <template>
+        <style>
+             :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+            }
+
+            #content {
+                background-color: lightslategray;
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+            }
+
+            #card {
+                background-color: white;
+                @apply(--layout-flex);
+            }
+
+            #name {
+                font-size: 24px;
+                text-align: Center;
+                font-style: bold;
+            }
+
+            #year {
+                font-size: 12px;
+            }
+        </style>
+
+        <div id="content">
+            <paper-card id="card">
+                <div id="name">
+                    [[data.firstName]] [[data.lastName]]
+                    <div id="year">([[data.year]]) </div>
+                </div>
+                <div id="location">
+                    [[data.streetAddress]], [[data.city]], [[data.state]]
+                </div>
+                <div id="contact">
+                    Phone number: [[data.phone]]
+                </div>
+                <div id="height">
+                    Height: [[data.height]]
+                </div>
+                <div id="weight">
+                    Weight: [[data.weight]]
+                </div>
+                <div id="gender">
+                    Gender: [[data.gender]]
+                </div>
+                <div id="2k">
+                    2k time: [[data.ergScore]]
+                </div>
+                <div id="side">
+                    Rowing Side: [[data.side]]
+                </div>
+                <div id="funds">
+                    Fundraising: [[data.fundRaising]]
+                </div>
+
+            </paper-card>
+        </div>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerRosterDetailResults extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-roster-detail-results'
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                    }
+                }
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerRosterDetailResults.is, crewTeamManagerRosterDetailResults);
+    </script>
+</dom-module>

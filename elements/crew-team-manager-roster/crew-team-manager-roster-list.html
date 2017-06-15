@@ -1,12 +1,14 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
@@ -20,7 +22,7 @@
         <style>
              :host {
                 background-color: lightslategray;
-                @apply(--layout-vertical);
+                @apply(--layout-horizontal);
             }
 
              :host([menu-hidden]) #menu {
@@ -29,10 +31,13 @@
 
             #pages {
                 @apply(--layout-flex);
-                @apply(--layout-horizontal);
             }
 
             #loading {
+                @apply(--layout-flex);
+            }
+
+            #layout {
                 @apply(--layout-flex);
             }
 
@@ -63,7 +68,7 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
                 <crew-team-manager-roster-list-loading id="loading"></crew-team-manager-roster-list-loading>
-                <crew-team-manager-roster-list-results id="list" data="[[_data]]"></crew-team-manager-roster-list-results>
+                <crew-team-manager-roster-list-results id="results" data="[[_data]]"></crew-team-manager-roster-list-results>
                 <crew-team-manager-roster-list-message id="message"></crew-team-manager-roster-list-message>
             </iron-pages>
 
@@ -119,7 +124,7 @@
 
                 if (dataSplices) {
                     if (dataSplices.indexSplices[0].object.length) {
-                        page = 'list';
+                        page = 'results';
                     }
                 }
 
@@ -128,8 +133,6 @@
             }
 
         }
-
-
 
         // Register custom element definition using standard platform API
         customElements.define(crewTeamManagerRosterList.is, crewTeamManagerRosterList);

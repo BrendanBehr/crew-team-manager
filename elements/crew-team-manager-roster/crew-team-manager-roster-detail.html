@@ -1,44 +1,155 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+
+<link rel="import" href="crew-team-manager-roster-detail-loading.html">
+<link rel="import" href="crew-team-manager-roster-detail-results.html">
+<link rel="import" href="crew-team-manager-roster-detail-message.html">
+
 
 <dom-module id="crew-team-manager-roster-detail">
     <template>
         <style>
              :host {
-                background-color: white;
+                background-color: lightslategray;
                 @apply(--layout-horizontal);
-                @apply(--layout-flex;
+            }
+
+             :host([menu-hidden]) #menu {
+                display: none;
+            }
+
+            #pages {
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+            }
+
+            #loading {
+                @apply(--layout-flex);
+            }
+
+            #layout {
+                @apply(--layout-flex);
+            }
+
+            #results {
+                @apply(--layout-flex);
+            }
+
+            #message {
+                @apply(--layout-flex);
+            }
+
+            #toolbar {
+                background-color: #4caf50;
+                color: #fff;
             }
         </style>
-        <script>
-            // Extend Polymer.Element with MyMixin
-            class crewTeamManagerRosterDetail extends Polymer.Element {
 
-                static get is() {
-                    return 'crew-team-manager-roster-detail'
-                }
+        <firebase-document app-name="crew-team-manager" path="/athletes/{{athlete}}" data="{{_data}}">
+        </firebase-document>
 
-                static get properties() {
-                    return {
-                        data: {
-                            type: Object
-                        },
+        <app-layout id="layout">
 
-                        athlete: {
-                            type: String,
-                            observer: '_athleteChanged'
-                        }
-                    }
-                }
+            <app-header reveals>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
+                    <div main-title id="title">Details</div>
+                    <paper-icon-button id="edit" icon="create" on-click="_handleActionEdit"></paper-icon-button>
+                </app-toolbar>
+            </app-header>
+            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+                <crew-team-manager-roster-detail-loading id="loading"></crew-team-manager-roster-detail-loading>
+                <crew-team-manager-roster-detail-results id="results" data="{{_data}}"></crew-team-manager-roster-detail-results>
+                <crew-team-manager-roster-detail-message id="message"></crew-team-manager-roster-detail-message>
+            </iron-pages>
 
-                _atheleteChanged(newValue, oldValue) {
-                    console.log(newValue);
+
+        </app-layout>
+
+
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerRosterDetail extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-roster-detail'
+            }
+
+            static get observers() {
+                return [
+                    '_updatePage(athlete)'
+                ]
+
+            }
+
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'loading'
+                    },
+
+                    _data: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    copy: {
+                        type: Object,
+                    },
+
+                    athlete: {
+                        type: String,
+                        value: ''
+                    },
 
                 }
             }
 
-            // Register custom element definition using standard platform API
-            customElements.define(crewTeamManagerRosterDetail.is, crewTeamManagerRosterDetail);
-        </script>
+            _updatePage(athlete) {
+                let page = 'message';
+
+                if (athlete) {
+                    page = 'results';
+
+                }
+
+                this._page = page;
+            }
+
+
+
+            _handleActionBack(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-back', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionEdit(e) {
+                this.copy = Object.assign({}, this._data);
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-edit', {
+                    bubbles: true,
+                    composed: true,
+                }));
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerRosterDetail.is, crewTeamManagerRosterDetail);
+    </script>
 </dom-module>

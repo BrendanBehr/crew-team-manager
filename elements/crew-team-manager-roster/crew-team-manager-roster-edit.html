@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+
+<dom-module id="crew-team-manager-roster-edit">
+    <template>
+        <style>
+             :host {
+                background-color: lightslategray;
+                @apply(--layout-horizontal);
+            }
+
+            #layout {
+                @apply(--layout-flex);
+            }
+
+            #toolbar {
+                background-color: #a5d6a7;
+            }
+
+            #editor {
+                background-color: white;
+                @apply(--layout-flex);
+            }
+        </style>
+        <app-layout id="layout">
+
+            <app-header reveals>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
+                    <div main-title id="title">Edit</div>
+                </app-toolbar>
+            </app-header>
+
+            <div id="editor">
+                <paper-input id="first-name" label="{{data.firstName}}"></paper-input>
+                <paper-input id="last-name" label="{{data.lastName}}"></paper-input>
+                <paper-input id="year" label="{{data.year}}"></paper-input>
+                <paper-input id="street-address" label="{{data.streetAddress}}"></paper-input>
+                <paper-input id="city" label="{{data.city}}"></paper-input>
+                <paper-input id="state" label="{{data.state}}"></paper-input>
+                <paper-input id="phone" label="{{data.phone}}"></paper-input>
+                <paper-input id="driver" label="{{data.driver}}"></paper-input>
+                <paper-input id="height" label="{{data.height}}"></paper-input>
+                <paper-input id="weight" label="{{data.weight}}"></paper-input>
+                <paper-input id="gender" label="{{data.gender}}"></paper-input>
+                <paper-input id="fundraising" label="{{data.fundRaising}}"></paper-input>
+                <paper-input id="erg-score" label="{{data.ergScore}}"></paper-input>
+                <paper-input id="side" label="{{data.side}}"></paper-input>
+            </div>
+
+
+        </app-layout>
+
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerRosterEdit extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-roster-edit'
+            }
+
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object
+                    }
+
+                }
+            }
+
+            _handleActionBack() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterEdit.is + '-action-back', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerRosterEdit.is, crewTeamManagerRosterEdit);
+    </script>
+</dom-module>

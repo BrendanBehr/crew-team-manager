@@ -18,6 +18,7 @@ const team1Athlete3 = team1.createAthlete();
 const team1Athlete4 = team2.createAthlete();
 const team2Athlete5 = team3.createAthlete();
 const team1Athlete6 = team2.createAthlete();
+team1.createAthletes(100);
 
 //Creates user objects for the respective athlete objects
 const team1User1 = team1Athlete1.createUser();

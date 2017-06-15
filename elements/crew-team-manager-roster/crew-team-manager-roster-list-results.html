@@ -15,6 +15,10 @@
                 background-color: lightslategray;
                 @apply(--layout-vertical);
                 @apply(--layout-flex);
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
             }
 
             #slot {
@@ -62,12 +66,8 @@
                     },
                 }
             }
-            _handleClick(e) {
-                console.log(e);
-            }
 
             _handleItemClick(e) {
-
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterListResults.is + '-action-detail', {
                     bubbles: true,
                     composed: true,
