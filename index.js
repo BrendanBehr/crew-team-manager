@@ -63,6 +63,7 @@ team1Boat1.addOar(team1Oar1);
 
 //This creates regatta and race objects for team1
 const team1Regatta1 = team1.createRegatta();
+team1.createRegattas(100);
 const team1Race1 = team1.createRace();
 
 //This adds race objects to regattas

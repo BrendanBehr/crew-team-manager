@@ -1,104 +1,194 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html"> dom-module id="crew-team-manager- avatar">
-<template>
-    <style>
-         :host {
-            background-color: lightslategray;
-            @apply(--layout-horizontal);
-        }
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-        #pages {
-            @apply(--layout-flex);
-        }
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
 
-        #list {
-            @apply(--layout-flex);
-        }
 
-        #detail {
-            @apply(--layout-flex);
-        }
+<dom-module id="crew-team-manager-avatar">
+    <template>
+        <style>
+             :host {
+                @apply(--layout-horizontal);
+                @apply(--paper-font-common-base);
+            }
 
-        #edit {
-            @apply(--layout-flex);
-        }
+             :host([large]) #avatar {
+                height: 64px;
+                width: 64px;
+            }
 
-        #toolbar {
-            background-color: #164410;
-            color: #fff;
-        }
-    </style>
-    /template>
+             :host([large]) #character {
+                @apply(--paper-font-display1);
+            }
+
+            #avatar {
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                /*background-color: orange;*/
+            }
+
+            #character {
+                @apply(--layout-self-center);
+                @apply(--paper-font-title);
+                color: white;
+                opacity: 0.7;
+            }
+
+            #avatar {
+                background-color: #9B9B9B;
+            }
+
+            #avatar[character="A"] {
+                background-color: #E16057;
+            }
+
+            #avatar[character="B"] {
+                background-color: #F16293;
+            }
+
+            #avatar[character="C"] {
+                background-color: #BC68C8;
+            }
+
+            #avatar[character="D"] {
+                background-color: #9774CC;
+            }
+
+            #avatar[character="E"] {
+                background-color: #7A85CA;
+            }
+
+            #avatar[character="F"] {
+                background-color: #6096F6;
+            }
+
+            #avatar[character="G"] {
+                background-color: #4FC3F6;
+            }
+
+            #avatar[character="H"] {
+                background-color: #4AD0E0;
+            }
+
+            #avatar[character="I"] {
+                background-color: #4BB6AC;
+            }
+
+            #avatar[character="J"] {
+                background-color: #54BB8A;
+            }
+
+            #avatar[character="K"] {
+                background-color: #9BCC65;
+            }
+
+            #avatar[character="L"] {
+                background-color: #D3E158;
+            }
+
+            #avatar[character="M"] {
+                background-color: #FCD939;
+            }
+
+            #avatar[character="N"] {
+                background-color: #F6BF2C;
+            }
+
+            #avatar[character="O"] {
+                background-color: #FFA82C;
+            }
+
+            #avatar[character="P"] {
+                background-color: #FF8A66;
+            }
+
+            #avatar[character="Q"],
+            #avatar[character="W"] {
+                background-color: #C2C2C2;
+            }
+
+            #avatar[character="R"] {
+                background-color: #90A3AE;
+            }
+
+            #avatar[character="S"] {
+                background-color: #A18980;
+            }
+
+            #avatar[character="T"] {
+                background-color: #A3A3A3;
+            }
+
+            #avatar[character="U"] {
+                background-color: #AFB6E0;
+            }
+
+            #avatar[character="V"] {
+                background-color: #B49DDB;
+            }
+
+            #avatar[character="X"] {
+                background-color: #7FDEEA;
+            }
+
+            #avatar[character="Y"] {
+                background-color: #BCAAA4;
+            }
+
+            #avatar[character="Z"] {
+                background-color: #ACD581;
+            }
+        </style>
+
+        <div id="avatar" character$="[[character]]">
+            <div id="character">
+                [[character]]
+            </div>
+        </div>
+
+
+    </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManager Avatar extends Polymer.Element {
+        class crewTeamManagerAvatar extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager- avatar'
+                return 'crew-team-manager-avatar'
+            }
+
+            static get observers() {
+                return [
+                    '_setString(value)'
+                ]
             }
 
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'list'
-                    },
-
-                    _edit: {
-                        type: Object
-                    },
-
-                    wideLayout: {
-                        type: Boolean,
-                        value: false,
-                    },
-
-                    _athlete: {
+                    value: {
                         type: String
                     },
 
-                    _toast: {
+                    character: {
                         type: String
                     }
                 }
             }
 
-            _handleActionDetail(e) {
-                this._athlete = e.detail.athlete;
-                this._page = 'detail';
+            _setString(value) {
+                if (value) {
+                    this.character = value[0].toUpperCase();
+                }
             }
 
-            _handleActionBack(e) {
-                this._page = 'list';
-            }
-
-            _handleActionBackOnce(e) {
-                this._page = 'detail';
-            }
-
-            _handleActionEdit(e) {
-
-                this._edit = e.detail.athlete;
-                this._page = 'edit';
-
-            }
-
-            _handleActionSaved(e) {
-                this._page = 'detail';
-                this._toast = 'Athlete Saved';
-                this.$.toast.open();
-            }
-
-            _handleActionDelete(e) {
-                this._page = 'list';
-                this._toast = 'Athlete Deleted';
-                this.$.toast.open();
+            _setSize(size) {
+                this.icon = size
             }
         }
 
-
-
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManager Avatar.is, crewTeamManager Avatar);
+        customElements.define(crewTeamManagerAvatar.is, crewTeamManagerAvatar);
     </script>
-    </dom-module>
+</dom-module>

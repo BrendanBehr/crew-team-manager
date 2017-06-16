@@ -51,6 +51,11 @@
                 @apply(--layout-flex);
             }
 
+            #schedule {
+                @apply(--layout-flex);
+            }
+
+
             button {
                 font-size: 18px;
             }
@@ -70,11 +75,14 @@
                 <crew-team-manager-roster id="roster" on-crew-team-manager-roster-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-roster>
 
                 <crew-team-manager-fleet id="fleet" on-crew-team-manager-fleet-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-fleet>
+
+                <crew-team-manager-schedule id="schedule" on-crew-team-manager-schedule-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-schedule>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
                 <button page="roster" on-click="_handleMenuClick">roster</button>
                 <button page="fleet" on-click="_handleMenuClick">fleet</button>
+                <button page="schedule" on-click="_handleMenuClick">schedule</button>
             </app-drawer>
             <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>
     </template>

@@ -6,7 +6,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-roster-detail-results">
+<dom-module id="crew-team-manager-schedule-detail-results">
     <template>
         <style>
              :host {
@@ -26,13 +26,13 @@
                 @apply(--layout-flex);
             }
 
-            #athlete-avatar {
+            #regatta-avatar {
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
                 margin: 8px;
             }
 
-            #athlete-name {
+            #regatta-name {
                 font-size: 24px;
                 text-align: Center;
                 font-style: bold;
@@ -44,21 +44,21 @@
                 font-weight: bold;
             }
 
-            #athlete-year {
+            #regatta-year {
                 font-size: 16px;
             }
 
-            #athlete-contact {
+            #regatta-location {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
 
-            #athlete-basic {
+            #regatta-image {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
 
-            #athlete-row {
+            #regatta-row {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
@@ -66,53 +66,33 @@
 
         <div id="content">
 
-            <paper-card id="athlete">
-                <crew-team-manager-avatar id="athlete-avatar" value="[[data.firstName]]" large></crew-team-manager-avatar>
-                <div id="athlete-name">
-                    [[data.firstName]] [[data.lastName]]
-                    <div id="athlete-year">([[data.year]]) </div>
+            <paper-card id="regatta">
+                <crew-team-manager-avatar id="regatta-avatar" value="[[data.firstName]]" large></crew-team-manager-avatar>
+                <div id="regatta-name">
+                    [[data.name]]
                 </div>
-                <div id="athlete-contact">
+                <div id="regatta-location">
                     <div id="subhead">
-                        Contact information:
+                        Location:
                     </div>
                     <div id="location">
                         [[data.streetAddress]], [[data.city]], [[data.state]]
                     </div>
-                    <div id="phone">
-                        Phone number: [[data.phone]]
-                    </div>
                 </div>
-                <div id="athlete-basic">
+                <div id="regatta-image">
                     <div id="subhead">
                         Basic inforomation:
                     </div>
-                    <div id="height">
-                        Height: [[data.height]]
-                    </div>
-                    <div id="weight">
-                        Weight: [[data.weight]]
-                    </div>
-                    <div id="gender">
-                        Gender: [[data.gender]]
-                    </div>
-
-                    <div id="driver">
-                        Can drive? [[data.driver]]
+                    <div id="image">
+                        <img scr="[[data.locationImage]]" alt="[[data.name]]">
                     </div>
                 </div>
-                <div id="athlete-row">
+                <div id="regatta-cost">
                     <div id="subhead">
-                        Stats:
-                    </div>
-                    <div id="2k">
-                        2k time: [[data.ergScore]]
-                    </div>
-                    <div id="side">
-                        Rowing Side: [[data.side]]
+                        Financial:
                     </div>
                     <div id="funds">
-                        Fundraising: [[data.fundRaising]]
+                        Cost: $[[data.cost]]
                     </div>
                 </div>
 
@@ -122,10 +102,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRosterDetailResults extends Polymer.Element {
+        class crewTeamManagerScheduleDetailResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-roster-detail-results'
+                return 'crew-team-manager-schedule-detail-results'
             }
 
             static get properties() {
@@ -138,6 +118,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRosterDetailResults.is, crewTeamManagerRosterDetailResults);
+        customElements.define(crewTeamManagerScheduleDetailResults.is, crewTeamManagerScheduleDetailResults);
     </script>
 </dom-module>

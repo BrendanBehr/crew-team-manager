@@ -22,6 +22,10 @@
     "paper-input": "PolymerElements/paper-input#^2.0.1",
     "paper-spinner": "PolymerElements/paper-spinner#^2.0.0",
     "polymerfire": "firebase/polymerfire#^2.1.0",
-    "paper-toast": "^2.0.0"
+    "paper-toast": "^2.0.0",
+    "paper-dropdown-menu": "^2.0.0",
+    "paper-item": "^2.0.0",
+    "paper-listbox": "^2.0.0",
+    "paper-toggle-button": "^2.0.0"
   }
 }

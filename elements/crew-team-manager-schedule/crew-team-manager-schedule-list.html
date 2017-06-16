@@ -14,12 +14,12 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-roster-list-loading.html">
-<link rel="import" href="crew-team-manager-roster-list-results.html">
-<link rel="import" href="crew-team-manager-roster-list-message.html">
+<link rel="import" href="crew-team-manager-schedule-list-loading.html">
+<link rel="import" href="crew-team-manager-schedule-list-results.html">
+<link rel="import" href="crew-team-manager-schedule-list-message.html">
 
 
-<dom-module id="crew-team-manager-roster-list">
+<dom-module id="crew-team-manager-schedule-list">
     <template>
         <style>
              :host {
@@ -60,7 +60,7 @@
             }
         </style>
 
-        <firebase-query app-name="crew-team-manager" id="query" path="/athletes" data="{{_data}}">
+        <firebase-query app-name="crew-team-manager" id="query" path="/regattas" data="{{_data}}">
         </firebase-query>
 
         <app-header-layout id="layout" has-scrolling-region fullbleed>
@@ -68,13 +68,13 @@
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
                     <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
-                    <div main-title id="title">Athletes</div>
+                    <div main-title id="title">Regattas</div>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-roster-list-loading id="loading"></crew-team-manager-roster-list-loading>
-                <crew-team-manager-roster-list-results id="results" data="[[_data]]"></crew-team-manager-roster-list-results>
-                <crew-team-manager-roster-list-message id="message"></crew-team-manager-roster-list-message>
+                <crew-team-manager-schedule-list-loading id="loading"></crew-team-manager-schedule-list-loading>
+                <crew-team-manager-schedule-list-results id="results" data="[[_data]]"></crew-team-manager-schedule-list-results>
+                <crew-team-manager-schedule-list-message id="message"></crew-team-manager-schedule-list-message>
             </iron-pages>
 
 
@@ -85,10 +85,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRosterList extends Polymer.Element {
+        class crewTeamManagerScheduleList extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-roster-list'
+                return 'crew-team-manager-schedule-list'
             }
 
             static get observers() {
@@ -113,7 +113,7 @@
             }
 
             _handleActionMenu() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterList.is + '-action-menu', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleList.is + '-action-menu', {
                     bubbles: true,
                     composed: true
                 }));
@@ -140,6 +140,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRosterList.is, crewTeamManagerRosterList);
+        customElements.define(crewTeamManagerScheduleList.is, crewTeamManagerScheduleList);
     </script>
 </dom-module>

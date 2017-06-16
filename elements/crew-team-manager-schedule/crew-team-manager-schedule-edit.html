@@ -14,7 +14,7 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<dom-module id="crew-team-manager-roster-edit">
+<dom-module id="crew-team-manager-schedule-edit">
     <template>
         <style>
              :host {
@@ -113,10 +113,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRosterEdit extends Polymer.Element {
+        class crewTeamManagerScheduleEdit extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-roster-edit'
+                return 'crew-team-manager-schedule-edit'
             }
 
             static get properties() {
@@ -125,7 +125,7 @@
                         type: Object
                     },
 
-                    athlete: {
+                    regatta: {
                         type: String
                     },
 
@@ -137,7 +137,7 @@
             }
 
             _handleActionBack(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterEdit.is + '-action-back', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-back', {
                     bubbles: true,
                     composed: true
                 }));
@@ -145,9 +145,9 @@
 
             _handleActionSave(e) {
                 this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
-                this.$.firebase.saveValue('athletes', this.athlete)
+                this.$.firebase.saveValue('regattas', this.regatta)
                     .then(() => {
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterEdit.is + '-action-saved', {
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-saved', {
                             bubbles: true,
                             composed: true
                         }));
@@ -171,6 +171,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRosterEdit.is, crewTeamManagerRosterEdit);
+        customElements.define(crewTeamManagerScheduleEdit.is, crewTeamManagerScheduleEdit);
     </script>
 </dom-module>

@@ -25,18 +25,19 @@
 
             #pages {
                 @apply(--layout-flex);
+                position: relative;
             }
 
             #list {
-                @apply(--layout-flex);
+                @apply(--layout-fit);
             }
 
             #detail {
-                @apply(--layout-flex);
+                @apply(--layout-fit);
             }
 
             #edit {
-                @apply(--layout-flex);
+                @apply(--layout-fit);
             }
 
             #toolbar {
@@ -119,12 +120,14 @@
             _handleActionSaved(e) {
                 this._page = 'detail';
                 this._toast = 'Athlete Saved';
+                this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
                 this._page = 'list';
                 this._toast = 'Athlete Deleted';
+                this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
         }
