@@ -57,7 +57,7 @@
             }
         </style>
 
-        <firebase-document app-name="crew-team-manager" path="/athletes/{{athlete}}" data="{{_data}}">
+        <firebase-document id="firebase" app-name="crew-team-manager" path="/athletes/{{athlete}}" data="{{_data}}">
         </firebase-document>
 
         <app-layout id="layout">
@@ -67,6 +67,7 @@
                     <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Details</div>
                     <paper-icon-button id="edit" icon="create" on-click="_handleActionEdit"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" on-click="_handleActionDelete"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
@@ -108,10 +109,6 @@
                         value: {}
                     },
 
-                    copy: {
-                        type: Object,
-                    },
-
                     athlete: {
                         type: String,
                         value: ''
@@ -141,10 +138,21 @@
             }
 
             _handleActionEdit(e) {
-                this.copy = Object.assign({}, this._data);
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-edit', {
                     bubbles: true,
                     composed: true,
+                    detail: {
+                        athlete: JSON.parse(JSON.stringify(this._data))
+                    }
+                }));
+
+            }
+
+            _handleActionDelete(e) {
+                this.$.firebase.destroy();
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-delete', {
+                    bubbles: true,
+                    composed: true
                 }));
             }
         }

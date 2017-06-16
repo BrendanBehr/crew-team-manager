@@ -34,17 +34,17 @@
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
                 text-align: center;
+                min-height: 70px;
             }
         </style>
 
         <iron-list id="list" items="[[data]]" as="item">
             <template>
                 <div id="slot" on-click="_handleItemClick">
+
+                    <crew-team-manager-avatar value="[[item.firstName]]"></crew-team-manager-avatar>
                     <div id="title">
                         [[item.firstName]] [[item.lastName]]
-                    </div>
-                    <div id="contents">
-                        Stuff goes here
                     </div>
                 </div>
             </template>

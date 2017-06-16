@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <dom-module id="crew-team-manager-roster-edit">
     <template>
@@ -27,32 +28,39 @@
                 @apply(--layout-flex);
             }
         </style>
+
+
+        <firebase-document id="firebase" app-name="crew-team-manager">
+        </firebase-document>
+
         <app-layout id="layout">
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
                     <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Edit</div>
+                    <paper-icon-button id="save" icon="check" on-click="_handleActionSave"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="editor">
-                <paper-input id="first-name" label="{{data.firstName}}"></paper-input>
-                <paper-input id="last-name" label="{{data.lastName}}"></paper-input>
-                <paper-input id="year" label="{{data.year}}"></paper-input>
-                <paper-input id="street-address" label="{{data.streetAddress}}"></paper-input>
-                <paper-input id="city" label="{{data.city}}"></paper-input>
-                <paper-input id="state" label="{{data.state}}"></paper-input>
-                <paper-input id="phone" label="{{data.phone}}"></paper-input>
-                <paper-input id="driver" label="{{data.driver}}"></paper-input>
-                <paper-input id="height" label="{{data.height}}"></paper-input>
-                <paper-input id="weight" label="{{data.weight}}"></paper-input>
-                <paper-input id="gender" label="{{data.gender}}"></paper-input>
-                <paper-input id="fundraising" label="{{data.fundRaising}}"></paper-input>
-                <paper-input id="erg-score" label="{{data.ergScore}}"></paper-input>
-                <paper-input id="side" label="{{data.side}}"></paper-input>
+                <form is="iron-form" id="form" method="post" action="/form/handler">
+                    <paper-input id="first-name" label="first name" value="{{edit.firstName}}"></paper-input>
+                    <paper-input id="last-name" label="last name" value="{{edit.lastName}}"></paper-input>
+                    <paper-input id="year" label="class year" value="{{edit.year}}"></paper-input>
+                    <paper-input id="street-address" label="street address" value="{{edit.streetAddress}}"></paper-input>
+                    <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
+                    <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
+                    <paper-input id="phone" label="phone number" value="{{edit.phone}}"></paper-input>
+                    <paper-input id="driver" label="driver" value="{{edit.driver}}"></paper-input>
+                    <paper-input id="height" label="height" value="{{edit.height}}"></paper-input>
+                    <paper-input id="weight" label="weight" value="{{edit.weight}}"></paper-input>
+                    <paper-input id="gender" label="gender" value="{{edit.gender}}"></paper-input>
+                    <paper-input id="fundraising" label="fundraising" value="{{edit.fundRaising}}"></paper-input>
+                    <paper-input id="erg-score" label="2k time" value="{{edit.ergScore}}"></paper-input>
+                    <paper-input id="side" label="side" value="{{edit.side}}"></paper-input>
+                </form>
             </div>
-
 
         </app-layout>
 
@@ -66,21 +74,39 @@
                 return 'crew-team-manager-roster-edit'
             }
 
-
             static get properties() {
                 return {
-                    data: {
+                    edit: {
                         type: Object
-                    }
+                    },
 
+                    athlete: {
+                        type: String
+                    }
                 }
             }
 
-            _handleActionBack() {
+            _handleActionBack(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterEdit.is + '-action-back', {
                     bubbles: true,
                     composed: true
                 }));
+            }
+
+            _handleActionSave(e) {
+                console.log('athletes/' + this.athlete);
+
+                this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
+                this.$.firebase.saveValue('athletes', this.athlete)
+                    .then(() => {
+                        console.log('here');
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterEdit.is + '-action-saved', {
+                            bubbles: true,
+                            composed: true
+                        }));
+                    });
+
+
             }
 
         }

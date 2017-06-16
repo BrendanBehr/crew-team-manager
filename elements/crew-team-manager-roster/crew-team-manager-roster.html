@@ -5,6 +5,8 @@
 
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
@@ -43,21 +45,20 @@
             }
         </style>
 
-
-
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
             <crew-team-manager-roster-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-roster-list-results-action-detail="_handleActionDetail">
             </crew-team-manager-roster-list>
 
-            <crew-team-manager-roster-detail id="detail" copy="{{_copy}}" athlete="[[_athlete]]" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
-                on-crew-team-manager-roster-detail-action-edit="_handleActionEdit">
+            <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
+                on-crew-team-manager-roster-detail-action-edit="_handleActionEdit" on-crew-team-manager-roster-detail-action-delete="_handleActionDelete">
             </crew-team-manager-roster-detail>
 
-            <crew-team-manager-roster-edit data="{{_data}}" id="edit" athlete="[[_athlete]]" on-crew-team-manager-roster-edit-action-back="_handleActionBackOnce">
+            <crew-team-manager-roster-edit edit="[[_edit]]" id="edit" athlete="[[_athlete]]" on-crew-team-manager-roster-edit-action-back="_handleActionBackOnce"
+                on-crew-team-manager-roster-edit-action-saved="_handleActionSaved">
             </crew-team-manager-roster-edit>
         </iron-pages>
 
-
+        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
 
     </template>
 
@@ -69,13 +70,6 @@
                 return 'crew-team-manager-roster'
             }
 
-            static get observer() {
-                return [
-                    '_copyData(_copy)'
-                ]
-            }
-
-
             static get properties() {
                 return {
                     _page: {
@@ -83,11 +77,7 @@
                         value: 'list'
                     },
 
-                    _data: {
-                        type: Object
-                    },
-
-                    _copy: {
+                    _edit: {
                         type: Object
                     },
 
@@ -98,13 +88,12 @@
 
                     _athlete: {
                         type: String
+                    },
+
+                    _toast: {
+                        type: String
                     }
                 }
-            }
-
-            _copyData(copy) {
-                this._copy = copy;
-                console.log(this._copy);
             }
 
             _handleActionDetail(e) {
@@ -121,7 +110,22 @@
             }
 
             _handleActionEdit(e) {
+
+                this._edit = e.detail.athlete;
                 this._page = 'edit';
+
+            }
+
+            _handleActionSaved(e) {
+                this._page = 'detail';
+                this._toast = 'Athlete Saved';
+                this.$.toast.open();
+            }
+
+            _handleActionDelete(e) {
+                this._page = 'list';
+                this._toast = 'Athlete Deleted';
+                this.$.toast.open();
             }
         }
 

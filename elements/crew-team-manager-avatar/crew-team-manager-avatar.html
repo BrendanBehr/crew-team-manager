@@ -1,0 +1,104 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html"> dom-module id="crew-team-manager- avatar">
+<template>
+    <style>
+         :host {
+            background-color: lightslategray;
+            @apply(--layout-horizontal);
+        }
+
+        #pages {
+            @apply(--layout-flex);
+        }
+
+        #list {
+            @apply(--layout-flex);
+        }
+
+        #detail {
+            @apply(--layout-flex);
+        }
+
+        #edit {
+            @apply(--layout-flex);
+        }
+
+        #toolbar {
+            background-color: #164410;
+            color: #fff;
+        }
+    </style>
+    /template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManager Avatar extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager- avatar'
+            }
+
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'list'
+                    },
+
+                    _edit: {
+                        type: Object
+                    },
+
+                    wideLayout: {
+                        type: Boolean,
+                        value: false,
+                    },
+
+                    _athlete: {
+                        type: String
+                    },
+
+                    _toast: {
+                        type: String
+                    }
+                }
+            }
+
+            _handleActionDetail(e) {
+                this._athlete = e.detail.athlete;
+                this._page = 'detail';
+            }
+
+            _handleActionBack(e) {
+                this._page = 'list';
+            }
+
+            _handleActionBackOnce(e) {
+                this._page = 'detail';
+            }
+
+            _handleActionEdit(e) {
+
+                this._edit = e.detail.athlete;
+                this._page = 'edit';
+
+            }
+
+            _handleActionSaved(e) {
+                this._page = 'detail';
+                this._toast = 'Athlete Saved';
+                this.$.toast.open();
+            }
+
+            _handleActionDelete(e) {
+                this._page = 'list';
+                this._toast = 'Athlete Deleted';
+                this.$.toast.open();
+            }
+        }
+
+
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManager Avatar.is, crewTeamManager Avatar);
+    </script>
+    </dom-module>
