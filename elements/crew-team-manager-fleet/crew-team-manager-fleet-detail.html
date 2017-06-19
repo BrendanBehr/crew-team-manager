@@ -1,0 +1,165 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+
+<link rel="import" href="crew-team-manager-fleet-detail-loading.html">
+<link rel="import" href="crew-team-manager-fleet-detail-results.html">
+<link rel="import" href="crew-team-manager-fleet-detail-message.html">
+
+
+<dom-module id="crew-team-manager-fleet-detail">
+    <template>
+        <style>
+             :host {
+                background-color: lightslategray;
+                @apply(--layout-horizontal);
+                @apply(--paper-font-common-base);
+            }
+
+             :host([menu-hidden]) #menu {
+                display: none;
+            }
+
+            #pages {
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+            }
+
+            #loading {
+                @apply(--layout-flex);
+            }
+
+            #layout {
+                @apply(--layout-flex);
+            }
+
+            #results {
+                @apply(--layout-flex);
+            }
+
+            #message {
+                @apply(--layout-flex);
+            }
+
+            #toolbar {
+                background-color: #2e7d32;
+                color: #fff;
+            }
+        </style>
+
+        <firebase-document id="firebase" app-name="crew-team-manager" path="/boats/{{boat}}" data="{{_data}}">
+        </firebase-document>
+
+        <app-header-layout id="layout">
+
+            <app-header reveals>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
+                    <div main-title id="title">Details</div>
+                    <paper-icon-button id="edit" icon="create" on-click="_handleActionEdit"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" on-click="_handleActionDelete"></paper-icon-button>
+                </app-toolbar>
+            </app-header>
+            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+                <crew-team-manager-fleet-detail-loading id="loading"></crew-team-manager-fleet-detail-loading>
+                <crew-team-manager-fleet-detail-results id="results" data="{{_data}}"></crew-team-manager-fleet-detail-results>
+                <crew-team-manager-fleet-detail-message id="message"></crew-team-manager-fleet-detail-message>
+            </iron-pages>
+
+
+        </app-header-layout>
+
+
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerFleetDetail extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-fleet-detail'
+            }
+
+            static get observers() {
+                return [
+                    '_updatePage(boat)'
+                ]
+
+            }
+
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'loading'
+                    },
+
+                    _data: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    boat: {
+                        type: String,
+                        value: ''
+                    },
+
+                }
+            }
+
+            _updatePage(boat) {
+                let page = 'message';
+
+                if (boat) {
+                    page = 'results';
+
+                }
+
+                this._page = page;
+            }
+
+
+
+            _handleActionBack(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-back', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionEdit(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-edit', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        boat: JSON.parse(JSON.stringify(this._data))
+                    }
+                }));
+
+            }
+
+            _handleActionDelete(e) {
+                this.$.firebase.destroy();
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-delete', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerFleetDetail.is, crewTeamManagerFleetDetail);
+    </script>
+</dom-module>

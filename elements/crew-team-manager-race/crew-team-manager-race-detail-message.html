@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<dom-module id="crew-team-manager-schedule-detail-message">
+<dom-module id="crew-team-manager-race-detail-message">
     <template>
         <style>
              :host {
@@ -22,21 +22,21 @@
             }
         </style>
         <div id="layout">
-            <div id="message">Regatta Details not Found</div>
+            <div id="message">Race Details not Found</div>
         </div>
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerScheduleDetailMessage extends Polymer.Element {
+        class crewTeamManagerRaceDetailMessage extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-schedule-detail-message'
+                return 'crew-team-manager-race-detail-message'
             }
 
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerScheduleDetailMessage.is, crewTeamManagerScheduleDetailMessage);
+        customElements.define(crewTeamManagerRaceDetailMessage.is, crewTeamManagerRaceDetailMessage);
     </script>
 </dom-module>

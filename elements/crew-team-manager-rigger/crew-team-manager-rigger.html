@@ -10,12 +10,12 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-fleet-list.html">
-<link rel="import" href="crew-team-manager-fleet-detail.html">
-<link rel="import" href="crew-team-manager-fleet-edit.html">
+<link rel="import" href="crew-team-manager-rigger-list.html">
+<link rel="import" href="crew-team-manager-rigger-detail.html">
+<link rel="import" href="crew-team-manager-rigger-edit.html">
 
 
-<dom-module id="crew-team-manager-fleet">
+<dom-module id="crew-team-manager-rigger">
     <template>
         <style>
              :host {
@@ -47,16 +47,16 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-fleet-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-fleet-list-results-action-detail="_handleActionDetail">
-            </crew-team-manager-fleet-list>
+            <crew-team-manager-rigger-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-rigger-list-results-action-detail="_handleActionDetail">
+            </crew-team-manager-rigger-list>
 
-            <crew-team-manager-fleet-detail id="detail" boat="[[_boat]]" on-crew-team-manager-fleet-detail-action-back="_handleActionBack"
-                on-crew-team-manager-fleet-detail-action-edit="_handleActionEdit" on-crew-team-manager-fleet-detail-action-delete="_handleActionDelete">
-            </crew-team-manager-fleet-detail>
+            <crew-team-manager-rigger-detail id="detail" rigger="[[_rigger]]" on-crew-team-manager-rigger-detail-action-back="_handleActionBack"
+                on-crew-team-manager-rigger-detail-action-edit="_handleActionEdit" on-crew-team-manager-rigger-detail-action-delete="_handleActionDelete">
+            </crew-team-manager-rigger-detail>
 
-            <crew-team-manager-fleet-edit edit="[[_edit]]" id="edit" boat="[[_boat]]" on-crew-team-manager-fleet-edit-action-back="_handleActionBackOnce"
-                on-crew-team-manager-fleet-edit-action-saved="_handleActionSaved">
-            </crew-team-manager-fleet-edit>
+            <crew-team-manager-rigger-edit edit="[[_edit]]" id="edit" rigger="[[_rigger]]" on-crew-team-manager-rigger-edit-action-back="_handleActionBackOnce"
+                on-crew-team-manager-rigger-edit-action-saved="_handleActionSaved">
+            </crew-team-manager-rigger-edit>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -65,10 +65,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerFleet extends Polymer.Element {
+        class crewTeamManagerRigger extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-fleet'
+                return 'crew-team-manager-rigger'
             }
 
             static get properties() {
@@ -87,7 +87,7 @@
                         value: false,
                     },
 
-                    _boat: {
+                    _rigger: {
                         type: String
                     },
 
@@ -98,7 +98,7 @@
             }
 
             _handleActionDetail(e) {
-                this._boat = e.detail.boat;
+                this._rigger = e.detail.rigger;
                 this._page = 'detail';
             }
 
@@ -112,21 +112,21 @@
 
             _handleActionEdit(e) {
 
-                this._edit = e.detail.boat;
+                this._edit = e.detail.rigger;
                 this._page = 'edit';
 
             }
 
             _handleActionSaved(e) {
                 this._page = 'detail';
-                this._toast = 'Boat Saved';
+                this._toast = 'Rigger Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
                 this._page = 'list';
-                this._toast = 'Boat Deleted';
+                this._toast = 'Rigger Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
@@ -135,6 +135,6 @@
 
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerFleet.is, crewTeamManagerFleet);
+        customElements.define(crewTeamManagerRigger.is, crewTeamManagerRigger);
     </script>
 </dom-module>

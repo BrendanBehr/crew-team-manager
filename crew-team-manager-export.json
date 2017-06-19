@@ -46,7 +46,8 @@
             "name": "Something Clever",
             "rigging": "port or starboard or bucket",
             "size": 8,
-            "type": "Sweep or Scull"
+            "type": "Sweep or Scull",
+            "manufacturer": "vespoli"
         }
     },
     "ergs": {
@@ -79,7 +80,8 @@
             "bladeColor": "blue",
             "bladeShape": "square",
             "handleType": "rubber",
-            "length": "12'4"
+            "length": "12'4",
+            "name": "name goese here"
         }
     },
     "pictures": {
@@ -120,7 +122,8 @@
         "rigger1": {
             "side": "Starboard, port, or both",
             "style": "Scull or Sweep",
-            "type": "Wing or European"
+            "type": "Wing or European",
+            "seat": 3
         }
     },
     "teams": {

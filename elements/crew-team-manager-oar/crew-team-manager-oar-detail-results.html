@@ -7,7 +7,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-schedule-detail-results">
+<dom-module id="crew-team-manager-oar-detail-results">
     <template>
         <style>
              :host {
@@ -27,13 +27,13 @@
                 @apply(--layout-flex);
             }
 
-            #regatta-avatar {
+            #oar-avatar {
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
                 margin: 8px;
             }
 
-            #regatta-name {
+            #oar-name {
                 font-size: 24px;
                 text-align: Center;
                 font-style: bold;
@@ -45,17 +45,17 @@
                 font-weight: bold;
             }
 
-            #regatta-location {
+            #oar-location {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
 
-            #regatta-image {
+            #oar-image {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
 
-            #regatta-cost {
+            #oar-cost {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
@@ -63,30 +63,26 @@
 
         <div id="content">
 
-            <paper-card id="regatta">
-                <crew-team-manager-avatar id="regatta-avatar" value="[[data.name]]" large></crew-team-manager-avatar>
-                <div id="regatta-name">
+            <paper-card id="oar">
+                <crew-team-manager-avatar id="oar-avatar" value="[[data.name]]" large></crew-team-manager-avatar>
+                <div id="oar-name">
                     [[data.name]]
                 </div>
-                <div id="regatta-location">
+                <div id="oar-location">
                     <div id="subhead">
-                        Location:
+                        Details:
                     </div>
-                    <div id="location">
-                        [[data.streetAddress]], [[data.city]], [[data.state]]
+                    <div id="color">
+                        Color: [[data.color]]
                     </div>
-                </div>
-                <div id="regatta-image">
-                    <div id="image">
-                        <irom-image src="[[data.locationImage]]"></irom-image>
+                    <div id="shape">
+                        Shape: [[data.shape]]
                     </div>
-                </div>
-                <div id="regatta-cost">
-                    <div id="subhead">
-                        Financial:
+                    <div id="handle-grip">
+                        Handle Grip: [[data.handleGrip]]
                     </div>
-                    <div id="funds">
-                        Cost: $[[data.cost]]
+                    <div id="length">
+                        Length: [[data.length]]cm
                     </div>
                 </div>
 
@@ -96,10 +92,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerScheduleDetailResults extends Polymer.Element {
+        class crewTeamManagerOarDetailResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-schedule-detail-results'
+                return 'crew-team-manager-oar-detail-results'
             }
 
             static get properties() {
@@ -112,6 +108,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerScheduleDetailResults.is, crewTeamManagerScheduleDetailResults);
+        customElements.define(crewTeamManagerOarDetailResults.is, crewTeamManagerOarDetailResults);
     </script>
 </dom-module>

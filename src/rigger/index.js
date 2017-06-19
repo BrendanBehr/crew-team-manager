@@ -14,6 +14,7 @@ class Rigger extends Entity {
         options.values.side = options.values.side || 'Port';
         options.values.style = options.values.style || 'Sweep';
         options.values.type = options.values.type || 'European';
+        options.values.seat = options.values.seat || faker.random.number() / 1000;
 
         super(options);
 

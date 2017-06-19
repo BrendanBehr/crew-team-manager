@@ -20,9 +20,13 @@
 <link rel="import" href="../crew-team-manager-feedback/crew-team-manager-feedback.html">
 <link rel="import" href="../crew-team-manager-settings/crew-team-manager-settings.html">
 <link rel="import" href="../crew-team-manager-help/crew-team-manager-help.html">
-<link rel="import" href="../crew-team-manager-finances/crew-team-manager-finances.html">
+<link rel="import" href="../crew-team-manager-finance/crew-team-manager-finance.html">
 <link rel="import" href="../crew-team-manager-schedule/crew-team-manager-schedule.html">
 <link rel="import" href="../crew-team-manager-fleet/crew-team-manager-fleet.html">
+<link rel="import" href="../crew-team-manager-erg/crew-team-manager-erg.html">
+<link rel="import" href="../crew-team-manager-oar/crew-team-manager-oar.html">
+<link rel="import" href="../crew-team-manager-race/crew-team-manager-race.html">
+<link rel="import" href="../crew-team-manager-rigger/crew-team-manager-rigger.html">
 
 <dom-module id="crew-team-manager-stage">
     <template>
@@ -55,6 +59,26 @@
                 @apply(--layout-flex);
             }
 
+            #erg {
+                @apply(--layout-flex);
+            }
+
+            #finance {
+                @apply(--layout-flex);
+            }
+
+            #oar {
+                @apply(--layout-flex);
+            }
+
+            #race {
+                @apply(--layout-flex);
+            }
+
+            #rigger {
+                @apply(--layout-flex);
+            }
+
 
             button {
                 font-size: 18px;
@@ -71,18 +95,25 @@
 
         <app-drawer-layout id="layout">
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-
                 <crew-team-manager-roster id="roster" on-crew-team-manager-roster-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-roster>
-
-                <crew-team-manager-fleet id="fleet" on-crew-team-manager-fleet-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-fleet>
-
-                <crew-team-manager-schedule id="schedule" on-crew-team-manager-schedule-action-menu="_toggleDrawer" menu-hidden$="[[_wideLayout]]"></crew-team-manager-schedule>
+                <crew-team-manager-fleet id="fleet" on-crew-team-manager-fleet-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-fleet>
+                <crew-team-manager-schedule id="schedule" on-crew-team-manager-schedule-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-schedule>
+                <crew-team-manager-erg id="erg" on-crew-team-manager-erg-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-erg>
+                <crew-team-manager-finance id="finance" on-crew-team-manager-finance-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-finance>
+                <crew-team-manager-oar id="oar" on-crew-team-manager-oar-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-oar>
+                <crew-team-manager-race id="race" on-crew-team-manager-race-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-race>
+                <crew-team-manager-rigger id="rigger" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-rigger>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
                 <button page="roster" on-click="_handleMenuClick">roster</button>
                 <button page="fleet" on-click="_handleMenuClick">fleet</button>
                 <button page="schedule" on-click="_handleMenuClick">schedule</button>
+                <button page="erg" on-click="_handleMenuClick">erg</button>
+                <button page="finance" on-click="_handleMenuClick">finance</button>
+                <button page="oar" on-click="_handleMenuClick">oar</button>
+                <button page="race" on-click="_handleMenuClick">race</button>
+                <button page="rigger" on-click="_handleMenuClick">rigger</button>
             </app-drawer>
             <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>
     </template>

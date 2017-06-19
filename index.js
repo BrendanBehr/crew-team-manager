@@ -18,7 +18,15 @@ const team1Athlete3 = team1.createAthlete();
 const team1Athlete4 = team2.createAthlete();
 const team2Athlete5 = team3.createAthlete();
 const team1Athlete6 = team2.createAthlete();
+
+//Cretes a shit ton of everything
 team1.createAthletes(100);
+team1.createBoats(100);
+team1.createErgs(100);
+team1.createFinances(100);
+team1.createOars(100);
+team1.createRaces(100);
+team1.createErgs(500);
 
 //Creates user objects for the respective athlete objects
 const team1User1 = team1Athlete1.createUser();
@@ -53,6 +61,7 @@ team1Athlete3Credential3.setPassword('BrendanRocks');
 const team1Boat1 = team1.createBoat();
 const team1Oar1 = team1.createOar();
 const team1Rigger1 = team1Boat1.createRigger();
+team1Boat1.createRiggers(100);
 
 //This adds athletes and oars to boats
 team1Boat1.addAthlete(team1Athlete1);

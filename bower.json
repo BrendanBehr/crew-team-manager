@@ -26,6 +26,7 @@
     "paper-dropdown-menu": "^2.0.0",
     "paper-item": "^2.0.0",
     "paper-listbox": "^2.0.0",
-    "paper-toggle-button": "^2.0.0"
+    "paper-toggle-button": "^2.0.0",
+    "iron-image": "^2.1.1"
   }
 }

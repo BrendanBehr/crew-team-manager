@@ -14,7 +14,8 @@ class Oar extends Entity {
         options.values.color = options.values.color || faker.commerce.color();
         options.values.shape = options.values.shape || 'square';
         options.values.length = options.values.length || faker.random.number() / 100;
-        options.values.hadleGrip = options.values.hadleGrip || 'rubber';
+        options.values.handleGrip = options.values.handleGrip || 'rubber';
+        options.values.name = options.values.name || faker.name.lastName();
 
         super(options);
 

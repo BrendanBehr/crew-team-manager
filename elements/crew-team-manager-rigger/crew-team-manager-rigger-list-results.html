@@ -1,0 +1,104 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
+
+<dom-module id="crew-team-manager-rigger-list-results">
+    <template>
+        <style>
+             :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+            }
+
+            #list {
+                background-color: lightslategray;
+                /*@apply(--layout-vertical);*/
+                @apply(--layout-flex);
+                /*top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;*/
+            }
+
+            .rigger {
+                background-color: white;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
+            .rigger-avatar {
+                margin: 8px;
+            }
+
+            .rigger-info {
+                font-size: 18px;
+                @apply(--layout-flex);
+                padding: 8px;
+            }
+
+            .rigger-info-name {
+                @apply(--paper-font-title);
+            }
+
+            .rigger-info-helpers {
+                @apply(--paper-font-caption);
+            }
+        </style>
+
+        <iron-list id="list" items="[[data]]" as="item">
+            <template>
+                <div class="rigger" on-click="_handleItemClick">
+
+                    <crew-team-manager-avatar class="rigger-avatar" value="Boat Name"></crew-team-manager-avatar>
+                    <div class="rigger-info">
+                        <div class="rigger-info-name">
+                            Boat Name
+                        </div>
+                        <div class="rigger-info-helpers">
+                            [[item.type]] [[item.seat]]
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </iron-list>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerRiggerListResults extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-rigger-list-results'
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                    },
+
+                    _name: {
+                        type: String
+                    }
+                }
+            }
+
+            _handleItemClick(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerListResults.is + '-action-detail', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        rigger: e.model.item.$key
+                    }
+                }));
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerRiggerListResults.is, crewTeamManagerRiggerListResults);
+    </script>
+</dom-module>

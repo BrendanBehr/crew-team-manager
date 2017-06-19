@@ -14,7 +14,7 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<dom-module id="crew-team-manager-schedule-edit">
+<dom-module id="crew-team-manager-oar-edit">
     <template>
         <style>
              :host {
@@ -72,11 +72,10 @@
             <div id="editor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
                     <paper-input id="name" label="name" value="{{edit.name}}"></paper-input>
-                    <paper-input id="street-address" label="street address" value="{{edit.streetAddress}}"></paper-input>
-                    <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
-                    <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
-                    <paper-input id="location-image" label="location image" value="{{edit.locationImage}}"></paper-input>
-                    <paper-input id="cost" label="cost" value="{{edit.cost}}"></paper-input>
+                    <paper-input id="color" label="color" value="{{edit.color}}"></paper-input>
+                    <paper-input id="shape" label="shape" value="{{edit.shape}}"></paper-input>
+                    <paper-input id="handle-grip" label="handle grip" value="{{edit.handleGrip}}"></paper-input>
+                    <paper-input id="length" label="length" value="{{edit.length}}"></paper-input>
                 </form>
             </div>
 
@@ -86,10 +85,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerScheduleEdit extends Polymer.Element {
+        class crewTeamManagerOarEdit extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-schedule-edit'
+                return 'crew-team-manager-oar-edit'
             }
 
             static get properties() {
@@ -98,7 +97,7 @@
                         type: Object
                     },
 
-                    regatta: {
+                    oar: {
                         type: String
                     },
 
@@ -110,7 +109,7 @@
             }
 
             _handleActionBack(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-back', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerOarEdit.is + '-action-back', {
                     bubbles: true,
                     composed: true
                 }));
@@ -118,9 +117,9 @@
 
             _handleActionSave(e) {
                 this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
-                this.$.firebase.saveValue('regattas', this.regatta)
+                this.$.firebase.saveValue('oars', this.oar)
                     .then(() => {
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-saved', {
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerOarEdit.is + '-action-saved', {
                             bubbles: true,
                             composed: true
                         }));
@@ -144,6 +143,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerScheduleEdit.is, crewTeamManagerScheduleEdit);
+        customElements.define(crewTeamManagerOarEdit.is, crewTeamManagerOarEdit);
     </script>
 </dom-module>

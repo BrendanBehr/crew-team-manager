@@ -10,12 +10,12 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-fleet-list.html">
-<link rel="import" href="crew-team-manager-fleet-detail.html">
-<link rel="import" href="crew-team-manager-fleet-edit.html">
+<link rel="import" href="crew-team-manager-oar-list.html">
+<link rel="import" href="crew-team-manager-oar-detail.html">
+<link rel="import" href="crew-team-manager-oar-edit.html">
 
 
-<dom-module id="crew-team-manager-fleet">
+<dom-module id="crew-team-manager-oar">
     <template>
         <style>
              :host {
@@ -47,16 +47,16 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-fleet-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-fleet-list-results-action-detail="_handleActionDetail">
-            </crew-team-manager-fleet-list>
+            <crew-team-manager-oar-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-oar-list-results-action-detail="_handleActionDetail">
+            </crew-team-manager-oar-list>
 
-            <crew-team-manager-fleet-detail id="detail" boat="[[_boat]]" on-crew-team-manager-fleet-detail-action-back="_handleActionBack"
-                on-crew-team-manager-fleet-detail-action-edit="_handleActionEdit" on-crew-team-manager-fleet-detail-action-delete="_handleActionDelete">
-            </crew-team-manager-fleet-detail>
+            <crew-team-manager-oar-detail id="detail" oar="[[_oar]]" on-crew-team-manager-oar-detail-action-back="_handleActionBack"
+                on-crew-team-manager-oar-detail-action-edit="_handleActionEdit" on-crew-team-manager-oar-detail-action-delete="_handleActionDelete">
+            </crew-team-manager-oar-detail>
 
-            <crew-team-manager-fleet-edit edit="[[_edit]]" id="edit" boat="[[_boat]]" on-crew-team-manager-fleet-edit-action-back="_handleActionBackOnce"
-                on-crew-team-manager-fleet-edit-action-saved="_handleActionSaved">
-            </crew-team-manager-fleet-edit>
+            <crew-team-manager-oar-edit edit="[[_edit]]" id="edit" oar="[[_oar]]" on-crew-team-manager-oar-edit-action-back="_handleActionBackOnce"
+                on-crew-team-manager-oar-edit-action-saved="_handleActionSaved">
+            </crew-team-manager-oar-edit>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -65,10 +65,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerFleet extends Polymer.Element {
+        class crewTeamManagerOar extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-fleet'
+                return 'crew-team-manager-oar'
             }
 
             static get properties() {
@@ -87,7 +87,7 @@
                         value: false,
                     },
 
-                    _boat: {
+                    _oar: {
                         type: String
                     },
 
@@ -98,7 +98,7 @@
             }
 
             _handleActionDetail(e) {
-                this._boat = e.detail.boat;
+                this._oar = e.detail.oar;
                 this._page = 'detail';
             }
 
@@ -112,21 +112,21 @@
 
             _handleActionEdit(e) {
 
-                this._edit = e.detail.boat;
+                this._edit = e.detail.oar;
                 this._page = 'edit';
 
             }
 
             _handleActionSaved(e) {
                 this._page = 'detail';
-                this._toast = 'Boat Saved';
+                this._toast = 'Oar Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
                 this._page = 'list';
-                this._toast = 'Boat Deleted';
+                this._toast = 'Oar Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
@@ -135,6 +135,6 @@
 
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerFleet.is, crewTeamManagerFleet);
+        customElements.define(crewTeamManagerOar.is, crewTeamManagerOar);
     </script>
 </dom-module>

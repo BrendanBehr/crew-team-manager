@@ -1,0 +1,104 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
+
+<dom-module id="crew-team-manager-erg-list-results">
+    <template>
+        <style>
+             :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+            }
+
+            #list {
+                background-color: lightslategray;
+                /*@apply(--layout-vertical);*/
+                @apply(--layout-flex);
+                /*top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;*/
+            }
+
+            .erg {
+                background-color: white;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
+            .erg-avatar {
+                margin: 8px;
+            }
+
+            .erg-info {
+                font-size: 18px;
+                @apply(--layout-flex);
+                padding: 8px;
+            }
+
+            .erg-info-name {
+                @apply(--paper-font-title);
+            }
+
+            .erg-info-location {
+                @apply(--paper-font-caption);
+            }
+        </style>
+
+        <iron-list id="list" items="[[data]]" as="item">
+            <template>
+                <div class="erg" on-click="_handleItemClick">
+
+                    <crew-team-manager-avatar class="erg-avatar"></crew-team-manager-avatar>
+                    <div class="erg-info">
+                        <div class="erg-info-number">
+                            [[item.number]]
+                        </div>
+                        <div class="erg-info-location">
+                            [[item.home]]
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </iron-list>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerErgListResults extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-erg-list-results'
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                    },
+
+                    _name: {
+                        type: String
+                    }
+                }
+            }
+
+            _handleItemClick(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerErgListResults.is + '-action-detail', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        erg: e.model.item.$key
+                    }
+                }));
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerErgListResults.is, crewTeamManagerErgListResults);
+    </script>
+</dom-module>

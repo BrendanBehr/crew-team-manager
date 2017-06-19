@@ -7,7 +7,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-schedule-detail-results">
+<dom-module id="crew-team-manager-finance-detail-results">
     <template>
         <style>
              :host {
@@ -27,13 +27,13 @@
                 @apply(--layout-flex);
             }
 
-            #regatta-avatar {
+            #finance-avatar {
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
                 margin: 8px;
             }
 
-            #regatta-name {
+            #finance-reason {
                 font-size: 24px;
                 text-align: Center;
                 font-style: bold;
@@ -45,17 +45,7 @@
                 font-weight: bold;
             }
 
-            #regatta-location {
-                border-bottom: solid 1px grey;
-                padding: 16px;
-            }
-
-            #regatta-image {
-                border-bottom: solid 1px grey;
-                padding: 16px;
-            }
-
-            #regatta-cost {
+            #finance-gross {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
@@ -63,30 +53,23 @@
 
         <div id="content">
 
-            <paper-card id="regatta">
-                <crew-team-manager-avatar id="regatta-avatar" value="[[data.name]]" large></crew-team-manager-avatar>
-                <div id="regatta-name">
-                    [[data.name]]
+            <paper-card id="finance">
+                <crew-team-manager-avatar id="finance-avatar" value="[[data.reason]]" large></crew-team-manager-avatar>
+                <div id="finance-reason">
+                    [[data.reason]]
                 </div>
-                <div id="regatta-location">
+                <div id="finance-gross">
                     <div id="subhead">
-                        Location:
+                        Summary:
                     </div>
-                    <div id="location">
-                        [[data.streetAddress]], [[data.city]], [[data.state]]
+                    <div id="incomes">
+                        Incomes: $[[data.incomes]]
                     </div>
-                </div>
-                <div id="regatta-image">
-                    <div id="image">
-                        <irom-image src="[[data.locationImage]]"></irom-image>
+                    <div id="expenses">
+                        Expenses: $[[data.expenses]]
                     </div>
-                </div>
-                <div id="regatta-cost">
-                    <div id="subhead">
-                        Financial:
-                    </div>
-                    <div id="funds">
-                        Cost: $[[data.cost]]
+                    <div id="gross">
+                        Gross: $[[data.gross]]
                     </div>
                 </div>
 
@@ -96,10 +79,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerScheduleDetailResults extends Polymer.Element {
+        class crewTeamManagerFinanceDetailResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-schedule-detail-results'
+                return 'crew-team-manager-finance-detail-results'
             }
 
             static get properties() {
@@ -112,6 +95,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerScheduleDetailResults.is, crewTeamManagerScheduleDetailResults);
+        customElements.define(crewTeamManagerFinanceDetailResults.is, crewTeamManagerFinanceDetailResults);
     </script>
 </dom-module>

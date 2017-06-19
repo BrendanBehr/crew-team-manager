@@ -1,13 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-schedule-detail-results">
+<dom-module id="crew-team-manager-fleet-detail-results">
     <template>
         <style>
              :host {
@@ -27,13 +26,13 @@
                 @apply(--layout-flex);
             }
 
-            #regatta-avatar {
+            #boat-avatar {
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
                 margin: 8px;
             }
 
-            #regatta-name {
+            #boat-name {
                 font-size: 24px;
                 text-align: Center;
                 font-style: bold;
@@ -45,17 +44,12 @@
                 font-weight: bold;
             }
 
-            #regatta-location {
+            #boat-info {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
 
-            #regatta-image {
-                border-bottom: solid 1px grey;
-                padding: 16px;
-            }
-
-            #regatta-cost {
+            #boat-athletes {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
@@ -63,43 +57,46 @@
 
         <div id="content">
 
-            <paper-card id="regatta">
-                <crew-team-manager-avatar id="regatta-avatar" value="[[data.name]]" large></crew-team-manager-avatar>
-                <div id="regatta-name">
+            <paper-card id="boat">
+                <crew-team-manager-avatar id="boat-avatar" value="[[data.name]]" large></crew-team-manager-avatar>
+                <div id="boat-name">
                     [[data.name]]
                 </div>
-                <div id="regatta-location">
+                <div id="boat-info">
                     <div id="subhead">
-                        Location:
+                        Basic inforomation:
                     </div>
-                    <div id="location">
-                        [[data.streetAddress]], [[data.city]], [[data.state]]
+                    <div id="size">
+                        Size: [[data.size]]
+                    </div>
+                    <div id="rigging">
+                        Rigging: [[data.rigging]]
+                    </div>
+                    <div id="type">
+                        Type: [[data.type]]
+                    </div>
+                    <div id="manufacturer">
+                        Manufacturer: [[data.manufacturer]]
                     </div>
                 </div>
-                <div id="regatta-image">
-                    <div id="image">
-                        <irom-image src="[[data.locationImage]]"></irom-image>
-                    </div>
-                </div>
-                <div id="regatta-cost">
+                <div id="boat-athletes">
                     <div id="subhead">
-                        Financial:
+                        Athletes:
                     </div>
-                    <div id="funds">
-                        Cost: $[[data.cost]]
-                    </div>
-                </div>
 
+                    <div id="athletes">
+                    </div>
+                </div>
             </paper-card>
         </div>
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerScheduleDetailResults extends Polymer.Element {
+        class crewTeamManagerFleetDetailResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-schedule-detail-results'
+                return 'crew-team-manager-fleet-detail-results'
             }
 
             static get properties() {
@@ -112,6 +109,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerScheduleDetailResults.is, crewTeamManagerScheduleDetailResults);
+        customElements.define(crewTeamManagerFleetDetailResults.is, crewTeamManagerFleetDetailResults);
     </script>
 </dom-module>

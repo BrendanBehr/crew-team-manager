@@ -1,0 +1,104 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
+
+<dom-module id="crew-team-manager-finance-list-results">
+    <template>
+        <style>
+             :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+            }
+
+            #list {
+                background-color: lightslategray;
+                /*@apply(--layout-vertical);*/
+                @apply(--layout-flex);
+                /*top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;*/
+            }
+
+            .finance {
+                background-color: white;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
+            .finance-avatar {
+                margin: 8px;
+            }
+
+            .finance-info {
+                font-size: 18px;
+                @apply(--layout-flex);
+                padding: 8px;
+            }
+
+            .finance-info-name {
+                @apply(--paper-font-title);
+            }
+
+            .finance-info-location {
+                @apply(--paper-font-caption);
+            }
+        </style>
+
+        <iron-list id="list" items="[[data]]" as="item">
+            <template>
+                <div class="finance" on-click="_handleItemClick">
+
+                    <crew-team-manager-avatar class="finance-avatar" value="[[item.reason]]"></crew-team-manager-avatar>
+                    <div class="finance-info">
+                        <div class="finance-info-name">
+                            [[item.reason]]
+                        </div>
+                        <div class="finance-info-gross">
+                            [[item.gross]]
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </iron-list>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerFinanceListResults extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-finance-list-results'
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                    },
+
+                    _name: {
+                        type: String
+                    }
+                }
+            }
+
+            _handleItemClick(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFinanceListResults.is + '-action-detail', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        finance: e.model.item.$key
+                    }
+                }));
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerFinanceListResults.is, crewTeamManagerFinanceListResults);
+    </script>
+</dom-module>

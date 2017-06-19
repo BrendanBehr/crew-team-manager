@@ -16,6 +16,7 @@ class Boat extends Entity {
         options.values.rigging = options.values.rigging || 'port';
         options.values.size = options.values.size || 8;
         options.values.type = options.values.type || 'sweep';
+        options.values.manufacturer = options.values.manufacturer || 'vespoli';
 
 
         super(options);
