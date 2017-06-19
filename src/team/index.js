@@ -21,6 +21,11 @@ class Team extends Entity {
 
         options.values = options.values || {};
         options.values.teamName = options.values.teamName || faker.name.firstName();
+        options.values.streetAddress = options.values.streetAddress || faker.address.streetAddress();
+        options.values.city = options.values.city || faker.address.city();
+        options.values.state = options.values.state || faker.address.state();
+        options.values.color = options.values.color || faker.commerce.color();
+        options.values.logo = options.values.logo || faker.image.image();
 
         super(options);
 
@@ -340,7 +345,7 @@ class Team extends Entity {
 
         const pictures = [];
         while (quantity > 0) {
-            pictures.push(this.createUser());
+            pictures.push(this.createPicture());
             quantity--;
         }
 
@@ -351,7 +356,7 @@ class Team extends Entity {
     getPictures() {
 
         const team = this;
-        return this.getGenerator().getUser().filter((picture) => {
+        return this.getGenerator().getPicture().filter((picture) => {
             return picture.getTeam() == team;
         });
 
@@ -360,7 +365,6 @@ class Team extends Entity {
     getPicture() {
         return this._picture;
     }
-
 }
 
 module.exports = Team;

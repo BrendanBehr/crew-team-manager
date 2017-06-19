@@ -62,6 +62,9 @@
                     <div id="subhead">
                         Summary:
                     </div>
+                    <div id="team">
+                        Team: [[team.teamName]]
+                    </div>
                     <div id="incomes">
                         Incomes: $[[data.incomes]]
                     </div>
@@ -89,6 +92,10 @@
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    team: {
+                        type: Object
                     }
                 }
             }

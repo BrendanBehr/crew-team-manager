@@ -1,0 +1,140 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+
+<link rel="import" href="crew-team-manager-picture-list.html">
+<link rel="import" href="crew-team-manager-picture-detail.html">
+<link rel="import" href="crew-team-manager-picture-edit.html">
+
+
+<dom-module id="crew-team-manager-picture">
+    <template>
+        <style>
+             :host {
+                background-color: lightslategray;
+                @apply(--layout-horizontal);
+            }
+
+            #pages {
+                @apply(--layout-flex);
+                position: relative;
+            }
+
+            #list {
+                @apply(--layout-fit);
+            }
+
+            #detail {
+                @apply(--layout-fit);
+            }
+
+            #edit {
+                @apply(--layout-fit);
+            }
+
+            #toolbar {
+                background-color: #164410;
+                color: #fff;
+            }
+        </style>
+
+        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+            <crew-team-manager-picture-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-picture-list-results-action-detail="_handleActionDetail">
+            </crew-team-manager-picture-list>
+
+            <crew-team-manager-picture-detail id="detail" picture="[[_picture]]" on-crew-team-manager-picture-detail-action-back="_handleActionBack"
+                on-crew-team-manager-picture-detail-action-edit="_handleActionEdit" on-crew-team-manager-picture-detail-action-delete="_handleActionDelete">
+            </crew-team-manager-picture-detail>
+
+            <crew-team-manager-picture-edit edit="[[_edit]]" id="edit" picture="[[_picture]]" on-crew-team-manager-picture-edit-action-back="_handleActionBackOnce"
+                on-crew-team-manager-picture-edit-action-saved="_handleActionSaved">
+            </crew-team-manager-picture-edit>
+        </iron-pages>
+
+        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
+
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerPicture extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-picture'
+            }
+
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'list'
+                    },
+
+                    _edit: {
+                        type: Object
+                    },
+
+                    wideLayout: {
+                        type: Boolean,
+                        value: false,
+                    },
+
+                    _picture: {
+                        type: String
+                    },
+
+                    _toast: {
+                        type: String
+                    }
+                }
+            }
+
+            _handleActionDetail(e) {
+                this._picture = e.detail.picture;
+                this._page = 'detail';
+            }
+
+            _handleActionBack(e) {
+                this._page = 'list';
+            }
+
+            _handleActionBackOnce(e) {
+                this._page = 'detail';
+            }
+
+            _handleActionEdit(e) {
+
+                this._edit = e.detail.picture;
+                this._page = 'edit';
+
+            }
+
+            _handleActionSaved(e) {
+                this._page = 'detail';
+                this._toast = 'Picture Saved';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionDelete(e) {
+                this._page = 'list';
+                this._toast = 'Picture Deleted';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+        }
+
+
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerPicture.is, crewTeamManagerPicture);
+    </script>
+</dom-module>

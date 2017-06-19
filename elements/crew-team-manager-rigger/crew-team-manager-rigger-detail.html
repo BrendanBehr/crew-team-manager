@@ -62,6 +62,11 @@
         <firebase-document id="firebase" app-name="crew-team-manager" path="/riggers/{{rigger}}" data="{{_data}}">
         </firebase-document>
 
+        <firebase-document id="firebase" app-name="crew-team-manager" path="/boats/{{_data.boat}}" data="{{_boat}}">
+        </firebase-document>
+        <firebase-document id="firebase" app-name="crew-team-manager" path="/teams/{{_boat.team}}" data="{{_team}}">
+        </firebase-document>
+
         <app-header-layout id="layout">
 
             <app-header reveals>
@@ -74,7 +79,7 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
                 <crew-team-manager-rigger-detail-loading id="loading"></crew-team-manager-rigger-detail-loading>
-                <crew-team-manager-rigger-detail-results id="results" data="{{_data}}"></crew-team-manager-rigger-detail-results>
+                <crew-team-manager-rigger-detail-results id="results" data="{{_data}}" boat="{{_boat}}" team="{{_team}}"></crew-team-manager-rigger-detail-results>
                 <crew-team-manager-rigger-detail-message id="message"></crew-team-manager-rigger-detail-message>
             </iron-pages>
 
@@ -107,6 +112,16 @@
                     },
 
                     _data: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    _boat: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    _team: {
                         type: Object,
                         value: {}
                     },

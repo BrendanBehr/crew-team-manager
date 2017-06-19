@@ -14,12 +14,12 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-rigger-list-loading.html">
-<link rel="import" href="crew-team-manager-rigger-list-results.html">
-<link rel="import" href="crew-team-manager-rigger-list-message.html">
+<link rel="import" href="crew-team-manager-picture-list-loading.html">
+<link rel="import" href="crew-team-manager-picture-list-results.html">
+<link rel="import" href="crew-team-manager-picture-list-message.html">
 
 
-<dom-module id="crew-team-manager-rigger-list">
+<dom-module id="crew-team-manager-picture-list">
     <template>
         <style>
              :host {
@@ -60,22 +60,21 @@
             }
         </style>
 
-        <firebase-query app-name="crew-team-manager" id="query" path="/riggers" data="{{_data}}">
+        <firebase-query app-name="crew-team-manager" id="query" path="/pictures" data="{{_data}}">
         </firebase-query>
-
 
         <app-header-layout id="layout" has-scrolling-region fullbleed>
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
                     <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
-                    <div main-title id="title">Riggers</div>
+                    <div main-title id="title">Pictures</div>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-rigger-list-loading id="loading"></crew-team-manager-rigger-list-loading>
-                <crew-team-manager-rigger-list-results id="results" data="[[_data]]" boat="{{_boat}}"></crew-team-manager-rigger-list-results>
-                <crew-team-manager-rigger-list-message id="message"></crew-team-manager-rigger-list-message>
+                <crew-team-manager-picture-list-loading id="loading"></crew-team-manager-picture-list-loading>
+                <crew-team-manager-picture-list-results id="results" data="[[_data]]"></crew-team-manager-picture-list-results>
+                <crew-team-manager-picture-list-message id="message"></crew-team-manager-picture-list-message>
             </iron-pages>
 
 
@@ -86,10 +85,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRiggerList extends Polymer.Element {
+        class crewTeamManagerPictureList extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-rigger-list'
+                return 'crew-team-manager-picture-list'
             }
 
             static get observers() {
@@ -114,7 +113,7 @@
             }
 
             _handleActionMenu() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerList.is + '-action-menu', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerPictureList.is + '-action-menu', {
                     bubbles: true,
                     composed: true
                 }));
@@ -131,11 +130,12 @@
                 }
 
                 this._page = page;
+
             }
 
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRiggerList.is, crewTeamManagerRiggerList);
+        customElements.define(crewTeamManagerPictureList.is, crewTeamManagerPictureList);
     </script>
 </dom-module>

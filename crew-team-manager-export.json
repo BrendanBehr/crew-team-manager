@@ -88,7 +88,8 @@
         "picture1": {
             "team": "team1",
             "regatta": "regatta1",
-            "url": "fatergos.com"
+            "url": "fatergos.com",
+            "caption": "McDanks"
         }
     },
     "races": {
@@ -128,7 +129,12 @@
     },
     "teams": {
         "team1": {
-            "name": "TeamName"
+            "name": "TeamName",
+            "streetAddress": "2000 Pennington Road",
+            "city": "Trenton",
+            "state": "NJ",
+            "color": "rainbow",
+            "logo": "logo"
         }
     },
     "users": {

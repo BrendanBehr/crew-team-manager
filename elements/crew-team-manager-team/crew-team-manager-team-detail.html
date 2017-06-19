@@ -14,12 +14,12 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-roster-detail-loading.html">
-<link rel="import" href="crew-team-manager-roster-detail-results.html">
-<link rel="import" href="crew-team-manager-roster-detail-message.html">
+<link rel="import" href="crew-team-manager-team-detail-loading.html">
+<link rel="import" href="crew-team-manager-team-detail-results.html">
+<link rel="import" href="crew-team-manager-team-detail-message.html">
 
 
-<dom-module id="crew-team-manager-roster-detail">
+<dom-module id="crew-team-manager-team-detail">
     <template>
         <style>
              :host {
@@ -59,11 +59,8 @@
             }
         </style>
 
-        <firebase-document id="firebase" app-name="crew-team-manager" path="/athletes/{{athlete}}" data="{{_data}}">
+        <firebase-document id="firebase" app-name="crew-team-manager" path="/teams/{{team}}" data="{{_data}}">
         </firebase-document>
-        <firebase-document id="firebase" app-name="crew-team-manager" path="/teams/{{_data.team}}" data="{{_team}}">
-        </firebase-document>
-
 
         <app-header-layout id="layout">
 
@@ -76,9 +73,9 @@
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-roster-detail-loading id="loading"></crew-team-manager-roster-detail-loading>
-                <crew-team-manager-roster-detail-results id="results" data="{{_data}}" team="{{_team}}"></crew-team-manager-roster-detail-results>
-                <crew-team-manager-roster-detail-message id="message"></crew-team-manager-roster-detail-message>
+                <crew-team-manager-team-detail-loading id="loading"></crew-team-manager-team-detail-loading>
+                <crew-team-manager-team-detail-results id="results" data="{{_data}}"></crew-team-manager-team-detail-results>
+                <crew-team-manager-team-detail-message id="message"></crew-team-manager-team-detail-message>
             </iron-pages>
 
 
@@ -89,15 +86,15 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRosterDetail extends Polymer.Element {
+        class crewTeamManagerTeamDetail extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-roster-detail'
+                return 'crew-team-manager-team-detail'
             }
 
             static get observers() {
                 return [
-                    '_updatePage(athlete)'
+                    '_updatePage(team)'
                 ]
 
             }
@@ -114,12 +111,7 @@
                         value: {}
                     },
 
-                    _team: {
-                        type: Object,
-                        value: {}
-                    },
-
-                    athlete: {
+                    team: {
                         type: String,
                         value: ''
                     },
@@ -127,10 +119,10 @@
                 }
             }
 
-            _updatePage(athlete) {
+            _updatePage(team) {
                 let page = 'message';
 
-                if (athlete) {
+                if (team) {
                     page = 'results';
 
                 }
@@ -141,18 +133,18 @@
 
 
             _handleActionBack(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-back', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerTeamDetail.is + '-action-back', {
                     bubbles: true,
                     composed: true
                 }));
             }
 
             _handleActionEdit(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-edit', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerTeamDetail.is + '-action-edit', {
                     bubbles: true,
                     composed: true,
                     detail: {
-                        athlete: JSON.parse(JSON.stringify(this._data))
+                        team: JSON.parse(JSON.stringify(this._data))
                     }
                 }));
 
@@ -160,7 +152,7 @@
 
             _handleActionDelete(e) {
                 this.$.firebase.destroy();
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-delete', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerTeamDetail.is + '-action-delete', {
                     bubbles: true,
                     composed: true
                 }));
@@ -168,6 +160,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRosterDetail.is, crewTeamManagerRosterDetail);
+        customElements.define(crewTeamManagerTeamDetail.is, crewTeamManagerTeamDetail);
     </script>
 </dom-module>

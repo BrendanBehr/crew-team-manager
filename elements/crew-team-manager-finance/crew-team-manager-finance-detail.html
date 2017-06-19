@@ -62,6 +62,9 @@
         <firebase-document id="firebase" app-name="crew-team-manager" path="/finances/{{finance}}" data="{{_data}}">
         </firebase-document>
 
+        <firebase-document id="firebase" app-name="crew-team-manager" path="/teams/{{_data.team}}" data="{{_team}}">
+        </firebase-document>
+
         <app-header-layout id="layout">
 
             <app-header reveals>
@@ -74,7 +77,7 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
                 <crew-team-manager-finance-detail-loading id="loading"></crew-team-manager-finance-detail-loading>
-                <crew-team-manager-finance-detail-results id="results" data="{{_data}}"></crew-team-manager-finance-detail-results>
+                <crew-team-manager-finance-detail-results id="results" data="{{_data}}" team="{{_team}}"></crew-team-manager-finance-detail-results>
                 <crew-team-manager-finance-detail-message id="message"></crew-team-manager-finance-detail-message>
             </iron-pages>
 
@@ -107,6 +110,11 @@
                     },
 
                     _data: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    _team: {
                         type: Object,
                         value: {}
                     },

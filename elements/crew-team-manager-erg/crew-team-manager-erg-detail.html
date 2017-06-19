@@ -61,25 +61,27 @@
 
         <firebase-document id="firebase" app-name="crew-team-manager" path="/ergs/{{erg}}" data="{{_data}}">
         </firebase-document>
+        <<firebase-document id="firebase" app-name="crew-team-manager" path="/teams/{{_data.team}}" data="{{_team}}">
+            </firebase-document>
 
-        <app-header-layout id="layout">
+            <app-header-layout id="layout">
 
-            <app-header reveals>
-                <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
-                    <div main-title id="title">Details</div>
-                    <paper-icon-button id="edit" icon="create" on-click="_handleActionEdit"></paper-icon-button>
-                    <paper-icon-button id="delete" icon="delete" on-click="_handleActionDelete"></paper-icon-button>
-                </app-toolbar>
-            </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-erg-detail-loading id="loading"></crew-team-manager-erg-detail-loading>
-                <crew-team-manager-erg-detail-results id="results" data="{{_data}}"></crew-team-manager-erg-detail-results>
-                <crew-team-manager-erg-detail-message id="message"></crew-team-manager-erg-detail-message>
-            </iron-pages>
+                <app-header reveals>
+                    <app-toolbar id="toolbar">
+                        <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
+                        <div main-title id="title">Details</div>
+                        <paper-icon-button id="edit" icon="create" on-click="_handleActionEdit"></paper-icon-button>
+                        <paper-icon-button id="delete" icon="delete" on-click="_handleActionDelete"></paper-icon-button>
+                    </app-toolbar>
+                </app-header>
+                <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+                    <crew-team-manager-erg-detail-loading id="loading"></crew-team-manager-erg-detail-loading>
+                    <crew-team-manager-erg-detail-results id="results" data="{{_data}}" team="{{_team}}"></crew-team-manager-erg-detail-results>
+                    <crew-team-manager-erg-detail-message id="message"></crew-team-manager-erg-detail-message>
+                </iron-pages>
 
 
-        </app-header-layout>
+            </app-header-layout>
 
 
     </template>
@@ -107,6 +109,11 @@
                     },
 
                     _data: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    _team: {
                         type: Object,
                         value: {}
                     },

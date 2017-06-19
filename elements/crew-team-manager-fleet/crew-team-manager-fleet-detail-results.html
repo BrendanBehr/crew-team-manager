@@ -78,6 +78,9 @@
                     <div id="manufacturer">
                         Manufacturer: [[data.manufacturer]]
                     </div>
+                    <div id="team">
+                        Team: [[team.teamName]]
+                    </div>
                 </div>
                 <div id="boat-athletes">
                     <div id="subhead">
@@ -103,6 +106,10 @@
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    team: {
+                        type: Object
                     }
                 }
             }

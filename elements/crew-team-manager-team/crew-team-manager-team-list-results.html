@@ -6,7 +6,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-rigger-list-results">
+<dom-module id="crew-team-manager-team-list-results">
     <template>
         <style>
              :host {
@@ -24,45 +24,42 @@
                 right: 0px;*/
             }
 
-            .rigger {
+            .team {
                 background-color: white;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
             }
 
-            .rigger-avatar {
+            .team-avatar {
                 margin: 8px;
             }
 
-            .rigger-info {
+            .team-info {
                 font-size: 18px;
                 @apply(--layout-flex);
                 padding: 8px;
             }
 
-            .rigger-info-name {
+            .team-info-name {
                 @apply(--paper-font-title);
             }
 
-            .rigger-info-helpers {
+            .team-info-location {
                 @apply(--paper-font-caption);
             }
         </style>
 
-        <firebase-document id="firebase" app-name="crew-team-manager" path="/boats/{{data.boat}}" data="{{_boat}}">
-        </firebase-document>
-
         <iron-list id="list" items="[[data]]" as="item">
             <template>
-                <div class="rigger" on-click="_handleItemClick">
+                <div class="team" on-click="_handleItemClick">
 
-                    <crew-team-manager-avatar class="rigger-avatar" value="boat.name"></crew-team-manager-avatar>
-                    <div class="rigger-info">
-                        <div class="rigger-info-name">
-                            boat.name
+                    <crew-team-manager-avatar class="team-avatar" value="[[item.teamName]]"></crew-team-manager-avatar>
+                    <div class="team-info">
+                        <div class="team-info-name">
+                            [[item.teamName]]
                         </div>
-                        <div class="rigger-info-helpers">
-                            [[item.side]] [[item.seat]]
+                        <div class="team-info-location">
+                            [[item.streetAddress]] [[item.city]] [[item.state]]
                         </div>
                     </div>
                 </div>
@@ -72,16 +69,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRiggerListResults extends Polymer.Element {
+        class crewTeamManagerTeamListResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-rigger-list-results'
-            }
-
-            static get observers() {
-                return [
-                    '_getData(data, _boat)'
-                ]
+                return 'crew-team-manager-team-list-results'
             }
 
             static get properties() {
@@ -90,29 +81,24 @@
                         type: Object,
                     },
 
-                    _boat: {
-                        type: Object
+                    _name: {
+                        type: String
                     }
                 }
             }
 
-            _getData(data, data2) {
-                console.log(data);
-                console.log(data2);
-            }
-
             _handleItemClick(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerListResults.is + '-action-detail', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerTeamListResults.is + '-action-detail', {
                     bubbles: true,
                     composed: true,
                     detail: {
-                        rigger: e.model.item.$key
+                        team: e.model.item.$key
                     }
                 }));
             }
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRiggerListResults.is, crewTeamManagerRiggerListResults);
+        customElements.define(crewTeamManagerTeamListResults.is, crewTeamManagerTeamListResults);
     </script>
 </dom-module>

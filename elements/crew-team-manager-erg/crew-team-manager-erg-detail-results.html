@@ -72,6 +72,9 @@
                     </div>
                 </div>
                 <div id="erg-details">
+                    <div id="team">
+                        Team: [[team.teamName]]
+                    </div>
                     <div id="subhead">
                         Details:
                     </div>
@@ -102,6 +105,10 @@
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    team: {
+                        type: Object
                     }
                 }
             }

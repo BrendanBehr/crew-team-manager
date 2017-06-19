@@ -7,7 +7,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-rigger-detail-results">
+<dom-module id="crew-team-manager-picture-detail-results">
     <template>
         <style>
              :host {
@@ -27,13 +27,13 @@
                 @apply(--layout-flex);
             }
 
-            #rigger-avatar {
+            #picture-avatar {
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
                 margin: 8px;
             }
 
-            #rigger-name {
+            #picture-caption {
                 font-size: 24px;
                 text-align: Center;
                 font-style: bold;
@@ -41,11 +41,7 @@
                 border-bottom: solid 1px grey;
             }
 
-            #subhead {
-                font-weight: bold;
-            }
-
-            #rigger-details {
+            #picture-image {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
@@ -53,45 +49,30 @@
 
         <div id="content">
 
-            <paper-card id="rigger">
-                <crew-team-manager-avatar id="rigger-avatar" value="{{boat.name}}" large></crew-team-manager-avatar>
-                <div id="rigger-name">
-                    [[boat.name]]
+            <paper-card id="picture">
+                <crew-team-manager-avatar id="picture-avatar" value="[[data.caption]]" large></crew-team-manager-avatar>
+
+                <div id="picture-caption">
+                    [[data.caption]]
                 </div>
-                <div id="rigger-Details">
-                    <div id="subhead">
-                        Details:
+                <div id="picture-image">
+                    <div id="image">
+                        <iron-image src="[[data.url]]"></iron-image>
                     </div>
                     <div id="team">
                         Team: [[team.teamName]]
                     </div>
-                    <div id="boat">
-                        Boat: [[boat.name]]
-                    </div>
-                    <div id="side">
-                        Side: [[data.side ]]
-                    </div>
-                    <div id="style">
-                        Style: [[data.style]]
-                    </div>
-                    <div id="type">
-                        Type: [[data.type]]
-                    </div>
-                    <div id="seat">
-                        Seat: [[data.seat]]
-                    </div>
                 </div>
-
             </paper-card>
         </div>
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRiggerDetailResults extends Polymer.Element {
+        class crewTeamManagerPictureDetailResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-rigger-detail-results'
+                return 'crew-team-manager-picture-detail-results'
             }
 
             static get properties() {
@@ -100,18 +81,14 @@
                         type: Object,
                     },
 
-                    boat: {
-                        type: Object
-                    },
-
                     team: {
-                        type: Object
+                        type: Object,
                     }
                 }
             }
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRiggerDetailResults.is, crewTeamManagerRiggerDetailResults);
+        customElements.define(crewTeamManagerPictureDetailResults.is, crewTeamManagerPictureDetailResults);
     </script>
 </dom-module>

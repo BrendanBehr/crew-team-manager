@@ -16,7 +16,7 @@
 <link rel="import" href="../crew-team-manager-home/crew-team-manager-home.html">
 <link rel="import" href="../crew-team-manager-roster/crew-team-manager-roster.html">
 <link rel="import" href="../crew-team-manager-compare/crew-team-manager-compare.html">
-<link rel="import" href="../crew-team-manager-pictures/crew-team-manager-pictures.html">
+<link rel="import" href="../crew-team-manager-picture/crew-team-manager-picture.html">
 <link rel="import" href="../crew-team-manager-feedback/crew-team-manager-feedback.html">
 <link rel="import" href="../crew-team-manager-settings/crew-team-manager-settings.html">
 <link rel="import" href="../crew-team-manager-help/crew-team-manager-help.html">
@@ -27,6 +27,7 @@
 <link rel="import" href="../crew-team-manager-oar/crew-team-manager-oar.html">
 <link rel="import" href="../crew-team-manager-race/crew-team-manager-race.html">
 <link rel="import" href="../crew-team-manager-rigger/crew-team-manager-rigger.html">
+<link rel="import" href="../crew-team-manager-team/crew-team-manager-team.html">
 
 <dom-module id="crew-team-manager-stage">
     <template>
@@ -79,6 +80,13 @@
                 @apply(--layout-flex);
             }
 
+            #picture {
+                @apply(--layout-flex);
+            }
+
+            #team {
+                @apply(--layout-flex);
+            }
 
             button {
                 font-size: 18px;
@@ -103,6 +111,8 @@
                 <crew-team-manager-oar id="oar" on-crew-team-manager-oar-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-oar>
                 <crew-team-manager-race id="race" on-crew-team-manager-race-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-race>
                 <crew-team-manager-rigger id="rigger" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-rigger>
+                <crew-team-manager-picture id="picture" on-crew-team-manager-picture-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-picture>
+                <crew-team-manager-team id="team" on-crew-team-manager-team-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-team>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
@@ -114,6 +124,8 @@
                 <button page="oar" on-click="_handleMenuClick">oar</button>
                 <button page="race" on-click="_handleMenuClick">race</button>
                 <button page="rigger" on-click="_handleMenuClick">rigger</button>
+                <button page="picture" on-click="_handleMenuClick">picture</button>
+                <button page="team" on-click="_handleMenuClick">team</button>
             </app-drawer>
             <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>
     </template>

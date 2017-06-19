@@ -24,7 +24,7 @@ class Regatta extends Entity {
         options.values.city = options.values.city || faker.address.city();
         options.values.cost = options.values.cost || faker.random.number() / 1000;
         options.values.state = options.values.state || faker.address.state();
-        options.values.locationImage = options.values.locationImage || faker.image.imageUrl();
+        options.values.locationImage = options.values.locationImage || faker.image.image();
         options.values.streetAddress = options.values.streetAddress || faker.address.streetAddress();
 
         super(options);
