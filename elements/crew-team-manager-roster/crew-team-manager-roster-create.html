@@ -1,0 +1,227 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+
+<dom-module id="crew-team-manager-roster-create">
+    <template>
+        <style>
+             :host {
+                background-color: lightslategray;
+                @apply(--layout-horizontal);
+                @apply(--paper-font-common-base);
+            }
+
+            #layout {
+                @apply(--layout-flex);
+            }
+
+            #toolbar {
+                background-color: #43a047;
+                color: #fff;
+            }
+
+            #createor {
+                background-color: white;
+                @apply(--layout-flex);
+            }
+
+            paper-input {
+                padding: 0px 16px
+            }
+
+            paper-dropdown-menu {
+                padding: 0px 16px
+            }
+
+            #toggle-button {
+                --paper-toggle-button-checked-bar-color: var(--paper-green-500);
+                --paper-toggle-button-checked-button-color: var(--paper-green-500);
+                --paper-toggle-button-checked-ink-color: var(--paper-green-500);
+                --paper-toggle-button-unchecked-bar-color: var(--paper-teal-500);
+                --paper-toggle-button-unchecked-button-color: var(--paper-teal-500);
+                --paper-toggle-button-unchecked-ink-color: var(--paper-teal-500);
+            }
+        </style>
+
+
+        <firebase-document id="firebase" app-name="crew-team-manager">
+        </firebase-document>
+
+        <app-header-layout id="layout">
+
+            <app-header reveals>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="cancel" icon="close" on-click="_handleActionCancel"></paper-icon-button>
+                    <div main-title id="title">Create</div>
+                    <paper-icon-button id="create" icon="check" on-click="_handleActionCreated"></paper-icon-button>
+                </app-toolbar>
+            </app-header>
+
+            <div id="createor">
+                <form is="iron-form" id="form" method="post" action="/form/handler">
+                    <paper-input id="first-name" label="first name" value="{{create.firstName}}"></paper-input>
+                    <paper-input id="last-name" label="last name" value="{{create.lastName}}"></paper-input>
+                    <paper-dropdown-menu label="Year" value="{{create.year}}">
+                        <paper-listbox slot="dropdown-content" id="year">
+                            <paper-item>Freshman</paper-item>
+                            <paper-item>Sophomore</paper-item>
+                            <paper-item>Junior</paper-item>
+                            <paper-item>Senior</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-input id="street-address" label="street address" value="{{create.streetAddress}}"></paper-input>
+                    <paper-input id="city" label="city" value="{{create.city}}"></paper-input>
+                    <paper-input id="state" label="state" value="{{create.state}}"></paper-input>
+                    <paper-input id="phone" label="phone number" value="{{create.phone}}"></paper-input>
+                    <paper-toggle-button id="toggle-button" on-click="_toggleDrive">Driver: [[create.driver]]</paper-toggle-button>
+                    <paper-input id="height" label="height" value="{{create.height}}"></paper-input>
+                    <paper-input id="weight" label="weight" value="{{create.weight}}"></paper-input>
+                    <paper-dropdown-menu label="Gender" value="{{create.gender}}">
+                        <paper-listbox slot="dropdown-content" id="gender">
+                            <paper-item>Male</paper-item>
+                            <paper-item>Female</paper-item>
+                            <paper-item>Other</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-input id="erg-score" label="2k time" value="{{create.ergScore}}"></paper-input>
+                    <paper-dropdown-menu label="Side" value="{{create.side}}">
+                        <paper-listbox slot="dropdown-content" id="side">
+                            <paper-item>Port</paper-item>
+                            <paper-item>Starboard</paper-item>
+                            <paper-item>Scull</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-input id="fundraising" label="fundraising" value="{{create.fundRaising}}"></paper-input>
+                </form>
+            </div>
+
+        </app-header-layout>
+
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerRosterCreate extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-roster-create'
+            }
+
+            static get properties() {
+                return {
+                    create: {
+                        type: Object,
+                        value: {
+                            // city: '',
+                            // driver: '',
+                            // ergScore: '',
+                            // firstName: '',
+                            // fundRaising: '',
+                            // gender: '',
+                            // height: '',
+                            // lastName: '',
+                            // phone: '',
+                            // side: '',
+                            // stat: '',
+                            // streetAddress: '',
+                            // weight: '',
+                            // year: ''
+                        }
+                    },
+                    selected: {
+                        type: Boolean,
+                        observer: '_selectedChanged'
+                    },
+                    _drive: {
+                        type: Boolean,
+                        value: false
+                    }
+                }
+            }
+
+            _resetCreate() {
+                this.create = {
+                    city: '',
+                    driver: '',
+                    ergScore: '',
+                    firstName: '',
+                    fundRaising: '',
+                    gender: '',
+                    height: '',
+                    lastName: '',
+                    phone: '',
+                    side: '',
+                    stat: '',
+                    streetAddress: '',
+                    weight: '',
+                    year: ''
+
+                }
+            }
+
+            _handleActionCancel(e) {
+                this._resetCreate();
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterCreate.is + '-action-cancel', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionCreated(e) {
+                // this._resetCreate();
+                this.$.firebase.saveValue('athletes')
+                    .then(() => {
+                        this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
+                        this._resetCreate();
+                        let _key = '';
+                        for (let x = 10; x < this.$.firebase.path.length; x++) {
+                            _key = _key + this.$.firebase.path[x];
+                        }
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterCreate.is +
+                            '-action-created', {
+                                detail: {
+                                    athlete: _key
+                                },
+                                bubbles: true,
+                                composed: true
+                            }));
+                    });
+
+
+            }
+
+            _selectedChanged(newValue) {
+                if (!newValue) {
+                    this.create = {};
+                }
+            }
+
+            _toggleDrive() {
+                if (this._drive) {
+                    this.create.driver = 'no';
+                    this._drive = false;
+                } else {
+                    this.create.driver = 'yes';
+                    this._drive = true;
+
+                }
+            }
+
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerRosterCreate.is, crewTeamManagerRosterCreate);
+    </script>
+</dom-module>

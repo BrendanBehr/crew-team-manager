@@ -14,7 +14,7 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<dom-module id="crew-team-manager-schedule-edit">
+<dom-module id="crew-team-manager-finance-create">
     <template>
         <style>
              :host {
@@ -32,7 +32,7 @@
                 color: #fff;
             }
 
-            #editor {
+            #createor {
                 background-color: white;
                 @apply(--layout-flex);
             }
@@ -63,21 +63,18 @@
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
-                    <div main-title id="title">Edit</div>
-                    <paper-icon-button id="save" icon="check" on-click="_handleActionSave"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" on-click="_handleActionCancel"></paper-icon-button>
+                    <div main-title id="title">Create</div>
+                    <paper-icon-button id="create" icon="check" on-click="_handleActionCreate"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
-            <div id="editor">
+            <div id="createor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="name" label="name" value="{{edit.name}}"></paper-input>
-                    <paper-input id="street-address" label="street address" value="{{edit.streetAddress}}"></paper-input>
-                    <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
-                    <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
-                    <paper-toggle-button id="toggle-button" on-click="_toggleDrive">Head Race: [[_head]]</paper-toggle-button>
-                    <paper-input id="location-image" label="location image" value="{{edit.locationImage}}"></paper-input>
-                    <paper-input id="cost" label="cost" value="{{edit.cost}}"></paper-input>
+                    <paper-input id="reason" label="reason" value="{{create.reason}}"></paper-input>
+                    <paper-input id="incomes" label="incomes" value="{{create.incomes}}"></paper-input>
+                    <paper-input id="expenses" label="expenses" value="{{create.expenses}}"></paper-input>
+                    <paper-input id="gross" label="gross" value="{{create.gross}}"></paper-input>
                 </form>
             </div>
 
@@ -87,44 +84,57 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerScheduleEdit extends Polymer.Element {
+        class crewTeamManagerFinanceCreate extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-schedule-edit'
+                return 'crew-team-manager-finance-create'
             }
 
             static get properties() {
                 return {
-                    edit: {
-                        type: Object
+                    create: {
+                        type: Object,
+                        value: {}
                     },
 
-                    regatta: {
+                    finance: {
                         type: String
                     },
 
-                    _head: {
+                    _drive: {
                         type: Boolean,
                         value: false
                     }
                 }
             }
 
-            _handleActionBack(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-back', {
+            _resetCreate() {}
+
+            _handleActionCancel(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFinanceCreate.is + '-action-cancel', {
                     bubbles: true,
                     composed: true
                 }));
+                _resetCreate();
             }
 
-            _handleActionSave(e) {
-                this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
-                this.$.firebase.saveValue('regattas', this.regatta)
+            _handleActionCreate(e) {
+                this.$.firebase.saveValue('finances')
                     .then(() => {
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-saved', {
-                            bubbles: true,
-                            composed: true
-                        }));
+                        this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
+                        this._resetCreate();
+                        let _key = '';
+                        for (let x = 10; x < this.$.firebase.path.length; x++) {
+                            _key = _key + this.$.firebase.path[x];
+                        }
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerFinanceCreate.is +
+                            '-action-created', {
+                                detail: {
+                                    finance: _key
+                                },
+                                bubbles: true,
+                                composed: true
+                            }));
                     });
 
 
@@ -132,12 +142,12 @@
 
             _toggleDrive() {
                 console.log('here');
-                if (this._head) {
-                    this.edit.head = false;
-                    this._head = 'no';
+                if (this._drive) {
+                    this.create.driver = 'no';
+                    this._drive = false;
                 } else {
-                    this.edit.head = true;
-                    this._head = 'yes';
+                    this.create.driver = 'yes';
+                    this._drive = true;
 
                 }
             }
@@ -145,6 +155,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerScheduleEdit.is, crewTeamManagerScheduleEdit);
+        customElements.define(crewTeamManagerFinanceCreate.is, crewTeamManagerFinanceCreate);
     </script>
 </dom-module>

@@ -13,6 +13,7 @@
 <link rel="import" href="crew-team-manager-rigger-list.html">
 <link rel="import" href="crew-team-manager-rigger-detail.html">
 <link rel="import" href="crew-team-manager-rigger-edit.html">
+<link rel="import" href="crew-team-manager-rigger-create.html">
 
 
 <dom-module id="crew-team-manager-rigger">
@@ -47,7 +48,8 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-rigger-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-rigger-list-results-action-detail="_handleActionDetail">
+            <crew-team-manager-rigger-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-rigger-list-results-action-detail="_handleActionDetail"
+                on-crew-team-manager-rigger-list-action-create="_handleActionCreate">
             </crew-team-manager-rigger-list>
 
             <crew-team-manager-rigger-detail id="detail" rigger="[[_rigger]]" on-crew-team-manager-rigger-detail-action-back="_handleActionBack"
@@ -57,6 +59,10 @@
             <crew-team-manager-rigger-edit edit="[[_edit]]" id="edit" rigger="[[_rigger]]" on-crew-team-manager-rigger-edit-action-back="_handleActionBackOnce"
                 on-crew-team-manager-rigger-edit-action-saved="_handleActionSaved">
             </crew-team-manager-rigger-edit>
+
+
+            <crew-team-manager-rigger-create id="create" on-crew-team-manager-rigger-create-action-cancel="_handleActionCancel" on-crew-team-manager-rigger-create-action-saved="_handleActionSaved">
+            </crew-team-manager-rigger-create>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -129,6 +135,20 @@
                 this._toast = 'Rigger Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
+            }
+
+
+
+            _handleActionCancel(e) {
+                this._page = 'list';
+                this._toast = 'Cancelled Create Rigger';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCreate(e) {
+                console.log('recieved')
+                this._page = 'create';
             }
         }
 

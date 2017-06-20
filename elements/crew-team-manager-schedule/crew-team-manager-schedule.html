@@ -13,6 +13,7 @@
 <link rel="import" href="crew-team-manager-schedule-list.html">
 <link rel="import" href="crew-team-manager-schedule-detail.html">
 <link rel="import" href="crew-team-manager-schedule-edit.html">
+<link rel="import" href="crew-team-manager-schedule-create.html">
 
 
 <dom-module id="crew-team-manager-schedule">
@@ -47,7 +48,8 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-schedule-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-schedule-list-results-action-detail="_handleActionDetail">
+            <crew-team-manager-schedule-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-schedule-list-results-action-detail="_handleActionDetail"
+                on-crew-team-manager-schedule-list-action-create="_handleActionCreate">
             </crew-team-manager-schedule-list>
 
             <crew-team-manager-schedule-detail id="detail" regatta="[[_regatta]]" on-crew-team-manager-schedule-detail-action-back="_handleActionBack"
@@ -57,6 +59,9 @@
             <crew-team-manager-schedule-edit edit="[[_edit]]" id="edit" regatta="[[_regatta]]" on-crew-team-manager-schedule-edit-action-back="_handleActionBackOnce"
                 on-crew-team-manager-schedule-edit-action-saved="_handleActionSaved">
             </crew-team-manager-schedule-edit>
+
+            <crew-team-manager-schedule-create id="create" on-crew-team-manager-schedule-create-action-close="_handleActionClose" on-crew-team-manager-schedule-create-action-created="_handleActionCreated">
+            </crew-team-manager-schedule-create>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -102,6 +107,11 @@
                 this._page = 'detail';
             }
 
+            _handleActionCreate(e) {
+                console.log('here');
+                this._page = 'create';
+            }
+
             _handleActionBack(e) {
                 this._page = 'list';
             }
@@ -124,9 +134,24 @@
                 this.$.toast.open();
             }
 
+            _handleActionCreated(e) {
+                this._page = 'detail';
+                this._regatta = e.detail.regatta;
+                this._toast = 'Regatta Saved';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
             _handleActionDelete(e) {
                 this._page = 'list';
                 this._toast = 'Regatta Deleted';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCancel(e) {
+                this._page = 'list';
+                this._toast = 'Cancelled Regatta Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

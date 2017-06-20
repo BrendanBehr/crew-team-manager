@@ -14,7 +14,7 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<dom-module id="crew-team-manager-schedule-edit">
+<dom-module id="crew-team-manager-schedule-create">
     <template>
         <style>
              :host {
@@ -32,7 +32,7 @@
                 color: #fff;
             }
 
-            #editor {
+            #createor {
                 background-color: white;
                 @apply(--layout-flex);
             }
@@ -63,20 +63,21 @@
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
-                    <div main-title id="title">Edit</div>
-                    <paper-icon-button id="save" icon="check" on-click="_handleActionSave"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" on-click="_handleActionCancel"></paper-icon-button>
+                    <div main-title id="title">Create</div>
+                    <paper-icon-button id="create" icon="check" on-click="_handleActionCreate"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
-            <div id="editor">
+            <div id="createor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="name" label="name" value="{{edit.name}}"></paper-input>
-                    <paper-input id="street-address" label="street address" value="{{edit.streetAddress}}"></paper-input>
-                    <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
-                    <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
-                    <paper-input id="location-image" label="location image" value="{{edit.locationImage}}"></paper-input>
-                    <paper-input id="cost" label="cost" value="{{edit.cost}}"></paper-input>
+                    <paper-input id="name" label="name" value="{{create.name}}"></paper-input>
+                    <paper-input id="street-address" label="street address" value="{{create.streetAddress}}"></paper-input>
+                    <paper-input id="city" label="city" value="{{create.city}}"></paper-input>
+                    <paper-input id="state" label="state" value="{{create.state}}"></paper-input>
+                    <paper-toggle-button id="toggle-button" on-click="_toggleDrive">Head Race: [[_head]]</paper-toggle-button>
+                    <paper-input id="location-image" label="location image" value="{{create.locationImage}}"></paper-input>
+                    <paper-input id="cost" label="cost" value="{{create.cost}}"></paper-input>
                 </form>
             </div>
 
@@ -86,57 +87,72 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerScheduleEdit extends Polymer.Element {
+        class crewTeamManagerScheduleCreate extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-schedule-edit'
+                return 'crew-team-manager-schedule-create'
             }
 
             static get properties() {
                 return {
-                    edit: {
-                        type: Object
+                    create: {
+                        type: Object,
+                        value: {}
                     },
 
                     regatta: {
                         type: String
                     },
 
-                    _drive: {
+                    _head: {
                         type: Boolean,
-                        value: false
+                        value: 'yes'
                     }
                 }
             }
 
-            _handleActionBack(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-back', {
+            _resetCreate() {
+                this.create = {};
+            }
+
+            _handleActionCancel(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleCreate.is + '-action-cancel', {
                     bubbles: true,
                     composed: true
                 }));
             }
 
-            _handleActionSave(e) {
-                this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
-                this.$.firebase.saveValue('regattas', this.regatta)
+            _handleActionCreate(e) {
+                this.$.firebase.saveValue('regattas')
                     .then(() => {
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-saved', {
-                            bubbles: true,
-                            composed: true
-                        }));
+                        this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
+                        this._resetCreate();
+                        let _key = '';
+                        console.log(this.$.firebase.path);
+                        for (let x = 10; x < this.$.firebase.path.length; x++) {
+                            _key = _key + this.$.firebase.path[x];
+                        }
+                        console.log(_key);
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleCreate.is +
+                            '-action-created', {
+                                bubbles: true,
+                                composed: true,
+                                detail: {
+                                    regatta: _key
+                                }
+                            }));
                     });
 
 
             }
 
             _toggleDrive() {
-                console.log('here');
-                if (this._drive) {
-                    this.edit.driver = 'no';
-                    this._drive = false;
+                if (this._head) {
+                    this.create.head = false;
+                    this._head = 'no';
                 } else {
-                    this.edit.driver = 'yes';
-                    this._drive = true;
+                    this.create.head = true;
+                    this._head = 'yes';
 
                 }
             }
@@ -144,6 +160,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerScheduleEdit.is, crewTeamManagerScheduleEdit);
+        customElements.define(crewTeamManagerScheduleCreate.is, crewTeamManagerScheduleCreate);
     </script>
 </dom-module>

@@ -13,6 +13,7 @@
 <link rel="import" href="crew-team-manager-erg-list.html">
 <link rel="import" href="crew-team-manager-erg-detail.html">
 <link rel="import" href="crew-team-manager-erg-edit.html">
+<link rel="import" href="crew-team-manager-erg-create.html">
 
 
 <dom-module id="crew-team-manager-erg">
@@ -47,7 +48,8 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-erg-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-erg-list-results-action-detail="_handleActionDetail">
+            <crew-team-manager-erg-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-erg-list-results-action-detail="_handleActionDetail"
+                on-crew-team-manager-erg-list-action-create="_handleActionCreate">
             </crew-team-manager-erg-list>
 
             <crew-team-manager-erg-detail id="detail" erg="[[_erg]]" on-crew-team-manager-erg-detail-action-back="_handleActionBack"
@@ -57,6 +59,9 @@
             <crew-team-manager-erg-edit edit="[[_edit]]" id="edit" erg="[[_erg]]" on-crew-team-manager-erg-edit-action-back="_handleActionBackOnce"
                 on-crew-team-manager-erg-edit-action-saved="_handleActionSaved">
             </crew-team-manager-erg-edit>
+
+            <crew-team-manager-erg-create id="create" on-crew-team-manager-erg-create-action-cancel="_handleActionCancel" on-crew-team-manager-erg-create-action-created="_handleActionCreated">
+            </crew-team-manager-erg-create>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -102,6 +107,10 @@
                 this._page = 'detail';
             }
 
+            _handleActionCreate() {
+                this._page = 'create';
+            }
+
             _handleActionBack(e) {
                 this._page = 'list';
             }
@@ -127,6 +136,21 @@
             _handleActionDelete(e) {
                 this._page = 'list';
                 this._toast = 'Erg Deleted';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCreated(e) {
+                this._page = 'detail';
+                this._toast = 'Erg Created';
+                this._erg = e.detail.erg;
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCancel(e) {
+                this._page = 'list';
+                this._toast = 'Cancelled Erg Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

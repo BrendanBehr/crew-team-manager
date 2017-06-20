@@ -26,6 +26,7 @@ class Regatta extends Entity {
         options.values.state = options.values.state || faker.address.state();
         options.values.locationImage = options.values.locationImage || faker.image.image();
         options.values.streetAddress = options.values.streetAddress || faker.address.streetAddress();
+        options.values.head = options.values.head || true;
 
         super(options);
         this._races = [];

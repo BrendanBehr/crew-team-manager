@@ -45,7 +45,7 @@
                 font-weight: bold;
             }
 
-            #regatta-location {
+            #regatta-basic {
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
@@ -64,18 +64,22 @@
         <div id="content">
 
             <paper-card id="regatta">
-                <crew-team-manager-avatar id="regatta-avatar" value="[[data.name]]" large></crew-team-manager-avatar>
+                <crew-team-manager-avatar id="regatta-avatar" value="[[_name]]" large></crew-team-manager-avatar>
                 <div id="regatta-name">
                     [[data.name]]
                 </div>
-                <div id="regatta-location">
+                <div id="regatta-basic">
                     <div id="subhead">
                         Location:
                     </div>
                     <div id="location">
                         [[data.streetAddress]], [[data.city]], [[data.state]]
                     </div>
+                    <div id="head">
+                        Is head race: [[data.head]]
+                    </div>
                 </div>
+
                 <div id="regatta-image">
                     <div id="image">
                         <iron-image src="[[data.locationImage]]"></iron-image>
@@ -102,11 +106,34 @@
                 return 'crew-team-manager-schedule-detail-results'
             }
 
+            static get observers() {
+                return [
+                    '_getData(data)'
+                ]
+            }
+
             static get properties() {
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    _name: {
+                        type: String
                     }
+                }
+            }
+
+            _getData(data) {
+                if (data.head) {
+                    let name = '';
+                    for (let x = 12; x < data.name.length; x++) {
+                        name = name + data.name[x];
+                    }
+                    console.log(name);
+                    this._name = name;
+                } else {
+                    this._name = data.name;
                 }
             }
         }

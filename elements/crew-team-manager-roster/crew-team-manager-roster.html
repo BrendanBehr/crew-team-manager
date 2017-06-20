@@ -13,6 +13,7 @@
 <link rel="import" href="crew-team-manager-roster-list.html">
 <link rel="import" href="crew-team-manager-roster-detail.html">
 <link rel="import" href="crew-team-manager-roster-edit.html">
+<link rel="import" href="crew-team-manager-roster-create.html">
 
 
 <dom-module id="crew-team-manager-roster">
@@ -46,8 +47,9 @@
             }
         </style>
 
-        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-roster-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-roster-list-results-action-detail="_handleActionDetail">
+        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]" selected-attribute="selected">
+            <crew-team-manager-roster-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-roster-list-results-action-detail="_handleActionDetail"
+                on-crew-team-manager-roster-list-action-create="_handleActionCreate">
             </crew-team-manager-roster-list>
 
             <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
@@ -57,6 +59,9 @@
             <crew-team-manager-roster-edit edit="[[_edit]]" id="edit" athlete="[[_athlete]]" on-crew-team-manager-roster-edit-action-back="_handleActionBackOnce"
                 on-crew-team-manager-roster-edit-action-saved="_handleActionSaved">
             </crew-team-manager-roster-edit>
+
+            <crew-team-manager-roster-create id="create" on-crew-team-manager-roster-create-action-cancel="_handleActionCancel" on-crew-team-manager-roster-create-action-created="_handleActionCreated">
+                </crew-team-manager-creater-edit>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -117,9 +122,28 @@
 
             }
 
+            _handleActionCreated(e) {
+                this._page = 'detail';
+                this._toast = 'Athlete Created';
+                this._athlete = e.detail.athlete;
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
             _handleActionSaved(e) {
                 this._page = 'detail';
                 this._toast = 'Athlete Saved';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCreate(e) {
+                this._page = 'create';
+            }
+
+            _handleActionCancel(e) {
+                this._page = 'list';
+                this._toast = 'Cancelled Athlete Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

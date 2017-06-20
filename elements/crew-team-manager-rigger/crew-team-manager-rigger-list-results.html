@@ -49,17 +49,15 @@
             }
         </style>
 
-        <firebase-document id="firebase" app-name="crew-team-manager" path="/boats/{{data.boat}}" data="{{_boat}}">
-        </firebase-document>
 
         <iron-list id="list" items="[[data]]" as="item">
             <template>
                 <div class="rigger" on-click="_handleItemClick">
 
-                    <crew-team-manager-avatar class="rigger-avatar" value="boat.name"></crew-team-manager-avatar>
+                    <crew-team-manager-avatar class="rigger-avatar" value="[[boat.name]]"></crew-team-manager-avatar>
                     <div class="rigger-info">
                         <div class="rigger-info-name">
-                            boat.name
+                            [[boat.name]]
                         </div>
                         <div class="rigger-info-helpers">
                             [[item.side]] [[item.seat]]
@@ -68,6 +66,8 @@
                 </div>
             </template>
         </iron-list>
+
+
     </template>
 
     <script>
@@ -78,27 +78,12 @@
                 return 'crew-team-manager-rigger-list-results'
             }
 
-            static get observers() {
-                return [
-                    '_getData(data, _boat)'
-                ]
-            }
-
             static get properties() {
                 return {
                     data: {
                         type: Object,
-                    },
-
-                    _boat: {
-                        type: Object
                     }
                 }
-            }
-
-            _getData(data, data2) {
-                console.log(data);
-                console.log(data2);
             }
 
             _handleItemClick(e) {

@@ -13,6 +13,7 @@
 <link rel="import" href="crew-team-manager-finance-list.html">
 <link rel="import" href="crew-team-manager-finance-detail.html">
 <link rel="import" href="crew-team-manager-finance-edit.html">
+<link rel="import" href="crew-team-manager-finance-create.html">
 
 
 <dom-module id="crew-team-manager-finance">
@@ -47,7 +48,8 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-finance-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-finance-list-results-action-detail="_handleActionDetail">
+            <crew-team-manager-finance-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-finance-list-results-action-detail="_handleActionDetail"
+                on-crew-team-manager-finance-list-action-create="_handleActionCreate">
             </crew-team-manager-finance-list>
 
             <crew-team-manager-finance-detail id="detail" finance="[[_finance]]" on-crew-team-manager-finance-detail-action-back="_handleActionBack"
@@ -57,6 +59,9 @@
             <crew-team-manager-finance-edit edit="[[_edit]]" id="edit" finance="[[_finance]]" on-crew-team-manager-finance-edit-action-back="_handleActionBackOnce"
                 on-crew-team-manager-finance-edit-action-saved="_handleActionSaved">
             </crew-team-manager-finance-edit>
+
+            <crew-team-manager-finance-create id="create" on-crew-team-manager-finance-create-action-cancel="_handleActionCanceled" on-crew-team-manager-finance-create-action-created="_handleActionCreated">
+            </crew-team-manager-finance-create>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -102,6 +107,10 @@
                 this._page = 'detail';
             }
 
+            _handleActionCreate(e) {
+                this._page = 'create';
+            }
+
             _handleActionBack(e) {
                 this._page = 'list';
             }
@@ -127,6 +136,21 @@
             _handleActionDelete(e) {
                 this._page = 'list';
                 this._toast = 'Finance Deleted';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCreated(e) {
+                this._page = 'detail';
+                this._toast = 'Finance Saved';
+                this._finance = e.detail.finance;
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCancel(e) {
+                this._page = 'list';
+                this._toast = 'Cancelled Finance Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

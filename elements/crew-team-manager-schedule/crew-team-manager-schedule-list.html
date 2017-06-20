@@ -11,6 +11,7 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
@@ -58,6 +59,13 @@
             #message {
                 @apply(--layout-fit);
             }
+
+            #fab {
+                position: absolute;
+                background-color: #164410;
+                bottom: 16px;
+                right: 16px;
+            }
         </style>
 
         <firebase-query app-name="crew-team-manager" id="query" path="/regattas" data="{{_data}}">
@@ -77,6 +85,7 @@
                 <crew-team-manager-schedule-list-message id="message"></crew-team-manager-schedule-list-message>
             </iron-pages>
 
+            <paper-fab id="fab" icon="add" on-click="_handleActionCreate"></paper-fab>
 
         </app-header-layout>
 
@@ -106,10 +115,18 @@
                     },
 
                     _data: {
-                        type: Object
+                        type: Object,
+                        avatar: ''
                     }
 
                 }
+            }
+
+            _handleActionCreate() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleList.is + '-action-create', {
+                    bubbles: true,
+                    composed: true
+                }));
             }
 
             _handleActionMenu() {
@@ -123,13 +140,29 @@
 
                 let page = 'message';
 
+
                 if (dataSplices) {
                     if (dataSplices.indexSplices[0].object.length) {
                         page = 'results';
                     }
+                    //If it is a head race then it will find the value of the specific name
+                    let index = dataSplices.indexSplices[0].object.length - 1;
+                    if (dataSplices.indexSplices[0].object[index].head) {
+                        dataSplices.indexSplices[0].object[index].avatar = dataSplices.indexSplices[0].object[
+                                index]
+                            .name[12];
+                    }
+                    //If it isn't a head race then it will use the default name 
+                    else {
+                        dataSplices.indexSplices[0].object[index].avatar = dataSplices.indexSplices[0].object[
+                            index].name;
+                    }
+
                 }
 
                 this._page = page;
+
+
 
             }
 

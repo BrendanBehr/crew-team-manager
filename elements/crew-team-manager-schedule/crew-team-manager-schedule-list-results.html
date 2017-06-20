@@ -53,7 +53,7 @@
             <template>
                 <div class="regatta" on-click="_handleItemClick">
 
-                    <crew-team-manager-avatar class="regatta-avatar" value="[[item.name]]"></crew-team-manager-avatar>
+                    <crew-team-manager-avatar class="regatta-avatar" value="[[item.avatar]]"></crew-team-manager-avatar>
                     <div class="regatta-info">
                         <div class="regatta-info-name">
                             [[item.name]]
@@ -79,10 +79,6 @@
                 return {
                     data: {
                         type: Object,
-                    },
-
-                    _name: {
-                        type: String
                     }
                 }
             }
