@@ -53,13 +53,13 @@
             <template>
                 <div class="erg" on-click="_handleItemClick">
 
-                    <crew-team-manager-avatar class="erg-avatar"></crew-team-manager-avatar>
+                    <crew-team-manager-avatar class="erg-avatar" value="[[item.number]] % 10"></crew-team-manager-avatar>
                     <div class="erg-info">
                         <div class="erg-info-number">
                             [[item.number]]
                         </div>
                         <div class="erg-info-location">
-                            [[item.home]]
+                            [[item.location]]
                         </div>
                     </div>
                 </div>

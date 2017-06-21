@@ -14,7 +14,7 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<dom-module id="crew-team-manager-schedule-edit">
+<dom-module id="crew-team-manager-race-create">
     <template>
         <style>
              :host {
@@ -32,7 +32,7 @@
                 color: #fff;
             }
 
-            #editor {
+            #creator {
                 background-color: white;
                 @apply(--layout-flex);
             }
@@ -63,20 +63,18 @@
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
-                    <div main-title id="title">Edit</div>
-                    <paper-icon-button id="save" icon="check" on-click="_handleActionSave"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" on-click="_handleActionCancel"></paper-icon-button>
+                    <div main-title id="title">Create</div>
+                    <paper-icon-button id="create" icon="check" on-click="_handleActionCreate"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
-            <div id="editor">
+            <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="name" label="name" value="{{edit.name}}"></paper-input>
-                    <paper-input id="street-address" label="street address" value="{{edit.streetAddress}}"></paper-input>
-                    <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
-                    <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
-                    <paper-input id="location-image" label="location image" value="{{edit.locationImage}}"></paper-input>
-                    <paper-input id="cost" label="cost" value="{{edit.cost}}"></paper-input>
+                    <paper-input id="event-name" label="event name" value="{{create.eventName}}"></paper-input>
+                    <paper-input id="race-time" label="race time" value="{{create.raceTime}}"></paper-input>
+                    <paper-input id="suggested-launch-time" label="suggested launch time" value="{{create.suggestedLaunchTime}}"></paper-input>
+                    <paper-input id="bow-number" label="bow number" value="{{create.bowNumber}}"></paper-input>
                 </form>
             </div>
 
@@ -86,19 +84,25 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerScheduleEdit extends Polymer.Element {
+        class crewTeamManagerRaceCreate extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-schedule-edit'
+                return 'crew-team-manager-race-create'
             }
 
             static get properties() {
                 return {
-                    edit: {
-                        type: Object
+                    create: {
+                        type: Object,
+                        value: {
+                            eventName: '',
+                            raceTime: '',
+                            suggestedLaunchTime: '',
+                            bowNumber: ''
+                        }
                     },
 
-                    regatta: {
+                    race: {
                         type: String
                     },
 
@@ -109,33 +113,51 @@
                 }
             }
 
-            _handleActionBack(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-back', {
+            _resetCreate() {
+                this.create = {
+                    eventName: '',
+                    raceTime: '',
+                    suggestedLaunchTime: '',
+                    bowNumber: ''
+                }
+            }
+
+            _handleActionCancel(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRaceCreate.is + '-action-cancel', {
                     bubbles: true,
                     composed: true
                 }));
+                _resetCreate();
             }
 
-            _handleActionSave(e) {
-                this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
-                this.$.firebase.saveValue('regattas', this.regatta)
+            _handleActionCreate(e) {
+                this.$.firebase.saveValue('races')
                     .then(() => {
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleEdit.is + '-action-saved', {
-                            bubbles: true,
-                            composed: true
-                        }));
+                        this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
+                        this._resetCreate();
+                        let _key = '';
+                        for (let x = 7; x < this.$.firebase.path.length; x++) {
+                            _key = _key + this.$.firebase.path[x];
+                        }
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRaceCreate.is +
+                            '-action-created', {
+                                detail: {
+                                    race: _key
+                                },
+                                bubbles: true,
+                                composed: true
+                            }));
                     });
 
 
             }
 
             _toggleDrive() {
-                console.log('here');
                 if (this._drive) {
-                    this.edit.driver = 'no';
+                    this.create.driver = 'no';
                     this._drive = false;
                 } else {
-                    this.edit.driver = 'yes';
+                    this.create.driver = 'yes';
                     this._drive = true;
 
                 }
@@ -144,6 +166,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerScheduleEdit.is, crewTeamManagerScheduleEdit);
+        customElements.define(crewTeamManagerRaceCreate.is, crewTeamManagerRaceCreate);
     </script>
 </dom-module>

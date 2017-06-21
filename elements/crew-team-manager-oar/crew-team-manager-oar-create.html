@@ -32,7 +32,7 @@
                 color: #fff;
             }
 
-            #createor {
+            #creator {
                 background-color: white;
                 @apply(--layout-flex);
             }
@@ -69,12 +69,26 @@
                 </app-toolbar>
             </app-header>
 
-            <div id="createor">
+            <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
                     <paper-input id="name" label="name" value="{{create.name}}"></paper-input>
                     <paper-input id="color" label="color" value="{{create.color}}"></paper-input>
-                    <paper-input id="shape" label="shape" value="{{create.shape}}"></paper-input>
-                    <paper-input id="handle-grip" label="handle grip" value="{{create.handleGrip}}"></paper-input>
+                    <paper-dropdown-menu label="shape" value="{{create.shape}}">
+                        <paper-listbox slot="dropdown-content" id="shape">
+                            <paper-item>Fat2</paper-item>
+                            <paper-item>Smoothie2 Vortex Edge</paper-item>
+                            <paper-item>Smoothie2 Plain Edge</paper-item>
+                            <paper-item>Big Blade</paper-item>
+                            <paper-item>Apex Blade</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="handle-grip" value="{{create.handleGrip}}">
+                        <paper-listbox slot="dropdown-content" id="handle-grip">
+                            <paper-item>Rubber</paper-item>
+                            <paper-item>Wood</paper-item>
+                            <paper-item>Foam</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                     <paper-input id="length" label="length" value="{{create.length}}"></paper-input>
                 </form>
             </div>
@@ -95,7 +109,13 @@
                 return {
                     create: {
                         type: Object,
-                        value: {}
+                        value: {
+                            name: '',
+                            color: '',
+                            shape: '',
+                            handleGrip: '',
+                            length: ''
+                        }
                     },
 
                     oar: {
@@ -109,7 +129,15 @@
                 }
             }
 
-            _resetCreate() {}
+            _resetCreate() {
+                this.create = {
+                    name: '',
+                    color: '',
+                    shape: '',
+                    handleGrip: '',
+                    length: ''
+                }
+            }
 
             _handleActionCancel(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerOarCreate.is + '-action-cancel', {

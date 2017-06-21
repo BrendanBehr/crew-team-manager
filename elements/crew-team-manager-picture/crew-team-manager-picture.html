@@ -13,6 +13,7 @@
 <link rel="import" href="crew-team-manager-picture-list.html">
 <link rel="import" href="crew-team-manager-picture-detail.html">
 <link rel="import" href="crew-team-manager-picture-edit.html">
+<link rel="import" href="crew-team-manager-picture-create.html">
 
 
 <dom-module id="crew-team-manager-picture">
@@ -47,7 +48,8 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-picture-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-picture-list-results-action-detail="_handleActionDetail">
+            <crew-team-manager-picture-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-picture-list-results-action-detail="_handleActionDetail"
+                on-crew-team-manager-picture-list-action-create="_handleActionCreate">
             </crew-team-manager-picture-list>
 
             <crew-team-manager-picture-detail id="detail" picture="[[_picture]]" on-crew-team-manager-picture-detail-action-back="_handleActionBack"
@@ -57,6 +59,9 @@
             <crew-team-manager-picture-edit edit="[[_edit]]" id="edit" picture="[[_picture]]" on-crew-team-manager-picture-edit-action-back="_handleActionBackOnce"
                 on-crew-team-manager-picture-edit-action-saved="_handleActionSaved">
             </crew-team-manager-picture-edit>
+
+            <crew-team-manager-picture-create id="create" on-crew-team-manager-picture-create-action-cancel="_handleActionCancel" on-crew-team-manager-picture-create-action-created="_handleActionCreated">
+            </crew-team-manager-picture-create>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -102,6 +107,10 @@
                 this._page = 'detail';
             }
 
+            _handleActionCreate(e) {
+                this._page = 'create';
+            }
+
             _handleActionBack(e) {
                 this._page = 'list';
             }
@@ -127,6 +136,21 @@
             _handleActionDelete(e) {
                 this._page = 'list';
                 this._toast = 'Picture Deleted';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCreated(e) {
+                this._page = 'detail';
+                this._toast = 'Picture Created';
+                this._picture = e.detail.picture;
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCancel(e) {
+                this._page = 'list';
+                this._toast = 'Cancelled Picture Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

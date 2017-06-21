@@ -32,7 +32,7 @@
                 color: #fff;
             }
 
-            #createor {
+            #creator {
                 background-color: white;
                 @apply(--layout-flex);
             }
@@ -69,13 +69,42 @@
                 </app-toolbar>
             </app-header>
 
-            <div id="createor">
+            <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
                     <paper-input id="number" label="number" value="{{create.number}}"></paper-input>
-                    <paper-input id="location" label="location" value="{{create.location}}"></paper-input>
-                    <paper-input id="model" label="model" value="{{create.model}}"></paper-input>
-                    <paper-input id="screen-type" label="screen type" value="{{create.screenType}}"></paper-input>
-                    <paper-input id="condition" label="condition" value="{{create.condition}}"></paper-input>
+                    <paper-dropdown-menu label="model" value="{{create.model}}">
+                        <paper-listbox slot="dropdown-content" id="model">
+                            <paper-item>Home</paper-item>
+                            <paper-item>Away</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="model" value="{{create.model}}">
+                        <paper-listbox slot="dropdown-content" id="model">
+                            <paper-item>Model C</paper-item>
+                            <paper-item>Model D</paper-item>
+                            <paper-item>More E</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="screen-type" value="{{create.screenType}}">
+                        <paper-listbox slot="dropdown-content" id="screen-type">
+                            <paper-item>PM5</paper-item>
+                            <paper-item>PM4</paper-item>
+                            <paper-item>PM3</paper-item>
+                            <paper-item>PM2</paper-item>
+                            <paper-item>PM1</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="condition" value="{{create.condition}}">
+                        <paper-listbox slot="dropdown-content" id="condition">
+                            <paper-item>Very Bad</paper-item>
+                            <paper-item>Bad</paper-item>
+                            <paper-item>Below Average</paper-item>
+                            <paper-item>Average</paper-item>
+                            <paper-item>Above Average</paper-item>
+                            <paper-item>Good</paper-item>
+                            <paper-item>Very Good</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                 </form>
             </div>
 
@@ -95,7 +124,13 @@
                 return {
                     create: {
                         type: Object,
-                        value: {}
+                        value: {
+                            number: 0,
+                            location: '',
+                            model: '',
+                            screenType: '',
+                            condition: ''
+                        }
                     },
 
                     erg: {
@@ -109,7 +144,15 @@
                 }
             }
 
-            _resetCreate() {}
+            _resetCreate() {
+                this.create = {
+                    number: 0,
+                    location: '',
+                    model: '',
+                    screenType: '',
+                    condition: ''
+                }
+            }
 
             _handleActionCancel(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerErgCreate.is + '-action-cancel', {

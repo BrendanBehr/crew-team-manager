@@ -62,6 +62,7 @@
 
             #fab {
                 position: absolute;
+                background-color: #164410;
                 right: 16px;
                 bottom: 16px;
             }
@@ -83,7 +84,7 @@
                 <crew-team-manager-rigger-list-results id="results" data="[[_data]]" boat="{{_boat}}"></crew-team-manager-rigger-list-results>
                 <crew-team-manager-rigger-list-message id="message"></crew-team-manager-rigger-list-message>
             </iron-pages>
-            <paper-fab id="fab" icon="plus" on-click="_handleActionCreate">
+            <paper-fab id="fab" icon="add" on-click="_handleActionCreate">
             </paper-fab>
 
         </app-header-layout>
@@ -115,8 +116,7 @@
                     },
 
                     _data: {
-                        type: Object,
-                        name: ''
+                        type: Object
                     }
 
                 }
@@ -130,7 +130,6 @@
             }
 
             _handleActionCreate() {
-                console.log('fire');
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerList.is + '-action-create', {
                     bubbles: true,
                     composed: true

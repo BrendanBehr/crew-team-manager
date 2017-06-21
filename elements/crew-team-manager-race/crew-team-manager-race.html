@@ -13,7 +13,7 @@
 <link rel="import" href="crew-team-manager-race-list.html">
 <link rel="import" href="crew-team-manager-race-detail.html">
 <link rel="import" href="crew-team-manager-race-edit.html">
-
+<link rel="import" href="crew-team-manager-race-create.html">
 
 <dom-module id="crew-team-manager-race">
     <template>
@@ -47,7 +47,8 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-race-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-race-list-results-action-detail="_handleActionDetail">
+            <crew-team-manager-race-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-race-list-results-action-detail="_handleActionDetail"
+                on-crew-team-manager-race-list-action-create="_handleActionCreate">
             </crew-team-manager-race-list>
 
             <crew-team-manager-race-detail id="detail" race="[[_race]]" on-crew-team-manager-race-detail-action-back="_handleActionBack"
@@ -57,6 +58,9 @@
             <crew-team-manager-race-edit edit="[[_edit]]" id="edit" race="[[_race]]" on-crew-team-manager-race-edit-action-back="_handleActionBackOnce"
                 on-crew-team-manager-race-edit-action-saved="_handleActionSaved">
             </crew-team-manager-race-edit>
+
+            <crew-team-manager-race-create id="create" on-crew-team-manager-race-create-action-cancel="_handleActionCancel" on-crew-team-manager-race-create-action-created="_handleActionCreated">
+            </crew-team-manager-race-create>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -102,6 +106,10 @@
                 this._page = 'detail';
             }
 
+            _handleActionCreate(e) {
+                this._page = 'create';
+            }
+
             _handleActionBack(e) {
                 this._page = 'list';
             }
@@ -127,6 +135,21 @@
             _handleActionDelete(e) {
                 this._page = 'list';
                 this._toast = 'Race Deleted';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCreated(e) {
+                this._page = 'detail';
+                this._toast = 'Race Created';
+                this._race = e.detail.race;
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCancel(e) {
+                this._page = 'list';
+                this._toast = 'Cancelled Race Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

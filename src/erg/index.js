@@ -13,7 +13,7 @@ class Erg extends Entity {
         options.values = options.values || {};
         options.values.condition = options.values.condition || 'average';
         options.values.location = options.values.location || 'home';
-        options.values.number = options.values.number || faker.random.number() / 10000;
+        options.values.number = options.values.number || Math.floor(faker.random.number() / 1000);
         options.values.screenType = options.values.screenType || 'pm5';
         options.values.model = options.values.model || faker.random.alphaNumeric();
 

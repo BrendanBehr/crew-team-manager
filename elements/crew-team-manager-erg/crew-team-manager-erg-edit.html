@@ -72,10 +72,39 @@
             <div id="editor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
                     <paper-input id="number" label="number" value="{{edit.number}}"></paper-input>
-                    <paper-input id="location" label="location" value="{{edit.location}}"></paper-input>
-                    <paper-input id="model" label="model" value="{{edit.model}}"></paper-input>
-                    <paper-input id="screen-type" label="screen type" value="{{edit.screenType}}"></paper-input>
-                    <paper-input id="condition" label="condition" value="{{edit.condition}}"></paper-input>
+                    <paper-dropdown-menu label="model" value="{{edit.model}}">
+                        <paper-listbox slot="dropdown-content" id="model">
+                            <paper-item>Home</paper-item>
+                            <paper-item>Away</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="model" value="{{edit.model}}">
+                        <paper-listbox slot="dropdown-content" id="model">
+                            <paper-item>Model C</paper-item>
+                            <paper-item>Model D</paper-item>
+                            <paper-item>More E</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="screen-type" value="{{edit.screenType}}">
+                        <paper-listbox slot="dropdown-content" id="screen-type">
+                            <paper-item>PM5</paper-item>
+                            <paper-item>PM4</paper-item>
+                            <paper-item>PM3</paper-item>
+                            <paper-item>PM2</paper-item>
+                            <paper-item>PM1</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="condition" value="{{edit.condition}}">
+                        <paper-listbox slot="dropdown-content" id="condition">
+                            <paper-item>Very Bad</paper-item>
+                            <paper-item>Bad</paper-item>
+                            <paper-item>Below Average</paper-item>
+                            <paper-item>Average</paper-item>
+                            <paper-item>Above Average</paper-item>
+                            <paper-item>Good</paper-item>
+                            <paper-item>Very Good</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                 </form>
             </div>
 

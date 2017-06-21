@@ -61,7 +61,7 @@
 
         <firebase-document id="firebase" app-name="crew-team-manager" path="/boats/{{boat}}" data="{{_data}}"> </firebase-document>
 
-        <firebase-document id="firebase" app-name="crew-team-manager" path="/teams/{{_data.team}}" data="{{_team}}">
+        <firebase-document id="firebase-team" app-name="crew-team-manager" path="/teams/{{_data.team}}" data="{{_team}}">
         </firebase-document>
 
         <app-header-layout id="layout">
@@ -92,6 +92,12 @@
 
             static get is() {
                 return 'crew-team-manager-fleet-detail'
+            }
+
+            static get observers() {
+                return [
+                    '_updatePage(boat)'
+                ]
             }
 
             static get properties() {
@@ -126,7 +132,6 @@
                     page = 'results';
 
                 }
-
                 this._page = page;
             }
 

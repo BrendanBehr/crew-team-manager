@@ -26,8 +26,7 @@
                 @apply(--layiout-horizontal);
                 @apply(--layout-flex);
             }
-
-            #picture-avatar {
+            /*#picture-avatar {
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
                 margin: 8px;
@@ -39,7 +38,7 @@
                 font-style: bold;
                 padding-bottom: 18px;
                 border-bottom: solid 1px grey;
-            }
+            }*/
 
             #picture-image {
                 border-bottom: solid 1px grey;
@@ -50,17 +49,9 @@
         <div id="content">
 
             <paper-card id="picture">
-                <crew-team-manager-avatar id="picture-avatar" value="[[data.caption]]" large></crew-team-manager-avatar>
-
-                <div id="picture-caption">
-                    [[data.caption]]
-                </div>
                 <div id="picture-image">
                     <div id="image">
                         <iron-image src="[[data.url]]"></iron-image>
-                    </div>
-                    <div id="team">
-                        Team: [[team.teamName]]
                     </div>
                 </div>
             </paper-card>

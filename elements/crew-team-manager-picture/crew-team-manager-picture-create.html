@@ -14,7 +14,7 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<dom-module id="crew-team-manager-rigger-create">
+<dom-module id="crew-team-manager-picture-create">
     <template>
         <style>
              :host {
@@ -32,7 +32,7 @@
                 color: #fff;
             }
 
-            #creator {
+            #createor {
                 background-color: white;
                 @apply(--layout-flex);
             }
@@ -69,13 +69,10 @@
                 </app-toolbar>
             </app-header>
 
-            <div id="creator">
+            <div id="createor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="boat-name" label="boat-name"></paper-input>
-                    <paper-input id="side" label="side" value="{{create.side}}"></paper-input>
-                    <paper-input id="style" label="style" value="{{create.style}}"></paper-input>
-                    <paper-input id="type" label="type" value="{{create.type}}"></paper-input>
-                    <paper-input id="seat" label="seat" value="{{create.seat}}"></paper-input>
+                    <paper-input id="caption" label="caption" value="{{create.caption}}"></paper-input>
+                    <paper-input id="url" label="url" value="{{create.url}}"></paper-input>
                 </form>
             </div>
 
@@ -85,10 +82,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRiggerCreate extends Polymer.Element {
+        class crewTeamManagerPictureCreate extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-rigger-create'
+                return 'crew-team-manager-picture-create'
             }
 
             static get properties() {
@@ -96,15 +93,12 @@
                     create: {
                         type: Object,
                         value: {
-                            side: '',
-                            style: '',
-                            type: '',
-                            seat: ''
+                            caption: '',
+                            url: ''
                         }
-
                     },
 
-                    rigger: {
+                    picture: {
                         type: String
                     },
 
@@ -117,15 +111,13 @@
 
             _resetCreate() {
                 this.create = {
-                    side: '',
-                    style: '',
-                    type: '',
-                    seat: ''
+                    caption: '',
+                    url: ''
                 }
             }
 
-            _handleActionCancel(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerCreate.is + '-action-cancel', {
+            _handleActionBack() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerPictureCreate.is + '-action-back', {
                     bubbles: true,
                     composed: true
                 }));
@@ -133,18 +125,18 @@
             }
 
             _handleActionCreate(e) {
-                this.$.firebase.saveValue('riggers')
+                this.$.firebase.saveValue('pictures')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
                         this._resetCreate();
                         let _key = '';
-                        for (let x = 9; x < this.$.firebase.path.length; x++) {
+                        for (let x = 10; x < this.$.firebase.path.length; x++) {
                             _key = _key + this.$.firebase.path[x];
                         }
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerCreate.is +
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerPictureCreate.is +
                             '-action-created', {
                                 detail: {
-                                    rigger: _key
+                                    picture: _key
                                 },
                                 bubbles: true,
                                 composed: true
@@ -155,6 +147,7 @@
             }
 
             _toggleDrive() {
+                console.log('here');
                 if (this._drive) {
                     this.create.driver = 'no';
                     this._drive = false;
@@ -168,6 +161,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRiggerCreate.is, crewTeamManagerRiggerCreate);
+        customElements.define(crewTeamManagerPictureCreate.is, crewTeamManagerPictureCreate);
     </script>
 </dom-module>

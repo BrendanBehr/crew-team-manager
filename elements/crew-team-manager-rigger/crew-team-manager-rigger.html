@@ -61,7 +61,7 @@
             </crew-team-manager-rigger-edit>
 
 
-            <crew-team-manager-rigger-create id="create" on-crew-team-manager-rigger-create-action-cancel="_handleActionCancel" on-crew-team-manager-rigger-create-action-saved="_handleActionSaved">
+            <crew-team-manager-rigger-create id="create" on-crew-team-manager-rigger-create-action-cancel="_handleActionCancel" on-crew-team-manager-rigger-create-action-created="_handleActionCreated">
             </crew-team-manager-rigger-create>
         </iron-pages>
 
@@ -137,7 +137,13 @@
                 this.$.toast.open();
             }
 
-
+            _handleActionCreated(e) {
+                this._page = 'detail';
+                this._toast = 'Rigger Created';
+                this._rigger = e.detail.rigger;
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
 
             _handleActionCancel(e) {
                 this._page = 'list';
@@ -147,7 +153,6 @@
             }
 
             _handleActionCreate(e) {
-                console.log('recieved')
                 this._page = 'create';
             }
         }

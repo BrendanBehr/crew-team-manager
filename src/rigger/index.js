@@ -11,10 +11,15 @@ class Rigger extends Entity {
         options.plural = 'riggers';
 
         options.values = options.values || {};
-        options.values.side = options.values.side || 'Port';
         options.values.style = options.values.style || 'Sweep';
         options.values.type = options.values.type || 'European';
-        options.values.seat = options.values.seat || faker.random.number() / 1000;
+        options.values.seat = options.values.seat || Math.floor(faker.random.number() / 10000);
+        if (options.values.seat % 2 === 0) {
+            options.values.side = options.values.side || 'Port';
+        } else {
+            options.values.side = options.values.side || 'Starboard';
+
+        }
 
         super(options);
 
