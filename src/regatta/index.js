@@ -36,14 +36,15 @@ class Regatta extends Entity {
 
     }
 
-    addRace(race) {
+    addRaces(race) {
 
         this.getData().regattaRaces = this.getData().regattaRaces || {};
         this.getData().regattaRaces[this.getPathKey()] = this.getData().regattaRaces[this.getPathKey()] || {};
-
-        if (!this.getData().regattaRaces[this.getPathKey()][race.getPathKey()]) {
-            this.getData().regattaRaces[this.getPathKey()][race.getPathKey()] = true;
-            this._races.push(race);
+        for (let x = 0; x < race.length; x++) {
+            if (!this.getData().regattaRaces[this.getPathKey()][race[x].getPathKey()]) {
+                this.getData().regattaRaces[this.getPathKey()][race[x].getPathKey()] = true;
+                this._races.push(race[x]);
+            }
         }
 
     }

@@ -4,15 +4,14 @@ const crypto = require('crypto');
 const Generator = require('./src/generator');
 
 const generator = new Generator();
-generator.createTeams(100);
+generator.createTeams(2);
 
 //Creates 2 team objects
 const team1 = generator.createTeam();
 const team2 = generator.createTeam();
 const team3 = generator.createTeam();
 
-//Creates 3 athletes objects, the first and third athlete belong to the
-//first team object, the second athlete belongs to the second team object
+//Creates athlete objects
 const team1Athlete1 = team1.createAthlete();
 const team2Athlete2 = team2.createAthlete();
 const team1Athlete3 = team1.createAthlete();
@@ -21,14 +20,13 @@ const team2Athlete5 = team3.createAthlete();
 const team1Athlete6 = team2.createAthlete();
 
 //Cretes a shit ton of everything
-team1.createAthletes(100);
-const team1Boats = team1.createBoats(50);
-team1.createErgs(100);
-team1.createFinances(100);
-team1.createOars(100);
-team1.createRaces(100);
-team1.createErgs(500);
-team1.createPictures(100);
+team1.createAthletes(10);
+const team1Boats = team1.createBoats(2);
+team1.createErgs(10);
+team1.createFinances(10);
+const oars1 = team1.createOars(12);
+const races1 = team1.createRaces(16);
+team1.createPictures(20);
 
 for (let x = 0; x < team1Boats.length; x++) {
     team1Boats[x].createRiggers(8);
@@ -39,8 +37,8 @@ const team2User2 = team2Athlete2.createUser();
 const team1User3 = team1Athlete3.createUser();
 
 //Creates email objects for the athlete objects
-const email1 = team1Athlete1.createEmail();
-const email2 = team2Athlete2.createEmail();
+const email1 = team1User1.createEmail();
+const email2 = team2User2.createEmail();
 
 //Creates a credential object for the first athletes and then sets the relation 
 //between the athlete and credential as well as the user and credential
@@ -72,15 +70,15 @@ const team1Rigger1 = team1Boat1.createRigger();
 team1Boat1.addAthlete(team1Athlete1);
 team1Boat1.addAthlete(team1Athlete3);
 team1Boat1.removeAthlete(team1Athlete1);
-team1Boat1.addOar(team1Oar1);
+team1Boat1.addOars(team1Oar1);
 
 //This creates regatta and race objects for team1
 const team1Regatta1 = team1.createRegatta();
-team1.createRegattas(100);
+team1.createRegattas(5);
 const team1Race1 = team1.createRace();
 
 //This adds race objects to regattas
-team1Regatta1.addRace(team1Race1);
+team1Regatta1.addRaces(team1Race1);
 
 //Creates an erg and finance object for team1
 const team1Erg1 = team1.createErg();
@@ -89,6 +87,8 @@ const team1Finance1 = team1.createFinance();
 //This adds the erg and finance objects to athlete 3
 team1Athlete3.addErg(team1Erg1);
 team1Athlete3.addFinance(team1Finance1);
+
+team1Regatta1.addRaces(races1);
 
 //This creaetes a picture object and adds it to a regatta
 const team1Picture1 = team1.createPicture();

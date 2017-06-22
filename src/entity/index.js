@@ -27,6 +27,10 @@ class Entity {
 
     }
 
+    getStatus() {
+        return this._status;
+    }
+
     getPathRoot() {
         return this._pathRoot;
     }

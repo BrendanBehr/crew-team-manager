@@ -67,7 +67,7 @@ class Generator {
 
             firebaseAdmin.initializeApp({
                 credential: firebaseAdmin.credential.cert(serviceAccount),
-                databaseURL: 'https://crew-team-manager.firebaseio.com'
+                databaseURL: 'https://laborsync-ctm.firebaseio.com'
             });
 
             this._firebaseAdmin = firebaseAdmin;

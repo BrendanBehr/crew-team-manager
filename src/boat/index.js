@@ -95,14 +95,16 @@ class Boat extends Entity {
         return this._rigger;
     }
 
-    addOar(oar) {
+    addOars(oar) {
 
         this.getData().boatOars = this.getData().boatOars || {};
         this.getData().boatOars[this.getPathKey()] = this.getData().boatOars[this.getPathKey()] || {};
 
-        if (!this.getData().boatOars[this.getPathKey()][oar.getPathKey()]) {
-            this.getData().boatOars[this.getPathKey()][oar.getPathKey()] = true;
-            this._oars.push(oar);
+        for (let x = 0; x < oar.length; x++) {
+            if (!this.getData().boatOars[this.getPathKey()][oar[x].getPathKey()]) {
+                this.getData().boatOars[this.getPathKey()][oar[x].getPathKey()] = true;
+                this._oars.push(oar[x]);
+            }
         }
 
     }

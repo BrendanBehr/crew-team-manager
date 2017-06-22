@@ -9,9 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "eslint": "^3.19.0",
     "faker": "^4.1.0",
     "firebase-admin": "^5.0.0",
+    "firebase-functions": "^0.5.7",
     "pluralize": "^5.0.0"
   }
 }

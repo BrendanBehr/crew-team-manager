@@ -2,7 +2,6 @@
 
 const faker = require('faker');
 const Entity = require('../entity');
-const Email = require('../email');
 const Credential = require('../credential');
 const User = require('../user');
 
@@ -62,25 +61,6 @@ class Athlete extends Entity {
 
     getCredential() {
         return this._credential;
-    }
-
-    createEmail(values) {
-        return new Email({
-            generator: this.getGenerator(),
-            team: this,
-            values: values
-        });
-    }
-
-    getEmails() {
-        const athlete = this;
-        return this.getGenerator().getEmail().filter((email) => {
-            return email.getEmail() == athlete;
-        });
-    }
-
-    getEmail() {
-        return this._email;
     }
 
     createUser(values) {

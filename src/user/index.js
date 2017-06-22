@@ -3,6 +3,7 @@
 const faker = require('faker');
 const Entity = require('../entity');
 const Credential = require('../credential');
+const Email = require('../email');
 class User extends Entity {
 
     constructor(options) {
@@ -15,6 +16,7 @@ class User extends Entity {
         options.values.firstName = options.values.firstName || faker.name.firstName();
         options.values.lastName = options.values.lastName || faker.name.lastName();
         options.values.credentials = options.values.credentials || faker.lorem.slug();
+        options.values.status = options.values.status || 'active';
 
 
         super(options);
@@ -52,6 +54,25 @@ class User extends Entity {
 
     getCredential() {
         return this._credential;
+    }
+
+    createEmail(values) {
+        return new Email({
+            generator: this.getGenerator(),
+            team: this,
+            values: values
+        });
+    }
+
+    getEmails() {
+        const athlete = this;
+        return this.getGenerator().getEmail().filter((email) => {
+            return email.getEmail() == athlete;
+        });
+    }
+
+    getEmail() {
+        return this._email;
     }
 }
 
