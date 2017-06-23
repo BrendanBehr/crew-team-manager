@@ -5,17 +5,40 @@ const firebaseFunctions = require('firebase-functions');
 const firebaseAdmin = require('firebase-admin');
 const crypto = require('crypto');
 
-const privateKey = firebaseFunctions.config().service_account.private_key.replace(/\\n/g, '\n');
-const serviceAccount = {
-    projectId: firebaseFunctions.config().service_account.project_id,
-    clientEmail: firebaseFunctions.config().service_account.client_email,
-    privateKey: privateKey
-};
+let database;
+let admin;
 
-firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(serviceAccount),
-    databaseURL: firebaseFunctions.config().firebase.databaseURL
-});
+const getDatabase = () => {
+
+    if (!database) {
+
+        const defaultApp = firebaseAdmin.apps.filter((app) => {
+            return app.name == '[DEFAULT]';
+        })[0] || null;
+
+        if (!defaultApp) {
+
+            const privateKey = firebaseFunctions.config().service_account.private_key.replace(/\\n/g, '\n');
+            const serviceAccount = {
+                projectId: firebaseFunctions.config().service_account.project_id,
+                clientEmail: firebaseFunctions.config().service_account.client_email,
+                privateKey: privateKey
+            };
+
+            firebaseAdmin.initializeApp({
+                credential: firebaseAdmin.credential.cert(serviceAccount),
+                databaseURL: firebaseFunctions.config().firebase.databaseURL
+            });
+
+        }
+
+        database = firebaseAdmin.database();
+
+    }
+
+    return database;
+
+};
 
 const getBasicAuthenticationUsername = (getBasicAuthenticationCredentialsPromise) => {
     return new Promise((resolve, reject) => {
@@ -142,6 +165,7 @@ const getBasicAuthentication = (request) => {
             ])
             .spread((basicAuthenticationUsername, basicAuthenticationPassword) => {
 
+
                 const basicAuthentication = {
                     username: basicAuthenticationUsername
                 };
@@ -219,7 +243,7 @@ const getEmail = (getAuthenticationPromise) => {
                     return reject(err);
                 }
 
-                return firebaseAdmin.app('auths-https').database().ref('emails').orderByChild('value').equalTo(authentication.username).once('value')
+                return getDatabase().ref('emails').orderByChild('value').equalTo(authentication.username).once('value')
                     .then((emailSnapshot) => {
 
                         let email = emailSnapshot.val();
@@ -259,7 +283,7 @@ const getUser = (getEmailPromise) => {
                     return reject(err);
                 }
 
-                return firebaseAdmin.app('auths-https').database().ref('users/' + email.user).once('value')
+                return getDatabase().ref('users/' + email.user).once('value')
                     .then((userSnapshot) => {
 
                         const user = userSnapshot.val();
@@ -297,7 +321,13 @@ const getUserCredential = (getAuthenticationPromise) => {
                     return reject(err);
                 }
 
-                return firebaseAdmin.app('auths-https').database().ref('credentials/' + user.credential).once('value')
+                if (user.status != 'active') {
+                    const err = new Error('User inactive');
+                    err.name = 'UnauthorizedError';
+                    return reject(err);
+                }
+
+                return getDatabase().ref('credentials/' + user.credential).once('value')
                     .then((credentialSnapshot) => {
 
                         const credential = credentialSnapshot.val();
@@ -427,7 +457,7 @@ const createAuth = (getAuthenticationPromise, getAuthenticationEntityPromise, ge
                 auth.ip = request.ip || null;
                 auth[authenticationEntity] = credential[authenticationEntity];
 
-                return firebaseAdmin.app('auths-https').database().ref('auths').push(auth)
+                return getDatabase().ref('auths').push(auth)
                     .then((authSnapshot) => {
 
                         auth._key = authSnapshot.key;
@@ -470,7 +500,7 @@ const createToken = (getAuthenticationEntityPromise, getCredentialPromise, creat
                     'auth': auth._key
                 };
 
-                return firebaseAdmin.app('auths-https').auth().createCustomToken(uid, claims)
+                return firebaseAdmin.app().auth().createCustomToken(uid, claims)
                     .then(resolve)
                     .catch(reject);
 
@@ -496,7 +526,6 @@ const getPostHttp = (request) => {
             .spread((auth, token) => {
 
                 const http = {};
-
                 http.status = 200;
 
                 http.headers = {};

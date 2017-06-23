@@ -58,12 +58,14 @@ describe('boat-fanout', () => {
                 clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
                 privateKey: privateKey
             }),
-            databaseURL: databaseURL,
+            databaseURL: databaseURL
         });
 
         firebaseAdmin.database().ref().set(generator.getData())
             .then(() => {
                 done();
+            }).catch((err) => {
+                console.log(err);
             });
 
     });

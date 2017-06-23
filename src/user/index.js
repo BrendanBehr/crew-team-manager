@@ -28,8 +28,8 @@ class User extends Entity {
     createCredential(values) {
         return new Credential({
             generator: this.getGenerator(),
-            athlete: this,
-            values: values
+            user: this,
+            values: values,
         });
 
     }

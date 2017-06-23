@@ -18,12 +18,18 @@ class Credential extends Entity {
 
         super(options);
 
+        if (options.user) {
+            this.setUser(options.user);
+        }
 
-        this.getGenerator().getAthletes().push(this);
+        this.getGenerator().getCredentials().push(this);
 
     }
 
     setPassword(password) {
+
+        this._password = password;
+
         let salt = crypto.randomBytes(256).toString('hex');
 
         let hash = crypto.createHash('sha256');
@@ -34,6 +40,23 @@ class Credential extends Entity {
             salt: salt,
             credential: password
 
+        });
+
+    }
+
+    getPassword() {
+        return this._password;
+    }
+
+    getUser() {
+        return this._user
+    }
+
+    setUser(user) {
+        this._user = user;
+
+        this.updateValues({
+            user: user.getPathKey()
         });
 
     }

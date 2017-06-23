@@ -13,8 +13,8 @@ const Generator = require('../../../src/generator/index.js');
 console.warn = () => {};
 
 
-
 describe('athlete-fanout', () => {
+    // this.timeout(30000);
 
     const generator = new Generator({
         updateDataOnSetFanOut: false,
@@ -65,13 +65,26 @@ describe('athlete-fanout', () => {
                 clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
                 privateKey: privateKey
             }),
-            databaseURL: databaseURL,
+            databaseURL: databaseURL
         });
 
-        firebaseAdmin.database().ref().set(generator.getData())
-            .then(() => {
-                done();
-            });
+        // firebaseAdmin.database().ref().once(
+        //         'value'
+        //     )
+        //     .then(() => {
+        //         console.log('Write 1 complete');
+        //         done();
+        //     }).catch((err) => {
+        //         console.log(err);
+        //     });
+
+        firebaseAdmin.database().ref().set(generator.getData()).then(() => {
+            console.log('Write 2 complete');
+            done();
+        }).catch((err) => {
+            console.log(err);
+            done();
+        });
 
     });
 

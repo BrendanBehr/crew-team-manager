@@ -1,7 +1,7 @@
-/* globals describe: function, it: function, before: function, after: function */
+/* globals describe: function, it: function, before: function, beforeEach: function, after: function */
 
 require('dotenv').config({
-    path: __dirname + '/../.env'
+    path: __dirname + '/../../.env'
 });
 
 const Generator = require('../../../src/generator/index.js');
@@ -19,6 +19,8 @@ chai.use(require('chai-as-promised'));
 chai.use(require('chai-string'));
 const assert = chai.assert;
 const app = express();
+
+console.warn = () => {};
 
 describe('auths-https', () => {
 
@@ -39,6 +41,7 @@ describe('auths-https', () => {
     const team1User1Email3 = team1User1.createEmail();
     const team1User1Credential = team1User1.createCredential();
     team1User1Credential.setPassword(faker.internet.password());
+    const team1User1Password = team1User1Credential.getPassword();
 
     const team1User2 = team1.createUser({
         credential: faker.random.uuid()
@@ -49,6 +52,7 @@ describe('auths-https', () => {
     const team1User2Email1 = team1User2.createEmail();
     const team1User2Credential = team1User2.createCredential();
     team1User2Credential.setPassword(faker.internet.password());
+    const team1User2Password = team1User2Credential.getPassword();
 
     const team1User3 = team1.createUser({
         status: 'pending'
@@ -90,6 +94,8 @@ describe('auths-https', () => {
 
     let server;
 
+    let testApp;
+
     before((done) => {
 
         app.use(bodyParser.json());
@@ -119,11 +125,11 @@ describe('auths-https', () => {
             }
         };
 
-        const authsHttps = proxyquire(__dirname + '/../../auths-https', stubs);
+        const authsHttps = proxyquire(__dirname + '/../../../functions/auths-https', stubs);
         app.all('*', authsHttps);
 
         const privateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n');
-        firebaseAdmin.initializeApp({
+        testApp = firebaseAdmin.initializeApp({
             credential: firebaseAdmin.credential.cert({
                 projectId: process.env.FIREBASE_PROJECT_ID,
                 clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
@@ -132,13 +138,17 @@ describe('auths-https', () => {
             databaseURL: databaseURL,
         });
 
-        firebaseAdmin.database().ref().set(generator.getData())
-            .then(() => {
-                server = app.listen(port, () => {
-                    done();
-                });
-            });
+        server = app.listen(port, () => {
+            done();
+        });
 
+    });
+
+    beforeEach((done) => {
+        testApp.database().ref().set(generator.getData())
+            .then((snapshot) => {
+                done();
+            });
     });
 
     describe('HTTP request', () => {
@@ -424,7 +434,7 @@ describe('auths-https', () => {
 
                 const statusCode = 200;
 
-                it('when `Authorization` with `email` as `username` with correct `password` when `user` is `active`', (done) => {
+                it.only('when `Authorization` with `email` as `username` with correct `password` when `user` is `active`', (done) => {
 
                     const authorization = 'Basic ' + new Buffer(team1User6Email1.getValues().value + ':' + team1User6Password).toString('base64');
 

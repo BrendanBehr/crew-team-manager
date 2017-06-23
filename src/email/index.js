@@ -10,9 +10,8 @@ class Email extends Entity {
         options = options || {};
         options.plural = 'emails';
 
-
         options.values = options.values || {};
-        options.values.emailAddress = options.values.emailAddress || faker.internet.email();
+        options.values.value = options.values.value || faker.internet.email();
 
         super(options);
 

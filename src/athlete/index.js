@@ -2,7 +2,6 @@
 
 const faker = require('faker');
 const Entity = require('../entity');
-const Credential = require('../credential');
 const User = require('../user');
 
 class Athlete extends Entity {
@@ -35,13 +34,7 @@ class Athlete extends Entity {
 
         this.getGenerator().getAthletes().push(this);
     }
-    createCredential(values) {
-        return new Credential({
-            generator: this.getGenerator(),
-            athlete: this,
-            values: values
-        });
-    }
+
     setCredential(credential) {
         this._credential = credential;
 
@@ -49,18 +42,20 @@ class Athlete extends Entity {
         values[this.getCredential().getSingular()] = this.getCredential().getPathKey();
 
         return this.updateValues(values);
-    }
 
-    getCredentials() {
-
-        const athlete = this;
-        return this.getGenerator().getCredential().filter((credential) => {
-            return credential.getAthlete() == athlete;
-        });
     }
 
     getCredential() {
         return this._credential;
+    }
+
+    getCredentials() {
+
+        const user = this;
+        return this.getGenerator().getCredential().filter((credential) => {
+            return credential.getUser() == user;
+        });
+
     }
 
     createUser(values) {

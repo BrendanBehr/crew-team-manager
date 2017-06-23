@@ -18,6 +18,7 @@ class Generator {
         this._teams = [];
         this._users = [];
         this._finances = [];
+        this._credentials = [];
 
     }
 
@@ -55,6 +56,10 @@ class Generator {
 
     getFinances() {
         return this._finances;
+    }
+
+    getCredentials() {
+        return this._credentials;
     }
 
     getData() {
