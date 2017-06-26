@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "assert": "^1.4.1",
     "bluebird": "^3.5.0",
     "eslint": "^3.19.0",
     "faker": "^4.1.0",

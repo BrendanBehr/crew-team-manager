@@ -4,6 +4,7 @@ const faker = require('faker');
 const Entity = require('../entity');
 const Credential = require('../credential');
 const Email = require('../email');
+const Auth = require('../auth');
 class User extends Entity {
 
     constructor(options) {
@@ -21,7 +22,7 @@ class User extends Entity {
 
         super(options);
 
-        this.getGenerator().getAthletes().push(this);
+        this.getGenerator().getUsers().push(this);
 
     }
 
@@ -59,20 +60,39 @@ class User extends Entity {
     createEmail(values) {
         return new Email({
             generator: this.getGenerator(),
-            team: this,
+            user: this,
             values: values
         });
     }
 
     getEmails() {
-        const athlete = this;
+        const user = this;
         return this.getGenerator().getEmail().filter((email) => {
-            return email.getEmail() == athlete;
+            return email.getEmail() == user;
         });
     }
 
     getEmail() {
         return this._email;
+    }
+
+    createAuth(values) {
+        return new Auth({
+            generator: this.getGenerator(),
+            user: this,
+            values: values
+        });
+    }
+
+    getAuths() {
+        const user = this;
+        return this.getGenerator().getAuth().filter((auth) => {
+            return auth.getAuth() == user;
+        });
+    }
+
+    getAuth() {
+        return this._auth;
     }
 }
 

@@ -35,8 +35,6 @@ describe('auths-https', () => {
     const team1User1Email2 = team1User1.createEmail({
         user: faker.random.uuid()
     });
-    // const team1User1Email3 = team1User1.createEmail();
-    // const team1User1Password = faker.internet.password();
 
     const team1User1Email3 = team1User1.createEmail();
     const team1User1Credential = team1User1.createCredential();
@@ -46,8 +44,6 @@ describe('auths-https', () => {
     const team1User2 = team1.createUser({
         credential: faker.random.uuid()
     });
-    // const team1User2Email1 = team1User2.createEmail();
-    // const team1User2Password = faker.internet.password();
 
     const team1User2Email1 = team1User2.createEmail();
     const team1User2Credential = team1User2.createCredential();
@@ -129,6 +125,7 @@ describe('auths-https', () => {
         app.all('*', authsHttps);
 
         const privateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n');
+
         testApp = firebaseAdmin.initializeApp({
             credential: firebaseAdmin.credential.cert({
                 projectId: process.env.FIREBASE_PROJECT_ID,

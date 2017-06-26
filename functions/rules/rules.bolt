@@ -1,0 +1,57 @@
+//Secures a team
+path /teams/{teamId} is Team {
+    read() { 
+        hasTeamAccess(teamId)
+    }
+    create() {
+        hasTeamAccess(teamId)
+    }
+    update() {
+        hasTeamAccess(teamId)
+    }
+}
+
+type Team {}
+
+isAuthenticated() {
+    return auth != null && auth.auth != null
+}
+
+getAuth() {
+    return prior(root).auths[auth.auth]
+}
+
+getAuthUser() {
+    return prior(root).users[getAuth().user]
+}
+
+isAuthenticatedUser() {
+    return isAuthenticated() && getAuth() != null && getAuthUser() != null
+}
+
+hasTeamAccess(teamId) {
+    return isAuthenticatedUser() && getAuthUser().team == teamId
+}
+
+//Secures the athletes
+path /athletes/{athleteId} is Athlete {
+    read() { 
+        hasAthleteAccess(athleteId)
+    }
+    create() {
+        hasAthleteAccess(athleteId)
+    }
+    update() {
+        hasAthleteAccess(athleteId)
+    }
+}
+
+type Athlete {} 
+
+getAthleteTeam(athleteId){
+    return prior(root).athletes.athleteId
+}
+
+hasAthleteAccess(athleteId) {
+    return isAuthenticatedUser() && getAuthUser().team == getAthleteTeam(athleteId).team
+}
