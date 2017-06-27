@@ -1,0 +1,327 @@
+{
+  "rules": {
+    "teams": {
+      "$teamId": {
+        ".validate": "newData.hasChildren(['city', 'color', 'logo', 'state', 'streetAddress', 'teamName'])",
+        "city": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "color": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "logo": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "state": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "streetAddress": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "teamName": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == $teamId) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == $teamId && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == $teamId"
+      }
+    },
+    "athletes": {
+      "$athleteId": {
+        ".validate": "newData.hasChildren(['city', 'credential', 'driver', 'ergScore', 'firstName', 'fundRaising', 'gender', 'height', 'lastName', 'phone', 'side', 'state', 'streetAddress', 'team', 'weight', 'year'])",
+        "city": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "credential": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "driver": {
+          ".validate": "newData.isBoolean()"
+        },
+        "ergScore": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 8"
+        },
+        "firstName": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "fundRaising": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "gender": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 8"
+        },
+        "height": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 8"
+        },
+        "lastName": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "phone": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "side": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 8"
+        },
+        "state": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "streetAddress": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "weight": {
+          ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() < 400"
+        },
+        "year": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('athletes').child($athleteId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('athletes').child($athleteId).child('team').val() && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('athletes').child($athleteId).child('team').val()"
+      }
+    },
+    "boats": {
+      "$boatId": {
+        ".validate": "newData.hasChildren(['manufacturer', 'name', 'rigging', 'size', 'team', 'type'])",
+        "manufacturer": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "rigging": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "size": {
+          ".validate": "newData.isNumber() && newData.child('lenght').val() > 0 && newData.val().length <= 8"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "type": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('boats').child($boatId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('boats').child($boatId).child('team').val() && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('boats').child($boatId).child('team').val()"
+      }
+    },
+    "auths": {
+      "$authId": {
+        ".validate": "newData.hasChildren(['created', 'ip', 'status', 'updated', 'user'])",
+        "created": {
+          ".validate": "newData.isNumber()"
+        },
+        "ip": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "status": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "updated": {
+          ".validate": "newData.isNumber()"
+        },
+        "user": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (root.child('auths').child(auth.auth).val() == root.child('auths').child($authId).val() || root.child('auths').child(auth.auth).child('user').val() == root.child('auths').child($authId).child('user').val() && root.child('auths').child($authId).child('status').val() == 'active' && root.child('auths').child(auth.auth).child('status').val() == 'active') || data.val() != null && newData.val() != null && (root.child('auths').child(auth.auth).val() == root.child('auths').child($authId).val() || root.child('auths').child(auth.auth).child('user').val() == root.child('auths').child($authId).child('user').val() && root.child('auths').child($authId).child('status').val() == 'active' && root.child('auths').child(auth.auth).child('status').val() == 'active' && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "root.child('auths').child(auth.auth).val() == root.child('auths').child($authId).val() || root.child('auths').child(auth.auth).child('user').val() == root.child('auths').child($authId).child('user').val() && root.child('auths').child($authId).child('status').val() == 'active' && root.child('auths').child(auth.auth).child('status').val() == 'active'"
+      }
+    },
+    "ergs": {
+      "$ergId": {
+        ".validate": "newData.hasChildren(['condition', 'location', 'model', 'number', 'screenType', 'team'])",
+        "condition": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "location": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "model": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 8"
+        },
+        "number": {
+          ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() < 100"
+        },
+        "screenType": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 8"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('ergs').child($ergId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('ergs').child($ergId).child('team').val() && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('ergs').child($ergId).child('team').val()"
+      }
+    },
+    "finances": {
+      "$financeId": {
+        ".validate": "newData.hasChildren(['expenses', 'gross', 'incomes', 'reason', 'team'])",
+        "expenses": {
+          ".validate": "newData.isNumber() && newData.val() < 0"
+        },
+        "gross": {
+          ".validate": "newData.isNumber()"
+        },
+        "incomes": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "reason": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 64"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('finances').child($financeId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('finances').child($financeId).child('team').val() && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('finances').child($financeId).child('team').val()"
+      }
+    },
+    "oars": {
+      "$oarId": {
+        ".validate": "newData.hasChildren(['color', 'handleGrip', 'length', 'name', 'shape', 'team'])",
+        "color": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "handleGrip": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "length": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "shape": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 16"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('oars').child($oarId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('oars').child($oarId).child('team').val() && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('oars').child($oarId).child('team').val()"
+      }
+    },
+    "pictures": {
+      "$pictureId": {
+        ".validate": "newData.hasChildren(['caption', 'team', 'url'])",
+        "caption": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 128"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "url": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('pictures').child($pictureId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('pictures').child($pictureId).child('team').val() && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('pictures').child($pictureId).child('team').val()"
+      }
+    },
+    "races": {
+      "$raceId": {
+        ".validate": "newData.hasChildren(['bowNumber', 'eventName', 'raceTime', 'suggestedLaunchTime', 'team'])",
+        "bowNumber": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "eventName": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "raceTime": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 6"
+        },
+        "suggestedLaunchTime": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 6"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('races').child($raceId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('races').child($raceId).child('team').val())",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('races').child($raceId).child('team').val()"
+      }
+    },
+    "regattas": {
+      "$regattaId": {
+        ".validate": "newData.hasChildren(['city', 'cost', 'head', 'locationImage', 'name', 'state', 'streetAddress', 'team'])",
+        "city": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "cost": {
+          ".validate": "newData.isNumber() && newData.val().length > 0"
+        },
+        "head": {
+          ".validate": "newData.isBoolean()"
+        },
+        "locationImage": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "state": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 32"
+        },
+        "streetAddress": {
+          ".validate": "newData.val().length > 0 && newData.val().length < 64"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('regattas').child($regattaId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('regattas').child($regattaId).child('team').val() && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('regattas').child($regattaId).child('team').val()"
+      }
+    },
+    "riggers": {
+      "$riggerId": {
+        ".validate": "newData.hasChildren(['seat', 'side', 'style', 'type', 'team'])",
+        "seat": {
+          ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 8"
+        },
+        "side": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 20"
+        },
+        "style": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 20"
+        },
+        "type": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 20"
+        },
+        "team": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('riggers').child($riggerId).child('team').val()) || data.val() != null && newData.val() != null && (auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('riggers').child($riggerId).child('team').val() && root.child('auths').child(auth.auth).child('update').val() == now)",
+        ".read": "auth != null && auth.auth != null && root.child('auths').child(auth.auth).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).val() != null && root.child('users').child(root.child('auths').child(auth.auth).child('user').val()).child('team').val() == root.child('riggers').child($riggerId).child('team').val()"
+      }
+    }
+  }
+}

@@ -1,0 +1,664 @@
+//----------------Secures a team---------------------
+path /teams/{teamId} is Team {
+    read() { 
+        hasTeamReadAccess(teamId)
+    }
+    create() {
+        hasTeamCreateAccess(teamId)
+    }
+    update() {
+        hasTeamUpdateAccess(teamId)
+    }
+}
+
+type Team {
+    city: TeamCity,
+    color: TeamColor,
+    logo: TeamLogo,
+    state: TeamState,
+    streetAddress: TeamAddress,
+    teamName: CoolName
+}
+
+type TeamCity extends String {
+    validate() { this.length > 0 && this.length < 16}
+}
+
+type TeamColor extends String {
+     validate() { this.length > 0 && this.length < 16}
+}
+
+type TeamLogo extends String {
+  validate() { this.length > 0 && this.length < 16}  
+}
+
+type TeamState extends String {
+     validate() { this.length > 0 && this.length < 16}
+}
+
+type TeamAddress extends String {
+   validate() { this.length > 0 && this.length < 16}  
+}
+
+type CoolName extends String {
+      validate() { this.length > 0 && this.length < 16}
+}
+
+isAuthenticated() {
+    return auth != null && auth.auth != null
+}
+
+getAuth() {
+    return prior(root).auths[auth.auth]
+}
+
+getAuthUser() {
+    return prior(root).users[getAuth().user]
+}
+
+isAuthenticatedUser() {
+    return isAuthenticated() && getAuth() != null && getAuthUser() != null
+}
+
+hasTeamReadAccess(teamId) {
+    return isAuthenticatedUser() && getAuthUser().team == teamId
+}
+
+hasTeamCreateAccess(teamId) {
+    return isAuthenticatedUser() && getAuthUser().team == teamId
+}
+
+hasTeamUpdateAccess(teamId) {
+    return isAuthenticatedUser() && getAuthUser().team == teamId  && getAuth().update == now
+}
+
+//-----------------Secures the athletes--------------------
+path /athletes/{athleteId} is Athlete {
+    read() { 
+        hasAthleteReadAccess(athleteId)
+    }
+    create() {
+        hasAthleteCreateAccess(athleteId)
+    }
+    update() {
+        hasAthleteUpdateAccess(athleteId)
+    }
+}
+
+type Athlete {
+    city: HomeCity,
+    credential: AthleteCredential,
+    driver: Boolean,
+    ergScore: FatErgos,
+    firstName: AthleteFirst,
+    fundRaising: MoneyRaised,
+    gender: AthleteGender,
+    height: AthleteHeight,
+    lastName: AthleteLast,
+    phone: PhoneNumber,
+    side: RowingSide,
+    state: HomeState,
+    streetAddress: AthleteAddress,
+    team: String,
+    weight: AthleteWeight,
+    year: SchoolYear
+} 
+
+type HomeCity extends String{
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+type AthleteCredential extends String{
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type FatErgos extends String{
+    validate() { this.length > 0 && this.length < 8 }
+}
+
+type AthleteFirst extends String{
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+type MoneyRaised extends Number{
+    validate() { this > 0}
+}
+
+type AthleteGender extends String{
+    validate() { this.length > 0 && this.length < 8 }
+}
+
+type AthleteHeight extends String{
+    validate() { this.length > 0 && this.length < 8 }
+}
+
+type AthleteLast extends String{
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+type PhoneNumber extends String{
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+type RowingSide extends String{
+    validate() { this.length > 0 && this.length < 8 }
+}
+
+type HomeState extends String{
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+type AthleteAddress extends String{
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type AthleteWeight extends Number{
+    validate() { this > 0 && this < 400}
+}
+
+type SchoolYear extends String{
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+getAthlete(athleteId){
+    return prior(root).athletes[athleteId]
+}
+
+hasAthleteReadAccess(athleteId) {
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team
+}
+
+hasAthleteCreateAccess(athleteId) {
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team
+}
+
+hasAthleteUpdateAccess(athleteId) {
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team  && getAuth().update == now
+}
+
+//------------------Secures the boats----------------------
+path /boats/{boatId} is Boat {
+    read() { 
+        hasBoatReadAccess(boatId)
+    }
+    create() {
+        hasBoatCreateAccess(boatId)
+    }
+    update() {
+        hasBoatUpdateAccess(boatId)
+    }
+}
+
+type Boat {
+    manufacturer: BoatCompany,
+    name: BoatName,
+    rigging: BoatRigging,
+    size: BoatSize,
+    team: String,
+    type: RowingType
+} 
+
+type BoatCompany extends String {
+    validate() { this.length > 0 && this.length < 16 }
+} 
+
+type BoatName extends String {
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type BoatRigging extends String {
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+type BoatSize extends Number {
+    validate() { this.lenght > 0 && this.length <= 8 }
+}
+
+type RowingType extends String {
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+getBoat(boatId){
+    return prior(root).boats[boatId]
+}
+
+hasBoatReadAccess(boatId) {
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team
+}
+
+hasBoatCreateAccess(boatId) {
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team
+}
+
+hasBoatUpdateAccess(boatId) {
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getAuth().update == now
+}
+
+//-----------------Secures the auths---------------------
+path /auths/{authId} is Auth {
+    read() { 
+        hasAuthReadAccess(authId)
+    }
+    create() {
+        hasAuthCreateAccess(authId)
+    }
+    update() {
+        hasAuthUpdateAccess(authId)
+    }
+}
+
+type Auth {
+    created: Number,
+    ip: IPString,
+    status: AuthStat,
+    updated: Number,
+    user: String
+} 
+
+type IPString extends String {
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type AuthStat extends String {
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+getAuthTeam(authId){
+    return prior(root).auths[authId]
+}
+
+hasAuthReadAccess(authId) {
+    return getAuth() == getAuthTeam(authId) || getAuth().user == getAuthTeam(authId).user && getAuthTeam(authId).status == 'active' && getAuth().status == 'active'
+}
+
+hasAuthCreateAccess(authId) {
+    return getAuth() == getAuthTeam(authId) || getAuth().user == getAuthTeam(authId).user && getAuthTeam(authId).status == 'active' && getAuth().status == 'active'
+}
+
+hasAuthUpdateAccess(authId) {
+    return getAuth() == getAuthTeam(authId) || getAuth().user == getAuthTeam(authId).user && getAuthTeam(authId).status == 'active' && getAuth().status == 'active' && getAuth().update == now
+}
+
+//------------------Secures the ergs-----------------------
+path /ergs/{ergId} is Erg {
+    read() { 
+        hasErgReadAccess(ergId)
+    }
+    create() {
+        hasErgCreateAccess(ergId)
+    }
+    update() {
+        hasErgUpdateAccess(ergId)
+    }
+}
+
+type Erg {
+    condition: ErgCondition,
+    location: HomeAway,
+    model: ErgModel,
+    number: NumberErg,
+    screenType: Screen,
+    team: String
+} 
+
+type ErgCondition extends String {
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type HomeAway extends String {
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+type ErgModel extends String {
+    validate() { this.length > 0 && this.length < 8 }
+}
+
+type NumberErg extends Number {
+    validate() { this > 0 && this < 100 }
+}
+
+type Screen extends String {
+    validate() { this.length > 0 && this.length < 8 }
+}
+
+getErg(ergId){
+    return prior(root).ergs[ergId]
+}
+
+hasErgReadAccess(ergId) {
+    return isAuthenticatedUser() && getAuthUser().team == getErg(ergId).team
+}
+
+hasErgCreateAccess(ergId) {
+    return isAuthenticatedUser() && getAuthUser().team == getErg(ergId).team
+}
+
+hasErgUpdateAccess(ergId) {
+    return isAuthenticatedUser() && getAuthUser().team == getErg(ergId).team && getAuth().update == now
+}
+
+//------------------Secures the finances---------------------
+path /finances/{financeId} is Finance {
+    read() { 
+        hasFinanceReadAccess(financeId)
+    }
+    create() {
+        hasFinanceCreateAccess(financeId)
+    }
+    update() {
+        hasFinanceUpdateAccess(financeId)
+    }
+}
+
+type Finance {
+    expenses: Life,
+    gross: Number,
+    incomes: Dreams,
+    reason: PaymentReason,
+    team: String
+} 
+
+type Life extends Number {
+    validate() { this < 0 }
+}
+
+type Dreams extends Number {
+    validate() { this > 0 }
+}
+
+type PaymentReason extends String {
+    validate() { this.length > 0 && this.length < 64 }
+}
+
+getFinance(financeId){
+    return prior(root).finances[financeId]
+}
+
+hasFinanceReadAccess(financeId) {
+    return isAuthenticatedUser() && getAuthUser().team == getFinance(financeId).team
+}
+
+hasFinanceCreateAccess(financeId) {
+    return isAuthenticatedUser() && getAuthUser().team == getFinance(financeId).team
+}
+
+hasFinanceUpdateAccess(financeId) {
+    return isAuthenticatedUser() && getAuthUser().team == getFinance(financeId).team && getAuth().update == now
+}
+
+//--------------------Secures the oars-------------------
+path /oars/{oarId} is Oar {
+    read() { 
+        hasOarReadAccess(oarId)
+    }
+    create() {
+        hasOarCreateAccess(oarId)
+    }
+    update() {
+        hasOarUpdateAccess(oarId)
+    }
+}
+
+type Oar {
+    color: BeautifulColor,
+    handleGrip: DestroyHands,
+    length: ShaftLength,
+    name: OarName,
+    shape: BladeShape
+    team: String
+} 
+
+type BeautifulColor extends String {
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type DestroyHands extends String {
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type ShaftLength extends Number {
+    validate() { this > 0}
+}
+
+type OarName extends String {
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type BladeShape extends String {
+    validate() { this.length > 0 && this.length < 16 }
+}
+
+getOar(oarId){
+    return prior(root).oars[oarId]
+}
+
+hasOarReadAccess(oarId) {
+    return isAuthenticatedUser() && getAuthUser().team == getOar(oarId).team
+}
+
+hasOarCreateAccess(oarId) {
+    return isAuthenticatedUser() && getAuthUser().team == getOar(oarId).team
+}
+
+hasOarUpdateAccess(oarId) {
+    return isAuthenticatedUser() && getAuthUser().team == getOar(oarId).team  && getAuth().update == now
+}
+
+//-------------------Secures the pictures-------------------
+path /pictures/{pictureId} is Picture {
+    read() { 
+        hasPictureReadAccess(pictureId)
+    }
+    create() {
+        hasPictureCreateAccess(pictureId)
+    }
+    update() {
+        hasPictureUpdateAccess(pictureId)
+    }
+}
+
+type Picture {
+    caption: CoolCaption,
+    team: String,
+    url: LongString
+} 
+
+type CoolCaption extends String {
+    validate() { this.length > 0 && this.length < 128}
+}
+
+type LongString extends String {
+     validate() { this.length > 0 }
+}
+
+getPicture(pictureId){
+    return prior(root).pictures[pictureId]
+}
+
+hasPictureReadAccess(pictureId) {
+    return isAuthenticatedUser() && getAuthUser().team == getPicture(pictureId).team
+}
+
+hasPictureCreateAccess(pictureId) {
+    return isAuthenticatedUser() && getAuthUser().team == getPicture(pictureId).team
+}
+
+hasPictureUpdateAccess(pictureId) {
+    return isAuthenticatedUser() && getAuthUser().team == getPicture(pictureId).team  && getAuth().update == now
+}
+
+//-------------------Secures the races-------------------
+path /races/{raceId} is Race {
+    read() { 
+        hasRaceReadAccess(raceId)
+    }
+    create() {
+        hasRaceCreateAccess(raceId)
+    }
+    update() {
+        hasRaceUpdateAccess(raceId)
+    }
+}
+
+type Race {
+    bowNumber: BowCard,
+    eventName: ThisEvent,
+    raceTime: AndTheyreOff,
+    suggestedLaunchTime: RaiseTheAnchor,
+    team: String
+
+} 
+
+type BowCard extends Number {
+    validate() { this > 0}
+}
+
+type ThisEvent extends String {
+    validate() { this.length > 0 && this.length < 32 }
+}
+
+type AndTheyreOff extends String {
+    validate() { this.length > 0 && this.length < 6 }
+}
+
+type RaiseTheAnchor extends String {
+    validate() { this.length > 0 && this.length < 6 }
+}
+
+getRace(raceId){
+    return prior(root).races[raceId]
+}
+
+hasRaceReadAccess(raceId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRace(raceId).team
+}
+
+hasRaceCreateAccess(raceId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRace(raceId).team
+}
+
+hasRaceUpdateAccess(raceId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRace(raceId).team
+}
+
+//-------------------Secures the regattas--------------------
+path /regattas/{regattaId} is Regatta {
+    read() { 
+        hasRegattaReadAccess(regattaId)
+    }
+    create() {
+        hasRegattaCreateAccess(regattaId)
+    }
+    update() {
+        hasRegattaUpdateAccess(regattaId)
+    }
+}
+
+type Regatta {
+    city: CityName,
+    cost: EntryFee,
+    head: Boolean,
+    locationImage: PrettyPicture,
+    name: RegattaName,
+    state: LocationState,
+    streetAddress: LocationAddress,
+    team: String
+} 
+
+type CityName extends String{
+    validate(){ this.length > 0 && this.length < 32}
+}
+
+type EntryFee extends Number {
+    validate(){ this.length > 0 }
+
+}
+
+type PrettyPicture extends String {
+    validate(){ this.length > 0 }
+
+}
+
+type RegattaName extends String {
+    validate(){ this.length > 0 && this.length < 32}
+
+}
+
+type LocationState extends String {
+    validate(){ this.length > 0 && this.length < 32}
+
+}
+
+type LocationAddress {
+    validate(){ this.length > 0 && this.length < 64}
+
+}
+
+getRegatta(regattaId){
+    return prior(root).regattas[regattaId]
+}
+
+hasRegattaReadAccess(regattaId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team
+}
+
+hasRegattaCreateAccess(regattaId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team
+}
+
+hasRegattaUpdateAccess(regattaId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getAuth().update == now
+}
+
+//------------------Secures the riggers----------------------
+path /riggers/{riggerId} is Rigger{
+    read() { 
+        hasRiggerReadAccess(riggerId)
+    }
+    create() {
+        hasRiggerCreateAccess(riggerId)
+    }
+    update() {
+        hasRiggerUpdateAccess(riggerId)
+    }
+}
+
+type Rigger{
+    seat: SeatNumber,
+    side: BoatSide,
+    style: RowingStyle,
+    type: RiggerType,
+    team: String
+}
+
+type SeatNumber extends Number{
+    validate() { this > 0 && this <= 8 }
+}
+
+type BoatSide extends String{
+    validate() { this.length > 0 && this.length < 20 }
+}
+
+type RowingStyle extends String{
+    validate() { this.length > 0 && this.length < 20 }
+}
+
+type RiggerType extends String{
+    validate() { this.length > 0 && this.length < 20 }
+}
+
+getRigger(riggerId){
+    return prior(root).riggers[riggerId]
+}
+
+hasRiggerReadAccess(riggerId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRigger(riggerId).team
+}
+
+hasRiggerCreateAccess(riggerId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRigger(riggerId).team
+}
+
+hasRiggerUpdateAccess(riggerId) {
+    return isAuthenticatedUser() && getAuthUser().team == getRigger(riggerId).team && getAuth().update == now
+}

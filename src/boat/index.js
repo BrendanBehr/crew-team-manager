@@ -2,7 +2,6 @@
 
 const faker = require('faker');
 const Entity = require('../entity');
-const Rigger = require('../rigger');
 
 class Boat extends Entity {
 
@@ -58,43 +57,6 @@ class Boat extends Entity {
         return this._athletes;
     }
 
-    createRigger(values) {
-        this._team = this.getTeam();
-        return new Rigger({
-            generator: this.getGenerator(),
-            team: this,
-            values: values
-        });
-
-    }
-
-    createRiggers(quantity) {
-
-        quantity = quantity || 0;
-
-        const riggers = [];
-        while (quantity > 0) {
-            riggers.push(this.createRigger());
-            quantity--;
-        }
-
-        return riggers;
-
-    }
-
-    getRiggers() {
-
-        const team = this;
-        return this.getGenerator().getRigger().filter((rigger) => {
-            return rigger.getTeam() == team;
-        });
-
-    }
-
-    getRigger() {
-        return this._rigger;
-    }
-
     addOars(oar) {
 
         this.getData().boatOars = this.getData().boatOars || {};
@@ -112,7 +74,7 @@ class Boat extends Entity {
     removeOar(oar) {
 
         this.getData().boatOars = this.getData().boatOars || {};
-        this.getData().boatathletes[this.getPathKey()] = this.getData().boatOars[this.getPathKey()] || {};
+        this.getData().boatOars[this.getPathKey()] = this.getData().boatOars[this.getPathKey()] || {};
 
         if (this.getData().boatOars[this.getPathKey()][oar.getPathKey()]) {
             this.getData().boatOars[this.getPathKey()][oar.getPathKey()] = null;
@@ -125,6 +87,38 @@ class Boat extends Entity {
 
     getOars() {
         return this._oars;
+    }
+
+    addRiggers(rigger) {
+
+        this.getData().boatRiggers = this.getData().boatRiggers || {};
+        this.getData().boatRiggers[this.getPathKey()] = this.getData().boatRiggers[this.getPathKey()] || {};
+
+        for (let x = 0; x < rigger.length; x++) {
+            if (!this.getData().boatRiggers[this.getPathKey()][rigger[x].getPathKey()]) {
+                this.getData().boatRiggers[this.getPathKey()][rigger[x].getPathKey()] = true;
+                this._rigger.push(rigger[x]);
+            }
+        }
+
+    }
+
+    removeRigger(rigger) {
+
+        this.getData().boatRiggers = this.getData().boatRiggers || {};
+        this.getData().boatRiggers[this.getPathKey()] = this.getData().boatRiggers[this.getPathKey()] || {};
+
+        if (this.getData().boatOars[this.getPathKey()][rigger.getPathKey()]) {
+            this.getData().boatOars[this.getPathKey()][rigger.getPathKey()] = null;
+            this._riggers = this.getAthletes().filter((element) => {
+                return element != rigger;
+            });
+        }
+
+    }
+
+    getRiggers() {
+        return this._riggers;
     }
 
 }

@@ -9,7 +9,7 @@ require('dotenv').config({
     path: process.cwd() + '/../../.env'
 });
 
-// console.warn = function () {}; // Disables warnings from firebaseAdmin
+console.warn = function () {}; // Disables warnings from firebaseAdmin
 
 describe('Auths', function () {
 
@@ -18,6 +18,7 @@ describe('Auths', function () {
     const generator = new Generator();
 
     const team1 = generator.createTeam();
+    const team2 = generator.createTeam();
 
     const team1User1 = team1.createUser();
     const team1User1Auth1 = team1User1.createAuth();
@@ -34,6 +35,33 @@ describe('Auths', function () {
     const team1User2Auth2 = team1User2.createAuth({
         status: 'expired'
     });
+
+    const team1Athlete1 = team1.createAthlete();
+    const team2Athlete1 = team2.createAthlete();
+
+    const team1Boat1 = team1.createBoat();
+    const team2Boat1 = team2.createBoat();
+
+    const team1Rigger1 = team1.createRigger();
+    const team2Rigger1 = team2.createRigger();
+
+    const team1Erg1 = team1.createErg();
+    const team2Erg1 = team2.createErg();
+
+    const team1Finance1 = team1.createFinance();
+    const team2Finance1 = team2.createFinance();
+
+    const team1Oar1 = team1.createOar();
+    const team2Oar1 = team2.createOar();
+
+    const team1Picture1 = team1.createPicture();
+    const team2Picture1 = team2.createPicture();
+
+    const team1Race1 = team1.createRace();
+    const team2Race1 = team2.createRace();
+
+    const team1Regatta1 = team1.createRegatta();
+    const team2Regatta1 = team2.createRegatta();
 
     before(function () {
 
@@ -301,9 +329,349 @@ describe('Auths', function () {
             });
 
         });
+
+        describe('as user with active auth (team1User1Auth1) accessing own athlete (team1Athlete1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'athletes/' + team1Athlete1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams athletes (team2Athlete1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'athletes/' + team2Athlete1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own boats (team1Boat1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'boats/' + team1Boat1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams boats (team2Boat1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'boats/' + team2Boat1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing riggers (team1Rigger1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'riggers/' + team1Rigger1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams riggers (team2Rigger1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'riggers/' + team2Rigger1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own ergs (team1Erg1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'ergs/' + team1Erg1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams ergs (team2Erg1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'ergs/' + team2Erg1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own finances (team1Finance1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'finances/' + team1Finance1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams finances (team2Finance1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'finances/' + team2Finance1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own oars (team1Oar1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'oars/' + team1Oar1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams oars (team2Oar1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'oars/' + team2Oar1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own pictures (team1Picture1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'pictures/' + team1Picture1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams pictures (team2Picture1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'pictures/' + team2Picture1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own race (team1Race1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'races/' + team1Race1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams race (team2Race1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'races/' + team2Race1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own regatta (team1Regatta1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'regattas/' + team1Regatta1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams regatta (team2Regatta1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'regattas/' + team2Regatta1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
     });
-
-
 
     describe('write request', function () {
 
@@ -382,7 +750,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) updating individual values of an auth (team1User1Auth4)', function () {
+        describe.only('as user with active auth (team1User1Auth1) updating individual values of an auth (team1User1Auth4)', function () {
 
             const appName = 'team1User1Auth1';
 

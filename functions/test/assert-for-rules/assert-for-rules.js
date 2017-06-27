@@ -1,12 +1,12 @@
 'use strict';
 
 const Promise = require('bluebird');
-const auth = require('./auth.js');
+const auth = require('./auth');
 const unirest = require('unirest');
 const yargs = require('yargs');
 
 require('dotenv').config({
-    path: process.cwd() + '/../../.env'
+    path: process.cwd() + '../../.env'
 });
 
 yargs.default({
@@ -20,7 +20,7 @@ const getRules = (accessToken) => {
             return reject(new Error('Missing environment variable `FIREBASE_DATABASE_URL`'));
         }
 
-        return unirest.get(process.env.FIREBASE_DATABASE_URL + '/.rules/rules.json')
+        return unirest.get(process.env.FIREBASE_DATABASE_URL + '/.settings/rules.json')
             .headers({
                 'Authorization': 'Bearer ' + accessToken
             })
@@ -44,7 +44,7 @@ const getErrors = (app, action, accessToken, rules) => {
             return reject(new Error('Missing environment variable `FIREBASE_DATABASE_URL`'));
         }
 
-        return unirest.post(process.env.FIREBASE_DATABASE_URL + '/.rules/rules.json')
+        return unirest.post(process.env.FIREBASE_DATABASE_URL + '/.settings/rules.json')
             .headers({
                 'Authorization': 'Bearer ' + accessToken,
                 'Content-Type': 'application/json'

@@ -77,18 +77,36 @@ class User extends Entity {
     }
 
     createAuth(values) {
+
         return new Auth({
             generator: this.getGenerator(),
-            user: this,
+            team: this,
             values: values
         });
+
+    }
+
+    createAuths(quantity) {
+
+        quantity = quantity || 0;
+
+        const auths = [];
+        while (quantity > 0) {
+            auths.push(this.createAuth());
+            quantity--;
+        }
+
+        return auths;
+
     }
 
     getAuths() {
-        const user = this;
+
+        const team = this;
         return this.getGenerator().getAuth().filter((auth) => {
-            return auth.getAuth() == user;
+            return auth.getTeam() == team;
         });
+
     }
 
     getAuth() {

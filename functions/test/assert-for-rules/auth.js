@@ -9,11 +9,13 @@ require('dotenv').config({
 
 const getAccessToken = () => {
     return new Promise((resolve, reject) => {
-        if (!process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
-            return reject(new Error('Missing environment variable `FIREBASE_SERVICE_ACCOUNT_JSON`'));
-        }
 
-        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+        const serviceAccount = {
+            client_email: process.env.FIREBASE_CLIENT_EMAIL,
+            private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            project_id: process.env.FIREBASE_PROJECT_ID,
+            database_url: process.env.FIREBASE_DATABASE_URL
+        };
 
         const scopes = [
             'https://www.googleapis.com/auth/firebase',

@@ -1,1 +1,5 @@
-{}
+{
+  "database": {
+    "rules": "rules/rules.json"
+  }
+}

@@ -11,6 +11,7 @@ const Race = require('../race');
 const Regatta = require('../regatta');
 const User = require('../user');
 const Picture = require('../picture');
+const Rigger = require('../rigger');
 
 class Team extends Entity {
 
@@ -290,6 +291,43 @@ class Team extends Entity {
 
     getRegatta() {
         return this._regatta;
+    }
+
+    createRigger(values) {
+        this._team = this.getTeam();
+        return new Rigger({
+            generator: this.getGenerator(),
+            team: this,
+            values: values
+        });
+
+    }
+
+    createRiggers(quantity) {
+
+        quantity = quantity || 0;
+
+        const riggers = [];
+        while (quantity > 0) {
+            riggers.push(this.createRigger());
+            quantity--;
+        }
+
+        return riggers;
+
+    }
+
+    getRiggers() {
+
+        const team = this;
+        return this.getGenerator().getRigger().filter((rigger) => {
+            return rigger.getTeam() == team;
+        });
+
+    }
+
+    getRigger() {
+        return this._rigger;
     }
 
     createUser(values) {
