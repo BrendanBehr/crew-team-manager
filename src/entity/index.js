@@ -63,8 +63,19 @@ class Entity {
         return this._generator;
     }
 
-    getValues() {
-        return this._values;
+    getValues(options) {
+
+        options = options || {};
+        options.reference = typeof options.reference == 'undefined' ? true : options.reference;
+
+        let values = this._values;
+
+        if (!options.reference) {
+            values = JSON.parse(JSON.stringify(values));
+        }
+
+        return values;
+
     }
 
     getTeam() {

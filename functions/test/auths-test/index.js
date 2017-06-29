@@ -674,7 +674,7 @@ describe('Auths', function () {
         });
     });
 
-    describe('write request', function () {
+    describe.only('write request', function () {
 
         beforeEach(function () {
 
@@ -883,7 +883,6 @@ describe('Auths', function () {
         });
 
         describe('as user with active auth (team1User1Auth1) set values of same auth (team1User1Auth1)', function () {
-
             const appName = 'team1User1Auth1';
             let path;
             let auth;
@@ -989,20 +988,6 @@ describe('Auths', function () {
 
             });
 
-            it('should write String to `browser`', function (done) {
-
-                auth.browser = faker.random.words();
-                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
-
-            });
-
-            it('should not write Null to `browser`', function (done) {
-
-                auth.browser = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, auth, done);
-
-            });
-
         });
 
         describe('as user with active auth (team1User1Auth1) set values of active auth with same user (team1User1Auth4)', function () {
@@ -1018,10 +1003,41 @@ describe('Auths', function () {
                     reference: false
                 });
                 auth.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                auth.status = 'active';
 
             });
 
             it('should write, valid prior data', function (done) {
+
+                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
+
+            });
+
+            it('should write a different, valid status', function (done) {
+
+                auth.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                auth.status = 'expired';
+                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
+
+            });
+
+            it('should write current time to updated', function (done) {
+
+                auth.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
+
+            });
+
+            it('should write String to `ip`', function (done) {
+
+                auth.ip = faker.random.words();
+                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
+
+            });
+
+            it('should write String to `browser`', function (done) {
+
+                auth.browser = faker.random.words();
 
                 assert.canSet(firebaseAdmin.app(appName), path, auth, done);
 
@@ -1055,24 +1071,10 @@ describe('Auths', function () {
 
             });
 
-            it('should write a different, valid status', function (done) {
-
-                auth.status = 'expired';
-                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
-
-            });
-
             it('should not write null to status', function (done) {
 
                 auth.status = null;
                 assert.cannotSet(firebaseAdmin.app(appName), path, auth, done);
-
-            });
-
-            it('should write current time to updated', function (done) {
-
-                auth.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
-                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
 
             });
 
@@ -1097,24 +1099,10 @@ describe('Auths', function () {
 
             });
 
-            it('should write String to `ip`', function (done) {
-
-                auth.ip = faker.random.words();
-                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
-
-            });
-
             it('should not write Null to `ip`', function (done) {
 
                 auth.ip = null;
                 assert.cannotSet(firebaseAdmin.app(appName), path, auth, done);
-
-            });
-
-            it('should write String to `browser`', function (done) {
-
-                auth.browser = faker.random.words();
-                assert.canSet(firebaseAdmin.app(appName), path, auth, done);
 
             });
 
@@ -1297,1166 +1285,1839 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams athlete', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let athlete;
+        describe('Athlete tests', function () {
 
-            beforeEach(function () {
+            describe('as user with active auth (team1User1Auth1) updating individual values of an athlete (team1Athlete1)', function () {
 
-                path = 'athletes/' + team1Athlete1.getPathKey();
-                athlete = team1Athlete1.getValues({
+                const appName = 'team1User1Auth1';
+
+                const path = 'athletes/' + team1Athlete1.getPathKey();
+                const athlete = team1Athlete1.getValues({
                     reference: false
                 });
-                athlete.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                const athleteKeys = Object.keys(athlete);
+
+                for (let x = 0; x < athleteKeys.length; x++) {
+
+                    if (athleteKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + athleteKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[athleteKeys[x]] = athlete[athleteKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < athleteKeys.length; x++) {
+
+                    if (athleteKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + athleteKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[athleteKeys[x]] = athlete[athleteKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
 
             });
 
-            it('should write, valid prior data', function (done) {
+            describe('as user with active auth (team1User1Auth1) setting athlete of another team (team2Athlete1)', function () {
 
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                const appName = 'team1User1Auth1';
+                let path;
+                let athlete;
 
-            });
+                beforeEach(function () {
 
-            it('should not write empty athlete', function (done) {
+                    path = 'athletes/' + team2Athlete1.getPathKey();
+                    athlete = team2Athlete1.getValues({
+                        reference: false
+                    });
+                    athlete.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                athlete = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                });
 
-            });
+                it('should not write', function (done) {
 
-            it('should not write null athlete', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-                athlete = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
-
-            });
-
-            it('should not write another teams athlete', function (done) {
-
-                athlete.team = team2Athlete1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                });
 
             });
 
-            it('should not write null to team', function (done) {
+            describe('as user with active auth (team1User1Auth1) set values of the same teams athlete', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let athlete;
 
-                athlete.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                beforeEach(function () {
 
-            });
+                    path = 'athletes/' + team1Athlete1.getPathKey();
+                    athlete = team1Athlete1.getValues({
+                        reference: false
+                    });
+                    athlete.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-            it('should write a different, valid city', function (done) {
+                });
 
-                athlete.city = faker.address.city();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write, valid prior data', function (done) {
 
-            });
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write null to city', function (done) {
+                });
 
-                athlete.city = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write a different, valid city', function (done) {
 
-            });
+                    athlete.city = faker.address.city();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write a different, valid credential', function (done) {
+                });
 
-                athlete.credential = 'new credential';
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write a different, valid credential', function (done) {
 
-            });
+                    athlete.credential = 'new credential';
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write null to credential', function (done) {
+                });
 
-                athlete.credential = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to ergScore', function (done) {
 
-            });
+                    athlete.ergScore = faker.random.words();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should be able to change driver', function (done) {
+                });
 
-                athlete.driver = true;
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to firstName', function (done) {
 
-            });
+                    athlete.firstName = faker.name.firstName();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write null to driver', function (done) {
+                });
 
-                athlete.driver = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to lastName', function (done) {
 
-            });
+                    athlete.lastName = faker.name.lastName();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to ergScore', function (done) {
+                });
 
-                athlete.ergScore = faker.random.words();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write Number to fundRaising', function (done) {
 
-            });
+                    athlete.fundRaisng = faker.random.number();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to ergScore', function (done) {
+                });
 
-                athlete.ergScore = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to gender', function (done) {
 
-            });
+                    athlete.gender = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to firstName', function (done) {
+                });
 
-                athlete.firstName = faker.name.firstName();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to height', function (done) {
 
-            });
+                    athlete.height = 'tall';
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to firstName', function (done) {
+                });
 
-                athlete.firstName = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to phoneNumber', function (done) {
 
-            });
+                    athlete.phoneNumber = faker.phone.phoneNumber();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to lastName', function (done) {
+                });
 
-                athlete.lastName = faker.name.lastName();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to side', function (done) {
 
-            });
+                    athlete.side = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to lastName', function (done) {
+                });
 
-                athlete.lastName = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to state', function (done) {
 
-            });
+                    athlete.state = faker.address.state();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write Number to fundRaising', function (done) {
+                });
 
-                athlete.fundRaisng = faker.random.number();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to steetAddress', function (done) {
 
-            });
+                    athlete.steetAddress = faker.address.streetAddress();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to fundRaisng', function (done) {
+                });
 
-                athlete.fundRaisng = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write Number to weight', function (done) {
 
-            });
+                    athlete.weight = faker.random.number();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to gender', function (done) {
+                });
 
-                athlete.gender = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should write String to year', function (done) {
 
-            });
+                    athlete.year = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to gender', function (done) {
+                });
 
-                athlete.gender = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write empty athlete', function (done) {
 
-            });
+                    athlete = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to height', function (done) {
+                });
 
-                athlete.height = 'tall';
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write null athlete', function (done) {
 
-            });
+                    athlete = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to height', function (done) {
+                });
 
-                athlete.height = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write another teams athlete', function (done) {
 
-            });
+                    athlete.team = team2Athlete1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to phoneNumber', function (done) {
+                });
 
-                athlete.phoneNumber = faker.phone.phoneNumber();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write null to team', function (done) {
 
-            });
+                    athlete.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to phoneNumber', function (done) {
+                });
 
-                athlete.phoneNumber = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write Null to steetAddress', function (done) {
 
-            });
+                    athlete.steetAddress = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to side', function (done) {
+                });
 
-                athlete.side = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write null to city', function (done) {
 
-            });
+                    athlete.city = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to side', function (done) {
+                });
 
-                athlete.side = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write null to credential', function (done) {
 
-            });
+                    athlete.credential = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to state', function (done) {
+                });
 
-                athlete.state = faker.address.state();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should be able to change driver', function (done) {
 
-            });
+                    athlete.driver = true;
+                    assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to state', function (done) {
+                });
 
-                athlete.state = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write null to driver', function (done) {
 
-            });
+                    athlete.driver = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to steetAddress', function (done) {
+                });
 
-                athlete.steetAddress = faker.address.streetAddress();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write Null to ergScore', function (done) {
 
-            });
+                    athlete.ergScore = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to steetAddress', function (done) {
+                });
 
-                athlete.steetAddress = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write Null to fundRaisng', function (done) {
 
-            });
+                    athlete.fundRaisng = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write Number to weight', function (done) {
+                });
 
-                athlete.weight = faker.random.number();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write Null to firstName', function (done) {
 
-            });
+                    athlete.firstName = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to weight', function (done) {
+                });
 
-                athlete.weight = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write Null to lastName', function (done) {
 
-            });
+                    athlete.lastName = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should write String to year', function (done) {
+                });
 
-                athlete.year = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write Null to height', function (done) {
 
-            });
+                    athlete.height = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write Null to year', function (done) {
+                });
 
-                athlete.year = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                it('should not write Null to phoneNumber', function (done) {
 
-            });
+                    athlete.phoneNumber = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-            it('should not write to another athletes credentials', function (done) {
-                athlete.credential = team2Athlete1.credential.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+                });
+
+                it('should not write Null to gender', function (done) {
+
+                    athlete.gender = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+
+                });
+
+                it('should not write Null to side', function (done) {
+
+                    athlete.side = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+
+                });
+
+                it('should not write Null to state', function (done) {
+
+                    athlete.state = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+
+                });
+
+                it('should not write Null to weight', function (done) {
+
+                    athlete.weight = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+
+                });
+
+                it('should not write Null to year', function (done) {
+
+                    athlete.year = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+
+                });
             });
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams boat', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let boat;
+        describe('Boat tests', function () {
 
-            beforeEach(function () {
+            describe('as user with active auth (team1User1Auth1) updating individual values of an boat (team1Boat1)', function () {
 
-                path = 'boats/' + team1Boat1.getPathKey();
-                boat = team1Boat1.getValues({
+                const appName = 'team1User1Auth1';
+
+                const path = 'boats/' + team1Boat1.getPathKey();
+                const boat = team1Boat1.getValues({
                     reference: false
                 });
-                boat.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                const boatKeys = Object.keys(boat);
+
+                for (let x = 0; x < boatKeys.length; x++) {
+
+                    if (boatKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + boatKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[boatKeys[x]] = boat[boatKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < boatKeys.length; x++) {
+
+                    if (boatKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + boatKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[boatKeys[x]] = boat[boatKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
 
             });
 
-            it('should write, valid prior data', function (done) {
+            describe('as user with active auth (team1User1Auth1) setting boat of another team (team2Boat1)', function () {
 
-                assert.canSet(firebaseAdmin.app(appName), path, boat, done);
+                const appName = 'team1User1Auth1';
+                let path;
+                let athlete;
 
-            });
+                beforeEach(function () {
 
-            it('should not write empty boat', function (done) {
+                    path = 'athletes/' + team2Boat1.getPathKey();
+                    athlete = team2Boat1.getValues({
+                        reference: false
+                    });
+                    athlete.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                boat = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                });
 
-            });
+                it('should not write', function (done) {
 
-            it('should not write null boat', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
-                boat = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
-
-            });
-
-            it('should not write another teams boat', function (done) {
-
-                boat.team = team2Boat1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                });
 
             });
 
-            it('should not write null to team', function (done) {
+            describe('as user with active auth (team1User1Auth1) set values of the same teams boat', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let boat = team1Boat1.getValues({
+                    reference: false
+                });
+                const temp = boat;
+                beforeEach(function () {
 
-                boat.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                    path = 'boats/' + team1Boat1.getPathKey();
+                    boat = temp;
+                    boat.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-            });
+                });
 
-            it('should write a different, valid manufacturer', function (done) {
+                it('should write, valid prior data', function (done) {
 
-                boat.manufacturer = faker.lorem.word();
-                assert.cantSet(firebaseAdmin.app(appName), path, boat, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should not write null to manufacturer', function (done) {
+                it('should not write empty boat', function (done) {
 
-                boat.manufacturer = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should write a different, valid name', function (done) {
+                it('should not write null boat', function (done) {
 
-                boat.name = faker.name.lastName();
-                assert.canSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should not write null to name', function (done) {
+                it('should not write another teams boat', function (done) {
 
-                boat.name = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat.team = team2Boat1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should be able to change rigging', function (done) {
+                it('should not write null to team', function (done) {
 
-                boat.rigging = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should not write null to rigging', function (done) {
+                it('should write a different, valid manufacturer', function (done) {
 
-                boat.rigging = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat.manufacturer = faker.lorem.word();
+                    assert.cantSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should write Number to size', function (done) {
+                it('should not write null to manufacturer', function (done) {
 
-                boat.size = 8;
-                assert.canSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat.manufacturer = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should not write Null to size', function (done) {
+                it('should write a different, valid name', function (done) {
 
-                boat.size = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat.name = faker.name.lastName();
+                    assert.canSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should write String to type', function (done) {
+                it('should not write null to name', function (done) {
 
-                boat.type = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat.name = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
 
-            });
+                });
 
-            it('should not write Null to type', function (done) {
+                it('should be able to change rigging', function (done) {
 
-                boat.type = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                    boat.rigging = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, boat, done);
+
+                });
+
+                it('should not write null to rigging', function (done) {
+
+                    boat.rigging = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+
+                });
+
+                it('should write Number to size', function (done) {
+
+                    boat.size = 8;
+                    assert.canSet(firebaseAdmin.app(appName), path, boat, done);
+
+                });
+
+                it('should not write Null to size', function (done) {
+
+                    boat.size = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+
+                });
+
+                it('should write String to type', function (done) {
+
+                    boat.type = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, boat, done);
+
+                });
+
+                it('should not write Null to type', function (done) {
+
+                    boat.type = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+                });
             });
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams erg', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let erg;
+        describe.only('Erg tests', function () {
 
-            beforeEach(function () {
+            describe('as user with active auth (team1User1Auth1) updating individual values of an erg (team1Erg1)', function () {
 
-                path = 'ergs/' + team1Erg1.getPathKey();
-                erg = team1Erg1.getValues({
+                const appName = 'team1User1Auth1';
+
+                const path = 'ergs/' + team1Erg1.getPathKey();
+                const erg = team1Erg1.getValues({
                     reference: false
                 });
-                erg.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                const ergKeys = Object.keys(erg);
+
+                for (let x = 0; x < ergKeys.length; x++) {
+
+                    if (ergKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + ergKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[ergKeys[x]] = erg[ergKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        console.log(value);
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < ergKeys.length; x++) {
+
+                    if (ergKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + ergKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[ergKeys[x]] = erg[ergKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
 
             });
 
-            it('should write, valid prior data', function (done) {
+            describe('as user with active auth (team1User1Auth1) setting erg of another team (team2Erg1)', function () {
 
-                assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+                const appName = 'team1User1Auth1';
+                let path;
+                let erg;
 
-            });
+                beforeEach(function () {
 
-            it('should not write empty erg', function (done) {
+                    path = 'ergs/' + team2Erg1.getPathKey();
+                    erg = team2Erg1.getValues({
+                        reference: false
+                    });
+                    erg.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                erg = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                });
 
-            });
+                it('should not write', function (done) {
 
-            it('should not write null erg', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
 
-                erg = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
-
-            });
-
-            it('should not write another teams erg', function (done) {
-
-                erg.team = team2Erg1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                });
 
             });
 
-            it('should not write null to team', function (done) {
+            describe.only('as user with active auth (team1User1Auth1) set values of the same teams erg', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let erg;
 
-                erg.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                beforeEach(function () {
 
-            });
+                    path = 'ergs/' + team1Erg1.getPathKey();
+                    erg = team1Erg1.getValues({
+                        reference: false
+                    });
+                    erg.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    console.log(erg);
+                });
 
-            it('should write a different, valid condition', function (done) {
+                it('should write, valid prior data', function (done) {
 
-                erg.condition = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should not write null to condition', function (done) {
+                it('should not write empty erg', function (done) {
 
-                erg.condition = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should write a different, valid location', function (done) {
+                it('should not write null erg', function (done) {
 
-                erg.location = faker.name.lastName();
-                assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should not write null to location', function (done) {
+                it('should not write another teams erg', function (done) {
 
-                erg.location = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg.team = team2Erg1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should be able to change model', function (done) {
+                it('should not write null to team', function (done) {
 
-                erg.model = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should not write null to model', function (done) {
+                it('should write a different, valid condition', function (done) {
 
-                erg.model = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg.condition = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should write Number to number', function (done) {
+                it('should not write null to condition', function (done) {
 
-                erg.number = 44;
-                assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg.condition = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should not write Null to number', function (done) {
+                it('should write a different, valid location', function (done) {
 
-                erg.number = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg.location = faker.name.lastName();
+                    assert.canSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should write String to screenType', function (done) {
+                it('should not write null to location', function (done) {
 
-                erg.screenType = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg.location = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
 
-            });
+                });
 
-            it('should not write Null to screenType', function (done) {
+                it('should be able to change model', function (done) {
 
-                erg.screenType = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                    erg.model = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+
+                });
+
+                it('should not write null to model', function (done) {
+
+                    erg.model = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+
+                });
+
+                it('should write Number to number', function (done) {
+
+                    erg.number = 44;
+                    assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+
+                });
+
+                it('should not write Null to number', function (done) {
+
+                    erg.number = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+
+                });
+
+                it('should write String to screenType', function (done) {
+
+                    erg.screenType = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, erg, done);
+
+                });
+
+                it('should not write Null to screenType', function (done) {
+
+                    erg.screenType = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+                });
             });
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams finance', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let finance;
+        describe('Finance tests', function () {
 
-            beforeEach(function () {
+            describe('as user with active auth (team1User1Auth1) updating individual values of an finance (team1Finance1)', function () {
 
-                path = 'finances/' + team1Finance1.getPathKey();
-                finance = team1Finance1.getValues({
+                const appName = 'team1User1Auth1';
+
+                const path = 'finances/' + team1Finance1.getPathKey();
+                const finance = team1Finance1.getValues({
                     reference: false
                 });
-                finance.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                const financeKeys = Object.keys(finance);
+
+                for (let x = 0; x < financeKeys.length; x++) {
+
+                    if (financeKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + financeKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[financeKeys[x]] = finance[financeKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < financeKeys.length; x++) {
+
+                    if (financeKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + financeKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[financeKeys[x]] = finance[financeKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
 
             });
 
-            it('should write, valid prior data', function (done) {
+            describe('as user with active auth (team1User1Auth1) setting finance of another team (team2Finance1)', function () {
 
-                assert.canSet(firebaseAdmin.app(appName), path, finance, done);
+                const appName = 'team1User1Auth1';
+                let path;
+                let finance;
 
-            });
+                beforeEach(function () {
 
-            it('should not write empty finance', function (done) {
+                    path = 'finances/' + team2Finance1.getPathKey();
+                    finance = team2Finance1.getValues({
+                        reference: false
+                    });
+                    finance.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                finance = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+                });
 
-            });
+                it('should not write', function (done) {
 
-            it('should not write null finance', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
-                finance = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
-
-            });
-
-            it('should not write another teams finance', function (done) {
-
-                finance.team = team2Finance1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+                });
 
             });
 
-            it('should not write null to team', function (done) {
+            describe('as user with active auth (team1User1Auth1) set values of the same teams finance', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let finance;
 
-                finance.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+                beforeEach(function () {
 
-            });
+                    path = 'finances/' + team1Finance1.getPathKey();
+                    finance = team1Finance1.getValues({
+                        reference: false
+                    });
+                    finance.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-            it('should write Number to valid expences', function (done) {
+                });
 
-                finance.expences = faker.random.number();
-                assert.canSet(firebaseAdmin.app(appName), path, finance, done);
+                it('should write, valid prior data', function (done) {
 
-            });
+                    assert.canSet(firebaseAdmin.app(appName), path, finance, done);
 
-            it('should not write null to expences', function (done) {
+                });
 
-                finance.expences = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+                it('should not write empty finance', function (done) {
 
-            });
+                    finance = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
-            it('should write Number to valid gross', function (done) {
+                });
 
-                finance.gross = faker.random.number();
-                assert.canSet(firebaseAdmin.app(appName), path, finance, done);
+                it('should not write null finance', function (done) {
 
-            });
+                    finance = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
-            it('should not write null to gross', function (done) {
+                });
 
-                finance.gross = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+                it('should not write another teams finance', function (done) {
 
-            });
+                    finance.team = team2Finance1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
-            it('should write Number to incomes', function (done) {
+                });
 
-                finance.incomes = faker.random.number();
-                assert.canSet(firebaseAdmin.app(appName), path, finance, done);
+                it('should not write null to team', function (done) {
 
-            });
+                    finance.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
-            it('should not write null to incomes', function (done) {
+                });
 
-                finance.incomes = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+                it('should write Number to valid expences', function (done) {
 
-            });
+                    finance.expences = faker.random.number();
+                    assert.canSet(firebaseAdmin.app(appName), path, finance, done);
 
-            it('should write String to reason', function (done) {
+                });
 
-                finance.reason = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, finance, done);
+                it('should not write null to expences', function (done) {
 
-            });
+                    finance.expences = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
-            it('should not write Null to reason', function (done) {
+                });
 
-                finance.reason = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+                it('should write Number to valid gross', function (done) {
 
+                    finance.gross = faker.random.number();
+                    assert.canSet(firebaseAdmin.app(appName), path, finance, done);
+
+                });
+
+                it('should not write null to gross', function (done) {
+
+                    finance.gross = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+
+                });
+
+                it('should write Number to incomes', function (done) {
+
+                    finance.incomes = faker.random.number();
+                    assert.canSet(firebaseAdmin.app(appName), path, finance, done);
+
+                });
+
+                it('should not write null to incomes', function (done) {
+
+                    finance.incomes = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+
+                });
+
+                it('should write String to reason', function (done) {
+
+                    finance.reason = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, finance, done);
+
+                });
+
+                it('should not write Null to reason', function (done) {
+
+                    finance.reason = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+
+                });
             });
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams oar', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let oar;
+        describe('Oar tests', function () {
 
-            beforeEach(function () {
+            describe('as user with active auth (team1User1Auth1) updating individual values of an oar (team1Oar1)', function () {
 
-                path = 'oars/' + team1Oar1.getPathKey();
-                oar = team1Oar1.getValues({
+                const appName = 'team1User1Auth1';
+
+                const path = 'oars/' + team1Oar1.getPathKey();
+                const oar = team1Oar1.getValues({
                     reference: false
                 });
-                oar.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                const oarKeys = Object.keys(oar);
+
+                for (let x = 0; x < oarKeys.length; x++) {
+
+                    if (oarKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + oarKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[oarKeys[x]] = oar[oarKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < oarKeys.length; x++) {
+
+                    if (oarKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + oarKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[oarKeys[x]] = oar[oarKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
 
             });
 
-            it('should write, valid prior data', function (done) {
+            describe('as user with active auth (team1User1Auth1) setting oar of another team (team2Oar1)', function () {
 
-                assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+                const appName = 'team1User1Auth1';
+                let path;
+                let oar;
 
-            });
+                beforeEach(function () {
 
-            it('should not write empty oar', function (done) {
+                    path = 'oars/' + team2Oar1.getPathKey();
+                    oar = team2Oar1.getValues({
+                        reference: false
+                    });
+                    oar.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                oar = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                });
 
-            });
+                it('should not write', function (done) {
 
-            it('should not write null oar', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
-                oar = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
-
-            });
-
-            it('should not write another teams oar', function (done) {
-
-                oar.team = team2Oar1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                });
 
             });
 
-            it('should not write null to team', function (done) {
+            describe('as user with active auth (team1User1Auth1) set values of the same teams oar', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let oar;
 
-                oar.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                beforeEach(function () {
 
-            });
+                    path = 'oars/' + team1Oar1.getPathKey();
+                    oar = team1Oar1.getValues({
+                        reference: false
+                    });
+                    oar.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-            it('should write a different, valid color', function (done) {
+                });
 
-                oar.color = faker.commerce.color();
-                assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should write, valid prior data', function (done) {
 
-            });
+                    assert.canSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should not write null to color', function (done) {
+                });
 
-                oar.color = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should not write empty oar', function (done) {
 
-            });
+                    oar = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should write a different, valid handleGrip', function (done) {
+                });
 
-                oar.handleGrip = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should not write null oar', function (done) {
 
-            });
+                    oar = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should not write null to handleGrip', function (done) {
+                });
 
-                oar.handleGrip = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should not write another teams oar', function (done) {
 
-            });
+                    oar.team = team2Oar1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should be able to change name', function (done) {
+                });
 
-                oar.name = faker.name.lastName();
-                assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should not write null to team', function (done) {
 
-            });
+                    oar.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should not write null to name', function (done) {
+                });
 
-                oar.name = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should write a different, valid color', function (done) {
 
-            });
+                    oar.color = faker.commerce.color();
+                    assert.canSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should write Number to length', function (done) {
+                });
 
-                oar.length = faker.random.number();
-                assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should not write null to color', function (done) {
 
-            });
+                    oar.color = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should not write Null to length', function (done) {
+                });
 
-                oar.length = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should write a different, valid handleGrip', function (done) {
 
-            });
+                    oar.handleGrip = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should write String to shape', function (done) {
+                });
 
-                oar.shape = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should not write null to handleGrip', function (done) {
 
-            });
+                    oar.handleGrip = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
-            it('should not write Null to shape', function (done) {
+                });
 
-                oar.shape = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                it('should be able to change name', function (done) {
+
+                    oar.name = faker.name.lastName();
+                    assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+
+                });
+
+                it('should not write null to name', function (done) {
+
+                    oar.name = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+
+                });
+
+                it('should write Number to length', function (done) {
+
+                    oar.length = faker.random.number();
+                    assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+
+                });
+
+                it('should not write Null to length', function (done) {
+
+                    oar.length = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+
+                });
+
+                it('should write String to shape', function (done) {
+
+                    oar.shape = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, oar, done);
+
+                });
+
+                it('should not write Null to shape', function (done) {
+
+                    oar.shape = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+                });
             });
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams picture', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let picture;
+        describe('Picture tests', function () {
 
-            beforeEach(function () {
+            describe('as user with active auth (team1User1Auth1) set values of the same teams picture', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let picture;
 
-                path = 'pictures/' + team1Picture1.getPathKey();
-                picture = team1Picture1.getValues({
-                    reference: false
+                beforeEach(function () {
+
+                    path = 'pictures/' + team1Picture1.getPathKey();
+                    picture = team1Picture1.getValues({
+                        reference: false
+                    });
+                    picture.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
                 });
-                picture.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-            });
+                it('should write, valid prior data', function (done) {
 
-            it('should write, valid prior data', function (done) {
+                    assert.canSet(firebaseAdmin.app(appName), path, picture, done);
 
-                assert.canSet(firebaseAdmin.app(appName), path, picture, done);
+                });
 
-            });
+                it('should not write empty picture', function (done) {
 
-            it('should not write empty picture', function (done) {
+                    picture = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
 
-                picture = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
+                });
 
-            });
+                it('should not write null picture', function (done) {
 
-            it('should not write null picture', function (done) {
+                    picture = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
 
-                picture = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
+                });
 
-            });
+                it('should not write another teams picture', function (done) {
 
-            it('should not write another teams picture', function (done) {
+                    picture.team = team2Picture1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
 
-                picture.team = team2Picture1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
+                });
 
-            });
+                it('should not write null to team', function (done) {
 
-            it('should not write null to team', function (done) {
+                    picture.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
 
-                picture.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
+                });
 
-            });
+                it('should write a different, valid caption', function (done) {
 
-            it('should write a different, valid caption', function (done) {
+                    picture.caption = faker.lorem.words();
+                    assert.canSet(firebaseAdmin.app(appName), path, picture, done);
 
-                picture.caption = faker.lorem.words();
-                assert.canSet(firebaseAdmin.app(appName), path, picture, done);
+                });
 
-            });
+                it('should not write null to caption', function (done) {
 
-            it('should not write null to caption', function (done) {
+                    picture.caption = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
 
-                picture.caption = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
+                });
 
-            });
+                it('should write a different, valid url', function (done) {
 
-            it('should write a different, valid url', function (done) {
+                    picture.url = faker.image.imageUrl();
+                    assert.canSet(firebaseAdmin.app(appName), path, picture, done);
 
-                picture.url = faker.image.imageUrl();
-                assert.canSet(firebaseAdmin.app(appName), path, picture, done);
+                });
 
-            });
+                it('should not write null to url', function (done) {
 
-            it('should not write null to url', function (done) {
+                    picture.url = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
 
-                picture.url = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
-
+                });
             });
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams race', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let race;
 
-            beforeEach(function () {
+        describe('Race tests', function () {
 
-                path = 'races/' + team1Race1.getPathKey();
-                race = team1Race1.getValues({
+            describe('as user with active auth (team1User1Auth1) updating individual values of an race (team1Race1)', function () {
+
+                const appName = 'team1User1Auth1';
+
+                const path = 'races/' + team1Race1.getPathKey();
+                const race = team1Race1.getValues({
                     reference: false
                 });
-                race.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                const raceKeys = Object.keys(race);
+
+                for (let x = 0; x < raceKeys.length; x++) {
+
+                    if (raceKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + raceKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[raceKeys[x]] = race[raceKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < raceKeys.length; x++) {
+
+                    if (raceKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + raceKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[raceKeys[x]] = race[raceKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
 
             });
 
-            it('should write, valid prior data', function (done) {
+            describe('as user with active auth (team1User1Auth1) setting race of another team (team2Race1)', function () {
 
-                assert.canSet(firebaseAdmin.app(appName), path, race, done);
+                const appName = 'team1User1Auth1';
+                let path;
+                let race;
 
-            });
+                beforeEach(function () {
 
-            it('should not write empty race', function (done) {
+                    path = 'races/' + team2Race1.getPathKey();
+                    race = team2Race1.getValues({
+                        reference: false
+                    });
+                    race.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                race = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+                });
 
-            });
+                it('should not write', function (done) {
 
-            it('should not write null race', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
 
-                race = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
-
-            });
-
-            it('should not write another teams race', function (done) {
-
-                race.team = team2Race1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+                });
 
             });
 
-            it('should not write null to team', function (done) {
+            describe('as user with active auth (team1User1Auth1) set values of the same teams race', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let race;
 
-                race.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+                beforeEach(function () {
 
-            });
+                    path = 'races/' + team1Race1.getPathKey();
+                    race = team1Race1.getValues({
+                        reference: false
+                    });
+                    race.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-            it('should write a different, valid bowNumber', function (done) {
+                });
 
-                race.bowNumber = 2;
-                assert.cantSet(firebaseAdmin.app(appName), path, race, done);
+                it('should write, valid prior data', function (done) {
 
-            });
+                    assert.canSet(firebaseAdmin.app(appName), path, race, done);
 
-            it('should not write null to bowNumber', function (done) {
+                });
 
-                race.bowNumber = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+                it('should not write empty race', function (done) {
 
-            });
+                    race = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
 
-            it('should write a different, valid eventName', function (done) {
+                });
 
-                race.eventName = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, race, done);
+                it('should not write null race', function (done) {
 
-            });
+                    race = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
 
-            it('should not write null to eventName', function (done) {
+                });
 
-                race.eventName = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+                it('should not write another teams race', function (done) {
 
-            });
+                    race.team = team2Race1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
 
-            it('should be able to change raceTime', function (done) {
+                });
 
-                race.raceTime = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, race, done);
+                it('should not write null to team', function (done) {
 
-            });
+                    race.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
 
-            it('should not write null to raceTime', function (done) {
+                });
 
-                race.raceTime = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+                it('should write a different, valid bowNumber', function (done) {
 
-            });
+                    race.bowNumber = 2;
+                    assert.cantSet(firebaseAdmin.app(appName), path, race, done);
 
-            it('should write String to suggestedLaunchTime', function (done) {
+                });
 
-                race.suggestedLaunchTime = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, race, done);
+                it('should not write null to bowNumber', function (done) {
 
-            });
+                    race.bowNumber = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
 
-            it('should not write Null to suggestedLaunchTime', function (done) {
+                });
 
-                race.suggestedLaunchTime = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+                it('should write a different, valid eventName', function (done) {
+
+                    race.eventName = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, race, done);
+
+                });
+
+                it('should not write null to eventName', function (done) {
+
+                    race.eventName = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+
+                });
+
+                it('should be able to change raceTime', function (done) {
+
+                    race.raceTime = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, race, done);
+
+                });
+
+                it('should not write null to raceTime', function (done) {
+
+                    race.raceTime = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+
+                });
+
+                it('should write String to suggestedLaunchTime', function (done) {
+
+                    race.suggestedLaunchTime = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, race, done);
+
+                });
+
+                it('should not write Null to suggestedLaunchTime', function (done) {
+
+                    race.suggestedLaunchTime = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+                });
             });
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams regatta', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let regatta;
+        describe('Regatta tests', function () {
 
-            beforeEach(function () {
+            describe('as user with active auth (team1User1Auth1) updating individual values of an regatta (team1Regatta1)', function () {
 
-                path = 'regattas/' + team1Regatta1.getPathKey();
-                regatta = team1Regatta1.getValues({
+                const appName = 'team1User1Auth1';
+
+                const path = 'regattas/' + team1Regatta1.getPathKey();
+                const regatta = team1Regatta1.getValues({
                     reference: false
                 });
-                regatta.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                const regattaKeys = Object.keys(regatta);
+
+                for (let x = 0; x < regattaKeys.length; x++) {
+
+                    if (regattaKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + regattaKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[regattaKeys[x]] = regatta[regattaKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < regattaKeys.length; x++) {
+
+                    if (regattaKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + regattaKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[regattaKeys[x]] = regatta[regattaKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
 
             });
 
-            it('should write, valid prior data', function (done) {
+            describe('as user with active auth (team1User1Auth1) setting regatta of another team (team2Regatta1)', function () {
 
-                assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+                const appName = 'team1User1Auth1';
+                let path;
+                let regatta;
 
-            });
+                beforeEach(function () {
 
-            it('should not write empty regatta', function (done) {
+                    path = 'regattas/' + team2Regatta1.getPathKey();
+                    regatta = team2Regatta1.getValues({
+                        reference: false
+                    });
+                    regatta.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                regatta = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                });
 
-            });
+                it('should not write', function (done) {
 
-            it('should not write null regatta', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-                regatta = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
-
-            });
-
-            it('should not write another teams regatta', function (done) {
-
-                regatta.team = team2Regatta1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                });
 
             });
 
-            it('should not write null to team', function (done) {
+            describe('as user with active auth (team1User1Auth1) set values of the same teams regatta', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let regatta;
 
-                regatta.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                beforeEach(function () {
 
-            });
+                    path = 'regattas/' + team1Regatta1.getPathKey();
+                    regatta = team1Regatta1.getValues({
+                        reference: false
+                    });
+                    regatta.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-            it('should write a different, valid city', function (done) {
+                });
 
-                regatta.city = faker.address.city();
-                assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should write, valid prior data', function (done) {
 
-            });
+                    assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should not write null to city', function (done) {
+                });
 
-                regatta.city = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should not write empty regatta', function (done) {
 
-            });
+                    regatta = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should write a different, valid cost', function (done) {
+                });
 
-                regatta.cost = faker.random.number();
-                assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should not write null regatta', function (done) {
 
-            });
+                    regatta = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should not write null to cost', function (done) {
+                });
 
-                regatta.cost = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should not write another teams regatta', function (done) {
 
-            });
+                    regatta.team = team2Regatta1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should be able to change head', function (done) {
+                });
 
-                regatta.head = false;
-                assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should not write null to team', function (done) {
 
-            });
+                    regatta.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should not write null to head', function (done) {
+                });
 
-                regatta.head = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should write a different, valid city', function (done) {
 
-            });
+                    regatta.city = faker.address.city();
+                    assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should write String to locationImage', function (done) {
+                });
 
-                regatta.locationImage = faker.image.imageUrl();
-                assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should not write null to city', function (done) {
 
-            });
+                    regatta.city = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should not write Null to locationImage', function (done) {
+                });
 
-                regatta.locationImage = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should write a different, valid cost', function (done) {
 
-            });
+                    regatta.cost = faker.random.number();
+                    assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should write String to name', function (done) {
+                });
 
-                regatta.name = faker.lorem.words();
-                assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+                it('should not write null to cost', function (done) {
 
-            });
+                    regatta.cost = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-            it('should not write Null to name', function (done) {
+                });
 
-                regatta.name = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
-            });
+                it('should be able to change head', function (done) {
 
-            it('should write a different, valid state', function (done) {
+                    regatta.head = false;
+                    assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
-                regatta.state = faker.address.state();
-                assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+                });
 
-            });
+                it('should not write null to head', function (done) {
 
-            it('should not write null to state', function (done) {
+                    regatta.head = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-                regatta.state = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                });
 
-            });
+                it('should write String to locationImage', function (done) {
 
-            it('should write a different, valid streetAddress', function (done) {
+                    regatta.locationImage = faker.image.imageUrl();
+                    assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
-                regatta.streetAddress = faker.address.streetAddress();
-                assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+                });
 
-            });
+                it('should not write Null to locationImage', function (done) {
 
-            it('should not write null to streetAddress', function (done) {
+                    regatta.locationImage = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
-                regatta.streetAddress = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                });
 
+                it('should write String to name', function (done) {
+
+                    regatta.name = faker.lorem.words();
+                    assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+
+                });
+
+                it('should not write Null to name', function (done) {
+
+                    regatta.name = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+                });
+
+                it('should write a different, valid state', function (done) {
+
+                    regatta.state = faker.address.state();
+                    assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+
+                });
+
+                it('should not write null to state', function (done) {
+
+                    regatta.state = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+
+                });
+
+                it('should write a different, valid streetAddress', function (done) {
+
+                    regatta.streetAddress = faker.address.streetAddress();
+                    assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
+
+                });
+
+                it('should not write null to streetAddress', function (done) {
+
+                    regatta.streetAddress = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+
+                });
             });
         });
 
-        describe('as user with active auth (team1User1Auth1) set values of the same teams rigger', function () {
-            const appName = 'team1User1Auth1';
-            let path;
-            let rigger;
+        describe('Rigger tests', function () {
 
-            beforeEach(function () {
+            describe('as user with active auth (team1User1Auth1) updating individual values of an rigger (team1Rigger1)', function () {
 
-                path = 'riggers/' + team1Rigger1.getPathKey();
-                rigger = team1Rigger1.getValues({
+                const appName = 'team1User1Auth1';
+
+                const path = 'riggers/' + team1Rigger1.getPathKey();
+                const rigger = team1Rigger1.getValues({
                     reference: false
                 });
-                rigger.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                const riggerKeys = Object.keys(rigger);
+
+                for (let x = 0; x < riggerKeys.length; x++) {
+
+                    if (riggerKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + riggerKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[riggerKeys[x]] = rigger[riggerKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < riggerKeys.length; x++) {
+
+                    if (riggerKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + riggerKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[riggerKeys[x]] = rigger[riggerKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
 
             });
 
-            it('should write, valid prior data', function (done) {
+            describe('as user with active auth (team1User1Auth1) setting rigger of another team (team2Rigger1)', function () {
 
-                assert.canSet(firebaseAdmin.app(appName), path, rigger, done);
+                const appName = 'team1User1Auth1';
+                let path;
+                let rigger;
 
-            });
+                beforeEach(function () {
 
-            it('should not write empty rigger', function (done) {
+                    path = 'riggers/' + team2Rigger1.getPathKey();
+                    rigger = team2Rigger1.getValues({
+                        reference: false
+                    });
+                    rigger.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                rigger = {};
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                });
 
-            });
+                it('should not write', function (done) {
 
-            it('should not write null rigger', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
 
-                rigger = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
-
-            });
-
-            it('should not write another teams rigger', function (done) {
-
-                rigger.team = team2Rigger1.getPathKey();
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                });
 
             });
 
-            it('should not write null to team', function (done) {
+            describe('as user with active auth (team1User1Auth1) set values of the same teams rigger', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let rigger;
 
-                rigger.team = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                beforeEach(function () {
 
-            });
+                    path = 'riggers/' + team1Rigger1.getPathKey();
+                    rigger = team1Rigger1.getValues({
+                        reference: false
+                    });
+                    rigger.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-            it('should write a different, valid seatNumber', function (done) {
+                });
 
-                rigger.seatNumber = 3;
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                it('should write, valid prior data', function (done) {
 
-            });
+                    assert.canSet(firebaseAdmin.app(appName), path, rigger, done);
 
-            it('should not write null to seatNumber', function (done) {
+                });
 
-                rigger.seatNumber = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                it('should not write empty rigger', function (done) {
 
-            });
+                    rigger = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
 
-            it('should write a different, valid side', function (done) {
+                });
 
-                rigger.side = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, rigger, done);
+                it('should not write null rigger', function (done) {
 
-            });
+                    rigger = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
 
-            it('should not write null to side', function (done) {
+                });
 
-                rigger.side = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                it('should not write another teams rigger', function (done) {
 
-            });
+                    rigger.team = team2Rigger1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
 
-            it('should be able to change style', function (done) {
+                });
 
-                rigger.style = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, rigger, done);
+                it('should not write null to team', function (done) {
 
-            });
+                    rigger.team = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
 
-            it('should not write null to style', function (done) {
+                });
 
-                rigger.style = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                it('should write a different, valid seatNumber', function (done) {
 
-            });
+                    rigger.seatNumber = 3;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
 
-            it('should write String to type', function (done) {
+                });
 
-                rigger.type = faker.lorem.word();
-                assert.canSet(firebaseAdmin.app(appName), path, rigger, done);
+                it('should not write null to seatNumber', function (done) {
 
-            });
+                    rigger.seatNumber = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
 
-            it('should not write Null to type', function (done) {
+                });
 
-                rigger.type = null;
-                assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                it('should write a different, valid side', function (done) {
+
+                    rigger.side = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, rigger, done);
+
+                });
+
+                it('should not write null to side', function (done) {
+
+                    rigger.side = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+
+                });
+
+                it('should be able to change style', function (done) {
+
+                    rigger.style = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, rigger, done);
+
+                });
+
+                it('should not write null to style', function (done) {
+
+                    rigger.style = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+
+                });
+
+                it('should write String to type', function (done) {
+
+                    rigger.type = faker.lorem.word();
+                    assert.canSet(firebaseAdmin.app(appName), path, rigger, done);
+
+                });
+
+                it('should not write Null to type', function (done) {
+
+                    rigger.type = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+                });
             });
         });
 
@@ -2475,7 +3136,6 @@ describe('Auths', function () {
 
             it('should write, valid prior data', function (done) {
 
-                console.log(team);
                 assert.canSet(firebaseAdmin.app(appName), path, team, done);
 
             });
