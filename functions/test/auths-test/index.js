@@ -9748,323 +9748,64 @@ describe('Auths', function () {
 
         });
 
-        describe('Team Fanouts', function () {
+        describe.only('Team Fanouts', function () {
 
-            let stubs;
-            let fanOut;
+            let path;
 
-            before((done) => {
-                const serviceAccount = {
-                    project_id: process.env.FIREBASE_PROJECT_ID,
-                    client_email: process.env.FIREBASE_CLIENT_EMAIL,
-                    private_key: process.env.FIREBASE_PRIVATE_KEY
-                };
+            const appName = 'team1User3Auth1';
 
-                const databaseURL = process.env.FIREBASE_DATABASE_URL;
+            it('should dispatch account fan out when valid for athletes', function (done) {
+                path = 'teamAthletes/' + team1.getPathKey() + '/' + team1Athlete1.getPathKey();
 
-                const configStub = sinon.stub(firebaseFunctions, 'config').returns({
-                    firebase: {
-                        databaseURL: databaseURL
-                    },
-                    service_account: serviceAccount,
-                    mocha: true
-                });
-
-                stubs = {
-                    'firebase-functions': {
-                        'config': configStub
-                    }
-                };
-
-
-
-                const privateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n');
-                firebaseAdmin.initializeApp({
-                    credential: firebaseAdmin.credential.cert({
-                        projectId: process.env.FIREBASE_PROJECT_ID,
-                        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-                        privateKey: privateKey
-                    }),
-                    databaseURL: databaseURL
-                });
-
-                firebaseAdmin.database().ref().set(generator.getData())
-                    .then(() => {
-                        done();
-                    }).catch((err) => {
-                        console.log(err);
-                    });
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
 
-            it('should dispatch account fan out when valid for boats', () => {
+            it('should dispatch account fan out when valid for boats', function (done) {
+                path = 'teamBoats/' + team1.getPathKey() + '/' + team1Boat1.getPathKey();
 
-                fanOut = proxyquire(__dirname + '/../../boat-fan-out-worker', stubs);
-
-                const path = team1Boat1.getPath();
-                let before = null;
-                let after = team1Boat1.getValues();
-                const params = {};
-                params[team1Boat1.getSingular()] = team1Boat1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
 
+            it('should dispatch account fan out when valid for ergs', function (done) {
+                path = 'teamErgs/' + team1.getPathKey() + '/' + team1Erg1.getPathKey();
 
-            it('should dispatch account fan out when valid for athletes', () => {
-
-                fanOut = proxyquire(__dirname + '/../../athlete-fan-out-worker', stubs);
-
-                const path = team1Athlete1.getPath();
-                let before = null;
-                let after = team1Athlete1.getValues();
-
-                const params = {};
-                params[team1Athlete1.getSingular()] = team1Athlete1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
 
+            it('should dispatch account fan out when valid for finances', function (done) {
+                path = 'teamFinances/' + team1.getPathKey() + '/' + team1Finance1.getPathKey();
 
-
-            it('should dispatch account fan out when valid for ergs', () => {
-
-                fanOut = proxyquire(__dirname + '/../../erg-fan-out-worker', stubs);
-
-                const path = team1Erg1.getPath();
-                let before = null;
-                let after = team1Erg1.getValues();
-                const params = {};
-                params[team1Erg1.getSingular()] = team1Erg1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
 
+            it('should dispatch account fan out when valid for oars', function (done) {
+                path = 'teamOars/' + team1.getPathKey() + '/' + team1Oar1.getPathKey();
 
-
-            it('should dispatch account fan out when valid for finances', () => {
-
-                fanOut = proxyquire(__dirname + '/../../finance-fan-out-worker', stubs);
-
-                const path = team1Finance1.getPath();
-                let before = null;
-                let after = team1Finance1.getValues();
-                const params = {};
-                params[team1Finance1.getSingular()] = team1Finance1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
 
+            it('should dispatch account fan out when valid for pictures', function (done) {
+                path = 'teamPictures/' + team1.getPathKey() + '/' + team1Picture1.getPathKey();
 
-
-            it('should dispatch account fan out when valid for oars', () => {
-
-                fanOut = proxyquire(__dirname + '/../../oar-fan-out-worker', stubs);
-
-                const path = team1Oar1.getPath();
-                let before = null;
-                let after = team1Oar1.getValues();
-                const params = {};
-                params[team1Oar1.getSingular()] = team1Oar1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
 
+            it('should dispatch account fan out when valid for races', function (done) {
+                path = 'teamRaces/' + team1.getPathKey() + '/' + team1Race1.getPathKey();
 
-
-            it('should dispatch account fan out when valid for pictures', () => {
-
-                fanOut = proxyquire(__dirname + '/../../picture-fan-out-worker', stubs);
-
-                const path = team1Picture1.getPath();
-                let before = null;
-                let after = team1Picture1.getValues();
-                const params = {};
-                params[team1Picture1.getSingular()] = team1Picture1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
 
-            it('should dispatch account fan out when valid for races', () => {
+            it('should dispatch account fan out when valid for regattas', function (done) {
+                path = 'teamRegattas/' + team1.getPathKey() + '/' + team1Regatta1.getPathKey();
 
-                fanOut = proxyquire(__dirname + '/../../race-fan-out-worker', stubs);
-
-                const path = team1Race1.getPath();
-                let before = null;
-                let after = team1Race1.getValues();
-                const params = {};
-                params[team1Race1.getSingular()] = team1Race1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
 
-            it('should dispatch account fan out when valid for regattas', () => {
+            it('should dispatch account fan out when valid for riggers', function (done) {
+                path = 'teamRiggers/' + team1.getPathKey() + '/' + team1Rigger1.getPathKey();
 
-                fanOut = proxyquire(__dirname + '/../../regatta-fan-out-worker', stubs);
-
-                const path = team1Regatta1.getPath();
-                let before = null;
-                let after = team1Regatta1.getValues();
-                const params = {};
-                params[team1Regatta1.getSingular()] = team1Regatta1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
-            });
-
-            it('should dispatch account fan out when valid for riggers', () => {
-
-                fanOut = proxyquire(__dirname + '/../../rigger-fan-out-worker', stubs);
-
-                const path = team1Rigger1.getPath();
-                let before = null;
-                let after = team1Rigger1.getValues();
-                const params = {};
-                params[team1Rigger1.getSingular()] = team1Rigger1.getPathKey();
-
-                const triggerEvent = {
-                    data: new firebaseFunctions.database.DeltaSnapshot(firebaseAdmin, firebaseAdmin, before, after, path),
-                    params: params
-                };
-
-                return fanOut(triggerEvent)
-                    .then(() => {
-
-                        return firebaseAdmin.database().ref().once('value')
-                            .then((taskSnapshot) => {
-
-                                const task = taskSnapshot.val();
-
-                            });
-
-                    });
-
+                assert.canSet(firebaseAdmin.app(appName), path, true, done);
             });
         });
     });
