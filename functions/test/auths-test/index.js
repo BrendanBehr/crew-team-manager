@@ -9748,64 +9748,258 @@ describe('Auths', function () {
 
         });
 
-        describe.only('Team Fanouts', function () {
+        describe('Team Fanouts', function () {
 
             let path;
 
             const appName = 'team1User3Auth1';
 
-            it('should dispatch account fan out when valid for athletes', function (done) {
-                path = 'teamAthletes/' + team1.getPathKey() + '/' + team1Athlete1.getPathKey();
+            describe('teamAthletes', function () {
+                it('should dispatch account fan out when valid for athletes', function (done) {
+                    path = 'teamAthletes/' + team1.getPathKey() + '/' + team1Athlete1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for boats', function (done) {
+                    path = 'teamBoats/' + team1.getPathKey() + '/' + team2Boat1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team\'s boats', function (done) {
+                    path = 'teamBoats/' + team2.getPathKey() + '/' + team2Boat1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team\'s boats', function (done) {
+                    path = 'teamBoats' + team2.getPathKey() + '/' + team2Boat1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
             });
 
-            it('should dispatch account fan out when valid for boats', function (done) {
-                path = 'teamBoats/' + team1.getPathKey() + '/' + team1Boat1.getPathKey();
+            describe('teamBoats', function () {
+                it('should dispatch account fan out when valid for boats', function (done) {
+                    path = 'teamBoats/' + team1.getPathKey() + '/' + team1Boat1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for boats', function (done) {
+                    path = 'teamBoats/' + team1.getPathKey() + '/' + team2Boat1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team', function (done) {
+                    path = 'teamBoats/' + team2.getPathKey() + '/' + team2Boat1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team', function (done) {
+                    path = 'teamBoats' + team2.getPathKey() + '/' + team2Boat1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
             });
 
-            it('should dispatch account fan out when valid for ergs', function (done) {
-                path = 'teamErgs/' + team1.getPathKey() + '/' + team1Erg1.getPathKey();
+            describe('teamErgs', function () {
+                it('should dispatch account fan out when valid for ergs', function (done) {
+                    path = 'teamErgs/' + team1.getPathKey() + '/' + team1Erg1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for ergs', function (done) {
+                    path = 'teamErgs/' + team1.getPathKey() + '/' + team2Erg1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team ergs', function (done) {
+                    path = 'teamErgs/' + team2.getPathKey() + '/' + team2Erg1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team ergs', function (done) {
+                    path = 'teamErgs' + team2.getPathKey() + '/' + team2Erg1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
             });
 
-            it('should dispatch account fan out when valid for finances', function (done) {
-                path = 'teamFinances/' + team1.getPathKey() + '/' + team1Finance1.getPathKey();
+            describe('teamFinacnes', function () {
+                it('should dispatch account fan out when valid for finances', function (done) {
+                    path = 'teamFinances/' + team1.getPathKey() + '/' + team1Finance1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for finances', function (done) {
+                    path = 'teamFinances/' + team1.getPathKey() + '/' + team2Finance1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team finances', function (done) {
+                    path = 'teamFinances/' + team2.getPathKey() + '/' + team2Finance1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team finances', function (done) {
+                    path = 'teamFinances' + team2.getPathKey() + '/' + team2Finance1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
             });
 
-            it('should dispatch account fan out when valid for oars', function (done) {
-                path = 'teamOars/' + team1.getPathKey() + '/' + team1Oar1.getPathKey();
+            describe('teamOars', function () {
+                it('should dispatch account fan out when valid for oars', function (done) {
+                    path = 'teamOars/' + team1.getPathKey() + '/' + team1Oar1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for oars', function (done) {
+                    path = 'teamOars/' + team1.getPathKey() + '/' + team2Oar1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team oars', function (done) {
+                    path = 'teamOars/' + team2.getPathKey() + '/' + team2Oar1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team oars', function (done) {
+                    path = 'teamBoats' + team2.getPathKey() + '/' + team2Boat1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
             });
 
-            it('should dispatch account fan out when valid for pictures', function (done) {
-                path = 'teamPictures/' + team1.getPathKey() + '/' + team1Picture1.getPathKey();
+            describe('teamPictures', function () {
+                it('should dispatch account fan out when valid for pictures', function (done) {
+                    path = 'teamPictures/' + team1.getPathKey() + '/' + team1Picture1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for pictures', function (done) {
+                    path = 'teamPictures/' + team1.getPathKey() + '/' + team2Picture1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team pictures', function (done) {
+                    path = 'teamPictures/' + team2.getPathKey() + '/' + team2Picture1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team pictures', function (done) {
+                    path = 'teamPictures' + team2.getPathKey() + '/' + team2Picture1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
             });
 
-            it('should dispatch account fan out when valid for races', function (done) {
-                path = 'teamRaces/' + team1.getPathKey() + '/' + team1Race1.getPathKey();
+            describe('teamRaces', function () {
+                it('should dispatch account fan out when valid for races', function (done) {
+                    path = 'teamRaces/' + team1.getPathKey() + '/' + team1Race1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for races', function (done) {
+                    path = 'teamRaces/' + team1.getPathKey() + '/' + team2Race1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team races', function (done) {
+                    path = 'teamRaces/' + team2.getPathKey() + '/' + team2Race1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team races', function (done) {
+                    path = 'teamRaces' + team2.getPathKey() + '/' + team2Race1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
             });
 
-            it('should dispatch account fan out when valid for regattas', function (done) {
-                path = 'teamRegattas/' + team1.getPathKey() + '/' + team1Regatta1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+            describe('teamRegattas', function () {
+                it('should dispatch account fan out when valid for regattas', function (done) {
+                    path = 'teamRegattas/' + team1.getPathKey() + '/' + team1Regatta1.getPathKey();
+
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for regattas', function (done) {
+                    path = 'teamRegattas/' + team1.getPathKey() + '/' + team2Regatta1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team regattas', function (done) {
+                    path = 'teamRegattas/' + team2.getPathKey() + '/' + team2Regatta1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team regattas', function (done) {
+                    path = 'teamRegattas' + team2.getPathKey() + '/' + team2Regatta1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
             });
 
-            it('should dispatch account fan out when valid for riggers', function (done) {
-                path = 'teamRiggers/' + team1.getPathKey() + '/' + team1Rigger1.getPathKey();
+            describe('teamRiggers', function () {
+                it('should dispatch account fan out when valid for riggers', function (done) {
+                    path = 'teamRiggers/' + team1.getPathKey() + '/' + team1Rigger1.getPathKey();
 
-                assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out when valid for  riggers', function (done) {
+                    path = 'teamRiggers/' + team1.getPathKey() + '/' + team2Rigger1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
+                it('should not dispatch account an invalid fan out for a different team riggers', function (done) {
+                    path = 'teamRiggers/' + team2.getPathKey() + '/' + team2Rigger1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+
+                });
+
+                it('should not dispatch a valid fanout for a different team riggers', function (done) {
+                    path = 'teamRiggers' + team2.getPathKey() + '/' + team2Rigger1.getPathKey();
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                });
+
             });
         });
     });
