@@ -18,6 +18,10 @@ class User extends Entity {
         options.values.lastName = options.values.lastName || faker.name.lastName();
         options.values.credentials = options.values.credentials || faker.lorem.slug();
         options.values.status = options.values.status || 'active';
+        options.values.permisions = options.values.permisions || 'basic';
+        options.values.email = options.values.email || faker.internet.email();
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
 
         super(options);
@@ -57,25 +61,6 @@ class User extends Entity {
         return this._credential;
     }
 
-    createEmail(values) {
-        return new Email({
-            generator: this.getGenerator(),
-            user: this,
-            values: values
-        });
-    }
-
-    getEmails() {
-        const user = this;
-        return this.getGenerator().getEmail().filter((email) => {
-            return email.getEmail() == user;
-        });
-    }
-
-    getEmail() {
-        return this._email;
-    }
-
     createAuth(values) {
 
         return new Auth({
@@ -111,6 +96,28 @@ class User extends Entity {
 
     getAuth() {
         return this._auth;
+    }
+
+    createEmail(values) {
+        return new Email({
+            generator: this.getGenerator(),
+            user: this,
+            values: values,
+        });
+
+    }
+
+    getEmails() {
+
+        const user = this;
+        return this.getGenerator().getEmail().filter((email) => {
+            return email.getUser() == user;
+        });
+
+    }
+
+    getEmail() {
+        return this._email;
     }
 }
 

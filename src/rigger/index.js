@@ -14,11 +14,22 @@ class Rigger extends Entity {
         options.values.style = options.values.style || 'Sweep';
         options.values.type = options.values.type || 'European';
         options.values.seat = options.values.seat || Math.floor(faker.random.number() / 10000);
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
+
         if (options.values.seat % 2 === 0) {
             options.values.side = options.values.side || 'Port';
         } else {
             options.values.side = options.values.side || 'Starboard';
 
+        }
+
+        if (options.values.seat == 0) {
+            options.values.seat = 1;
+        }
+
+        if (options.values.seat > 8) {
+            options.values.seat = options.values.seat - 2;
         }
 
         super(options);

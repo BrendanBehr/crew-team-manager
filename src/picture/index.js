@@ -14,6 +14,8 @@ class Picture extends Entity {
 
         options.values.url = options.values.url || faker.image.image();
         options.values.caption = options.values.caption || faker.name.firstName() + faker.name.lastName();
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
         super(options);
 

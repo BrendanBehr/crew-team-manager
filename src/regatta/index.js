@@ -27,6 +27,8 @@ class Regatta extends Entity {
         options.values.locationImage = options.values.locationImage || faker.image.image();
         options.values.streetAddress = options.values.streetAddress || faker.address.streetAddress();
         options.values.head = options.values.head || true;
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
         super(options);
         this._races = [];
@@ -37,15 +39,19 @@ class Regatta extends Entity {
     }
 
     addRaces(race) {
+        let val = race.getValues({
+            reference: false
+        });
 
-        this.getData().regattaRaces = this.getData().regattaRaces || {};
-        this.getData().regattaRaces[this.getPathKey()] = this.getData().regattaRaces[this.getPathKey()] || {};
-        for (let x = 0; x < race.length; x++) {
-            if (!this.getData().regattaRaces[this.getPathKey()][race[x].getPathKey()]) {
-                this.getData().regattaRaces[this.getPathKey()][race[x].getPathKey()] = true;
-                this._races.push(race[x]);
+        if (val.team == this.getTeam().getPathKey()) {
+            this.getData().regattaRaces = this.getData().regattaRaces || {};
+            this.getData().regattaRaces[this.getPathKey()] = this.getData().regattaRaces[this.getPathKey()] || {};
+            if (!this.getData().regattaRaces[this.getPathKey()][race.getPathKey()]) {
+                this.getData().regattaRaces[this.getPathKey()][race.getPathKey()] = true;
+                this._races.push(race);
             }
         }
+
 
     }
 
@@ -64,18 +70,23 @@ class Regatta extends Entity {
     }
 
     getRaces() {
-        return this._pictures;
+        return this._races;
     }
 
 
     addPicture(picture) {
+        let val = picture.getValues({
+            reference: false
+        });
 
-        this.getData().regattaPictures = this.getData().regattaPictures || {};
-        this.getData().regattaPictures[this.getPathKey()] = this.getData().regattaPictures[this.getPathKey()] || {};
+        if (val.team == this.getTeam().getPathKey()) {
+            this.getData().regattaPictures = this.getData().regattaPictures || {};
+            this.getData().regattaPictures[this.getPathKey()] = this.getData().regattaPictures[this.getPathKey()] || {};
 
-        if (!this.getData().regattaPictures[this.getPathKey()][picture.getPathKey()]) {
-            this.getData().regattaPictures[this.getPathKey()][picture.getPathKey()] = true;
-            this._pictures.push(picture);
+            if (!this.getData().regattaPictures[this.getPathKey()][picture.getPathKey()]) {
+                this.getData().regattaPictures[this.getPathKey()][picture.getPathKey()] = true;
+                this._pictures.push(picture);
+            }
         }
 
     }

@@ -68,16 +68,6 @@ describe('athlete-fanout', () => {
             databaseURL: databaseURL
         });
 
-        // firebaseAdmin.database().ref().once(
-        //         'value'
-        //     )
-        //     .then(() => {
-        //         console.log('Write 1 complete');
-        //         done();
-        //     }).catch((err) => {
-        //         console.log(err);
-        //     });
-
         firebaseAdmin.database().ref().set(generator.getData()).then(() => {
             console.log('Write 2 complete');
             done();

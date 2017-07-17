@@ -6,7 +6,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-roster-detail-results">
+<dom-module id="crew-team-manager-compare-detail-results">
     <template>
         <style>
              :host {
@@ -125,10 +125,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRosterDetailResults extends Polymer.Element {
+        class crewTeamManagerCompareDetailResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-roster-detail-results'
+                return 'crew-team-manager-compare-detail-results'
             }
 
             static get observer() {
@@ -163,6 +163,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRosterDetailResults.is, crewTeamManagerRosterDetailResults);
+        customElements.define(crewTeamManagerCompareDetailResults.is, crewTeamManagerCompareDetailResults);
     </script>
 </dom-module>

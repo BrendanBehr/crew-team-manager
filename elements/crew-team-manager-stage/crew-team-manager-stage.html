@@ -48,43 +48,7 @@
                 @apply(--layout-horizontal);
             }
 
-            #roster {
-                @apply(--layout-flex);
-            }
-
-            #fleet {
-                @apply(--layout-flex);
-            }
-
-            #schedule {
-                @apply(--layout-flex);
-            }
-
-            #erg {
-                @apply(--layout-flex);
-            }
-
-            #finance {
-                @apply(--layout-flex);
-            }
-
-            #oar {
-                @apply(--layout-flex);
-            }
-
-            #race {
-                @apply(--layout-flex);
-            }
-
-            #rigger {
-                @apply(--layout-flex);
-            }
-
-            #picture {
-                @apply(--layout-flex);
-            }
-
-            #team {
+            .page {
                 @apply(--layout-flex);
             }
 
@@ -103,16 +67,17 @@
 
         <app-drawer-layout id="layout">
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-roster id="roster" on-crew-team-manager-roster-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-roster>
-                <crew-team-manager-fleet id="fleet" on-crew-team-manager-fleet-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-fleet>
-                <crew-team-manager-schedule id="schedule" on-crew-team-manager-schedule-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-schedule>
-                <crew-team-manager-erg id="erg" on-crew-team-manager-erg-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-erg>
-                <crew-team-manager-finance id="finance" on-crew-team-manager-finance-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-finance>
-                <crew-team-manager-oar id="oar" on-crew-team-manager-oar-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-oar>
-                <crew-team-manager-race id="race" on-crew-team-manager-race-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-race>
-                <crew-team-manager-rigger id="rigger" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-rigger>
-                <crew-team-manager-picture id="picture" on-crew-team-manager-picture-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-picture>
-                <crew-team-manager-team id="team" on-crew-team-manager-team-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-team>
+                <crew-team-manager-roster id="roster" class="page" on-crew-team-manager-roster-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-roster>
+                <crew-team-manager-fleet id="fleet" class="page" on-crew-team-manager-fleet-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-fleet>
+                <crew-team-manager-schedule id="schedule" class="page" on-crew-team-manager-schedule-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-schedule>
+                <crew-team-manager-erg id="erg" class="page" on-crew-team-manager-erg-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-erg>
+                <crew-team-manager-finance id="finance" class="page" on-crew-team-manager-finance-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-finance>
+                <crew-team-manager-oar id="oar" class="page" on-crew-team-manager-oar-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-oar>
+                <crew-team-manager-race id="race" class="page" on-crew-team-manager-race-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-race>
+                <crew-team-manager-rigger id="rigger" class="page" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-rigger>
+                <crew-team-manager-picture id="picture" class="page" on-crew-team-manager-picture-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-picture>
+                <crew-team-manager-team id="team" class="page" on-crew-team-manager-team-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-team>
+                <crew-team-manager-compare id="compare" class="page" on-crew-team-manager-team-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-compare>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
@@ -126,6 +91,7 @@
                 <button page="rigger" on-click="_handleMenuClick">rigger</button>
                 <button page="picture" on-click="_handleMenuClick">picture</button>
                 <button page="team" on-click="_handleMenuClick">team</button>
+                <button page="compare" on-click="_handleMenuClick">compare</button>
             </app-drawer>
             <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>
     </template>

@@ -1,26 +1,170 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+
+<link rel="import" href="crew-team-manager-compare-list.html">
+<link rel="import" href="crew-team-manager-compare-detail.html">
+<link rel="import" href="crew-team-manager-compare-edit.html">
+<link rel="import" href="crew-team-manager-compare-create.html">
+
+
 <dom-module id="crew-team-manager-compare">
     <template>
         <style>
              :host {
-                display: block;
-                background-color: #43A047;
+                background-color: lightslategray;
+                @apply(--layout-horizontal);
+            }
+
+            #pages {
+                @apply(--layout-flex);
+                position: relative;
+            }
+
+            #list {
+                @apply(--layout-fit);
+            }
+
+            #detail {
+                @apply(--layout-fit);
+            }
+
+            #edit {
+                @apply(--layout-fit);
+            }
+
+            #toolbar {
+                background-color: #164410;
+                color: #fff;
             }
         </style>
 
-        <div>
-            <h1>Stage 4: compare</h1>
-        </div>
+        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]" selected-attribute="selected">
+            <crew-team-manager-compare-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-compare-list-results-action-detail="_handleActionDetail"
+                on-crew-team-manager-compare-list-action-create="_handleActionCreate">
+            </crew-team-manager-compare-list>
+
+            <crew-team-manager-compare-detail id="detail" athlete="[[_athlete]]" on-crew-team-manager-compare-detail-action-back="_handleActionBack"
+                on-crew-team-manager-compare-detail-action-edit="_handleActionEdit" on-crew-team-manager-compare-detail-action-delete="_handleActionDelete">
+            </crew-team-manager-compare-detail>
+
+            <crew-team-manager-compare-edit edit="[[_edit]]" id="edit" athlete="[[_athlete]]" on-crew-team-manager-compare-edit-action-back="_handleActionBackOnce"
+                on-crew-team-manager-compare-edit-action-saved="_handleActionSaved">
+            </crew-team-manager-compare-edit>
+
+            <crew-team-manager-compare-create id="create" on-crew-team-manager-compare-create-action-cancel="_handleActionCancel" on-crew-team-manager-compare-create-action-created="_handleActionCreated">
+                </crew-team-manager-creater-edit>
+        </iron-pages>
+
+        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
+
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
         class crewTeamManagerCompare extends Polymer.Element {
 
-            static get is() { return 'crew-team-manager-compare' }
+            static get is() {
+                return 'crew-team-manager-compare'
+            }
 
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'list'
+                    },
+
+                    _edit: {
+                        type: Object
+                    },
+
+                    wideLayout: {
+                        type: Boolean,
+                        value: false,
+                    },
+
+
+
+                    _athletes: {
+                        type: Object,
+                        athlete1: '',
+                        athlete2: ''
+                    }
+                }
+            }
+
+            _handleActionDetail(e) {
+                console.log(e.detail.firstAthlete);
+                this._athletes.athlete1 = e.detail.firstAthlete;
+                this._athletes.athlete2 = e.detail.secondAthlete;
+                this._page = 'detail';
+            }
+
+            _handleActionBack(e) {
+                this._page = 'list';
+            }
+
+            _handleActionBackOnce(e) {
+                this._page = 'detail';
+            }
+
+            _handleActionEdit(e) {
+
+                this._edit = e.detail.athlete;
+                this._page = 'edit';
+
+            }
+
+            _handleActionCreated(e) {
+                this._page = 'detail';
+                this._toast = 'Athlete Created';
+                this._athlete = e.detail.athlete;
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionSaved(e) {
+                this._page = 'detail';
+                this._toast = 'Athlete Saved';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCreate(e) {
+                this._page = 'create';
+            }
+
+            _handleActionCancel(e) {
+                this._page = 'list';
+                this._toast = 'Cancelled Athlete Create';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionDelete(e) {
+                this._page = 'list';
+                this._toast = 'Athlete Deleted';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionCompareError(e) {
+                this._toast = 'Please select two athletes to compare';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
         }
+
+
 
         // Register custom element definition using standard platform API
         customElements.define(crewTeamManagerCompare.is, crewTeamManagerCompare);

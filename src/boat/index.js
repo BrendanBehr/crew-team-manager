@@ -16,27 +16,37 @@ class Boat extends Entity {
         options.values.size = options.values.size || 8;
         options.values.type = options.values.type || 'sweep';
         options.values.manufacturer = options.values.manufacturer || 'vespoli';
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
 
         super(options);
 
         this._athletes = [];
         this._oars = [];
+        this._riggers = [];
 
         this.getGenerator().getAthletes().push(this);
 
     }
 
     addAthlete(athlete) {
+        let val = athlete.getValues({
+            reference: false
+        });
+        if (val.team == this.getTeam().getPathKey()) {
+            this.getData().boatAthletes = this.getData().boatAthletes || {};
+            this.getData().boatAthletes[this.getPathKey()] = this.getData().boatAthletes[this.getPathKey()] || {};
 
-        this.getData().boatAthletes = this.getData().boatAthletes || {};
-        this.getData().boatAthletes[this.getPathKey()] = this.getData().boatAthletes[this.getPathKey()] || {};
-
-        if (!this.getData().boatAthletes[this.getPathKey()][athlete.getPathKey()]) {
-            this.getData().boatAthletes[this.getPathKey()][athlete.getPathKey()] = true;
-            this._athletes.push(athlete);
+            if (!this.getData().boatAthletes[this.getPathKey()][athlete.getPathKey()]) {
+                this.getData().boatAthletes[this.getPathKey()][athlete.getPathKey()] = true;
+                this._athletes.push(athlete);
+            }
         }
 
+        if (val.team != this.getTeam().getPathKey()) {
+            return false;
+        }
     }
 
     removeAthlete(athlete) {
@@ -57,22 +67,24 @@ class Boat extends Entity {
         return this._athletes;
     }
 
-    addOars(oar) {
+    addOar(oar) {
+        let val = oar.getValues({
+            reference: false
+        });
+        if (val.team == this.getTeam().getPathKey()) {
 
-        this.getData().boatOars = this.getData().boatOars || {};
-        this.getData().boatOars[this.getPathKey()] = this.getData().boatOars[this.getPathKey()] || {};
+            this.getData().boatOars = this.getData().boatOars || {};
+            this.getData().boatOars[this.getPathKey()] = this.getData().boatOars[this.getPathKey()] || {};
 
-        for (let x = 0; x < oar.length; x++) {
-            if (!this.getData().boatOars[this.getPathKey()][oar[x].getPathKey()]) {
-                this.getData().boatOars[this.getPathKey()][oar[x].getPathKey()] = true;
-                this._oars.push(oar[x]);
+            if (!this.getData().boatOars[this.getPathKey()][oar.getPathKey()]) {
+                this.getData().boatOars[this.getPathKey()][oar.getPathKey()] = true;
+                this._oars.push(oar);
             }
         }
 
     }
 
     removeOar(oar) {
-
         this.getData().boatOars = this.getData().boatOars || {};
         this.getData().boatOars[this.getPathKey()] = this.getData().boatOars[this.getPathKey()] || {};
 
@@ -83,21 +95,26 @@ class Boat extends Entity {
             });
         }
 
+
     }
 
     getOars() {
         return this._oars;
     }
 
-    addRiggers(rigger) {
 
-        this.getData().boatRiggers = this.getData().boatRiggers || {};
-        this.getData().boatRiggers[this.getPathKey()] = this.getData().boatRiggers[this.getPathKey()] || {};
+    addRigger(rigger) {
+        let val = rigger.getValues({
+            reference: false
+        });
 
-        for (let x = 0; x < rigger.length; x++) {
-            if (!this.getData().boatRiggers[this.getPathKey()][rigger[x].getPathKey()]) {
-                this.getData().boatRiggers[this.getPathKey()][rigger[x].getPathKey()] = true;
-                this._rigger.push(rigger[x]);
+        if (val.team == this.getTeam().getPathKey()) {
+            this.getData().boatRiggers = this.getData().boatRiggers || {};
+            this.getData().boatRiggers[this.getPathKey()] = this.getData().boatRiggers[this.getPathKey()] || {};
+
+            if (!this.getData().boatRiggers[this.getPathKey()][rigger.getPathKey()]) {
+                this.getData().boatRiggers[this.getPathKey()][rigger.getPathKey()] = true;
+                this._riggers.push(rigger);
             }
         }
 
@@ -108,9 +125,9 @@ class Boat extends Entity {
         this.getData().boatRiggers = this.getData().boatRiggers || {};
         this.getData().boatRiggers[this.getPathKey()] = this.getData().boatRiggers[this.getPathKey()] || {};
 
-        if (this.getData().boatOars[this.getPathKey()][rigger.getPathKey()]) {
-            this.getData().boatOars[this.getPathKey()][rigger.getPathKey()] = null;
-            this._riggers = this.getAthletes().filter((element) => {
+        if (this.getData().boatRiggers[this.getPathKey()][rigger.getPathKey()]) {
+            this.getData().boatRiggers[this.getPathKey()][rigger.getPathKey()] = null;
+            this._riggers = this.getRiggers().filter((element) => {
                 return element != rigger;
             });
         }

@@ -1,0 +1,163 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
+
+<dom-module id="crew-team-manager-compare-list-results">
+    <template>
+        <style>
+             :host {
+                background-color: white;
+                @apply(--layout-horizontal);
+            }
+
+             :host([small-cards]) .athlete-info-location {
+                display: none;
+            }
+
+            #athletes-list-one {
+                @apply(--layout-flex);
+                border-right: solid 1px grey;
+            }
+
+            #athletes-list-two {
+                @apply(--layout-flex);
+                border-left: solid 1px grey;
+            }
+
+            #list {
+                background-color: lightslategray;
+                @apply(--layout-flex);
+            }
+
+            .athlete {
+                background-color: white;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
+            .selector[selected="true"] {
+                color: #4caf50;
+            }
+
+            .athlete-avatar {
+                margin: 8px;
+            }
+
+            .athlete-info {
+                font-size: 18px;
+                @apply(--layout-flex);
+                padding: 8px;
+            }
+
+            .athlete-info-name {
+                @apply(--paper-font-title);
+            }
+
+            .athlete-info-location {
+                @apply(--paper-font-caption);
+            }
+
+            .selector {
+                height: 64px;
+                width: 64px;
+            }
+        </style>
+
+        <div id="athletes-list-one">
+            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-one">
+                <template>
+                    <div class="athlete" on-click="_handleItemClick1">
+
+                        <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
+                        <div class="athlete-info">
+                            <div class="athlete-info-name">
+                                [[item.firstName]] [[item.lastName]]
+                            </div>
+                            <div class="athlete-info-location">
+                                [[item.streetAddress]] [[item.city]] [[item.state]]
+                            </div>
+                        </div>
+                        <iron-icon class="selector" selected$="[[_selected]" icon="rowing"></iron-icon>
+                    </div>
+                </template>
+            </iron-list>
+        </div>
+
+        <div id="athletes-list-two">
+            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-two">
+                <template>
+                    <div class="athlete" on-click="_handleItemClick2">
+
+                        <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
+                        <div class="athlete-info">
+                            <div class="athlete-info-name">
+                                [[item.firstName]] [[item.lastName]]
+                            </div>
+                            <div class="athlete-info-location">
+                                [[item.streetAddress]] [[item.city]] [[item.state]]
+                            </div>
+                        </div>
+                        <iron-icon class="selector" selected$="[[_selected]" icon="rowing"></iron-icon>
+                    </div>
+                </template>
+            </iron-list>
+        </div>
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerCompareListResults extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-compare-list-results'
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                    },
+
+                    _selected: {
+                        type: String,
+                        value: 'false'
+                    }
+                }
+            }
+
+            _handleItemClick1(e) {
+                this._selected = 'true';
+                this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-first-athlete', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        athlete: e.model.item,
+                        show: 'true'
+                    }
+                }));
+
+            }
+
+            _handleItemClick2(e) {
+                this._selected = 'true';
+                this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-second-athlete', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        athlete: e.model.item,
+                        show: 'true'
+                    }
+                }));
+
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerCompareListResults.is, crewTeamManagerCompareListResults);
+    </script>
+</dom-module>

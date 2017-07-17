@@ -1,0 +1,242 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+
+<link rel="import" href="crew-team-manager-compare-list-loading.html">
+<link rel="import" href="crew-team-manager-compare-list-results.html">
+<link rel="import" href="crew-team-manager-compare-list-message.html">
+
+
+<dom-module id="crew-team-manager-compare-list">
+    <template>
+        <style>
+             :host {
+                background-color: lightslategray;
+                @apply(--layout-horizontal);
+                @apply(--paper-font-common-base);
+            }
+
+             :host([menu-hidden]) #menu {
+                display: none;
+            }
+
+            #layout {
+                /*@apply(--layout-flex);*/
+                @apply(--layout-vertical);
+            }
+
+            #toolbar {
+                background-color: #164410;
+                color: #fff;
+            }
+
+            #pages {
+                @apply(--layout-flex);
+                position: relative;
+            }
+
+            #loading {
+                @apply(--layout-fit);
+            }
+
+            #results {
+                @apply(--layout-fit);
+            }
+
+            #message {
+                @apply(--layout-fit);
+            }
+
+            #compare {
+                color: #fff;
+                right: 0px;
+            }
+
+            #selected-athletes {
+                @apply(--layout-horizontal);
+            }
+
+            #first-athlete[show='false'] {
+                @apply(--layout-flex);
+                background-color: #4caf50;
+                display: hidden;
+            }
+
+            #second-athlete[show='false'] {
+                @apply(--layout-flex);
+                background-color: #4caf50;
+                display: hidden
+            }
+        </style>
+
+        <firebase-query app-name="crew-team-manager" id="query" path="/athletes" data="{{_data}}">
+        </firebase-query>
+
+        <app-header-layout id="layout" has-scrolling-region fullbleed>
+
+            <app-header slot="header" reveals>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
+                    <div main-title id="title">Compare Athletes</div>
+                    <paper-icon-button id="compare" icon="arrow-forward" on-click="_handleActionCompare">
+                </app-toolbar>
+
+                <div id="selected-athletes">
+                    <div id="first-athlete" show$="[[_athlete1Show]]">First Athlete Chosen: [[_athlete1.firstName]]</div>
+                    <div id="second-athlete" show$="[[_athlete2Show]]">Second Athlete Chosen: [[_athlete2.firstName]]</div>
+                </div>
+
+            </app-header>
+
+
+            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+                <crew-team-manager-compare-list-loading id="loading"></crew-team-manager-compare-list-loading>
+                <crew-team-manager-compare-list-results id="results" data="[[_data]]" small-cards$="[[wideLayout]]" on-crew-team-manager-compare-list-results-first-athlete="_handleAthlete1"
+                    on-crew-team-manager-compare-list-results-second-athlete="_handleAthlete2"></crew-team-manager-compare-list-results>
+                <crew-team-manager-compare-list-message id="message"></crew-team-manager-compare-list-message>
+            </iron-pages>
+
+        </app-header-layout>
+
+
+    </template>
+
+    <script>
+        // Extend Polymer.Element with MyMixin
+        class crewTeamManagerCompareList extends Polymer.Element {
+
+            static get is() {
+                return 'crew-team-manager-compare-list'
+            }
+
+            static get observers() {
+                return [
+                    '_updatePage(_data.splices)'
+                ]
+            }
+
+
+            static get properties() {
+                return {
+                    _page: {
+                        type: String,
+                        value: 'loading'
+                    },
+
+                    _data: {
+                        type: Object
+                    },
+
+                    wideLayout: {
+                        type: Boolean,
+                        value: false,
+                    },
+
+                    _athlete1: {
+                        type: Object,
+                    },
+
+                    _athlete2: {
+                        type: Object,
+                    },
+
+                    _athlete1Show: {
+                        type: String,
+                        value: 'false'
+                    },
+
+                    _athlete2Show: {
+                        type: String,
+                        value: 'false'
+                    },
+
+                }
+            }
+
+            _handleActionMenu() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerCompareList.is + '-action-menu', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+
+            _handleActionCreate() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerCompareList.is + '-action-create', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _updatePage(dataSplices) {
+
+                let page = 'message';
+
+                if (dataSplices) {
+                    if (dataSplices.indexSplices[0].object.length) {
+                        page = 'results';
+                    }
+                }
+
+                this._page = page;
+
+            }
+
+            _handleAthlete1(e) {
+                this._athlete1 = e.detail.athlete;
+                console.log('here');
+                console.log(this._athlete1.firstName);
+            }
+
+            _handleAthlete2(e) {
+                this._athlete2 = e.detail.athlete;
+                console.log('here');
+                console.log(this._athlete2.firstName);
+            }
+
+            _handleActionCompare(e) {
+                const athlete1 = this._athlete1;
+                const athlete2 = this._athlete2;
+                if (athlete1 && athlete2) {
+                    console.log({
+                        athlete1Path: athlete1.$key,
+                        athlete2Path: athlete2.$key,
+                    });
+                    this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-action-detail', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {
+                            firstAthlete: athlete1.$key,
+                            secondAthlete: athlete2.$key
+
+                        }
+                    }));
+                }
+
+                if (!athlete1 || !athlete2) {
+                    this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-action-toast', {
+                        bubbles: true,
+                        composed: true,
+                    }));
+                }
+
+            }
+
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(crewTeamManagerCompareList.is, crewTeamManagerCompareList);
+    </script>
+</dom-module>

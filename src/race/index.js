@@ -15,6 +15,8 @@ class Race extends Entity {
         options.values.raceTime = options.values.raceTime || Math.floor(faker.random.number() / 10000) + ':' + Math.floor(faker.random.number() / 1000);
         options.values.suggestedLaunchTime = options.values.suggestedLaunchTime || Math.floor(faker.random.number() / 10000) + ':' + Math.floor(faker.random.number() / 1000);
         options.values.bowNumber = options.values.bowNumber || Math.floor(faker.random.number() / 10000);
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
         super(options);
 

@@ -431,7 +431,7 @@ describe('auths-https', () => {
 
                 const statusCode = 200;
 
-                it.only('when `Authorization` with `email` as `username` with correct `password` when `user` is `active`', (done) => {
+                it('when `Authorization` with `email` as `username` with correct `password` when `user` is `active`', (done) => {
 
                     const authorization = 'Basic ' + new Buffer(team1User6Email1.getValues().value + ':' + team1User6Password).toString('base64');
 

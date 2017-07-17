@@ -29,6 +29,7 @@
                 background-color: white;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
+                border-right: solid 1px grey;
             }
 
             .picture-avatar {
@@ -50,7 +51,7 @@
             }
         </style>
 
-        <iron-list id="list" items="[[data]]" as="item">
+        <iron-list id="list" items="[[data]]" as="item" grid>
             <template>
                 <div class="picture" on-click="_handleItemClick">
 

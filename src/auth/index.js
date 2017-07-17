@@ -13,7 +13,10 @@ class Auth extends Entity {
         options.values.created = options.values.created || faker.random.number();
         options.values.updated = options.values.updated || faker.random.number();
         options.values.ip = options.values.ip || faker.internet.ip();
+        options.values.browser = options.values.browser || faker.lorem.words();
         options.values.status = options.values.status || 'active';
+        options.values.permisions = options.values.permisions || 'basic';
+
 
 
         super(options);

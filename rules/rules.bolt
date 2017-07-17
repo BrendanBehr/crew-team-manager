@@ -3,50 +3,61 @@ path /teams/{teamId} is Team {
     read() { 
         hasTeamReadAccess(teamId)
     }
-    create() {
-        hasTeamCreateAccess(teamId)
-    }
     update() {
         hasTeamUpdateAccess(teamId)
     }
 }
 
+type StringNotEmpty extends String {
+    validate() { this.length > 0 }
+}
+
+type AdminRestrictedString extends StringNotEmpty{
+    validate() { getAuthUser().permisions == 'admin'}
+}
+
+type NonNegativeNumber extends Number {
+    validate() { this >=0 }
+}
+
+type CheckTeam extends StringNotEmpty {
+    validate() { this == prior(this) ||  this == getAuthUser().team}
+}
+
+type CheckUser extends StringNotEmpty {
+    validate() {this == prior(this)}
+}
+
+type AdminCheckUser extends CheckUser {
+    validate() {getAuthUser().permisions == 'admin'}
+}
+
+type CreatedTimestamp extends Number {
+    validate() {
+        (prior(this) != null && this == prior(this)) || (prior(this) == null && this == now)
+    }
+}
+
+type AdminCreatedTimestamp extends CreatedTimestamp {
+    validate() {
+        getAuthUser().permisions == 'admin'
+    }
+}
+
+type CurrentTime extends Number {
+  validate() { this == now }
+}
+
 type Team {
-    city: TeamCity,
-    color: TeamColor,
-    logo: TeamLogo,
-    state: TeamState,
-    streetAddress: TeamAddress,
-    teamName: CoolName,
-    created: CreatedTimestamp,
+    city: StringNotEmpty,
+    color: StringNotEmpty,
+    logo: StringNotEmpty,
+    state: StringNotEmpty,
+    streetAddress: StringNotEmpty,
+    teamName: StringNotEmpty,
     updated: CurrentTime,
 
-    validate() { this.team != null}
-}
-
-type TeamCity extends String {
-    validate() { this.length > 0 || root.team != null}
-}
-
-type TeamColor extends String {
-    validate() { this.length > 0 || root.team != null}
-}
-
-
-type TeamLogo extends String {
-  validate() { this.length > 0 || root.team != null}  
-}
-
-type TeamState extends String {
-     validate() { this.length > 0 || root.team != null}
-}
-
-type TeamAddress extends String {
-   validate() { this.length > 0 || root.team != null}  
-}
-
-type CoolName extends String {
-      validate() { this.length > 0 || root.team != null}
+    validate() { this.updated == now }
 }
 
 isAuthenticated() {
@@ -69,12 +80,16 @@ hasTeamReadAccess(teamId) {
     return isAuthenticatedUser() && getAuthUser().team == teamId
 }
 
-hasTeamCreateAccess(teamId) {
-    return getAuth().team == teamId
+hasCreateAccess() {
+    return getAuth().status == 'active'
+}
+
+hasAdminCreateAccess() {
+    return hasCreateAccess() && getAuthUser().permisions == 'admin'
 }
 
 hasTeamUpdateAccess(teamId) {
-    return getAuthUser().team == teamId
+    return getAuthUser().team == teamId && getAuth().status == 'active'
 }
 
 //-----------------Secures the athletes--------------------
@@ -82,91 +97,45 @@ path /athletes/{athleteId} is Athlete {
     read() { 
         hasAthleteReadAccess(athleteId)
     }
+
     create() {
-        hasAthleteCreateAccess(athleteId)
+        hasCreateAccess()
     }
+
     update() {
         hasAthleteUpdateAccess(athleteId)
+    }
+
+    delete() {
+        hasAthleteDeleteAccess(athleteId)
     }
 }
 
 type Athlete {
-    city: HomeCity,
-    credential: AthleteCredential,
+    city: StringNotEmpty,
     driver: Boolean,
-    ergScore: FatErgos,
-    firstName: AthleteFirst,
-    fundRaising: MoneyRaised,
-    gender: AthleteGender,
-    height: AthleteHeight,
-    lastName: AthleteLast,
-    phone: PhoneNumber,
-    side: RowingSide,
-    state: HomeState,
-    streetAddress: AthleteAddress,
-    team: String,
+    ergScore: StringNotEmpty,
+    firstName: StringNotEmpty,
+    fundRaising: NonNegativeNumber,
+    gender: StringNotEmpty,
+    height: StringNotEmpty,
+    lastName: StringNotEmpty,
+    phone: StringNotEmpty,
+    side: StringNotEmpty,
+    state: StringNotEmpty,
+    streetAddress: StringNotEmpty,
+    team: CheckTeam,
     weight: AthleteWeight,
-    year: SchoolYear,
+    year: StringNotEmpty,
+    email: StringNotEmpty,
     created: CreatedTimestamp,
     updated: CurrentTime,
 
     validate() { this.updated == now}
 } 
 
-type HomeCity extends String{
-    validate() { this.length > 0 || this.only != null }
-}
-
-type AthleteCredential extends String{
-    validate() { this.length > 0 || this.only != null }
-}
-
-type FatErgos extends String{
-    validate() { this.length > 0 || this.only != null }
-}
-
-type AthleteFirst extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type MoneyRaised extends Number{
-    validate() { this > 0 || this.only != null  }
-}
-
-type AthleteGender extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type AthleteHeight extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type AthleteLast extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type PhoneNumber extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type RowingSide extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type HomeState extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type AthleteAddress extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type AthleteWeight extends Number{
-    validate() { this > 0 && this < 400 || this.only != null  }
-}
-
-type SchoolYear extends String{
-    validate() { this.length > 0 || this.only != null  }
+type AthleteWeight extends NonNegativeNumber{
+    validate() {this < 400}
 }
 
 getAthlete(athleteId){
@@ -177,12 +146,12 @@ hasAthleteReadAccess(athleteId) {
     return getAuthUser().team == getAthlete(athleteId).team
 }
 
-hasAthleteCreateAccess(athleteId) {
-    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team
+hasAthleteUpdateAccess(athleteId) {
+    return getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team
 }
 
-hasAthleteUpdateAccess(athleteId) {
-    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team
+hasAthleteDeleteAccess(athleteId){
+    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().permisions == 'admin'
 }
 
 //------------------Secures the boats----------------------
@@ -191,42 +160,32 @@ path /boats/{boatId} is Boat {
         hasBoatReadAccess(boatId)
     }
     create() {
-        hasBoatCreateAccess(boatId)
+        hasCreateAccess()
     }
     update() {
         hasBoatUpdateAccess(boatId)
     }
+
+    delete(){
+        hasBoatDeleteAccess(boatId)
+    }
 }
 
 type Boat {
-    manufacturer: BoatCompany,
-    name: BoatName,
-    rigging: BoatRigging,
+    manufacturer: StringNotEmpty,
+    name: StringNotEmpty,
+    rigging: StringNotEmpty,
     size: BoatSize,
-    team: String,
-    type: RowingType
+    team: CheckTeam,
+    created: CreatedTimestamp,
+    type: StringNotEmpty,
+    updated: CurrentTime,
 
-    validate() { this.update == now }
+    validate() { this.updated == now}
 } 
-
-type BoatCompany extends String {
-    validate() { this.length > 0 || this.only != null  }
-} 
-
-type BoatName extends String {
-    validate() { this.length > 0|| this.only != null  }
-}
-
-type BoatRigging extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
 
 type BoatSize extends Number {
-    validate() { this.lenght > 0 || this.only != null  }
-}
-
-type RowingType extends String {
-    validate() { this.length > 0  || this.only != null  }
+    validate() { this > 0 && this <= 8 }
 }
 
 getBoat(boatId){
@@ -237,13 +196,12 @@ hasBoatReadAccess(boatId) {
     return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team
 }
 
-hasBoatCreateAccess(boatId) {
-    
-    return isAuthenticatedUser()  && getAuthUser().team == getBoat(boatId).team
+hasBoatUpdateAccess(boatId) {
+    return getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team
 }
 
-hasBoatUpdateAccess(boatId) {
-    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team
+hasBoatDeleteAccess(boatId){
+    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().permisions == 'admin'
 }
 
 //-----------------Secures the auths---------------------
@@ -252,7 +210,7 @@ path /auths/{authId} is Auth {
         hasAuthReadAccess(authId)
     }
     create() {
-        hasAuthCreateAccess(authId)
+        hasCreateAccess()
     }
     update() {
         hasAuthUpdateAccess(authId)
@@ -260,32 +218,16 @@ path /auths/{authId} is Auth {
 }
 
 type Auth {
-    created: CreatedTimestamp,
-    ip: IPString,
-    status: AuthStat,
+    ip: AdminRestrictedString,
+    status: AdminRestrictedString,
+    permisions: AdminRestrictedString,
+    created: AdminCreatedTimestamp,
     updated: CurrentTime,
-    user: String
+    browser: AdminRestrictedString,
+    user: AdminCheckUser,
     
     validate() { this.updated == now}
 } 
-
-type CreatedTimestamp extends Number {
-    validate() {
-        (prior(this) != null && this == prior(this)) || (prior(this) == null && this == now)
-    }
-}
-
-type IPString extends String {
-    validate() { this.length > 0 || this.only != null }
-}
-
-type AuthStat extends String {
-    validate() { this.length > 0 || this.only != null }
-}
-
-type CurrentTime extends Number {
-  validate() { this == now || this.only != null}
-}
 
 getAuthTeam(authId){
     return prior(root).auths[authId]
@@ -293,10 +235,6 @@ getAuthTeam(authId){
 
 hasAuthReadAccess(authId) {
     return getAuth().user == getAuthTeam(authId).user && (auth.auth == authId || (getAuthTeam(authId).status == 'active' && getAuth().status == 'active'))
-}
-
-hasAuthCreateAccess(authId) {
-    return getAuth().user == getAuthTeam(authId).user && getAuthTeam(authId).status == 'active' && getAuth().status == 'active'
 }
 
 hasAuthUpdateAccess(authId) {
@@ -309,46 +247,29 @@ path /ergs/{ergId} is Erg {
         hasErgReadAccess(ergId)
     }
     create() {
-        hasErgCreateAccess(ergId)
+        hasCreateAccess()
     }
     update() {
         hasErgUpdateAccess(ergId)
     }
+
+    delete(){
+        hasErgDeleteAccess(ergId)
+    }
 }
 
 type Erg {
-    condition: ErgCondition,
-    location: HomeAway,
-    model: ErgModel,
-    number: NumberErg,
-    screenType: Screen,
-    team: String,
+    condition: StringNotEmpty,
+    location: StringNotEmpty,
+    model: StringNotEmpty,
+    number: NonNegativeNumber,
+    screenType: StringNotEmpty,
+    team: CheckTeam,
     created: CreatedTimestamp,
     updated: CurrentTime,
 
     validate() { this.updated == now }
-
 } 
-
-type ErgCondition extends String {
-    validate() { this.length > 0 || this != null }
-}
-
-type HomeAway extends String {
-    validate() { this.length > 0 || this != null }
-}
-
-type ErgModel extends String {
-    validate() { this.length > 0 || this != null }
-}
-
-type NumberErg extends Number {
-    validate() { this > 0 && this < 100 || this != null }
-}
-
-type Screen extends String {
-    validate() { this.length > 0 || this != null }
-}
 
 getErg(ergId){
     return prior(root).ergs[ergId]
@@ -358,12 +279,12 @@ hasErgReadAccess(ergId) {
     return isAuthenticatedUser() && getAuthUser().team == getErg(ergId).team
 }
 
-hasErgCreateAccess(ergId) {
-    return getAuthUser().team == getErg(ergId).team
+hasErgUpdateAccess(ergId) {
+    return getAuthUser().team == getErg(ergId).team && getAuth().status == 'active'
 }
 
-hasErgUpdateAccess(ergId) {
-    return getAuthUser().team == getErg(ergId).team
+hasErgDeleteAccess(ergId){
+    return  getAuth().status == 'active' && getAuthUser().team == getErg(ergId).team && getAuthUser().permisions == 'admin'
 }
 
 //------------------Secures the finances---------------------
@@ -372,34 +293,28 @@ path /finances/{financeId} is Finance {
         hasFinanceReadAccess(financeId)
     }
     create() {
-        hasFinanceCreateAccess(financeId)
+        hasCreateAccess()
     }
     update() {
         hasFinanceUpdateAccess(financeId)
     }
+
+    delete(){
+        hasFinanceDeleteAccess(financeId)
+    }
 }
 
 type Finance {
-    expenses: Life,
+    expenses: NonNegativeNumber,
     gross: Number,
-    incomes: Dreams,
-    reason: PaymentReason,
-    team: String
+    incomes: NonNegativeNumber,
+    reason: StringNotEmpty,
+    team: CheckTeam,
     created: CreatedTimestamp,
     updated: CurrentTime,
+
+    validate() { this.updated == now }
 } 
-
-type Life extends Number {
-    validate() { this < 0 || this.only != null  }
-}
-
-type Dreams extends Number {
-    validate() { this > 0 || this.only != null  }
-}
-
-type PaymentReason extends String {
-    validate() { this.length > 0 && this.length < 64 || this.only != null  }
-}
 
 getFinance(financeId){
     return prior(root).finances[financeId]
@@ -409,12 +324,12 @@ hasFinanceReadAccess(financeId) {
     return isAuthenticatedUser() && getAuthUser().team == getFinance(financeId).team
 }
 
-hasFinanceCreateAccess(financeId) {
-    return isAuthenticatedUser() && getAuthUser().team == getFinance(financeId).team
+hasFinanceUpdateAccess(financeId) {
+    return getAuth().status == 'active' && getAuthUser().team == getFinance(financeId).team
 }
 
-hasFinanceUpdateAccess(financeId) {
-    return isAuthenticatedUser() && getAuthUser().team == getFinance(financeId).team
+hasFinanceDeleteAccess(financeId){
+    return  getAuth().status == 'active' && getAuthUser().team == getFinance(financeId).team && getAuthUser().permisions == 'admin'
 }
 
 //--------------------Secures the oars-------------------
@@ -423,43 +338,29 @@ path /oars/{oarId} is Oar {
         hasOarReadAccess(oarId)
     }
     create() {
-        hasOarCreateAccess(oarId)
+        hasCreateAccess()
     }
     update() {
         hasOarUpdateAccess(oarId)
     }
+
+    delete(){
+        hasOarDeleteAccess(oarId)
+    }
 }
 
 type Oar {
-    color: BeautifulColor,
-    handleGrip: DestroyHands,
-    length: ShaftLength,
-    name: OarName,
-    shape: BladeShape
-    team: String
+    color: StringNotEmpty,
+    handleGrip: StringNotEmpty,
+    length: NonNegativeNumber,
+    name: StringNotEmpty,
+    shape: StringNotEmpty,
+    team: CheckTeam,
     created: CreatedTimestamp,
     updated: CurrentTime,
+
+    validate() { this.updated == now }
 } 
-
-type BeautifulColor extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type DestroyHands extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type ShaftLength extends Number {
-    validate() { this > 0 || this.only != null  }
-}
-
-type OarName extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type BladeShape extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
 
 getOar(oarId){
     return prior(root).oars[oarId]
@@ -469,12 +370,12 @@ hasOarReadAccess(oarId) {
     return isAuthenticatedUser() && getAuthUser().team == getOar(oarId).team
 }
 
-hasOarCreateAccess(oarId) {
-    return isAuthenticatedUser() && getAuthUser().team == getOar(oarId).team
+hasOarUpdateAccess(oarId) {
+    return getAuth().status == 'active' && getAuthUser().team == getOar(oarId).team
 }
 
-hasOarUpdateAccess(oarId) {
-    return isAuthenticatedUser() && getAuthUser().team == getOar(oarId).team
+hasOarDeleteAccess(oarId){
+    return  getAuth().status == 'active' && getAuthUser().team == getOar(oarId).team && getAuthUser().permisions == 'admin'
 }
 
 //-------------------Secures the pictures-------------------
@@ -483,28 +384,26 @@ path /pictures/{pictureId} is Picture {
         hasPictureReadAccess(pictureId)
     }
     create() {
-        hasPictureCreateAccess(pictureId)
+        hasCreateAccess()
     }
     update() {
         hasPictureUpdateAccess(pictureId)
     }
+
+    delete(){
+        hasPictureDeleteAccess(pictureId)
+    }
 }
 
 type Picture {
-    caption: CoolCaption,
-    team: String,
-    url: LongString
+    caption: StringNotEmpty,
+    team: CheckTeam,
+    url: StringNotEmpty,
     created: CreatedTimestamp,
     updated: CurrentTime,
+
+    validate() { this.updated == now }
 } 
-
-type CoolCaption extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type LongString extends String {
-     validate() { this.length > 0  || this.only != null  }
-}
 
 getPicture(pictureId){
     return prior(root).pictures[pictureId]
@@ -514,12 +413,12 @@ hasPictureReadAccess(pictureId) {
     return isAuthenticatedUser() && getAuthUser().team == getPicture(pictureId).team
 }
 
-hasPictureCreateAccess(pictureId) {
-    return isAuthenticatedUser() && getAuthUser().team == getPicture(pictureId).team
+hasPictureUpdateAccess(pictureId) {
+    return getAuth().status == 'active' && getAuthUser().team == getPicture(pictureId).team
 }
 
-hasPictureUpdateAccess(pictureId) {
-    return isAuthenticatedUser() && getAuthUser().team == getPicture(pictureId).team
+hasPictureDeleteAccess(pictureId){
+    return  getAuth().status == 'active' && getAuthUser().team == getPicture(pictureId).team && getAuthUser().permisions == 'admin'
 }
 
 //-------------------Secures the races-------------------
@@ -528,39 +427,29 @@ path /races/{raceId} is Race {
         hasRaceReadAccess(raceId)
     }
     create() {
-        hasRaceCreateAccess(raceId)
+        hasCreateAccess()
     }
     update() {
         hasRaceUpdateAccess(raceId)
     }
+
+    delete(){
+        hasRaceDeleteAccess(raceId)
+    }
 }
 
 type Race {
-    bowNumber: BowCard,
-    eventName: ThisEvent,
-    raceTime: AndTheyreOff,
-    suggestedLaunchTime: RaiseTheAnchor,
-    team: String
+    bowNumber: NonNegativeNumber,
+    eventName: StringNotEmpty,
+    raceTime: StringNotEmpty,
+    suggestedLaunchTime: StringNotEmpty,
+    team: CheckTeam,
     created: CreatedTimestamp,
     updated: CurrentTime,
 
+    validate() { this.updated == now }
+
 } 
-
-type BowCard extends Number {
-    validate() { this > 0 || this.only != null  }
-}
-
-type ThisEvent extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type AndTheyreOff extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type RaiseTheAnchor extends String {
-    validate() { this.length > 0 || this.only != null  }
-}
 
 getRace(raceId){
     return prior(root).races[raceId]
@@ -570,12 +459,12 @@ hasRaceReadAccess(raceId) {
     return isAuthenticatedUser() && getAuthUser().team == getRace(raceId).team
 }
 
-hasRaceCreateAccess(raceId) {
-    return isAuthenticatedUser() && getAuthUser().team == getRace(raceId).team
+hasRaceUpdateAccess(raceId) {
+    return getAuth().status == 'active' && getAuthUser().team == getRace(raceId).team
 }
 
-hasRaceUpdateAccess(raceId) {
-    return isAuthenticatedUser() && getAuthUser().team == getRace(raceId).team
+hasRaceDeleteAccess(raceId){
+    return  getAuth().status == 'active' && getAuthUser().team == getRace(raceId).team && getAuthUser().permisions == 'admin'
 }
 
 //-------------------Secures the regattas--------------------
@@ -584,54 +473,31 @@ path /regattas/{regattaId} is Regatta {
         hasRegattaReadAccess(regattaId)
     }
     create() {
-        hasRegattaCreateAccess(regattaId)
+        hasCreateAccess()
     }
     update() {
         hasRegattaUpdateAccess(regattaId)
     }
+
+    delete(){
+        hasRegattaDeleteAccess(regattaId)
+    }
 }
 
 type Regatta {
-    city: CityName,
-    cost: EntryFee,
+    city: StringNotEmpty,
+    cost: NonNegativeNumber,
     head: Boolean,
-    locationImage: PrettyPicture,
-    name: RegattaName,
-    state: LocationState,
-    streetAddress: LocationAddress,
-    team: String
+    locationImage: StringNotEmpty,
+    name: StringNotEmpty,
+    state: StringNotEmpty,
+    streetAddress: StringNotEmpty,
+    team: CheckTeam,
     created: CreatedTimestamp,
     updated: CurrentTime,
+
+    validate() { this.updated == now }
 } 
-
-type CityName extends String{
-    validate(){ this.length > 0 || this.only != null  }
-}
-
-type EntryFee extends Number {
-    validate(){ this.length > 0 || this.only != null  }
-
-}
-
-type PrettyPicture extends String {
-    validate(){ this.length > 0 || this.only != null  }
-
-}
-
-type RegattaName extends String {
-    validate(){ this.length > 0 || this.only != null  }
-
-}
-
-type LocationState extends String {
-    validate(){ this.length > 0 || this.only != null  }
-
-}
-
-type LocationAddress {
-    validate(){ this.length > 0 || this.only != null  }
-
-}
 
 getRegatta(regattaId){
     return prior(root).regattas[regattaId]
@@ -641,12 +507,12 @@ hasRegattaReadAccess(regattaId) {
     return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team
 }
 
-hasRegattaCreateAccess(regattaId) {
-    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team
+hasRegattaUpdateAccess(regattaId) {
+    return getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team
 }
 
-hasRegattaUpdateAccess(regattaId) {
-    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team
+hasRegattaDeleteAccess(regattaId){
+    return  getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().permisions == 'admin'
 }
 
 //------------------Secures the riggers----------------------
@@ -655,37 +521,31 @@ path /riggers/{riggerId} is Rigger{
         hasRiggerReadAccess(riggerId)
     }
     create() {
-        hasRiggerCreateAccess(riggerId)
+        hasCreateAccess()
     }
     update() {
         hasRiggerUpdateAccess(riggerId)
+    }
+
+    delete(){
+        hasRiggerDeleteAccess(riggerId)
     }
 }
 
 type Rigger{
     seat: SeatNumber,
-    side: BoatSide,
-    style: RowingStyle,
-    type: RiggerType,
-    team: String
+    side: StringNotEmpty,
+    style: StringNotEmpty,
+    type: StringNotEmpty,
+    team: CheckTeam,
     created: CreatedTimestamp,
     updated: CurrentTime,
+
+    validate() { this.updated == now }
 }
 
-type SeatNumber extends Number{
-    validate() { this > 0 && this <= 8  || this.only != null  }
-}
-
-type BoatSide extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type RowingStyle extends String{
-    validate() { this.length > 0 || this.only != null  }
-}
-
-type RiggerType extends String{
-    validate() { this.length > 0 || this.only != null  }
+type SeatNumber extends NonNegativeNumber{
+    validate() { this > 0 && this <= 8   }
 }
 
 getRigger(riggerId){
@@ -696,10 +556,567 @@ hasRiggerReadAccess(riggerId) {
     return isAuthenticatedUser() && getAuthUser().team == getRigger(riggerId).team
 }
 
-hasRiggerCreateAccess(riggerId) {
-    return isAuthenticatedUser() && getAuthUser().team == getRigger(riggerId).team
+hasRiggerUpdateAccess(riggerId) {
+    return getAuth().status == 'active' && getAuthUser().team == getRigger(riggerId).team
 }
 
-hasRiggerUpdateAccess(riggerId) {
-    return isAuthenticatedUser() && getAuthUser().team == getRigger(riggerId).team
+hasRiggerDeleteAccess(riggerId){
+    return  getAuth().status == 'active' && getAuthUser().team == getRigger(riggerId).team && getAuthUser().permisions == 'admin'
+}
+
+//------------------Secures Users-------------------------
+path /users/{userId} is User{
+    read() { 
+        hasUserReadAccess(userId)
+    }
+    create() {
+        hasCreateAccess()
+    }
+    update() {
+        hasUserUpdateAccess(userId)
+    }
+
+    delete(){
+        hasUserDeleteAccess(userId)
+    }
+}
+
+type User {
+    credentials: StringNotEmpty,
+    firstName: StringNotEmpty,
+    lastName: StringNotEmpty,
+    status: StringNotEmpty,
+    permisions: StringNotEmpty,
+    team: CheckTeam,
+    email: StringNotEmpty,
+    userName: StringNotEmpty,
+    created: CreatedTimestamp,
+    updated: CurrentTime
+
+    validate() { this.updated == now }
+}
+
+hasUserReadAccess(userId) {
+    return isAuthenticatedUser() && getAuthUser() == userId
+}
+
+hasUserUpdateAccess(userId) {
+    return getAuth().status == 'active' && getAuth().user == userId
+}
+
+getUser(userId){
+    return prior(root).users[userId]
+}
+
+hasUserDeleteAccess(userId){
+    return  getAuth().status == 'active' && getAuthUser().team == getUser(userId).team && getAuthUser().permisions == 'admin'
+}
+
+//*****************************Fan outs********************************
+//-----------------------------BoatAthlete-------------------------------
+
+path /boatAthletes/{boatId}/{athleteId} is FanOut {
+    read() {
+        hasBoatAthleteReadAccess(boatId, athleteId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasBoatAthleteUpdateAccess(boatId, athleteId)
+    }
+
+    delete() {
+        hasBoatAthleteDeleteAccess(boatId, athleteId)
+    }
+}
+
+type FanOut extends Boolean {
+    validate() { getAuthUser().permisions == 'admin' }
+}
+
+hasBoatAthleteReadAccess(boatId, athleteId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getAthlete(athleteId).team
+}
+
+hasBoatAthleteUpdateAccess(boatId, athleteId){
+    return getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getAthlete(athleteId).team
+}
+
+hasBoatAthleteDeleteAccess(boatId, athleteId){
+    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().permisions == 'admin'
+}
+
+//----------------------------------BoatOar--------------------------------
+
+path /boatOars/{boatId}/{oarId} is FanOut {
+    read() {
+        hasBoatOarReadAccess(boatId, oarId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasBoatOarUpdateAccess(boatId, oarId)
+    }
+
+    delete() {
+        hasBoatOarDeleteAccess(boatId, oarId)
+    }
+}
+
+hasBoatOarReadAccess(boatId, oarId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getOar(oarId).team
+}
+
+hasBoatOarUpdateAccess(boatId, oarId){
+    return getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getOar(oarId).team
+}
+
+hasBoatOarDeleteAccess(boatId, oarId){
+    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getOar(oarId).team && getAuthUser().permisions == 'admin'
+}
+
+//----------------------------------BoatRigger--------------------------------
+
+path /boatRiggers/{boatId}/{riggerId} is FanOut {
+    read() {
+        hasBoatRiggerReadAccess(boatId, riggerId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasBoatRiggerUpdateAccess(boatId, riggerId)
+    }
+
+    delete() {
+        hasBoatRiggerDeleteAccess(boatId, riggerId)
+    }
+}
+
+hasBoatRiggerReadAccess(boatId, riggerId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getRigger(riggerId).team
+}
+
+hasBoatRiggerUpdateAccess(boatId, riggerId){
+    return getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getRigger(riggerId).team
+}
+
+hasBoatRiggerDeleteAccess(boatId, riggerId){
+    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getRigger(riggerId).team && getAuthUser().permisions == 'admin'
+}
+
+//----------------------------------AthleteErg--------------------------------
+
+path /athleteErgs/{athleteId}/{ergId} is FanOut {
+    read() {
+        hasAthleteErgReadAccess(athleteId, ergId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasAthleteErgUpdateAccess(athleteId, ergId)
+    }
+
+    delete() {
+        hasAthleteErgDeleteAccess(athleteId, ergId)
+    }
+}
+
+hasAthleteErgReadAccess(athleteId, ergId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getErg(ergId).team
+}
+
+hasAthleteErgUpdateAccess(athleteId, ergId){
+    return getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().team == getErg(ergId).team
+}
+
+hasAthleteErgDeleteAccess(athleteId, ergId){
+    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().team == getErg(ergId).team && getAuthUser().permisions == 'admin'
+}
+
+//----------------------------------AthleteFinance--------------------------------
+
+path /athleteFinances/{athleteId}/{financeId} is FanOut {
+    read() {
+        hasAthleteFinanceReadAccess(athleteId, financeId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasAthleteFinanceUpdateAccess(athleteId, financeId)
+    }
+
+    delete() {
+        hasAthleteFinanceDeleteAccess(athleteId, financeId)
+    }
+}
+
+hasAthleteFinanceReadAccess(athleteId, financeId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getFinance(financeId).team
+}
+
+hasAthleteFinanceUpdateAccess(athleteId, financeId){
+    return getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().team == getFinance(financeId).team
+}
+
+hasAthleteFinanceDeleteAccess(athleteId, financeId){
+    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().team == getFinance(financeId).team && getAuthUser().permisions == 'admin'
+}
+
+//----------------------------------RegattaRace--------------------------------
+
+path /regattaRaces/{regattaId}/{raceId} is FanOut {
+    read() {
+        hasRegattaRaceReadAccess(regattaId, raceId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasRegattaRaceUpdateAccess(regattaId, raceId)
+    }
+
+    delete() {
+        hasRegattaRaceDeleteAccess(regattaId, raceId)
+    }
+}
+
+hasRegattaRaceReadAccess(regattaId, raceId){
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getRegatta(regattaId).team == getRace(raceId).team
+}
+
+hasRegattaRaceUpdateAccess(regattaId, raceId){
+    return getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().team == getRace(raceId).team
+}
+
+hasRegattaRaceDeleteAccess(regattaId, raceId){
+    return  getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().team == getRace(raceId).team && getAuthUser().permisions == 'admin'
+}
+
+//----------------------------------RegattaPicture--------------------------------
+
+path /regattaPictures/{regattaId}/{pictureId} is FanOut {
+    read() {
+        hasRegattaPictureReadAccess(regattaId, pictureId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasRegattaPictureUpdateAccess(regattaId, pictureId)
+    }
+
+    delete() {
+        hasRegattaPictureDeleteAccess(regattaId, pictureId)
+    }
+}
+
+hasRegattaPictureReadAccess(regattaId, pictureId){
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getRegatta(regattaId).team == getPicture(pictureId).team
+}
+
+hasRegattaPictureUpdateAccess(regattaId, pictureId){
+    return getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().team == getPicture(pictureId).team
+}
+
+hasRegattaPictureDeleteAccess(regattaId, pictureId){
+    return  getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().team == getPicture(pictureId).team && getAuthUser().permisions == 'admin'
+}
+
+//**************************TeamFanOuts********************************
+//--------------------------TeamAthlete-------------------------------
+path /teamAthletes/{teamId}/{athleteId} is FanOut {
+    read() {
+        hasTeamAthleteReadAccess(teamId, athleteId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamAthleteUpdateAccess(teamId, athleteId)
+    }
+
+    delete() {
+        hasTeamAthleteDeleteAccess(teamId, athleteId)
+    }
+}
+
+hasTeamAthleteReadAccess(teamId, athleteId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getAthlete(athleteId).team
+}
+
+hasTeamAthleteUpdateAccess(teamId, athleteId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getAthlete(athleteId).team
+}
+
+hasTeamAthleteDeleteAccess(teamId, athleteId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().permisions == 'admin'
+}
+
+//--------------------------TeamBoat-------------------------------
+path /teamBoats/{teamId}/{boatId} is FanOut {
+    read() {
+        hasTeamBoatReadAccess(teamId, boatId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamBoatUpdateAccess(teamId, boatId)
+    }
+
+    delete() {
+        hasTeamBoatDeleteAccess(teamId, boatId)
+    }
+}
+
+hasTeamBoatReadAccess(teamId, boatId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getBoat(boatId).team
+}
+
+hasTeamBoatUpdateAccess(teamId, boatId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getBoat(boatId).team
+}
+
+hasTeamBoatDeleteAccess(teamId, boatId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getBoat(boatId).team && getAuthUser().permisions == 'admin'
+}
+
+//--------------------------TeamErg-------------------------------
+path /teamErgs/{teamId}/{ergId} is FanOut {
+    read() {
+        hasTeamErgReadAccess(teamId, ergId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamErgUpdateAccess(teamId, ergId)
+    }
+
+    delete() {
+        hasTeamErgDeleteAccess(teamId, ergId)
+    }
+}
+
+hasTeamErgReadAccess(teamId, ergId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getErg(ergId).team
+}
+
+hasTeamErgUpdateAccess(teamId, ergId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getErg(ergId).team
+}
+
+hasTeamErgDeleteAccess(teamId, ergId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getErg(ergId).team && getAuthUser().permisions == 'admin'
+}
+
+//--------------------------TeamFinance-------------------------------
+path /teamFinances/{teamId}/{financeId} is FanOut {
+    read() {
+        hasTeamFinanceReadAccess(teamId, financeId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamFinanceUpdateAccess(teamId, financeId)
+    }
+
+    delete() {
+        hasTeamFinanceDeleteAccess(teamId, financeId)
+    }
+}
+
+hasTeamFinanceReadAccess(teamId, financeId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getFinance(financeId).team
+}
+
+hasTeamFinanceUpdateAccess(teamId, financeId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getFinance(financeId).team
+}
+
+hasTeamFinanceDeleteAccess(teamId, financeId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getFinance(financeId).team && getAuthUser().permisions == 'admin'
+}
+
+//--------------------------TeamOar-------------------------------
+path /teamOars/{teamId}/{oarId} is FanOut {
+    read() {
+        hasTeamOarReadAccess(teamId, oarId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamOarUpdateAccess(teamId, oarId)
+    }
+
+    delete() {
+        hasTeamOarDeleteAccess(teamId, oarId)
+    }
+}
+
+hasTeamOarReadAccess(teamId, oarId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getOar(oarId).team
+}
+
+hasTeamOarUpdateAccess(teamId, oarId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getOar(oarId).team
+}
+
+hasTeamOarDeleteAccess(teamId, oarId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getOar(oarId).team && getAuthUser().permisions == 'admin'
+}
+
+//--------------------------TeamPicture-------------------------------
+path /teamPictures/{teamId}/{pictureId} is FanOut {
+    read() {
+        hasTeamPictureReadAccess(teamId, pictureId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamPictureUpdateAccess(teamId, pictureId)
+    }
+
+    delete() {
+        hasTeamPictureDeleteAccess(teamId, pictureId)
+    }
+}
+
+hasTeamPictureReadAccess(teamId, pictureId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getPicture(pictureId).team
+}
+
+hasTeamPictureUpdateAccess(teamId, pictureId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getPicture(pictureId).team
+}
+
+hasTeamPictureDeleteAccess(teamId, pictureId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getPicture(pictureId).team && getAuthUser().permisions == 'admin'
+}
+
+//--------------------------TeamRace-------------------------------
+path /teamRaces/{teamId}/{raceId} is FanOut {
+    read() {
+        hasTeamRaceReadAccess(teamId, raceId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamRaceUpdateAccess(teamId, raceId)
+    }
+
+    delete() {
+        hasTeamRaceDeleteAccess(teamId, raceId)
+    }
+}
+
+hasTeamRaceReadAccess(teamId, raceId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getRace(raceId).team
+}
+
+hasTeamRaceUpdateAccess(teamId, raceId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getRace(raceId).team
+}
+
+hasTeamRaceDeleteAccess(teamId, raceId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getRace(raceId).team && getAuthUser().permisions == 'admin'
+}
+
+//--------------------------TeamRegatta-------------------------------
+path /teamRegattas/{teamId}/{regattaId} is FanOut {
+    read() {
+        hasTeamRegattaReadAccess(teamId, regattaId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamRegattaUpdateAccess(teamId, regattaId)
+    }
+
+    delete() {
+        hasTeamRegattaDeleteAccess(teamId, regattaId)
+    }
+}
+
+hasTeamRegattaReadAccess(teamId, regattaId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getRegatta(regattaId).team
+}
+
+hasTeamRegattaUpdateAccess(teamId, regattaId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getRegatta(regattaId).team
+}
+
+hasTeamRegattaDeleteAccess(teamId, regattaId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().permisions == 'admin'
+}
+
+//--------------------------TeamRigger-------------------------------
+path /teamRiggers/{teamId}/{riggerId} is FanOut {
+    read() {
+        hasTeamRiggerReadAccess(teamId, riggerId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasTeamRiggerUpdateAccess(teamId, riggerId)
+    }
+
+    delete() {
+        hasTeamRiggerDeleteAccess(teamId, riggerId)
+    }
+}
+
+hasTeamRiggerReadAccess(teamId, riggerId){
+    return isAuthenticatedUser() && getAuthUser().team == teamId && teamId == getRigger(riggerId).team
+}
+
+hasTeamRiggerUpdateAccess(teamId, riggerId){
+    return getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getRigger(riggerId).team
+}
+
+hasTeamRiggerDeleteAccess(teamId, riggerId){
+    return  getAuth().status == 'active' && getAuthUser().team == teamId && getAuthUser().team == getRigger(riggerId).team && getAuthUser().permisions == 'admin'
 }

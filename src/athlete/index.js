@@ -2,7 +2,7 @@
 
 const faker = require('faker');
 const Entity = require('../entity');
-const User = require('../user');
+const User = require('../athlete');
 
 class Athlete extends Entity {
 
@@ -24,38 +24,18 @@ class Athlete extends Entity {
         options.values.side = options.values.side || 'port';
         options.values.year = options.values.year || 'freshman';
         options.values.gender = options.values.gender || 'M/F';
-        options.values.fundRaising = options.values.fundRaising || faker.finance.amount();
+        options.values.fundRaising = options.values.fundRaising || faker.random.number() / 100;
         options.values.driver = options.values.driver || faker.random.boolean();
-        options.values.credential = options.values.credential || faker.lorem.slug();
+        options.values.email = options.values.email || faker.internet.email();
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
         super(options);
 
         this._ergs = [];
+        this._finances;
 
         this.getGenerator().getAthletes().push(this);
-    }
-
-    setCredential(credential) {
-        this._credential = credential;
-
-        let values = {};
-        values[this.getCredential().getSingular()] = this.getCredential().getPathKey();
-
-        return this.updateValues(values);
-
-    }
-
-    getCredential() {
-        return this._credential;
-    }
-
-    getCredentials() {
-
-        const user = this;
-        return this.getGenerator().getCredential().filter((credential) => {
-            return credential.getUser() == user;
-        });
-
     }
 
     createUser(values) {
@@ -70,24 +50,52 @@ class Athlete extends Entity {
     getUsers() {
 
         const athlete = this;
-        return this.getGenerator().getUser().filter((user) => {
-            return user.getAthlete() == athlete;
+        return this.getGenerator().getUser().filter((athlete) => {
+            return athlete.getAthlete() == athlete;
         });
     }
 
     getUser() {
-        return this._user;
+        return this._athlete;
     }
 
     addErg(erg) {
+        let val = erg.getValues({
+            reference: false
+        });
 
-        this.getData().athleteErgs = this.getData().athleteErgs || {};
-        this.getData().athleteErgs[this.getPathKey()] = this.getData().athleteErgs[this.getPathKey()] || {};
+        if (val.team == this.getTeam().getPathKey()) {
+            this.getData().athleteErgs = this.getData().athleteErgs || {};
+            this.getData().athleteErgs[this.getPathKey()] = this.getData().athleteErgs[this.getPathKey()] || {};
 
-        if (!this.getData().athleteErgs[this.getPathKey()][erg.getPathKey()]) {
-            this.getData().athleteErgs[this.getPathKey()][erg.getPathKey()] = true;
-            this._ergs.push(erg);
+            if (!this.getData().athleteErgs[this.getPathKey()][erg.getPathKey()]) {
+                this.getData().athleteErgs[this.getPathKey()][erg.getPathKey()] = true;
+                this._ergs.push(erg);
+            }
+
         }
+    }
+    setCredential(credential) {
+        this._credential = credential;
+
+        let values = {};
+        values[this.getCredential().getSingular()] = this.getCredential().getPathKey();
+
+        return this.updateValues(values);
+
+    }
+
+    getCredentials() {
+
+        const athlete = this;
+        return this.getGenerator().getCredential().filter((credential) => {
+            return credential.getUser() == athlete;
+        });
+
+    }
+
+    getCredential() {
+        return this._credential;
     }
 
     removeErg(erg) {
@@ -108,13 +116,18 @@ class Athlete extends Entity {
     }
 
     addFinance(finance) {
+        let val = finance.getValues({
+            reference: false
+        });
 
-        this.getData().athleteFinances = this.getData().athleteFinances || {};
-        this.getData().athleteFinances[this.getPathKey()] = this.getData().athleteFinances[this.getPathKey()] || {};
+        if (val.team == this.getTeam().getPathKey()) {
+            this.getData().athleteFinances = this.getData().athleteFinances || {};
+            this.getData().athleteFinances[this.getPathKey()] = this.getData().athleteFinances[this.getPathKey()] || {};
 
-        if (!this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()]) {
-            this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()] = true;
-            this._ergs.push(finance);
+            if (!this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()]) {
+                this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()] = true;
+                this._ergs.push(finance);
+            }
         }
     }
 

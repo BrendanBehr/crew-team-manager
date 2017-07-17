@@ -16,6 +16,8 @@ class Oar extends Entity {
         options.values.length = options.values.length || faker.random.number() / 100;
         options.values.handleGrip = options.values.handleGrip || 'rubber';
         options.values.name = options.values.name || faker.name.lastName();
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
         super(options);
 

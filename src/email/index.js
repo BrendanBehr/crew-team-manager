@@ -2,7 +2,6 @@
 
 const faker = require('faker');
 const Entity = require('../entity');
-
 class Email extends Entity {
 
     constructor(options) {
@@ -13,12 +12,13 @@ class Email extends Entity {
         options.values = options.values || {};
         options.values.value = options.values.value || faker.internet.email();
 
+
+
         super(options);
 
         this.getGenerator().getAthletes().push(this);
 
     }
-
 }
 
 module.exports = Email;
