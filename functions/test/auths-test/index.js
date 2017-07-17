@@ -9303,7 +9303,6 @@ describe('Auths', function () {
                 });
 
                 it('should not add athletes (team1Athlete1) on the same team as the user (team1User1) to the a different teams boat (team2Boat1)', function (done) {
-                    appName = 'team1User1Auth1';
                     path += team2Boat1.getPathKey() + '/' + team1Athlete1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
                     team2Boat1.addAthlete(team1Athlete1);
@@ -9322,6 +9321,8 @@ describe('Auths', function () {
                 });
 
                 it('a user with basic perms cannot remove own teams athlete from a boat', function (done) {
+                    appName = 'team1User1Auth1';
+
                     path += team1Boat1.getPathKey() + '/' + team1Athlete1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
 
@@ -9361,7 +9362,6 @@ describe('Auths', function () {
                 });
 
                 it('should not add oars (team1Oar1) on the same team as the user (team1User1) to the a different teams boat (team2Boat1)', function (done) {
-                    appName = 'team1User1Auth1';
                     path += team2Boat1.getPathKey() + '/' + team1Oar1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
                     team2Boat1.addOar(team1Oar1);
@@ -9380,7 +9380,7 @@ describe('Auths', function () {
                 });
 
                 it('a user with basic perms cannot remove own teams oar from a boat', function (done) {
-                    path += team1Boat1.getPathKey() + '/' + team1Oar1.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
@@ -9426,7 +9426,6 @@ describe('Auths', function () {
                 });
 
                 it('should not add riggers (team1Rigger1) on the same team as the user (team1User1) to the a different teams boat (team2Boat1)', function (done) {
-                    appName = 'team1User1Auth1';
                     path += team2Boat1.getPathKey() + '/' + team1Rigger1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
                     team2Boat1.addRigger(team1Rigger1);
@@ -9445,6 +9444,7 @@ describe('Auths', function () {
                 });
 
                 it('a user with basic perms cannot remove own teams rigger from a boat', function (done) {
+                    appName = 'team1User1Auth1';
                     path += team1Boat1.getPathKey() + '/' + team1Rigger1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
 
@@ -9498,7 +9498,6 @@ describe('Auths', function () {
                 });
 
                 it('should not add finances (team1Finance1) on the same team as the user (team1User1) to the a different teams athlete (team2Athlete1)', function (done) {
-                    appName = 'team1User1Auth1';
                     path += team2Athlete1.getPathKey() + '/' + team1Finance1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
                     team2Athlete1.addFinance(team1Finance1);
@@ -9517,6 +9516,7 @@ describe('Auths', function () {
                 });
 
                 it('a user with basic perms cannot remove own teams finance from a athlete', function (done) {
+                    appName = 'team1User1Auth1';
                     path += team1Athlete1.getPathKey() + '/' + team1Finance1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
 
@@ -9563,7 +9563,6 @@ describe('Auths', function () {
                 });
 
                 it('should not add ergs (team1Erg1) on the same team as the user (team1User1) to the a different teams athlete (team2Athlete1)', function (done) {
-                    appName = 'team1User1Auth1';
                     path += team2Athlete1.getPathKey() + '/' + team1Erg1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
                     team2Athlete1.addErg(team1Erg1);
@@ -9582,6 +9581,7 @@ describe('Auths', function () {
                 });
 
                 it('a user with basic perms cannot remove own teams erg from a athlete', function (done) {
+                    appName = 'team1User1Auth1';
                     path += team1Athlete1.getPathKey() + '/' + team1Erg1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
 
@@ -9635,7 +9635,6 @@ describe('Auths', function () {
                 });
 
                 it('should not add pictures (team1Picture1) on the same team as the user (team1User1) to the a different teams regatta (team2Regatta1)', function (done) {
-                    appName = 'team1User1Auth1';
                     path += team2Regatta1.getPathKey() + '/' + team1Picture1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
                     team2Regatta1.addPicture(team1Picture1);
@@ -9654,6 +9653,7 @@ describe('Auths', function () {
                 });
 
                 it('a user with basic perms cannot remove own teams picture from a regatta', function (done) {
+                    appName = 'team1User1Auth1';
                     path += team1Regatta1.getPathKey() + '/' + team1Picture1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
 
@@ -9700,7 +9700,6 @@ describe('Auths', function () {
                 });
 
                 it('should not add races (team1Race1) on the same team as the user (team1User1) to the a different teams regatta (team2Regatta1)', function (done) {
-                    appName = 'team1User1Auth1';
                     path += team2Regatta1.getPathKey() + '/' + team1Race1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
                     team2Regatta1.addRaces(team1Race1);
@@ -9719,6 +9718,7 @@ describe('Auths', function () {
                 });
 
                 it('a user with basic perms cannot remove own teams race from a regatta', function (done) {
+                    appName = 'team1User1Auth1';
                     path += team1Regatta1.getPathKey() + '/' + team1Race1.getPathKey();
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
 
