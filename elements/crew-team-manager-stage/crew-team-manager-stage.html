@@ -77,7 +77,6 @@
                 <crew-team-manager-rigger id="rigger" class="page" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-rigger>
                 <crew-team-manager-picture id="picture" class="page" on-crew-team-manager-picture-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-picture>
                 <crew-team-manager-team id="team" class="page" on-crew-team-manager-team-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-team>
-                <crew-team-manager-compare id="compare" class="page" on-crew-team-manager-team-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-compare>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
@@ -91,7 +90,6 @@
                 <button page="rigger" on-click="_handleMenuClick">rigger</button>
                 <button page="picture" on-click="_handleMenuClick">picture</button>
                 <button page="team" on-click="_handleMenuClick">team</button>
-                <button page="compare" on-click="_handleMenuClick">compare</button>
             </app-drawer>
             <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>
     </template>

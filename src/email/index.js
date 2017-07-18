@@ -11,6 +11,8 @@ class Email extends Entity {
 
         options.values = options.values || {};
         options.values.value = options.values.value || faker.internet.email();
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
 
 

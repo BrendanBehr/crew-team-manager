@@ -15,6 +15,8 @@ class Credential extends Entity {
         options.values = options.values || {};
         options.values.hash = options.values.hash || faker.internet.password();
         options.values.salt = options.values.salt || faker.internet.password();
+        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.random.number();
 
         super(options);
 

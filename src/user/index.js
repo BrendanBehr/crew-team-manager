@@ -101,9 +101,23 @@ class User extends Entity {
     createEmail(values) {
         return new Email({
             generator: this.getGenerator(),
-            user: this,
+            team: this,
             values: values,
         });
+
+    }
+
+    createEmails(quantity) {
+
+        quantity = quantity || 0;
+
+        const emails = [];
+        while (quantity > 0) {
+            emails.push(this.createEmail());
+            quantity--;
+        }
+
+        return emails;
 
     }
 

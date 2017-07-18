@@ -40,14 +40,15 @@ const team1User3 = team1.createUser({
 });
 
 //Creates email objects for the athlete objects
+
 const email1 = team1User1.createEmail({
-    value: team1User1.email
+    value: team1User1.getValues().email
 });
 const email2 = team2User2.createEmail({
-    value: team2User2.email
+    value: team2User2.getValues().email
 });
 const email3 = team1User3.createEmail({
-    value: team1User3.email
+    value: team1User3.getValues().email
 });
 
 //Creates a credential object for the first athletes and then sets the relation 

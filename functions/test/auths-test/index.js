@@ -56,6 +56,36 @@ describe('Auths', function () {
     });
     const team1User3Auth4 = team1User3.createAuth();
 
+    const team1User1Email1 = team1User1.createEmail({
+        value: team1User1.getValues().email
+    });
+    const team1User2Email1 = team1User2.createEmail({
+        value: team1User2.getValues().email
+    });
+    const team1User3Email1 = team1User3.createEmail({
+        value: team1User3.getValues().email
+    });
+    const team2User1Email1 = team2User1.createEmail({
+        value: team2User1.getValues().email
+    });
+
+    const team1User1Credential1 = team1User1.createCredential();
+    // team1User1.setCredential(team1User1Credential1);
+    const team1User2Credential1 = team1User2.createCredential();
+    // team1User2.setCredential(team1User2Credential1);
+    const team1User3Credential1 = team1User3.createCredential();
+    // team1User3.setCredential(team1User3Credential1);
+    const team2User1Credential1 = team2User1.createCredential();
+    // team2User1.createCredential(team2User1Credential1);
+
+    let password = 'BrendanRocks';
+    team1User1Credential1.setPassword(password);
+    password = 'GabeRocks';
+    team1User2Credential1.setPassword(password);
+    password = 'JoeRocks';
+    team1User3Credential1.setPassword(password);
+    password = 'BrianRocks';
+    team2User1Credential1.setPassword(password);
 
     const team1Athlete1 = team1.createAthlete();
     const team1Athlete2 = team1.createAthlete();
@@ -451,6 +481,25 @@ describe('Auths', function () {
 
         });
 
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams athlete (team1Athlete1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'athletes/' + team1Athlete1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
         describe('as user with active auth (team1User1Auth1) accessing own boats (team1Boat1)', function () {
 
             const appName = 'team1User1Auth1';
@@ -478,6 +527,25 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'boats/' + team2Boat1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams boats (team1Boat1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'boats/' + team1Boat1.getPathKey();
 
             });
 
@@ -527,6 +595,25 @@ describe('Auths', function () {
 
         });
 
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams riggers (team1Rigger1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'riggers/' + team1Rigger1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
         describe('as user with active auth (team1User1Auth1) accessing own ergs (team1Erg1)', function () {
 
             const appName = 'team1User1Auth1';
@@ -554,6 +641,25 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'ergs/' + team2Erg1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams ergs (team1Erg1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'ergs/' + team1Erg1.getPathKey();
 
             });
 
@@ -603,6 +709,25 @@ describe('Auths', function () {
 
         });
 
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams finances (team1Finance1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'finances/' + team1Finance1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
         describe('as user with active auth (team1User1Auth1) accessing own oars (team1Oar1)', function () {
 
             const appName = 'team1User1Auth1';
@@ -630,6 +755,25 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'oars/' + team2Oar1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams oars (team1Oar1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'oars/' + team1Oar1.getPathKey();
 
             });
 
@@ -679,6 +823,25 @@ describe('Auths', function () {
 
         });
 
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams pictures (team1Picture1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'pictures/' + team1Picture1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
         describe('as user with active auth (team1User1Auth1) accessing own race (team1Race1)', function () {
 
             const appName = 'team1User1Auth1';
@@ -706,6 +869,25 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'races/' + team2Race1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own active auth (team1Race1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'races/' + team1Race1.getPathKey();
 
             });
 
@@ -755,6 +937,25 @@ describe('Auths', function () {
 
         });
 
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams regattas (team1Regatta1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'regattas/' + team1Regatta1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
         describe('as user with active auth (team1User1Auth1) accessing own team (team1)', function () {
 
             const appName = 'team1User1Auth1';
@@ -782,6 +983,25 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'teams/' + team2.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own team (team1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teams/' + team1.getPathKey();
 
             });
 
@@ -831,7 +1051,197 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams boatAthletes (team1User1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own user (team1User1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'users/' + team1User1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams emails (team1User1Email1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'emails/' + team1User1Email1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams email (team2User1Email1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'emails/' + team2User1Email1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own email (team1User1Email1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'emails/' + team1User1Email1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams credentials (team1User1Credential1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'credentials/' + team1User1Credential1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth and admin permisions (team1User3Auth1) accessing own teams credentials (team1User1Credential1)', function () {
+
+            const appName = 'team1User3Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'credentials/' + team1User1Credential1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams credential (team1User2Credential1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'credentials/' + team1User2Credential1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams credential (team2User1Credential1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'credentials/' + team2User1Credential1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth and admin permisions (team1User3Auth1) accessing another teams credential (team2User1Credential1)', function () {
+
+            const appName = 'team1User3Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'credentials/' + team2User1Credential1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own credential (team1User1Credential1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'credentials/' + team1User1Credential1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams boatAthletes (boat1/athlete1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -850,7 +1260,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams boatAthletes (team2User1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teams boatAthletes (boat2/athlete1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -869,7 +1279,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams boatOars (team1User1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams boatAthletes (boat1/athlete1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'boatAthletes/' + team1Boat1.getPathKey() + '/' + team1Athlete1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams boatOars (boat1/oar1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -888,7 +1317,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams boatOars (team2User1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teams boatOars (boat2/oar1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -907,7 +1336,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams boatRiggers (team1User1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams boatOars (boat1/oar1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'boatOars/' + team1Boat1.getPathKey() + '/' + team1Oar1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams boatRiggers (boat1/rigger1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -926,7 +1374,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams boatRiggers (team2User1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teams boatRiggers (boat2/rigger1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -945,7 +1393,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams athleteErgs (team1User1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own active auth (boat1/rigger1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'boatRiggers/' + team1Boat1.getPathKey() + '/' + team1Rigger1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams athleteErgs (athlete1/erg1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -964,7 +1431,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams athleteErgs (team2User1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teams athleteErgs (athlete2/erg1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -983,7 +1450,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams athleteFinances (team1User1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamsErgs (athlete1/erg1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'athleteErgs/' + team1Athlete1.getPathKey() + '/' + team1Erg1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams athleteFinances (athlete1/finance1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1002,7 +1488,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams athleteFinances (team2User1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teams athleteFinances (athlete2/finance1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1021,7 +1507,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams regattaRaces (team1User1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams athleteFinances (athlete1/finance1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'athleteFinances/' + team1Athlete1.getPathKey() + '/' + team1Finance1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams regattaRaces (regatta1/race1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1040,7 +1545,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams regattaRaces (team2User1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teams regattaRaces (regatta2/race1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1048,6 +1553,25 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'regattaRaces/' + team2Regatta1.getPathKey() + '/' + team2Race1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams regattaRaces (regatta1/race1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'regattaRaces/' + team1Regatta1.getPathKey() + '/' + team1Race1.getPathKey();
 
             });
 
@@ -1097,7 +1621,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Athletes (team1Athlete1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing own teamAthletes (team1/athlete1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1116,7 +1640,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Athletes (team2Athlete1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamAthletes (team2/athlete1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1135,7 +1659,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Boats (team1Boat1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamAthletes (team1/athlete1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamAthletes/' + team1.getPathKey() + '/' + team1Athlete1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teamBoats (team1/boat1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1154,7 +1697,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Boats (team2Boat1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamBoats (team2/boat1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1173,7 +1716,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Ergs (team1Erg1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamBoats (team1/boat1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamBoats/' + team1.getPathKey() + '/' + team1Boat1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teamErgs (team1/erg1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1192,7 +1754,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Ergs (team2Erg1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamErgs (team2/erg1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1211,7 +1773,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Finances (team1Finance1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamErgs (team1/erg1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamErgs/' + team1.getPathKey() + '/' + team1Erg1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teamFinances (team1/finance1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1230,7 +1811,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Finances (team2Finance1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamFinances (team2/finance1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1249,7 +1830,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Oars (team1Oar1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamFinances (team1/finance1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamFinances/' + team1.getPathKey() + '/' + team1Finance1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teamOars (team1/oar1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1268,7 +1868,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Oars (team2Oar1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamOars (team2/oar1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1287,7 +1887,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Pictures (team1Picture1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own active auth (team1/oar1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamOars/' + team1.getPathKey() + '/' + team1Oar1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teamPictures (team1/picture1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1306,7 +1925,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Pictures (team2Picture1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamPictures (team2/picture1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1325,7 +1944,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Races (team1Race1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamPictures (team1/picture1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamPictures/' + team1.getPathKey() + '/' + team1Picture1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teamRaces (team1/race1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1344,7 +1982,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Races (team2Race1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamRaces (team2/race1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1363,7 +2001,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Regattas (team1Regatta1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamRaces (team1/race1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamRaces/' + team1.getPathKey() + '/' + team1Race1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teamRegattas (team1/regatta1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1382,7 +2039,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Regattas (team2Regatta1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamRegattas (team2/regatta1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1401,7 +2058,26 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams Riggers (team1Rigger1)', function () {
+        describe('as user with inactive auth (team1User1Auth2) accessing own active auth (team1/regatta1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamRegattas/' + team1.getPathKey() + '/' + team1Regatta1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teamRiggers (team1/rigger1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1420,7 +2096,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing another teams Riggers (team2Rigger1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing another teamRiggers (team2/rigger1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1428,6 +2104,25 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'teamRiggers/' + team2.getPathKey() + '/' + team2Rigger1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamRiggers (team1/rigger1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'teamRiggers/' + team1.getPathKey() + '/' + team1Rigger1.getPathKey();
 
             });
 
@@ -4290,6 +4985,428 @@ describe('Auths', function () {
                 it('it should not add a new boat to a different team', function (done) {
                     const boat = team2.createBoat();
                     const values = boat.getValues({
+                        reference: false
+                    });
+
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+            });
+        });
+
+        describe('Email tests', function () {
+
+            describe('as user with active auth (team1User1Auth1) updating individual values of an email (team1User1Email1)', function () {
+
+                const appName = 'team1User1Auth1';
+
+                const path = 'emails/' + team1User1Email1.getPathKey();
+                const email = team1User1Email1.getValues({
+                    reference: false
+                });
+
+                const emailKeys = Object.keys(email);
+
+                for (let x = 0; x < emailKeys.length; x++) {
+
+                    if (emailKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + emailKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[emailKeys[x]] = email[emailKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < emailKeys.length; x++) {
+
+                    if (emailKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + emailKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[emailKeys[x]] = email[emailKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+            });
+
+            describe('as user with active auth (team1User1Auth1) set values of the same teams email', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let email;
+
+                beforeEach(function () {
+
+                    path = 'emails/' + team1User1Email1.getPathKey();
+                    email = team1User1Email1.getValues({
+                        reference: false
+                    });
+                    email.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                });
+
+                it('should write, valid prior data', function (done) {
+
+                    assert.canSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+                it('should not write empty email', function (done) {
+
+                    email = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+                it('should not write null email', function (done) {
+
+                    email = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+                it('should write a different, valid value', function (done) {
+
+                    email.value = faker.internet.email();
+                    assert.canSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+                it('should not write null to value', function (done) {
+
+                    email.value = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+            });
+
+            describe('as user with active auth (team1User1Auth1) setting email of another team (team2User1Email1)', function () {
+
+                const appName = 'team1User1Auth1';
+                let path;
+                let email;
+
+                beforeEach(function () {
+
+                    path = 'emails/' + team2User1Email1.getPathKey();
+                    email = team2User1Email1.getValues({
+                        reference: false
+                    });
+                    email.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+            });
+
+            describe('as user with active auth (team1User1Auth1) updating individual values of another teams email (team2User1Email1)', function () {
+
+                const appName = 'team1User1Auth1';
+
+                const path = 'emails/' + team2User1Email1.getPathKey();
+                const email = team2User1Email1.getValues({
+                    reference: false
+                });
+
+                const emailKeys = Object.keys(email);
+
+                for (let x = 0; x < emailKeys.length; x++) {
+
+                    if (emailKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + emailKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[emailKeys[x]] = email[emailKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < emailKeys.length; x++) {
+
+                    if (emailKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + emailKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[emailKeys[x]] = email[emailKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+            });
+
+            describe('as user with active auth (team1User1Auth1) set values of another teams email', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let email;
+
+                beforeEach(function () {
+
+                    path = 'emails/' + team2User1Email1.getPathKey();
+                    email = team2User1Email1.getValues({
+                        reference: false
+                    });
+                    email.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                });
+
+                it('should not write, valid prior data', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+                it('should not write empty email', function (done) {
+
+                    email = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+                it('should not write null email', function (done) {
+
+                    email = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+                it('should not write a different, valid value', function (done) {
+
+                    email.value = faker.internet.email();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+                it('should not write null to value', function (done) {
+
+                    email.value = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+            });
+
+            describe('as user with inactive auth (team1User1Auth2) updating individual values of an email (team1User1Email1)', function () {
+
+                const appName = 'team1User1Auth2';
+
+                const path = 'emails/' + team1User1Email1.getPathKey();
+                const email = team1User1Email1.getValues({
+                    reference: false
+                });
+
+                const emailKeys = Object.keys(email);
+
+                for (let x = 0; x < emailKeys.length; x++) {
+
+                    if (emailKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + emailKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[emailKeys[x]] = email[emailKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < emailKeys.length; x++) {
+
+                    if (emailKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + emailKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[emailKeys[x]] = email[emailKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+            });
+
+            describe('as user with inactive auth (team1User1Auth2) set values the same teams emails (team1User1Email1)', function () {
+
+                const appName = 'team1User1Auth2';
+                let path;
+                let email;
+
+                beforeEach(function () {
+
+                    path = 'emails/' + team1User1Email1.getPathKey();
+                    email = team1User1Email1.getValues({
+                        reference: false
+                    });
+                    email.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+            });
+
+            describe('as a user with an active auth (team1User1Auth1)  remove emails on a different team', function () {
+                const appName = 'team1User3Auth1';
+                let path = 'emails/' + team1User3Email1.getPathKey();
+
+                it('admin is removing the teams email', function (done) {
+                    assert.canSet(firebaseAdmin.app(appName), path, null, done);
+
+                });
+
+                const newApp = 'team1User1Auth1';
+                it('a user without the correct permisions should not remove a teams email', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
+                });
+
+                it('should not remove a different teams email', function (done) {
+                    path = 'emails/' + team2User1Email1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+            });
+
+            describe('as a user with active auth (team1User3Auth1) updating values of a deleted email', function () {
+                let appName = 'team1User1Auth1';
+                const path = 'emails/';
+                const email = team1User3Email1.getValues({
+                    reference: true
+                });
+
+                const emailKeys = Object.keys(email);
+
+                for (let x = 0; x < emailKeys.length; x++) {
+
+                    if (emailKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + emailKeys[x] + '` with prior data and an updated timestamp', function (done) {
+                        const value = {};
+                        value[emailKeys[x]] = email[emailKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < emailKeys.length; x++) {
+
+                    if (emailKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + emailKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[emailKeys[x]] = email[emailKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+
+            });
+
+            describe('create new emails', function () {
+                const appName = 'team1User1Auth1';
+                const path = 'emails';
+
+                it('should add a new email to the team', function (done) {
+                    const email = team1User1.createEmail();
+                    const values = email.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.canPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
+                it('it should not add a new email to a different team', function (done) {
+                    const email = team2User1.createEmail();
+                    const values = email.getValues({
                         reference: false
                     });
 
@@ -8766,9 +9883,706 @@ describe('Auths', function () {
 
         });
 
+        describe.only('Credential tests', function () {
+
+            describe('as user with active auth (team1User1Auth1) updating individual values of same credential (team1Credential1)', function () {
+
+                const appName = 'team1User1Auth1';
+
+                const path = 'credentials/' + team1User1Credential1.getPathKey();
+                const credential = team1User1Credential1.getValues({
+                    reference: false
+                });
+
+                const credentialKeys = Object.keys(credential);
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should update `' + credentialKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+            });
+
+            describe('as user with active auth (team1User1Auth1) set values of the same credential', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let credential;
+
+                beforeEach(function () {
+
+                    path = 'credentials/' + team1User1Credential1.getPathKey();
+                    credential = team1User1Credential1.getValues({
+                        reference: false
+                    });
+                    credential.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should write, valid prior data', function (done) {
+
+                    assert.canSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write empty credential', function (done) {
+
+                    credential = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null credential', function (done) {
+
+                    credential = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to user', function (done) {
+
+                    credential.user = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write to another user', function (done) {
+                    credential.user = team2.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+                });
+
+                it('should write a different, valid credential', function (done) {
+
+                    credential.credential = faker.lorem.words();
+                    assert.canSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to credential', function (done) {
+
+                    credential.credential = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write a different hash', function (done) {
+
+                    credential.hash = faker.name.firstName();
+                    assert.canSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to hash', function (done) {
+
+                    credential.hash = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not be able to change salt', function (done) {
+
+                    credential.salt = faker.name.lastName();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to salt', function (done) {
+
+                    credential.salt = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+            });
+
+            describe('as user with active auth (team1User1Auth1) updating individual values of another teams credential (team1User1Credential1)', function () {
+
+                const appName = 'team1User1Auth1';
+
+                const path = 'credentials/' + team2User1Credential1.getPathKey();
+                const credential = team2User1Credential1.getValues({
+                    reference: false
+                });
+
+                const credentialKeys = Object.keys(credential);
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+            });
+
+            describe('as credential with active auth (team1User1Auth1) set values of the another teams credential', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let credential;
+
+                beforeEach(function () {
+
+                    path = 'credentials/' + team2User1Credential1.getPathKey();
+                    credential = team2User1Credential1.getValues({
+                        reference: false
+                    });
+                    credential.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write, valid prior data', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write empty credential', function (done) {
+
+                    credential = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null credential', function (done) {
+
+                    credential = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to user', function (done) {
+
+                    credential.user = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write to another user', function (done) {
+                    credential.user = team2.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+                });
+
+                it('should not write a different, valid credential', function (done) {
+
+                    credential.credantial = faker.lorem.words();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to credential', function (done) {
+
+                    credential.credantial = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write a different, valid hash', function (done) {
+
+                    credential.hash = faker.name.firstName();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to hash', function (done) {
+
+                    credential.hash = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not be able to change salt', function (done) {
+
+                    credential.salt = faker.name.lastName();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to salt', function (done) {
+
+                    credential.salt = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+            });
+
+            describe('as user with active auth (team1User1Auth1) updating individual values of another credential on the same team (team1User2Credential1)', function () {
+
+                const appName = 'team1User1Auth1';
+
+                const path = 'credentials/' + team1User2Credential1.getPathKey();
+                const credential = team1User2Credential1.getValues({
+                    reference: false
+                });
+
+                const credentialKeys = Object.keys(credential);
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+            });
+
+            describe('as credential with active auth (team1User1Auth1) set values of another credential on the same team', function () {
+                const appName = 'team1User1Auth1';
+                let path;
+                let credential;
+
+                beforeEach(function () {
+
+                    path = 'credentials/' + team1User2Credential1.getPathKey();
+                    credential = team1User2Credential1.getValues({
+                        reference: false
+                    });
+                    credential.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write, valid prior data', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write empty credential', function (done) {
+
+                    credential = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null credential', function (done) {
+
+                    credential = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to user', function (done) {
+
+                    credential.user = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write to another user', function (done) {
+                    credential.user = team2.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+                });
+
+                it('should not create new credential for another user', function (done) {
+
+                    const team1User2Credential2 = team1User2.createUser1Credential();
+                    credential = team1User2Credential2.getValues({
+                        reference: false
+                    });
+                    assert.cannotPush(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write a different, valid credential', function (done) {
+
+                    credential.credantial = faker.lorem.words();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to credential', function (done) {
+
+                    credential.credantial = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write a different, valid hash', function (done) {
+
+                    credential.hash = faker.name.firstName();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to hash', function (done) {
+
+                    credential.hash = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not be able to change salt', function (done) {
+
+                    credential.salt = faker.name.lastName();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to salt', function (done) {
+
+                    credential.salt = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write String to perms', function (done) {
+
+                    credential.permisions = faker.lorem.word();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+            });
+
+            describe('as credential with inactive auth (team1User1Auth2) updating individual values of a credential (team1User1Credential1)', function () {
+
+                const appName = 'team1User1Auth2';
+
+                const path = 'credentials/' + team1User1Credential1.getPathKey();
+                const credential = team1User1Credential1.getValues({
+                    reference: false
+                });
+
+                const credentialKeys = Object.keys(credential);
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+            });
+
+            describe('as credential with inactive auth (team1User1Auth2) set values the same teams credentials (team1User1Credential1)', function () {
+
+                const appName = 'team1User1Auth2';
+                let path;
+                let credential;
+
+                beforeEach(function () {
+
+                    path = 'credentials/' + team1User1Credential1.getPathKey();
+                    credential = team1User1Credential1.getValues({
+                        reference: false
+                    });
+                    credential.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+            });
+
+            describe('as credential with admin permisions (team1User3Auth1) updating individual values of a credential (team1User1Credential1)', function () {
+
+                const appName = 'team1User3Auth1';
+
+                const path = 'credentials/' + team1User1Credential1.getPathKey();
+                const credential = team1User1Credential1.getValues({
+                    reference: false
+                });
+
+                const credentialKeys = Object.keys(credential);
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data and an updated timestamp', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+                        value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                for (let x = 0; x < credentialKeys.length; x++) {
+
+                    if (credentialKeys[x] === 'updated') {
+                        continue;
+                    }
+
+                    it('should not update `' + credentialKeys[x] + '` with prior data', function (done) {
+
+                        const value = {};
+                        value[credentialKeys[x]] = credential[credentialKeys[x]];
+
+                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                    });
+
+                }
+
+                it('should not update `_invalid`', function (done) {
+
+                    const value = {};
+                    value._invalid = faker.random.words();
+                    value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                    assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+
+                });
+
+            });
+
+            describe('as credential with admin permisions (team1User3Auth1) set values the same teams credentials (team1User1Credential1)', function () {
+
+                const appName = 'team1User3Auth1';
+                let path;
+                let credential;
+
+                beforeEach(function () {
+
+                    path = 'credentials/' + team1User1Credential1.getPathKey();
+                    credential = team1User1Credential1.getValues({
+                        reference: false
+                    });
+                    credential.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should write, valid prior data', function (done) {
+
+                    assert.canSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write empty credential', function (done) {
+
+                    credential = {};
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null credential', function (done) {
+
+                    credential = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to user', function (done) {
+
+                    credential.user = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write to another user', function (done) {
+                    credential.user = team2.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+                });
+
+                it('should write a different, valid credential', function (done) {
+
+                    credential.credential = faker.lorem.words();
+                    assert.canSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to credential', function (done) {
+
+                    credential.credential = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write a different hash', function (done) {
+
+                    credential.hash = faker.name.firstName();
+                    assert.canSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to hash', function (done) {
+
+                    credential.hash = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not be able to change salt', function (done) {
+
+                    credential.salt = faker.name.lastName();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+                it('should not write null to salt', function (done) {
+
+                    credential.salt = null;
+                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+
+                });
+
+            });
+
+        });
+
         describe('Team tests', function () {
 
-            describe('as user with active auth (team1User1Auth1) updating individual values of a team (team1U)', function () {
+            describe('as credential with active auth (team1User1Auth1) updating individual values of a team (team1U)', function () {
 
                 const appName = 'team1User1Auth1';
 
