@@ -88,6 +88,7 @@ describe('Auths', function () {
     team2User1Credential1.setPassword(password);
 
     const team1Athlete1 = team1.createAthlete();
+    team1Athlete1.setCredential(team1User1Credential1);
     const team1Athlete2 = team1.createAthlete();
     const team1Athlete3 = team1.createAthlete();
     const team2Athlete1 = team2.createAthlete();
@@ -143,8 +144,10 @@ describe('Auths', function () {
 
     team1Athlete1.addErg(team1Erg1);
     team1Athlete1.addFinance(team1Finance1);
+    team1Athlete1.addEmail(team1User1Email1);
     team2Athlete1.addErg(team2Erg1);
     team2Athlete1.addFinance(team2Finance1);
+    team2Athlete1.addEmail(team2User1Email1);
 
     team1Regatta1.addRaces(team1Race1);
     team1Regatta1.addPicture(team1Picture1);
@@ -1127,7 +1130,7 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams credentials (team1User1Credential1)', function () {
+        describe('as user with active auth (team1User1Auth1) accessing own credentials (team1User1Credential1)', function () {
 
             const appName = 'team1User1Auth1';
             let path;
@@ -1138,9 +1141,9 @@ describe('Auths', function () {
 
             });
 
-            it('should not read', function (done) {
+            it('should read', function (done) {
 
-                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+                assert.canRead(firebaseAdmin.app(appName), path, done);
 
             });
 
@@ -3354,7 +3357,7 @@ describe('Auths', function () {
             });
         });
 
-        describe('Athlete tests', function () {
+        describe.only('Athlete tests', function () {
 
             describe('as user with basic permisions and an active auth (team1User1Auth1) updating individual values of an athlete (team1Athlete1)', function () {
 
@@ -9883,7 +9886,7 @@ describe('Auths', function () {
 
         });
 
-        describe.only('Credential tests', function () {
+        describe('Credential tests', function () {
 
             describe('as user with active auth (team1User1Auth1) updating individual values of same credential (team1Credential1)', function () {
 
@@ -9991,8 +9994,8 @@ describe('Auths', function () {
                 });
 
                 it('should write a different, valid credential', function (done) {
-
                     credential.credential = faker.lorem.words();
+                    team1User1Credential1.setPassword(credential.credential);
                     assert.canSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -10004,7 +10007,7 @@ describe('Auths', function () {
 
                 });
 
-                it('should not write a different hash', function (done) {
+                it('should write a different hash', function (done) {
 
                     credential.hash = faker.name.firstName();
                     assert.canSet(firebaseAdmin.app(appName), path, credential, done);
@@ -10018,10 +10021,10 @@ describe('Auths', function () {
 
                 });
 
-                it('should not be able to change salt', function (done) {
+                it('should be able to change salt', function (done) {
 
                     credential.salt = faker.name.lastName();
-                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
 
@@ -10288,7 +10291,7 @@ describe('Auths', function () {
 
                 it('should not create new credential for another user', function (done) {
 
-                    const team1User2Credential2 = team1User2.createUser1Credential();
+                    const team1User2Credential2 = team1User2.createCredential();
                     credential = team1User2Credential2.getValues({
                         reference: false
                     });
@@ -10445,13 +10448,13 @@ describe('Auths', function () {
                         continue;
                     }
 
-                    it('should not update `' + credentialKeys[x] + '` with prior data and an updated timestamp', function (done) {
+                    it('should update `' + credentialKeys[x] + '` with prior data and an updated timestamp', function (done) {
 
                         const value = {};
                         value[credentialKeys[x]] = credential[credentialKeys[x]];
                         value.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
 
-                        assert.cannotUpdate(firebaseAdmin.app(appName), path, value, done);
+                        assert.canUpdate(firebaseAdmin.app(appName), path, value, done);
 
                     });
 
@@ -10548,7 +10551,7 @@ describe('Auths', function () {
 
                 });
 
-                it('should not write a different hash', function (done) {
+                it('should write a different hash', function (done) {
 
                     credential.hash = faker.name.firstName();
                     assert.canSet(firebaseAdmin.app(appName), path, credential, done);
@@ -10562,10 +10565,10 @@ describe('Auths', function () {
 
                 });
 
-                it('should not be able to change salt', function (done) {
+                it('should be able to change salt', function (done) {
 
                     credential.salt = faker.name.lastName();
-                    assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
+                    assert.canSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
 

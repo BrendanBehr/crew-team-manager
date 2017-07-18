@@ -12,6 +12,10 @@ type StringNotEmpty extends String {
     validate() { this.length > 0 }
 }
 
+type Optional extends String {
+    validate() { this.length > 0 || this == null}
+}
+
 type AdminRestrictedString extends StringNotEmpty{
     validate() { getAuthUser().permisions == 'admin'}
 }
@@ -120,6 +124,7 @@ type Athlete {
     driver: Boolean,
     ergScore: StringNotEmpty,
     firstName: StringNotEmpty,
+    credential: Optional,
     fundRaising: NonNegativeNumber,
     gender: StringNotEmpty,
     height: StringNotEmpty,
@@ -241,15 +246,15 @@ getCredential(credentialId){
 }
 
 hasCredentialReadAccess(credentialId) {
-    return isAuthenticatedUser() && getUser(getCredential(credentialId).user).team == getAuthUser().team && (getAuthUser() == getCredential(credentialId).user || getAuthUser().permisions == 'admin') && getAuth().status == 'active'
+    return isAuthenticatedUser() && getUser(getCredential(credentialId).user).team == getAuthUser().team && (getAuth().user == getCredential(credentialId).user || getAuthUser().permisions == 'admin') && getAuth().status == 'active'
 }
 
 hasCredentialUpdateAccess(credentialId) {
-    return getAuth().status == 'active' && getUser(getCredential(credentialId).user).team == getAuthUser().team && (getAuthUser() == getCredential(credentialId).user || getAuthUser().permisions == 'admin')
+    return getAuth().status == 'active' && getUser(getCredential(credentialId).user).team == getAuthUser().team && (getAuth().user == getCredential(credentialId).user || getAuthUser().permisions == 'admin')
 }
 
 hasCredentialDeleteAccess(credentialId){
-    return  getAuth().status == 'active' && getUser(getCredential(credentialId).user).team == getAuthUser().team && getAuthUser() == getCredential(credentialId).user && getAuthUser().permisions == 'admin'
+    return  getAuth().status == 'active' && getUser(getCredential(credentialId).user).team == getAuthUser().team && getAuth().user == getCredential(credentialId).user && getAuthUser().permisions == 'admin'
 }
 
 //-----------------Secures the auths---------------------

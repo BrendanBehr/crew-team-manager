@@ -33,7 +33,9 @@ class Athlete extends Entity {
         super(options);
 
         this._ergs = [];
-        this._finances;
+        this._finances = [];
+        this._credential;
+        this._emails = [];
 
         this.getGenerator().getAthletes().push(this);
     }
@@ -126,7 +128,7 @@ class Athlete extends Entity {
 
             if (!this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()]) {
                 this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()] = true;
-                this._ergs.push(finance);
+                this._finances.push(finance);
             }
         }
     }
@@ -145,7 +147,40 @@ class Athlete extends Entity {
     }
 
     getFinances() {
-        return this._ergs;
+        return this._finances;
+    }
+
+    addEmail(email) {
+        let val = email.getValues({
+            reference: false
+        });
+
+        if (val.team == this.getTeam().getPathKey()) {
+            this.getData().athleteEmails = this.getData().athleteEmails || {};
+            this.getData().athleteEmails[this.getPathKey()] = this.getData().athleteEmails[this.getPathKey()] || {};
+
+            if (!this.getData().athleteEmails[this.getPathKey()][email.getPathKey()]) {
+                this.getData().athleteEmails[this.getPathKey()][email.getPathKey()] = true;
+                this._emails.push(email);
+            }
+        }
+    }
+
+    removeEmail(email) {
+
+        this.getData().athleteEmails = this.getData().athleteEmails || {};
+        this.getData().athleteEmails[this.getPathKey()] = this.getData().athleteEmails[this.getPathKey()] || {};
+
+        if (this.getData().athleteEmails[this.getPathKey()][email.getPathKey()]) {
+            this.getData().athleteEmails[this.getPathKey()][email.getPathKey()] = null;
+            this._emails = this.getAthletes().filter((element) => {
+                return element != email;
+            });
+        }
+    }
+
+    getEmails() {
+        return this._emails;
     }
 }
 
