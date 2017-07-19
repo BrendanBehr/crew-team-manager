@@ -15,7 +15,7 @@
              :host {
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
-                background-color: #B71C1C;
+                background-color: #164410;
             }
 
 
@@ -32,7 +32,7 @@
                 @apply(--layout-center);
                 @apply(--layout-flex);
                 min-height: 112px;
-                background-color: #FFCDD2;
+                background-color: #e8f5e9;
                 padding: 24px;
             }
 
@@ -53,8 +53,8 @@
 
         <div id="container">
             <paper-card id="card">
-                <paper-input id="username" label="username"></paper-input>
-                <paper-input id="password" label="password"></paper-input>
+                <paper-input id="username" label="username" value="{{_username}}"></paper-input>
+                <paper-input id="password" label="password" value="{{_password}}"></paper-input>
                 <paper-button id="login" on-click="_handleLogin">Login</paper-button>
             </paper-card>
         </div>
@@ -65,11 +65,32 @@
         // Extend Polymer.Element with MyMixin
         class crewTeamManagerLogin extends Polymer.Element {
 
-            static get is() { return 'crew-team-manager-login' }
+            static get is() {
+                return 'crew-team-manager-login'
+            }
 
+            static get properties() {
+                return {
+                    _username: {
+                        type: String
+                    },
+
+                    _password: {
+                        type: String
+                    }
+                }
+            }
 
             _handleLogin() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerLogin.is + '-action-login', { bubbles: true, composed: true }));
+                console.log({
+                    Username: this._username,
+                    Password: this._password
+                });
+                this.dispatchEvent(new CustomEvent(
+                    crewTeamManagerLogin.is + '-action-login', {
+                        bubbles: true,
+                        composed: true
+                    }));
             }
         }
 

@@ -325,7 +325,7 @@ getEmail(emailId){
 }
 
 hasEmailReadAccess(emailId) {
-    return isAuthenticatedUser() && getAuthUser().team == getEmail(emailId).team && getAuth().status == 'active'
+    return isAuthenticatedUser() && getAuthUser().team ==  getUser(getEmail(emailId).user).team && getAuth().status == 'active'
 }
 
 hasEmailUpdateAccess(emailId) {
@@ -678,6 +678,7 @@ path /users/{userId} is User{
 
 type User {
     credentials: StringNotEmpty,
+    credential: StringNotEmpty,
     firstName: StringNotEmpty,
     lastName: StringNotEmpty,
     status: StringNotEmpty,
@@ -814,6 +815,40 @@ hasBoatRiggerReadAccess(boatId, riggerId){
 
 hasBoatRiggerDeleteAccess(boatId, riggerId){
     return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getRigger(riggerId).team && getAuthUser().permisions == 'admin'
+}
+
+//----------------------------------AthleteEmail--------------------------------
+
+path /athleteEmails/{athleteId}/{emailId} is FanOut {
+    read() {
+        hasAthleteEmailReadAccess(athleteId, emailId)
+    }
+
+    create() {
+        hasAdminCreateAccess()
+    }
+
+    update() {
+        hasAthleteEmailUpdateAccess(athleteId, emailId)
+    }
+
+    delete() {
+        hasAthleteEmailDeleteAccess(athleteId, emailId)
+    }
+
+    validate() {getAthlete(athleteId).team == getUser(getEmail(emailId).user).team && getAthlete(athleteId).team == getAuthUser().team}
+}
+
+hasAthleteEmailReadAccess(athleteId, emailId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getUser(getEmail(emailId).user).team && getAuth().status == 'active'
+}
+
+hasAthleteEmailUpdateAccess(athleteId, emailId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getUser(getEmail(emailId).user).team
+}
+
+hasAthleteEmailDeleteAccess(athleteId, emailId){
+    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().team == getUser(getEmail(emailId).user).team && getAuthUser().permisions == 'admin'
 }
 
 //----------------------------------AthleteErg--------------------------------

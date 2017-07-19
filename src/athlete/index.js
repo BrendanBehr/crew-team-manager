@@ -154,8 +154,7 @@ class Athlete extends Entity {
         let val = email.getValues({
             reference: false
         });
-
-        if (val.team == this.getTeam().getPathKey()) {
+        if (val.user == this.getCredential().getValues().user) {
             this.getData().athleteEmails = this.getData().athleteEmails || {};
             this.getData().athleteEmails[this.getPathKey()] = this.getData().athleteEmails[this.getPathKey()] || {};
 

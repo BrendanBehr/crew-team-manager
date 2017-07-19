@@ -59,12 +59,12 @@
             }
         </style>
 
-        <firebase-document id="firebase" app-name="crew-team-manager" path="/riggers/{{rigger}}" data="{{_data}}">
+        <firebase-document id="firebase" app-name="laborsync-ctm" path="/riggers/{{rigger}}" data="{{_data}}">
         </firebase-document>
 
-        <firebase-document id="firebase-boat" app-name="crew-team-manager" path="/boats/{{_data.boat}}" data="{{_boat}}">
+        <firebase-document id="firebase-boat" app-name="laborsync-ctm" path="/boats/{{_data.boat}}" data="{{_boat}}">
         </firebase-document>
-        <firebase-document id="firebase-team" app-name="crew-team-manager" path="/teams/{{_boat.team}}" data="{{_team}}">
+        <firebase-document id="firebase-team" app-name="laborsync-ctm" path="/teams/{{_boat.team}}" data="{{_team}}">
         </firebase-document>
 
         <app-header-layout id="layout">

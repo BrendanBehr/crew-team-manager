@@ -41,8 +41,6 @@ describe('Auths', function () {
         status: 'expired'
     });
 
-    const team2User1 = team2.createUser();
-
     const team1User3 = team1.createUser({
         permisions: 'admin'
     });
@@ -56,6 +54,12 @@ describe('Auths', function () {
     });
     const team1User3Auth4 = team1User3.createAuth();
 
+    const team2User1 = team2.createUser();
+    const team2User2 = team2.createUser();
+
+    const team2User1Auth1 = team2User1.createAuth();
+    const team2User2Auth2 = team2User2.createAuth();
+
     const team1User1Email1 = team1User1.createEmail({
         value: team1User1.getValues().email
     });
@@ -68,15 +72,20 @@ describe('Auths', function () {
     const team2User1Email1 = team2User1.createEmail({
         value: team2User1.getValues().email
     });
+    const team2User2Email1 = team2User2.createEmail({
+        value: team2User1.getValues().email
+    });
 
     const team1User1Credential1 = team1User1.createCredential();
-    // team1User1.setCredential(team1User1Credential1);
+    team1User1.setCredential(team1User1Credential1);
     const team1User2Credential1 = team1User2.createCredential();
-    // team1User2.setCredential(team1User2Credential1);
+    team1User2.setCredential(team1User2Credential1);
     const team1User3Credential1 = team1User3.createCredential();
-    // team1User3.setCredential(team1User3Credential1);
+    team1User3.setCredential(team1User3Credential1);
     const team2User1Credential1 = team2User1.createCredential();
-    // team2User1.createCredential(team2User1Credential1);
+    team2User1.setCredential(team2User1Credential1);
+    const team2User2Credential1 = team2User1.createCredential();
+    team2User1.setCredential(team2User2Credential1);
 
     let password = 'BrendanRocks';
     team1User1Credential1.setPassword(password);
@@ -86,13 +95,19 @@ describe('Auths', function () {
     team1User3Credential1.setPassword(password);
     password = 'BrianRocks';
     team2User1Credential1.setPassword(password);
+    password = 'LaborSyncRocks';
+    team2User2Credential1.setPassword(password);
 
     const team1Athlete1 = team1.createAthlete();
     team1Athlete1.setCredential(team1User1Credential1);
     const team1Athlete2 = team1.createAthlete();
+    team1Athlete2.setCredential(team1User2Credential1);
     const team1Athlete3 = team1.createAthlete();
+    team1Athlete3.setCredential(team1User3Credential1);
     const team2Athlete1 = team2.createAthlete();
+    team2Athlete1.setCredential(team2User1Credential1);
     const team2Athlete2 = team2.createAthlete();
+    team2Athlete2.setCredential(team2User2Credential1);
 
     const team1Boat1 = team1.createBoat();
     const team1Boat3 = team1.createBoat();
@@ -674,6 +689,64 @@ describe('Auths', function () {
 
         });
 
+        describe('as user with active auth (team1User1Auth1) accessing own emails (team1Email1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'emails/' + team1User1Email1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams emails (team2Email1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'emails/' + team2User1Email1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own teams emails (team1Email1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'emails/' + team1User1Email1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+
         describe('as user with active auth (team1User1Auth1) accessing own finances (team1Finance1)', function () {
 
             const appName = 'team1User1Auth1';
@@ -1073,63 +1146,6 @@ describe('Auths', function () {
 
         });
 
-        describe('as user with active auth (team1User1Auth1) accessing own teams emails (team1User1Email1)', function () {
-
-            const appName = 'team1User1Auth1';
-            let path;
-
-            beforeEach(function () {
-
-                path = 'emails/' + team1User1Email1.getPathKey();
-
-            });
-
-            it('should not read', function (done) {
-
-                assert.cannotRead(firebaseAdmin.app(appName), path, done);
-
-            });
-
-        });
-
-        describe('as user with active auth (team1User1Auth1) accessing another teams email (team2User1Email1)', function () {
-
-            const appName = 'team1User1Auth1';
-            let path;
-
-            beforeEach(function () {
-
-                path = 'emails/' + team2User1Email1.getPathKey();
-
-            });
-
-            it('should not read', function (done) {
-
-                assert.cannotRead(firebaseAdmin.app(appName), path, done);
-
-            });
-
-        });
-
-        describe('as user with inactive auth (team1User1Auth2) accessing own email (team1User1Email1)', function () {
-
-            const appName = 'team1User1Auth2';
-            let path;
-
-            beforeEach(function () {
-
-                path = 'emails/' + team1User1Email1.getPathKey();
-
-            });
-
-            it('should not read', function (done) {
-
-                assert.cannotRead(firebaseAdmin.app(appName), path, done);
-
-            });
-
-        });
-
         describe('as user with active auth (team1User1Auth1) accessing own credentials (team1User1Credential1)', function () {
 
             const appName = 'team1User1Auth1';
@@ -1404,6 +1420,63 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'boatRiggers/' + team1Boat1.getPathKey() + '/' + team1Rigger1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams athleteEmails (athlete1/email1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'athleteEmails/' + team1Athlete1.getPathKey() + '/' + team1User1Email1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing another teams athleteEmails (athlete2/email1)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'athleteEmails/' + team2Athlete1.getPathKey() + '/' + team2User1Email1.getPathKey();
+
+            });
+
+            it('should not read', function (done) {
+
+                assert.cannotRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with inactive auth (team1User1Auth2) accessing own teamsEmails (athlete1/email1)', function () {
+
+            const appName = 'team1User1Auth2';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'athleteEmails/' + team1Athlete1.getPathKey() + '/' + team1User1Email1.getPathKey();
 
             });
 
@@ -3357,9 +3430,33 @@ describe('Auths', function () {
             });
         });
 
-        describe.only('Athlete tests', function () {
+        describe('Athlete tests', function () {
 
-            describe('as user with basic permisions and an active auth (team1User1Auth1) updating individual values of an athlete (team1Athlete1)', function () {
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let athlete;
+
+                beforeEach(function () {
+
+                    path = 'athletes/' + team1Athlete1.getPathKey();
+                    athlete = team1Athlete1.getValues({
+                        reference: false
+                    });
+                    athlete.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
+
+                });
+
+            });
+
+            describe('as user with basic permisions and an active auth (team1Athlete1) updating individual values of an athlete (team1Athlete1)', function () {
 
                 const appName = 'team1User1Auth1';
 
@@ -4326,24 +4423,30 @@ describe('Auths', function () {
             });
 
             describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove athletes ', function () {
-                const appName = 'team1User3Auth1';
+                let appName = 'team1User3Auth1';
                 let path = 'athletes/' + team2Athlete2.getPathKey();
 
-                const newApp = 'team1User1Auth1';
 
                 it('should not remove a different teams athlete', function (done) {
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
-                it('a user without the correct permisions should not remove a teams athlete', function (done) {
-                    path = 'athletes/' + team1Athlete3.getPathKey();
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
 
                 it('an admin is now removing the teams athlete', function (done) {
+                    path = 'athletes/' + team1Athlete3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
+                it('a user without the correct permisions should not remove a teams athlete', function (done) {
+                    appName = 'team1User1Auth1';
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('a user without the correct permisions should not remove a teams athlete', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'athletes/' + team1Athlete3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted athlete', function () {
@@ -4402,11 +4505,15 @@ describe('Auths', function () {
             });
 
             describe('create new athletes', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'athletes';
 
                 it('should add a new athlete to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const athlete = team1.createAthlete();
+                    const user = team1.createUser();
+                    const credential = user.createCredential();
+                    athlete.setCredential(credential);
                     const values = athlete.getValues({
                         reference: false
                     });
@@ -4415,8 +4522,26 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('an inactive user should not add a new athlete to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const athlete = team1.createAthlete();
+                    const user = team1.createUser();
+                    const credential = user.createCredential();
+                    athlete.setCredential(credential);
+                    const values = athlete.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new athlete to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const athlete = team2.createAthlete();
+                    const user = team2.createUser();
+                    const credential = user.createCredential();
+                    athlete.setCredential(credential);
                     const values = athlete.getValues({
                         reference: false
                     });
@@ -4429,6 +4554,30 @@ describe('Auths', function () {
         });
 
         describe('Boat tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let boat;
+
+                beforeEach(function () {
+
+                    path = 'boats/' + team1Boat1.getPathKey();
+                    boat = team1Boat1.getValues({
+                        reference: false
+                    });
+                    boat.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an boat (team1Boat1)', function () {
 
@@ -4895,25 +5044,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove boats on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'boats/' + team1Boat3.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove boats ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'boats/' + team2Boat2.getPathKey();
 
-                it('admin is removing the teams boat', function (done) {
+
+                it('should not remove a different teams boat', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams boat', function (done) {
+                    path = 'boats/' + team1Boat3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
                 it('a user without the correct permisions should not remove a teams boat', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams boat', function (done) {
-                    path = 'boats/' + team2Boat2.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams boat', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'boats/' + team1Boat3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted boat', function () {
@@ -4972,10 +5127,11 @@ describe('Auths', function () {
             });
 
             describe('create new boats', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'boats';
 
                 it('should add a new boat to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const boat = team1.createBoat();
                     const values = boat.getValues({
                         reference: false
@@ -4985,7 +5141,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('an inactie auth should not add a new boat to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const boat = team1.createBoat();
+                    const values = boat.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new boat to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const boat = team2.createBoat();
                     const values = boat.getValues({
                         reference: false
@@ -4999,6 +5167,30 @@ describe('Auths', function () {
         });
 
         describe('Email tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let email;
+
+                beforeEach(function () {
+
+                    path = 'emails/' + team1User1Email1.getPathKey();
+                    email = team1User1Email1.getValues({
+                        reference: false
+                    });
+                    email.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, email, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an email (team1User1Email1)', function () {
 
@@ -5317,25 +5509,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove emails on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'emails/' + team1User3Email1.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove emails ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'emails/' + team2User2Email1.getPathKey();
 
-                it('admin is removing the teams email', function (done) {
+
+                it('should not remove a different teams email', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams email', function (done) {
+                    path = 'emails/' + team1User3Email1.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
                 it('a user without the correct permisions should not remove a teams email', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams email', function (done) {
-                    path = 'emails/' + team2User1Email1.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams email', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'emails/' + team1User3Email1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted email', function () {
@@ -5394,10 +5592,11 @@ describe('Auths', function () {
             });
 
             describe('create new emails', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'emails';
 
                 it('should add a new email to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const email = team1User1.createEmail();
                     const values = email.getValues({
                         reference: false
@@ -5407,7 +5606,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('a user with an inactive auth should not add a new email to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const email = team1User1.createEmail();
+                    const values = email.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new email to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const email = team2User1.createEmail();
                     const values = email.getValues({
                         reference: false
@@ -5421,6 +5632,30 @@ describe('Auths', function () {
         });
 
         describe('Erg tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let erg;
+
+                beforeEach(function () {
+
+                    path = 'ergs/' + team1Erg1.getPathKey();
+                    erg = team1Erg1.getValues({
+                        reference: false
+                    });
+                    erg.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an erg (team1Erg1)', function () {
 
@@ -5873,25 +6108,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove ergs on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'ergs/' + team1Erg3.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove ergs ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'ergs/' + team2Erg2.getPathKey();
 
-                it('admin is removing the teams erg', function (done) {
+
+                it('should not remove a different teams erg', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams erg', function (done) {
+                    path = 'ergs/' + team1Erg3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
                 it('a user without the correct permisions should not remove a teams erg', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams erg', function (done) {
-                    path = 'ergs/' + team2Erg2.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams erg', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'ergs/' + team1Erg3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted erg', function () {
@@ -5950,10 +6191,11 @@ describe('Auths', function () {
             });
 
             describe('create new ergs', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'ergs';
 
                 it('should add a new erg to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const erg = team1.createErg();
                     const values = erg.getValues({
                         reference: false
@@ -5963,7 +6205,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('a user with an inactive auth should not add a new erg to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const erg = team1.createErg();
+                    const values = erg.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new erg to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const erg = team2.createErg();
                     const values = erg.getValues({
                         reference: false
@@ -5977,6 +6231,30 @@ describe('Auths', function () {
         });
 
         describe('Finance tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let finance;
+
+                beforeEach(function () {
+
+                    path = 'finances/' + team1Finance1.getPathKey();
+                    finance = team1Finance1.getValues({
+                        reference: false
+                    });
+                    finance.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an finance (team1Finance1)', function () {
 
@@ -6348,25 +6626,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove finances on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'finances/' + team1Finance3.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove finances ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'finances/' + team2Finance2.getPathKey();
 
-                it('admin is removing the teams finance', function (done) {
+
+                it('should not remove a different teams finance', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams finance', function (done) {
+                    path = 'finances/' + team1Finance3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
                 it('a user without the correct permisions should not remove a teams finance', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams finance', function (done) {
-                    path = 'finances/' + team2Finance2.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams finance', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'finances/' + team1Finance3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted finance', function () {
@@ -6425,10 +6709,11 @@ describe('Auths', function () {
             });
 
             describe('create new finances', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'finances';
 
                 it('should add a new finance to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const finance = team1.createFinance();
                     const values = finance.getValues({
                         reference: false
@@ -6438,7 +6723,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('a user with an inactive auth should not add a new finance to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const finance = team1.createFinance();
+                    const values = finance.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new finance to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const finance = team2.createFinance();
                     const values = finance.getValues({
                         reference: false
@@ -6452,6 +6749,30 @@ describe('Auths', function () {
         });
 
         describe('Oar tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let oar;
+
+                beforeEach(function () {
+
+                    path = 'oars/' + team1Oar1.getPathKey();
+                    oar = team1Oar1.getValues({
+                        reference: false
+                    });
+                    oar.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an oar (team1Oar1)', function () {
 
@@ -6906,25 +7227,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove oars on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'oars/' + team1Oar3.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove finances ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'finances/' + team2Finance2.getPathKey();
 
-                it('admin is removing the teams oar', function (done) {
+
+                it('should not remove a different teams finance', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams finance', function (done) {
+                    path = 'finances/' + team1Finance3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
-                it('a user without the correct permisions should not remove a teams oar', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams oar', function (done) {
-                    path = 'oars/' + team2Oar2.getPathKey();
+                it('a user without the correct permisions should not remove a teams finance', function (done) {
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams finance', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'finances/' + team1Finance3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted oar', function () {
@@ -6983,10 +7310,11 @@ describe('Auths', function () {
             });
 
             describe('create new oars', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'oars';
 
                 it('should add a new oar to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const oar = team1.createOar();
                     const values = oar.getValues({
                         reference: false
@@ -6996,7 +7324,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('a user with an inactive auth should not add a new oar to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const oar = team1.createOar();
+                    const values = oar.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new oar to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const oar = team2.createOar();
                     const values = oar.getValues({
                         reference: false
@@ -7010,6 +7350,30 @@ describe('Auths', function () {
         });
 
         describe('Picture tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let picture;
+
+                beforeEach(function () {
+
+                    path = 'pictures/' + team1Picture1.getPathKey();
+                    picture = team1Picture1.getValues({
+                        reference: false
+                    });
+                    picture.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, picture, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an picture (team1Regatta1)', function () {
 
@@ -7382,25 +7746,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove pictures on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'pictures/' + team1Picture3.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove pictures ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'pictures/' + team2Picture2.getPathKey();
 
-                it('admin is removing the teams picture', function (done) {
+
+                it('should not remove a different teams picture', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams picture', function (done) {
+                    path = 'pictures/' + team1Picture3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
                 it('a user without the correct permisions should not remove a teams picture', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams picture', function (done) {
-                    path = 'pictures/' + team2Picture2.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams picture', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'pictures/' + team1Picture3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted picture', function () {
@@ -7459,10 +7829,11 @@ describe('Auths', function () {
             });
 
             describe('create new pictures', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'pictures';
 
                 it('should add a new picture to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const picture = team1.createPicture();
                     const values = picture.getValues({
                         reference: false
@@ -7472,7 +7843,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('a user with an inactive auth should not add a new picture to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const picture = team1.createPicture();
+                    const values = picture.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new picture to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const picture = team2.createPicture();
                     const values = picture.getValues({
                         reference: false
@@ -7486,6 +7869,30 @@ describe('Auths', function () {
         });
 
         describe('Race tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let race;
+
+                beforeEach(function () {
+
+                    path = 'races/' + team1Race1.getPathKey();
+                    race = team1Race1.getValues({
+                        reference: false
+                    });
+                    race.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, race, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an race (team1Race1)', function () {
 
@@ -7912,25 +8319,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove races on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'races/' + team1Race3.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove races ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'races/' + team2Race2.getPathKey();
 
-                it('admin is removing the teams race', function (done) {
+
+                it('should not remove a different teams race', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams race', function (done) {
+                    path = 'races/' + team1Race3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
                 it('a user without the correct permisions should not remove a teams race', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams race', function (done) {
-                    path = 'races/' + team2Race2.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams race', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'races/' + team1Race3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted race', function () {
@@ -7989,10 +8402,11 @@ describe('Auths', function () {
             });
 
             describe('create new races', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'races';
 
                 it('should add a new race to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const race = team1.createRace();
                     const values = race.getValues({
                         reference: false
@@ -8002,7 +8416,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('a user with an inactive auth should not add a new race to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const race = team1.createRace();
+                    const values = race.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new race to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const race = team2.createRace();
                     const values = race.getValues({
                         reference: false
@@ -8016,6 +8442,30 @@ describe('Auths', function () {
         });
 
         describe('Regatta tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let regatta;
+
+                beforeEach(function () {
+
+                    path = 'regattas/' + team1Regatta1.getPathKey();
+                    regatta = team1Regatta1.getValues({
+                        reference: false
+                    });
+                    regatta.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an regatta (team1Regatta1)', function () {
 
@@ -8526,25 +8976,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove regattas on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'regattas/' + team1Regatta3.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove regattas ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'regattas/' + team2Regatta2.getPathKey();
 
-                it('admin is removing the teams regatta', function (done) {
+
+                it('should not remove a different teams regatta', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams regatta', function (done) {
+                    path = 'regattas/' + team1Regatta3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
                 it('a user without the correct permisions should not remove a teams regatta', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams regatta', function (done) {
-                    path = 'regattas/' + team2Regatta2.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams regatta', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'regattas/' + team1Regatta3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted regatta', function () {
@@ -8603,10 +9059,11 @@ describe('Auths', function () {
             });
 
             describe('create new regattas', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'regattas';
 
                 it('should add a new regatta to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const regatta = team1.createRegatta();
                     const values = regatta.getValues({
                         reference: false
@@ -8616,7 +9073,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('a user with an inactive auth should not add a new regatta to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const regatta = team1.createRegatta();
+                    const values = regatta.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new regatta to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const regatta = team2.createRegatta();
                     const values = regatta.getValues({
                         reference: false
@@ -8630,6 +9099,30 @@ describe('Auths', function () {
         });
 
         describe('Rigger tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let rigger;
+
+                beforeEach(function () {
+
+                    path = 'riggers/' + team1Rigger1.getPathKey();
+                    rigger = team1Rigger1.getValues({
+                        reference: false
+                    });
+                    rigger.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, rigger, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of an rigger (team1Rigger1)', function () {
 
@@ -9059,25 +9552,31 @@ describe('Auths', function () {
 
             });
 
-            describe('as a user with an active auth (team1User1Auth1)  remove riggers on a different team', function () {
-                const appName = 'team1User3Auth1';
-                let path = 'riggers/' + team1Rigger3.getPathKey();
+            describe('as a user with admin permisions and an active auth (team1User3Auth1)  remove riggers ', function () {
+                let appName = 'team1User3Auth1';
+                let path = 'riggers/' + team2Rigger2.getPathKey();
 
-                it('admin is removing the teams rigger', function (done) {
+
+                it('should not remove a different teams rigger', function (done) {
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
+
+                it('an admin is now removing the teams rigger', function (done) {
+                    path = 'riggers/' + team1Rigger3.getPathKey();
                     assert.canSet(firebaseAdmin.app(appName), path, null, done);
 
                 });
 
-                const newApp = 'team1User1Auth1';
                 it('a user without the correct permisions should not remove a teams rigger', function (done) {
-                    assert.cannotSet(firebaseAdmin.app(newApp), path, null, done);
-                });
-
-                it('should not remove a different teams rigger', function (done) {
-                    path = 'riggers/' + team2Rigger2.getPathKey();
+                    appName = 'team1User1Auth1';
                     assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
                 });
 
+                it('a user without the correct permisions should not remove a teams rigger', function (done) {
+                    appName = 'team1User3Auth2';
+                    path = 'riggers/' + team1Rigger3.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+                });
             });
 
             describe('as a user with active auth (team1User3Auth1) updating values of a deleted rigger', function () {
@@ -9136,10 +9635,11 @@ describe('Auths', function () {
             });
 
             describe('create new riggers', function () {
-                const appName = 'team1User1Auth1';
+                let appName;
                 const path = 'riggers';
 
                 it('should add a new rigger to the team', function (done) {
+                    appName = 'team1User1Auth1';
                     const rigger = team1.createRigger();
                     const values = rigger.getValues({
                         reference: false
@@ -9149,7 +9649,19 @@ describe('Auths', function () {
                     assert.canPush(firebaseAdmin.app(appName), path, values, done);
                 });
 
+                it('a user with an inactive auth should not add a new rigger to the team', function (done) {
+                    appName = 'team1User1Auth2';
+                    const rigger = team1.createRigger();
+                    const values = rigger.getValues({
+                        reference: false
+                    });
+                    values.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    values.created = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    assert.cannotPush(firebaseAdmin.app(appName), path, values, done);
+                });
+
                 it('it should not add a new rigger to a different team', function (done) {
+                    appName = 'team1User1Auth1';
                     const rigger = team2.createRigger();
                     const values = rigger.getValues({
                         reference: false
@@ -9164,6 +9676,30 @@ describe('Auths', function () {
         });
 
         describe('User tests', function () {
+
+            describe('as anonymous', function () {
+
+                const appName = 'anonymous';
+                let path;
+                let user;
+
+                beforeEach(function () {
+
+                    path = 'users/' + team1User1.getPathKey();
+                    user = team1User1.getValues({
+                        reference: false
+                    });
+                    user.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+
+                });
+
+                it('should not write', function (done) {
+
+                    assert.cannotSet(firebaseAdmin.app(appName), path, user, done);
+
+                });
+
+            });
 
             describe('as user with active auth (team1User1Auth1) updating individual values of same user (team1User1)', function () {
 
@@ -11295,6 +11831,71 @@ describe('Auths', function () {
 
             let appName = 'team1User1Auth1';
             let path;
+
+            describe('AthleteEmails', function () {
+                beforeEach(function () {
+                    path = 'athleteEmails/';
+                });
+
+                it('should not add emails (team1User1Email1) on the same team as the user with basic permisions (team1User1) to the same team\'s athlete (team1Athlete1)', function (done) {
+                    path += team1Athlete1.getPathKey() + '/' + team1User1Email1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                    team1Athlete1.addEmail(team1User1Email1);
+                });
+
+                it('should add emails (team1User1Email1) on the same team as the user with admin permisions (team1User1) to the same team\'s athlete (team1Athlete1)', function (done) {
+                    appName = 'team1User3Auth1';
+                    path += team1Athlete1.getPathKey() + '/' + team1User1Email1.getPathKey();
+                    assert.canSet(firebaseAdmin.app(appName), path, true, done);
+                    team1Athlete1.addEmail(team1User1Email1);
+                });
+
+                it('should not add emails (team1User1Email1) on the same team as the user (team1User1) to the a different teams athlete (team2Athlete1)', function (done) {
+                    path += team2Athlete1.getPathKey() + '/' + team1User1Email1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                    team2Athlete1.addEmail(team1User1Email1);
+                });
+
+                it('should not add a different email (team2User1Email1) on the a different team as the user (team1User1) to their teams athletes (team2Athlete1)', function (done) {
+                    path += team2Athlete1.getPathKey() + '/' + team2User1Email1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                    team2Athlete1.addEmail(team2User1Email1);
+                });
+
+                it('should not add a different email (team2User1Email1) on the a different team as the user (team1User1) to the users team\'s athletes (team1Athlete1)', function (done) {
+                    path += team1Athlete1.getPathKey() + '/' + team2User1Email1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, true, done);
+                    team1Athlete1.addEmail(team2User1Email1);
+                });
+
+                it('a user with basic perms cannot remove own teams email from a athlete', function (done) {
+                    appName = 'team1User1Auth1';
+                    path += team1Athlete1.getPathKey() + '/' + team1User1Email1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+
+                });
+
+                it('a user with admin perms can remove own teams email from a athlete', function (done) {
+                    appName = 'team1User3Auth1';
+                    path += team1Athlete1.getPathKey() + '/' + team1User1Email1.getPathKey();
+                    assert.canSet(firebaseAdmin.app(appName), path, null, done);
+
+                });
+
+
+                before(function () {
+                    team1Athlete1.addEmail(team1User1Email1);
+                    team2Athlete1.addEmail(team2User1Email1);
+
+                });
+
+                it('it cannot remove a different teams email from their own athlete', function (done) {
+                    appName = 'team1User1Auth1';
+                    path += team2Athlete1.getPathKey() + '/' + team2User1Email1.getPathKey();
+                    assert.cannotSet(firebaseAdmin.app(appName), path, null, done);
+
+                });
+            });
 
             describe('AthleteFinances', function () {
                 beforeEach(function () {
