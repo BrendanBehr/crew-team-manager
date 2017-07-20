@@ -3,11 +3,14 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
+
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <dom-module id="crew-team-manager-login">
     <template>
@@ -51,15 +54,21 @@
             }
         </style>
 
+        <firebase-auth id="auth" user="user" app-name="laborsync-ctm"></firebase-auth>
+
+        <iron-ajax id="token-request" auto url="https://us-central1-laborsync-ctm.cloudfunctions.net/authHttps" headers='{"email":"{{_username}}", "auth":"{{_password}}"}'
+            handle-as="json" on-response="_handleTokenRequest" debounce-duration="300" timeout="500"></iron-ajax>
+
         <div id="container">
             <paper-card id="card">
                 <paper-input id="username" label="username" value="{{_username}}"></paper-input>
-                <paper-input id="password" label="password" value="{{_password}}"></paper-input>
+                <paper-input id="password" label="password" value="{{_password}}" type="password" on-keypress="_keyPressed"></paper-input>
                 <paper-button id="login" on-click="_handleLogin">Login</paper-button>
             </paper-card>
         </div>
 
     </template>
+
 
     <script>
         // Extend Polymer.Element with MyMixin
@@ -77,20 +86,55 @@
 
                     _password: {
                         type: String
+                    },
+
+                    _token: {
+                        type: String
                     }
                 }
             }
 
+            _keyPressed(e) {
+                if (e.keyCode == 13) {
+                    return '_handleLogin'
+                }
+            }
+
+            _handlleTokenRequest() {
+
+
+                firebase.initializeApp({
+                    credential: this._username,
+                    databaseURL: 'https://laborsync-ctm.firebaseio.com'
+                });
+
+                console.log(this.$.auth.app.INTERNAL);
+                console.log(firebase);
+                firebase.auth().createCustomToken(this._username, this._password).catch(function (error) {
+                    console.log("Error creating custom token:", error);
+                });
+
+
+                this._token = this.$.auth.INTERNAL.getToken();
+            }
+
             _handleLogin() {
+
                 console.log({
                     Username: this._username,
                     Password: this._password
                 });
-                this.dispatchEvent(new CustomEvent(
-                    crewTeamManagerLogin.is + '-action-login', {
-                        bubbles: true,
-                        composed: true
-                    }));
+
+                document.getElementById('token-request').generateRequest();
+
+                this.$.auth.signInWithCustomToken(this._token)
+                    .catch(function (error) {
+                        console.log({
+                            Code: error.code,
+                            MEssage: error.message
+                        });
+
+                    });
             }
         }
 
