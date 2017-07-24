@@ -121,15 +121,10 @@
             }
 
             _handleActionLogout() {
-                // this.$['auth'].signOut().then(() => {
-                console.log('logout sucessfull');
                 this.dispatchEvent(new CustomEvent(crewTeamManagerStage.is + '-action-logout', {
                     bubbles: true,
                     composed: true
                 }));
-                // }).catch((err) => {
-                //     console.log(err);
-                // });
 
             }
 

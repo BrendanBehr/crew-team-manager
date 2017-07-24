@@ -47,7 +47,7 @@
 
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-login id="login" on-crew-team-manager-login-action-login="_handleActionLogin" token="[[_token]"></crew-team-manager-login>
+            <crew-team-manager-login id="login" on-crew-team-manager-login-action-login="_handleActionLogin" token="[[_token]" logout="[[_logout]]"></crew-team-manager-login>
 
             <crew-team-manager-stage id="stage" on-crew-team-manager-stage-action-logout="_handleActionLogout"></crew-team-manager-stage>
 
@@ -81,6 +81,11 @@
                         type: String,
                     },
 
+                    _logout: {
+                        type: Boolean,
+                        value: false
+                    },
+
                     behaviors: [Polymer.LazyImportsBehavior]
 
 
@@ -97,8 +102,10 @@
             }
 
             _handleActionLogout() {
-                this._page = 'login';
+                this._logout = true;
                 this._toast = 'User Logged Out';
+                this._token = {};
+                this._page = 'login';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
