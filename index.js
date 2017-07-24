@@ -33,7 +33,8 @@ const team1User1 = team1.createUser({
     email: 'babehrensbb@gmail.com'
 });
 const team2User2 = team2.createUser({
-    email: 'behrenb2@tcnj.edu'
+    email: 'behrenb2@tcnj.edu',
+    permisions: 'admin'
 });
 const team1User3 = team1.createUser({
     email: 'bbehrens@laborsync.com'
@@ -71,6 +72,10 @@ const password = 'BrendanRocks';
 team1User1Credential1.setPassword(password);
 team2User2Credential2.setPassword(password);
 team1User3Credential3.setPassword(password);
+
+team1User1.credentials = password;
+team2User2.credentials = password;
+team1User3.credentials = password;
 
 //This creates boat, oar and rigger objects for team1
 const team1Boat1 = team1.createBoat();

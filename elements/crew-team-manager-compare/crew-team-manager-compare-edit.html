@@ -85,7 +85,6 @@
                     <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
                     <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
                     <paper-input id="phone" label="phone number" value="{{edit.phone}}"></paper-input>
-                    <paper-toggle-button id="toggle-button" on-click="_toggleDrive">Driver: [[edit.driver]]</paper-toggle-button>
                     <paper-input id="height" label="height" value="{{edit.height}}"></paper-input>
                     <paper-input id="weight" label="weight" value="{{edit.weight}}"></paper-input>
                     <paper-dropdown-menu label="Gender" value="{{edit.gender}}">
@@ -154,18 +153,6 @@
                     });
 
 
-            }
-
-            _toggleDrive() {
-                console.log('here');
-                if (this._drive) {
-                    this.edit.driver = 'no';
-                    this._drive = false;
-                } else {
-                    this.edit.driver = 'yes';
-                    this._drive = true;
-
-                }
             }
 
         }

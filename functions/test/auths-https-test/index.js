@@ -110,7 +110,7 @@ describe('auths-https', () => {
             },
             service_account: serviceAccount,
             cors: {
-                access_control_allow_origin: uri
+                access_control_allow_origins: uri
             },
             mocha: true
         });

@@ -1,14 +1,18 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+
+<link rel="import" href="../../bower_components/lazy-imports/lazy-imports-mixin.html">
+
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="../crew-team-manager-login/crew-team-manager-login.html">
-<link rel="import" href="../crew-team-manager-stage/crew-team-manager-stage.html">
 
 <dom-module id="crew-team-manager-app">
+    <link rel="lazy-import" group="lazy" href="../crew-team-manager-stage/crew-team-manager-stage.html">
     <template>
         <style>
              :host {
@@ -36,9 +40,15 @@
         </firebase-app>
 
 
+        <app-localstorage-document id="local-storage" key="firebase:authUser:AIzaSyCihAWRMu9JkJv8MDq5V6VqjLPLHNT6Pl8:laborsync-ctm"
+            data="{{_token}}" storage="window.localStorage" log></app-localstorage-document>
+
+
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-login id="login" on-crew-team-manager-login-action-login="_handleActionLogin"></crew-team-manager-login>
+            <crew-team-manager-login id="login" on-crew-team-manager-login-action-login="_handleActionLogin" token="[[_token]"></crew-team-manager-login>
+
             <crew-team-manager-stage id="stage"></crew-team-manager-stage>
+
         </iron-pages>
 
 
@@ -46,7 +56,8 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerApp extends Polymer.Element {
+
+        class crewTeamManagerApp extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-app'
@@ -58,13 +69,29 @@
                         type: String,
                         value: 'login'
                     },
+                    _token: {
+                        type: Object,
+                        observer: '_autoLogin'
+                    },
+
+                    behaviors: [Polymer.LazyImportsBehavior]
 
 
                 }
             }
 
+            _autoLogin() {
+                console.log(this._token);
+                if (this._token) {
+                    this.page = 'stage';
+                }
+            }
+
             _handleActionLogin() {
-                this._page = 'stage';
+                this.importLazyGroup('lazy').then(function (results) {
+                    this._page = 'stage';
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
         }

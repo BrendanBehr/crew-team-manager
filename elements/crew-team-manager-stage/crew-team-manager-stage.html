@@ -13,23 +13,19 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 
-<link rel="import" href="../crew-team-manager-home/crew-team-manager-home.html">
-<link rel="import" href="../crew-team-manager-roster/crew-team-manager-roster.html">
-<link rel="import" href="../crew-team-manager-compare/crew-team-manager-compare.html">
-<link rel="import" href="../crew-team-manager-picture/crew-team-manager-picture.html">
-<link rel="import" href="../crew-team-manager-feedback/crew-team-manager-feedback.html">
-<link rel="import" href="../crew-team-manager-settings/crew-team-manager-settings.html">
-<link rel="import" href="../crew-team-manager-help/crew-team-manager-help.html">
-<link rel="import" href="../crew-team-manager-finance/crew-team-manager-finance.html">
-<link rel="import" href="../crew-team-manager-schedule/crew-team-manager-schedule.html">
-<link rel="import" href="../crew-team-manager-fleet/crew-team-manager-fleet.html">
-<link rel="import" href="../crew-team-manager-erg/crew-team-manager-erg.html">
-<link rel="import" href="../crew-team-manager-oar/crew-team-manager-oar.html">
-<link rel="import" href="../crew-team-manager-race/crew-team-manager-race.html">
-<link rel="import" href="../crew-team-manager-rigger/crew-team-manager-rigger.html">
 <link rel="import" href="../crew-team-manager-team/crew-team-manager-team.html">
 
+
 <dom-module id="crew-team-manager-stage">
+    <link rel="lazy-import" group="roster" href="../crew-team-manager-roster/crew-team-manager-roster.html">
+    <link rel="lazy-import" group="picture" href="../crew-team-manager-picture/crew-team-manager-picture.html">
+    <link rel="lazy-import" group="finance" href="../crew-team-manager-finance/crew-team-manager-finance.html">
+    <link rel="lazy-import" group="schedule" href="../crew-team-manager-schedule/crew-team-manager-schedule.html">
+    <link rel="lazy-import" group="fleet" href="../crew-team-manager-fleet/crew-team-manager-fleet.html">
+    <link rel="lazy-import" group="erg" href="../crew-team-manager-erg/crew-team-manager-erg.html">
+    <link rel="lazy-import" group="oar" href="../crew-team-manager-oar/crew-team-manager-oar.html">
+    <link rel="lazy-import" group="race" href="../crew-team-manager-race/crew-team-manager-race.html">
+    <link rel="lazy-import" group="rigger" href="../crew-team-manager-rigger/crew-team-manager-rigger.html">
     <template>
         <style>
              :host {
@@ -96,7 +92,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerStage extends Polymer.Element {
+        class crewTeamManagerStage extends Polymer.LazyImportsMixin(Polymer.Element) {
             static get is() {
                 return 'crew-team-manager-stage'
             }
@@ -105,12 +101,13 @@
                 return {
                     _page: {
                         type: String,
-                        value: 'roster'
+                        value: 'team'
                     },
                     _wideLayout: {
                         type: Boolean,
                         value: false,
                     },
+                    behaviors: [Polymer.LazyImportsBehavior]
                 }
             }
 
@@ -127,8 +124,12 @@
             }
 
             _handleMenuClick(e) {
-                this._page = e.target.getAttribute('page');
-                this._toggleDrawer();
+                let page = e.target.getAttribute('page');
+                this.importLazyGroup(page).then(function (results) {
+                    this._page = page;
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
         }
 

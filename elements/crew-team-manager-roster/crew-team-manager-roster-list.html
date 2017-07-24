@@ -68,7 +68,7 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="/athletes" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="athletes/" data="{{_data}}">
         </firebase-query>
 
         <app-header-layout id="layout" has-scrolling-region fullbleed>
@@ -76,7 +76,7 @@
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
                     <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
-                    <div main-title id="title">Athletes</div>
+                    <div main-title id="title">Roster</div>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
@@ -137,6 +137,7 @@
             }
 
             _updatePage(dataSplices) {
+                console.log(this._data);
 
                 let page = 'message';
 
@@ -145,7 +146,6 @@
                         page = 'results';
                     }
                 }
-
                 this._page = page;
 
             }

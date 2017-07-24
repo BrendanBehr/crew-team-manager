@@ -6,7 +6,6 @@ const firebaseAdmin = require('firebase-admin');
 const crypto = require('crypto');
 
 let database;
-let admin;
 
 const getDatabase = () => {
 
@@ -31,7 +30,6 @@ const getDatabase = () => {
             });
 
         }
-
         database = firebaseAdmin.database();
 
     }
@@ -82,12 +80,14 @@ const getBasicAuthenticationCredentials = (getAuthorizationTypePromise, getAutho
                 if (authorizationType != 'Basic') {
                     const err = new Error('Authoriation type invalid');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-invalid';
                     return reject(err);
                 }
 
                 if (!authorizationCredentials) {
                     const err = new Error('Authoriation credentials required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-invalid';
                     return reject(err);
                 }
 
@@ -109,6 +109,7 @@ const getAuthorizationCredentials = (getAuthorizationPromise) => {
                 if (!authorization) {
                     const err = new Error('Authorization required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-required';
                     return reject(err);
                 }
 
@@ -130,6 +131,7 @@ const getAuthorizationType = (getAuthorizationPromise) => {
                 if (!authorization) {
                     const err = new Error('Authorization required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-required';
                     return reject(err);
                 }
 
@@ -191,12 +193,14 @@ const getAuthenticationEntity = (getAuthenticationPromise) => {
                 if (!authentication) {
                     const err = new Error('Authentication required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-invalid';
                     return reject(err);
                 }
 
                 if (!authentication.username) {
                     const err = new Error('Authentication username required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-invalid';
                     return reject(err);
                 }
 
@@ -234,12 +238,14 @@ const getEmail = (getAuthenticationPromise) => {
                 if (!authentication) {
                     const err = new Error('Authentication required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-invalid';
                     return reject(err);
                 }
 
                 if (!authentication.username) {
                     const err = new Error('Authentication username required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-invalid';
                     return reject(err);
                 }
 
@@ -247,6 +253,7 @@ const getEmail = (getAuthenticationPromise) => {
                     .then((emailSnapshot) => {
 
                         let email = emailSnapshot.val();
+
 
                         if (email) {
                             const emailKey = Object.keys(email)[0];
@@ -274,12 +281,14 @@ const getUser = (getEmailPromise) => {
                 if (!email) {
                     const err = new Error('Email not found');
                     err.name = 'UnauthorizedError';
+                    err.error = 'email-not-found';
                     return reject(err);
                 }
 
                 if (!email.user) {
                     const err = new Error('Email user required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'user-not-found';
                     return reject(err);
                 }
 
@@ -294,7 +303,9 @@ const getUser = (getEmailPromise) => {
 
                         return resolve(user);
 
-                    });
+                    })
+                    .catch(reject);
+
             })
             .catch(reject);
 
@@ -312,18 +323,21 @@ const getUserCredential = (getAuthenticationPromise) => {
                 if (!user) {
                     const err = new Error('User not found');
                     err.name = 'UnauthorizedError';
+                    err.error = 'user-not-found';
                     return reject(err);
                 }
 
                 if (!user.credential) {
                     const err = new Error('User credential required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'credential-not-found';
                     return reject(err);
                 }
 
                 if (user.status != 'active') {
                     const err = new Error('User inactive');
                     err.name = 'UnauthorizedError';
+                    err.error = 'user-not-active';
                     return reject(err);
                 }
 
@@ -338,7 +352,9 @@ const getUserCredential = (getAuthenticationPromise) => {
 
                         return resolve(credential);
 
-                    });
+                    })
+                    .catch(reject);
+
             })
             .catch(reject);
 
@@ -357,24 +373,28 @@ const getHash = (getAuthenticationPromise, getCredentialPromise) => {
                 if (!authentication) {
                     const err = new Error('Authentication required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-invalid';
                     return reject(err);
                 }
 
                 if (!authentication.password) {
                     const err = new Error('Authentication password required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'authorization-invalid';
                     return reject(err);
                 }
 
                 if (!credential) {
                     const err = new Error('Credential required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'credential-not-found';
                     return reject(err);
                 }
 
                 if (!credential.salt) {
                     const err = new Error('Credential salt required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'credential-not-found';
                     return reject(err);
                 }
 
@@ -407,6 +427,7 @@ const getCredential = (getAuthenticationPromise, getAuthenticationEntityPromise)
                 if (!entities[authenticationEntity]) {
                     const err = new Error('Authentication entity invalid');
                     err.name = 'UnauthorizedError';
+                    err.error = 'internal-errror';
                     return reject(err);
                 }
 
@@ -434,18 +455,21 @@ const createAuth = (getAuthenticationPromise, getAuthenticationEntityPromise, ge
                 if (!credential) {
                     const err = new Error('Credential not found');
                     err.name = 'UnauthorizedError';
+                    err.error = 'credential-not-found';
                     return reject(err);
                 }
 
                 if (!credential.hash) {
                     const err = new Error('Credential hash required');
                     err.name = 'UnauthorizedError';
+                    err.error = 'credential-mismatch';
                     return reject(err);
                 }
 
                 if (hash != credential.hash) {
                     const err = new Error('Authorization password hash mismatch');
                     err.name = 'UnauthorizedError';
+                    err.error = 'credential-mismatch';
                     return reject(err);
                 }
 
@@ -485,6 +509,7 @@ const createToken = (getAuthenticationEntityPromise, getCredentialPromise, creat
                 if (!credential[authenticationEntity]) {
                     const err = new Error('Credential ' + authenticationEntity + ' required');
                     err.name = 'InternalError';
+                    err.error = 'internal-error';
                     return reject(err);
                 }
 
@@ -493,6 +518,7 @@ const createToken = (getAuthenticationEntityPromise, getCredentialPromise, creat
                 if (!auth._key) {
                     const err = new Error('Auth key required');
                     err.name = 'InternalError';
+                    err.error = 'internal-error';
                     return reject(err);
                 }
 
@@ -544,20 +570,49 @@ const getPostHttp = (request) => {
     });
 };
 
+const getOptionsHttp = (request) => {
+    return new Promise((resolve, reject) => {
+
+        const http = {};
+
+        http.status = 200;
+
+        http.headers = {};
+
+        http.headers['access-control-allow-methods'] = Object.keys(methodHandlers).join(', ');
+        http.headers['access-control-allow-headers'] = allowedHeaders.join(', ');
+
+        return resolve(http);
+
+    });
+};
+
+const methodHandlers = {
+    'POST': getPostHttp,
+    'OPTIONS': getOptionsHttp
+};
+
+const allowedHeaders = [
+    'Authorization'
+];
+
+let exposedHeaders = [
+    'X-Firebase-Custom-Token',
+    'x-labor-sync-error',
+    'content-type'
+];
+
 const getMethodHttp = (method, request) => {
     return new Promise((resolve, reject) => {
 
-        const methods = {
-            'POST': getPostHttp
-        };
-
-        if (!methods[method]) {
+        if (!methodHandlers[method]) {
             const err = new Error('Invalid request method ' + method);
             err.name = 'NotFoundError';
+            err.error = 'method-invalid';
             return reject(err);
         }
 
-        return methods[method](request)
+        return methodHandlers[method](request)
             .then(resolve)
             .catch(reject);
 
@@ -570,6 +625,7 @@ const getHttp = (request) => {
         if (!request.method) {
             const err = new Error('Request method required');
             err.name = 'NotFoundError';
+            err.error = 'method-invalid';
             return reject(err);
         }
 
@@ -582,16 +638,29 @@ const getHttp = (request) => {
     });
 };
 
-const sendResponse = (http, response) => {
+const sendResponse = (http, request, response) => {
     return new Promise((resolve) => {
 
         http = http || {};
 
         http.headers = http.headers || {};
 
-        if (firebaseFunctions.config().cors && firebaseFunctions.config().cors.access_control_allow_origin) {
-            http.headers['Access-Control-Allow-Origin'] = firebaseFunctions.config().cors.access_control_allow_origin;
+        if (firebaseFunctions.config().cors && firebaseFunctions.config().cors.access_control_allow_origins) {
+            const allowOrigins = firebaseFunctions.config().cors.access_control_allow_origins.split(', ');
+            http.headers['access-control-allow-origin'] = allowOrigins[allowOrigins.indexOf(request.get('Origin'))] || allowOrigins[0];
         }
+
+        http.headers['access-control-max-age'] = -1;
+
+        const exposeHeaders = exposedHeaders.filter((exposeHeader) => {
+            return http.headers[exposeHeader];
+        });
+
+        if (exposeHeaders.length) {
+            http.headers['access-control-expose-headers'] = exposeHeaders.join(', ');
+        }
+
+        http.headers['access-control-allow-credentials'] = 'true';
 
         http.status = http.status || 500;
         http.body = http.body || '';
@@ -605,7 +674,7 @@ const sendResponse = (http, response) => {
     });
 };
 
-const sendErrorResponse = (err, response) => {
+const sendErrorResponse = (err, request, response) => {
     return new Promise((resolve) => {
 
         if (!firebaseFunctions.config().mocha) {
@@ -627,9 +696,14 @@ const sendErrorResponse = (err, response) => {
         if (names[err.name]) {
             http.status = names[err.name].status || http.status;
             http.body = names[err.name].body || http.body;
+            if (err.error) {
+                http.headers = {
+                    'x-labor-sync-error': err.error
+                };
+            }
         }
 
-        return sendResponse(http, response)
+        return sendResponse(http, request, response)
             .then(resolve);
 
     });
@@ -641,11 +715,11 @@ const handleRequest = (request, response) => {
 
         return getHttp(request)
             .then((http) => {
-                return sendResponse(http, response)
+                return sendResponse(http, request, response)
                     .then(resolve);
             })
             .catch((err) => {
-                return sendErrorResponse(err, response)
+                return sendErrorResponse(err, request, response)
                     .then(resolve);
             });
 

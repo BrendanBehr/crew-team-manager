@@ -2,6 +2,7 @@
 
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
@@ -56,14 +57,16 @@
 
         <firebase-auth id="auth" user="user" app-name="laborsync-ctm"></firebase-auth>
 
-        <iron-ajax id="token-request" auto url="https://us-central1-laborsync-ctm.cloudfunctions.net/authHttps" headers='{"email":"{{_username}}", "auth":"{{_password}}"}'
-            handle-as="json" on-response="_handleTokenRequest" debounce-duration="300" timeout="500"></iron-ajax>
+        <iron-a11y-keys id="ally" keys="enter" on-keys-pressed="_handleLogin"></iron-a11y-keys>
+
+        <iron-ajax id="token-request" url="https://us-central1-laborsync-ctm.cloudfunctions.net/authHttps" method="POST" handle-as="json"
+            on-response="_handleTokenResponse" on-error="_handleTokenErrorResponse" with-credentials="true"></iron-ajax>
 
         <div id="container">
             <paper-card id="card">
                 <paper-input id="username" label="username" value="{{_username}}"></paper-input>
-                <paper-input id="password" label="password" value="{{_password}}" type="password" on-keypress="_keyPressed"></paper-input>
-                <paper-button id="login" on-click="_handleLogin">Login</paper-button>
+                <paper-input id="password" label="password" value="{{_password}}" type="password"></paper-input>
+                <paper-button id="login" on-tap="_handleLogin">Login</paper-button>
             </paper-card>
         </div>
 
@@ -81,60 +84,47 @@
             static get properties() {
                 return {
                     _username: {
-                        type: String
+                        type: String,
+                        value: 'babehrensbb@gmail.com'
                     },
 
                     _password: {
-                        type: String
+                        type: String,
+                        value: 'BrendanRocks'
                     },
 
-                    _token: {
-                        type: String
+                    token: {
+                        type: Object
                     }
                 }
             }
 
-            _keyPressed(e) {
-                if (e.keyCode == 13) {
-                    return '_handleLogin'
-                }
+            _handleTokenResponse(evt) {
+                this.$['auth'].signInWithCustomToken(evt.detail.xhr.getResponseHeader('x-firebase-custom-token'))
+                    .then(() => {
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerLogin.is +
+                            '-action-login', {
+                                bubbles: true,
+                                composed: true,
+                            }));
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+
             }
 
-            _handlleTokenRequest() {
-
-
-                firebase.initializeApp({
-                    credential: this._username,
-                    databaseURL: 'https://laborsync-ctm.firebaseio.com'
-                });
-
-                console.log(this.$.auth.app.INTERNAL);
-                console.log(firebase);
-                firebase.auth().createCustomToken(this._username, this._password).catch(function (error) {
-                    console.log("Error creating custom token:", error);
-                });
-
-
-                this._token = this.$.auth.INTERNAL.getToken();
+            _handleTokenErrorResponse(err) {
+                console.log(err.detail.request.xhr.getResponseHeader('x-labor-sync-error'));
             }
 
             _handleLogin() {
 
-                console.log({
-                    Username: this._username,
-                    Password: this._password
-                });
+                this.$['token-request'].headers['Authorization'] = 'Basic ' + btoa(this._username + ":" +
+                    this._password);
 
-                document.getElementById('token-request').generateRequest();
+                this.$['token-request'].generateRequest();
 
-                this.$.auth.signInWithCustomToken(this._token)
-                    .catch(function (error) {
-                        console.log({
-                            Code: error.code,
-                            MEssage: error.message
-                        });
-
-                    });
             }
         }
 

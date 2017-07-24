@@ -144,11 +144,9 @@
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
                         this._resetCreate();
                         let _key = '';
-                        console.log(this.$.firebase.path);
                         for (let x = 10; x < this.$.firebase.path.length; x++) {
                             _key = _key + this.$.firebase.path[x];
                         }
-                        console.log(_key);
                         this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleCreate.is +
                             '-action-created', {
                                 bubbles: true,

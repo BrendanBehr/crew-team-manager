@@ -10,12 +10,12 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-team-list.html">
-<link rel="import" href="crew-team-manager-team-detail.html">
-<link rel="import" href="crew-team-manager-team-edit.html">
-
+<link rel="import" group="list" href="crew-team-manager-team-list.html">
 
 <dom-module id="crew-team-manager-team">
+
+    <link rel="lazy-import" group="detail" href="crew-team-manager-team-detail.html">
+    <link rel="lazy-import" group="edit" href="crew-team-manager-team-edit.html">
     <template>
         <style>
              :host {
@@ -65,7 +65,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerTeam extends Polymer.Element {
+        class crewTeamManagerTeam extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-team'
@@ -93,39 +93,64 @@
 
                     _toast: {
                         type: String
-                    }
+                    },
+                    behaviors: [Polymer.LazyImportsBehavior]
                 }
             }
 
             _handleActionDetail(e) {
                 this._team = e.detail.team;
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionBack(e) {
-                this._page = 'list';
+                this.importLazyGroup('list').then(function (results) {
+                    this._page = 'list';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionBackOnce(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.team;
-                this._page = 'edit';
+                this.importLazyGroup('edit').then(function (results) {
+                    this._page = 'edit';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
 
             }
 
             _handleActionSaved(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
                 this._toast = 'Team Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
-                this._page = 'list';
+                this.importLazyGroup('list').then(function (results) {
+                    this._page = 'list';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
                 this._toast = 'Team Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
