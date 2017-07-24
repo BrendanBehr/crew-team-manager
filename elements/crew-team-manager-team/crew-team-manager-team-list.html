@@ -69,6 +69,7 @@
                 <app-toolbar id="toolbar">
                     <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
                     <div main-title id="title">Team</div>
+                    <paper-icon-button id="logout" icon="exit-to-app" on-click="_handleActionLogout"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
@@ -117,6 +118,19 @@
                     bubbles: true,
                     composed: true
                 }));
+            }
+
+            _handleActionLogout() {
+                // this.$['auth'].signOut().then(() => {
+                console.log('logout sucessfull');
+                this.dispatchEvent(new CustomEvent(crewTeamManagerStage.is + '-action-logout', {
+                    bubbles: true,
+                    composed: true
+                }));
+                // }).catch((err) => {
+                //     console.log(err);
+                // });
+
             }
 
             _updatePage(dataSplices) {

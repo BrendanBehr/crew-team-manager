@@ -6,6 +6,11 @@
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/places-icons.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
@@ -76,16 +81,48 @@
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
-                <button page="roster" on-click="_handleMenuClick">roster</button>
-                <button page="fleet" on-click="_handleMenuClick">fleet</button>
-                <button page="schedule" on-click="_handleMenuClick">schedule</button>
-                <button page="erg" on-click="_handleMenuClick">erg</button>
-                <button page="finance" on-click="_handleMenuClick">finance</button>
-                <button page="oar" on-click="_handleMenuClick">oar</button>
-                <button page="race" on-click="_handleMenuClick">race</button>
-                <button page="rigger" on-click="_handleMenuClick">rigger</button>
-                <button page="picture" on-click="_handleMenuClick">picture</button>
-                <button page="team" on-click="_handleMenuClick">team</button>
+                <ul style="list-style-type:none">
+                    <li>
+                        <button page="erg" on-click="_handleMenuClick">ergs</button>
+                        <iron-icon page="erg" icon="places:fitness-center" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="finance" on-click="_handleMenuClick">finance</button>
+                        <iron-icon page="finance" icon="editor:attach-money" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="fleet" on-click="_handleMenuClick">fleet</button>
+                        <iron-icon page="fleet" icon="maps:directions-boat" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="oar" on-click="_handleMenuClick">oars</button>
+                        <iron-icon page="oar" icon="av:shuffle" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="picture" on-click="_handleMenuClick">pictures</button>
+                        <iron-icon page="picture" icon="image:camera-roll" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="race" on-click="_handleMenuClick">races</button>
+                        <iron-icon page="race" icon="gavel" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="rigger" on-click="_handleMenuClick">riggers</button>
+                        <iron-icon page="rigger" icon="build" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="roster" on-click="_handleMenuClick">roster</button>
+                        <iron-icon page="roster" icon="rowing" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="schedule" on-click="_handleMenuClick">schedule</button>
+                        <iron-icon page="schedule" icon="assignment" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                    <li>
+                        <button page="team" on-click="_handleMenuClick">team</button>
+                        <iron-icon page="team" icon="home" on-click="_handleMenuClick"></iron-icon>
+                    </li>
+                </ul>
             </app-drawer>
             <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>
     </template>

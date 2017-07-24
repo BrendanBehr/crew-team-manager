@@ -90,7 +90,8 @@
                 <app-toolbar id="toolbar">
                     <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
                     <div main-title id="title">Compare Athletes</div>
-                    <paper-icon-button id="compare" icon="arrow-forward" on-click="_handleActionCompare">
+                    <paper-icon-button id="compare" icon="arrow-forward" on-click="_handleActionCompare"></paper-icon-button>
+                    <paper-icon-button id="logout" icon="exit-to-app" on-click="_handleActionLogout"></paper-icon-button>
                 </app-toolbar>
 
                 <div id="selected-athletes">
@@ -204,6 +205,13 @@
                 this._athlete2 = e.detail.athlete;
                 console.log('here');
                 console.log(this._athlete2.firstName);
+            }
+
+            _handleActionLogout() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerStage.is + '-action-logout', {
+                    bubbles: true,
+                    composed: true
+                }));
             }
 
             _handleActionCompare(e) {

@@ -7,6 +7,8 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="../crew-team-manager-login/crew-team-manager-login.html">
@@ -41,17 +43,18 @@
 
 
         <app-localstorage-document id="local-storage" key="firebase:authUser:AIzaSyCihAWRMu9JkJv8MDq5V6VqjLPLHNT6Pl8:laborsync-ctm"
-            data="{{_token}}" storage="window.localStorage" log></app-localstorage-document>
+            data="{{_token}}" storage="window.localStorage"></app-localstorage-document>
 
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
             <crew-team-manager-login id="login" on-crew-team-manager-login-action-login="_handleActionLogin" token="[[_token]"></crew-team-manager-login>
 
-            <crew-team-manager-stage id="stage"></crew-team-manager-stage>
+            <crew-team-manager-stage id="stage" on-crew-team-manager-stage-action-logout="_handleActionLogout"></crew-team-manager-stage>
 
         </iron-pages>
 
 
+        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
     </template>
 
     <script>
@@ -74,6 +77,10 @@
                         observer: '_autoLogin'
                     },
 
+                    _toast: {
+                        type: String,
+                    },
+
                     behaviors: [Polymer.LazyImportsBehavior]
 
 
@@ -81,15 +88,27 @@
             }
 
             _autoLogin() {
-                console.log(this._token);
                 if (this._token) {
-                    this.page = 'stage';
+                    this.importLazyGroup('lazy').then(function (results) {
+                        this._page = 'stage';
+                        this.dispatchEvent(new CustomEvent('import-loaded', results));
+                    }.bind(this));
                 }
+            }
+
+            _handleActionLogout() {
+                this._page = 'login';
+                this._toast = 'User Logged Out';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
             }
 
             _handleActionLogin() {
                 this.importLazyGroup('lazy').then(function (results) {
                     this._page = 'stage';
+                    this._toast = 'User Logged In';
+                    this.$.toast.fitInto = this.$.pages;
+                    this.$.toast.open();
                     this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
             }
