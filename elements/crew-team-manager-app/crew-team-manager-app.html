@@ -41,13 +41,10 @@
             messaging-sender-id="806566666459">
         </firebase-app>
 
-
-        <app-localstorage-document id="local-storage" key="firebase:authUser:AIzaSyCihAWRMu9JkJv8MDq5V6VqjLPLHNT6Pl8:laborsync-ctm"
-            data="{{_token}}" storage="window.localStorage"></app-localstorage-document>
-
+        <firebase-auth id="auth" app-name="laborsync-ctm" user="{{_firebaseUser}}" status-known="{{_firebaseStatusKnown}}"></firebase-auth>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-login id="login" on-crew-team-manager-login-action-login="_handleActionLogin" token="[[_token]" logout="[[_logout]]"></crew-team-manager-login>
+            <crew-team-manager-login id="login"></crew-team-manager-login>
 
             <crew-team-manager-stage id="stage" on-crew-team-manager-stage-action-logout="_handleActionLogout"></crew-team-manager-stage>
 
@@ -68,51 +65,59 @@
 
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'login'
-                    },
-                    _token: {
-                        type: Object,
-                        observer: '_autoLogin'
-                    },
+                    _page: String,
 
                     _toast: {
                         type: String,
                     },
 
-                    _logout: {
-                        type: Boolean,
-                        value: false
-                    },
+                    _firebaseStatusKnown: Boolean,
 
-                    behaviors: [Polymer.LazyImportsBehavior]
+                    _firebaseUser: Object,
+
+
+                    // behaviors: [Polymer.LazyImportsBehavior]
 
 
                 }
             }
 
-            _autoLogin() {
-                if (this._token) {
-                    this.importLazyGroup('lazy').then(function (results) {
-                        this._page = 'stage';
-                        this.dispatchEvent(new CustomEvent('import-loaded', results));
-                    }.bind(this));
-                }
+            static get observers() {
+                return [
+                    '_updatePage(_firebaseStatusKnown, _firebaseUser)'
+                ]
             }
 
             _handleActionLogout() {
-                this._logout = true;
-                this._toast = 'User Logged Out';
-                this._token = {};
-                this._page = 'login';
-                this.$.toast.fitInto = this.$.pages;
-                this.$.toast.open();
+                this.$.auth.signOut()
+                    .then(() => {
+                        this._toast = 'User Logged Out';
+                        this.$.toast.fitInto = this.$.pages;
+                        this.$.toast.open();
+                        console.log('logged out');
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+
             }
 
-            _handleActionLogin() {
+            _updatePage(firebaseStatusKnown, firebaseUser) {
+
+                if (!firebaseStatusKnown) {
+                    return
+                }
+
+                let page = 'login';
+
+                if (firebaseUser) {
+                    page = 'stage';
+                }
+
+                console.log(page)
+
                 this.importLazyGroup('lazy').then(function (results) {
-                    this._page = 'stage';
+                    this._page = page;
                     this._toast = 'User Logged In';
                     this.$.toast.fitInto = this.$.pages;
                     this.$.toast.open();

@@ -74,7 +74,6 @@
                     <paper-input id="reason" label="reason" value="{{create.reason}}"></paper-input>
                     <paper-input id="incomes" label="incomes" value="{{create.incomes}}"></paper-input>
                     <paper-input id="expenses" label="expenses" value="{{create.expenses}}"></paper-input>
-                    <paper-input id="gross" label="gross" value="{{create.gross}}"></paper-input>
                 </form>
             </div>
 
@@ -134,7 +133,7 @@
                 this.$.firebase.saveValue('finances')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
-                        this._resetCreate();
+                        _resetCreate();
                         let _key = '';
                         for (let x = 10; x < this.$.firebase.path.length; x++) {
                             _key = _key + this.$.firebase.path[x];

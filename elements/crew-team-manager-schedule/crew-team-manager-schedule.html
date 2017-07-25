@@ -60,7 +60,7 @@
                 on-crew-team-manager-schedule-edit-action-saved="_handleActionSaved">
             </crew-team-manager-schedule-edit>
 
-            <crew-team-manager-schedule-create id="create" on-crew-team-manager-schedule-create-action-close="_handleActionClose" on-crew-team-manager-schedule-create-action-created="_handleActionCreated">
+            <crew-team-manager-schedule-create id="create" on-crew-team-manager-schedule-create-action-cancel="_handleActionCancel" on-crew-team-manager-schedule-create-action-created="_handleActionCreated">
             </crew-team-manager-schedule-create>
         </iron-pages>
 
@@ -149,6 +149,7 @@
             }
 
             _handleActionCancel(e) {
+                console.log('here')
                 this._page = 'list';
                 this._toast = 'Cancelled Regatta Create';
                 this.$.toast.fitInto = this.$.pages;

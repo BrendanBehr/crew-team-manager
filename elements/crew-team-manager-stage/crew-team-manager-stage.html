@@ -17,6 +17,7 @@
 
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
 <link rel="import" href="../crew-team-manager-team/crew-team-manager-team.html">
 
@@ -68,61 +69,71 @@
 
         <app-drawer-layout id="layout">
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-roster id="roster" class="page" on-crew-team-manager-roster-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-roster>
-                <crew-team-manager-fleet id="fleet" class="page" on-crew-team-manager-fleet-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-fleet>
-                <crew-team-manager-schedule id="schedule" class="page" on-crew-team-manager-schedule-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-schedule>
-                <crew-team-manager-erg id="erg" class="page" on-crew-team-manager-erg-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-erg>
-                <crew-team-manager-finance id="finance" class="page" on-crew-team-manager-finance-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-finance>
-                <crew-team-manager-oar id="oar" class="page" on-crew-team-manager-oar-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-oar>
-                <crew-team-manager-race id="race" class="page" on-crew-team-manager-race-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-race>
-                <crew-team-manager-rigger id="rigger" class="page" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-rigger>
-                <crew-team-manager-picture id="picture" class="page" on-crew-team-manager-picture-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-picture>
-                <crew-team-manager-team id="team" class="page" on-crew-team-manager-team-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]"></crew-team-manager-team>
+                <crew-team-manager-roster id="roster" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-roster-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-roster>
+                <crew-team-manager-fleet id="fleet" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-fleet-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-fleet>
+                <crew-team-manager-schedule id="schedule" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-schedule-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-schedule>
+                <crew-team-manager-erg id="erg" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-erg-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-erg>
+                <crew-team-manager-finance id="finance" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-finance-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-finance>
+                <crew-team-manager-oar id="oar" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-oar-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-oar>
+                <crew-team-manager-race id="race" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-race-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-race>
+                <crew-team-manager-rigger id="rigger" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-rigger>
+                <crew-team-manager-picture id="picture" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-picture-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-picture>
+                <crew-team-manager-team id="team" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-team-list-action-menu="_toggleDrawer"
+                    wide-layout$="[[_wideLayout]]"></crew-team-manager-team>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
-                <ul style="list-style-type:none">
-                    <li>
-                        <button page="erg" on-click="_handleMenuClick">ergs</button>
-                        <iron-icon page="erg" icon="places:fitness-center" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="finance" on-click="_handleMenuClick">finance</button>
-                        <iron-icon page="finance" icon="editor:attach-money" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="fleet" on-click="_handleMenuClick">fleet</button>
-                        <iron-icon page="fleet" icon="maps:directions-boat" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="oar" on-click="_handleMenuClick">oars</button>
+                <paper-listbox>
+                    <paper-item page="erg" on-click="_handleMenuClick">
+                        <iron-icon page="erg" icon="places:fitness-center"></iron-icon>
+                        <button page="erg">ergs</button>
+                    </paper-item>
+                    <paper-item page="finance" on-click="_handleMenuClick">
+                        <iron-icon page="finance" icon="editor:attach-money"></iron-icon>
+                        <button page="finance">finance</button>
+                    </paper-item>
+                    <paper-item page="fleet" on-click="_handleMenuClick">
+                        <iron-icon page="fleet" icon="maps:directions-boat"></iron-icon>
+                        <button page="fleet">fleet</button>
+                    </paper-item>
+                    <paper-item page="oar" on-click="_handleMenuClick">
                         <iron-icon page="oar" icon="av:shuffle" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="picture" on-click="_handleMenuClick">pictures</button>
-                        <iron-icon page="picture" icon="image:camera-roll" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="race" on-click="_handleMenuClick">races</button>
-                        <iron-icon page="race" icon="gavel" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="rigger" on-click="_handleMenuClick">riggers</button>
-                        <iron-icon page="rigger" icon="build" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="roster" on-click="_handleMenuClick">roster</button>
-                        <iron-icon page="roster" icon="rowing" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="schedule" on-click="_handleMenuClick">schedule</button>
-                        <iron-icon page="schedule" icon="assignment" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                    <li>
-                        <button page="team" on-click="_handleMenuClick">team</button>
-                        <iron-icon page="team" icon="home" on-click="_handleMenuClick"></iron-icon>
-                    </li>
-                </ul>
+                        <button page="oar">oars</button>
+                    </paper-item>
+                    <paper-item page="picture" on-click="_handleMenuClick">
+                        <iron-icon page="picture" icon="image:camera-roll"></iron-icon>
+                        <button page="picture">pictures</button>
+                    </paper-item>
+                    <paper-item page="race" on-click="_handleMenuClick">
+                        <iron-icon page="race" icon="gavel"></iron-icon>
+                        <button page="race">races</button>
+                    </paper-item>
+                    <paper-item page="rigger" on-click="_handleMenuClick">
+                        <iron-icon page="rigger" icon="build"></iron-icon>
+                        <button page="rigger">riggers</button>
+                    </paper-item>
+                    <paper-item page="roster" on-click="_handleMenuClick">
+                        <iron-icon page="roster" icon="rowing"></iron-icon>
+                        <button page="roster">roster</button>
+                    </paper-item>
+                    <paper-item page="schedule" on-click="_handleMenuClick">
+                        <iron-icon page="schedule" icon="assignment"></iron-icon>
+                        <button page="schedule">schedule</button>
+                    </paper-item>
+                    <paper-item page="team" on-click="_handleMenuClick">
+                        <iron-icon page="team" icon="home"></iron-icon>
+                        <button page="team">team</button>
+                    </paper-item>
+                </paper-listbox>
             </app-drawer>
             <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>
     </template>
@@ -148,7 +159,9 @@
                 }
             }
 
-
+            _handleActionLogout() {
+                this._page = 'team';
+            }
 
             connectedCallback() {
                 super.connectedCallback();

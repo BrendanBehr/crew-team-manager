@@ -171,7 +171,8 @@
                 }
             }
 
-            _handleActionCancel(e) {
+            _handleActionCancel() {
+                console.log('here');
                 this._resetCreate();
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterCreate.is + '-action-cancel', {
                     bubbles: true,
@@ -180,7 +181,7 @@
             }
 
             _handleActionCreated(e) {
-                // this._resetCreate();
+                this._resetCreate();
                 this.$.firebase.saveValue('athletes')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);

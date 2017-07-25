@@ -81,12 +81,6 @@
                 return 'crew-team-manager-login'
             }
 
-            static get observers() {
-                return [
-                    '_actionLogout(logout)'
-                ]
-            }
-
             static get properties() {
                 return {
                     _username: {
@@ -101,29 +95,14 @@
 
                     token: {
                         type: Object
-                    },
-
-                    logout: {
-                        type: Boolean
                     }
-                }
-            }
-
-            _actionLogout(logout) {
-                if (logout) {
-                    this.$['auth'].signOut()
-                        .then(() => {
-                            console.log('logged out');
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
                 }
             }
 
             _handleTokenResponse(evt) {
                 this.$['auth'].signInWithCustomToken(evt.detail.xhr.getResponseHeader('x-firebase-custom-token'))
-                    .then(() => {
+                    .then((e) => {
+                        console.log(e);
                         this.logout = false;
                         this.dispatchEvent(new CustomEvent(crewTeamManagerLogin.is +
                             '-action-login', {
@@ -142,7 +121,6 @@
             }
 
             _handleLogin() {
-
                 this.$['token-request'].headers['Authorization'] = 'Basic ' + btoa(this._username + ":" +
                     this._password);
 

@@ -15,11 +15,11 @@
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="crew-team-manager-team-list-loading.html">
-<link rel="import" href="crew-team-manager-team-list-results.html">
-<link rel="import" href="crew-team-manager-team-list-message.html">
 
 
 <dom-module id="crew-team-manager-team-list">
+    <link rel="lazy-import" group="results" href="crew-team-manager-team-list-results.html">
+    <link rel="lazy-import" group="message" href="crew-team-manager-team-list-message.html">
     <template>
         <style>
              :host {
@@ -60,7 +60,7 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="/teams" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="/teams/-Kpu8p-MxYi3EOlOmK6X" data="{{_data}}">
         </firebase-query>
 
         <app-header-layout id="layout" has-scrolling-region fullbleed>
@@ -86,7 +86,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerTeamList extends Polymer.Element {
+        class crewTeamManagerTeamList extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-team-list'
@@ -108,7 +108,9 @@
 
                     _data: {
                         type: Object
-                    }
+                    },
+
+                    behaviors: [Polymer.LazyImportsBehavior]
 
                 }
             }
@@ -137,8 +139,15 @@
                         page = 'results';
                     }
                 }
+                console.log('loading team data');
 
-                this._page = page;
+                console.log(page);
+
+                this.importLazyGroup(page).then(function (results) {
+                    this._page = page;
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
+
 
             }
 

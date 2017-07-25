@@ -116,8 +116,8 @@
                 }
             }
 
-            _handleActionBack() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerPictureCreate.is + '-action-back', {
+            _handleActionCancel() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerPictureCreate.is + '-action-cancel', {
                     bubbles: true,
                     composed: true
                 }));
@@ -128,7 +128,7 @@
                 this.$.firebase.saveValue('pictures')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
-                        this._resetCreate();
+                        _resetCreate();
                         let _key = '';
                         for (let x = 10; x < this.$.firebase.path.length; x++) {
                             _key = _key + this.$.firebase.path[x];

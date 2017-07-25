@@ -144,7 +144,6 @@
             }
 
             _updatePage(dataSplices) {
-                console.log(this._data);
 
                 let page = 'message';
 
@@ -153,6 +152,8 @@
                         page = 'results';
                     }
                 }
+
+                console.log('loading roster data');
                 this._page = page;
 
             }
