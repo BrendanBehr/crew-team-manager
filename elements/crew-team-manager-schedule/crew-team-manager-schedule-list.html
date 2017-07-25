@@ -68,7 +68,7 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="/regattas" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="/teamRegattas/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
         <app-header-layout id="layout" has-scrolling-region fullbleed>
@@ -118,7 +118,9 @@
                     _data: {
                         type: Object,
                         avatar: ''
-                    }
+                    },
+
+                    teamId: String
 
                 }
             }

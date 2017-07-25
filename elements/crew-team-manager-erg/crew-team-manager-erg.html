@@ -49,7 +49,7 @@
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
             <crew-team-manager-erg-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-erg-list-results-action-detail="_handleActionDetail"
-                on-crew-team-manager-erg-list-action-create="_handleActionCreate">
+                on-crew-team-manager-erg-list-action-create="_handleActionCreate" team-id="[[teamId]]">
             </crew-team-manager-erg-list>
 
             <crew-team-manager-erg-detail id="detail" erg="[[_erg]]" on-crew-team-manager-erg-detail-action-back="_handleActionBack"
@@ -98,7 +98,9 @@
 
                     _toast: {
                         type: String
-                    }
+                    },
+
+                    teamId: String
                 }
             }
 

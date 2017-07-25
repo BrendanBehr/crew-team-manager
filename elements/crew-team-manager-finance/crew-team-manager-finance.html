@@ -49,7 +49,7 @@
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
             <crew-team-manager-finance-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-finance-list-results-action-detail="_handleActionDetail"
-                on-crew-team-manager-finance-list-action-create="_handleActionCreate">
+                on-crew-team-manager-finance-list-action-create="_handleActionCreate" team-id="[[teamId]]">
             </crew-team-manager-finance-list>
 
             <crew-team-manager-finance-detail id="detail" finance="[[_finance]]" on-crew-team-manager-finance-detail-action-back="_handleActionBack"
@@ -98,7 +98,9 @@
 
                     _toast: {
                         type: String
-                    }
+                    },
+
+                    teamId: String
                 }
             }
 

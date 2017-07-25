@@ -70,25 +70,25 @@
         <app-drawer-layout id="layout">
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
                 <crew-team-manager-roster id="roster" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-roster-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-roster>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-roster>
                 <crew-team-manager-fleet id="fleet" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-fleet-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-fleet>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-fleet>
                 <crew-team-manager-schedule id="schedule" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-schedule-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-schedule>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-schedule>
                 <crew-team-manager-erg id="erg" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-erg-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-erg>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-erg>
                 <crew-team-manager-finance id="finance" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-finance-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-finance>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-finance>
                 <crew-team-manager-oar id="oar" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-oar-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-oar>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-oar>
                 <crew-team-manager-race id="race" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-race-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-race>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-race>
                 <crew-team-manager-rigger id="rigger" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-rigger>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-rigger>
                 <crew-team-manager-picture id="picture" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-picture-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-picture>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-picture>
                 <crew-team-manager-team id="team" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-team-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]"></crew-team-manager-team>
+                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-team>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
@@ -155,7 +155,9 @@
                         type: Boolean,
                         value: false,
                     },
-                    behaviors: [Polymer.LazyImportsBehavior]
+
+                    teamId: String
+
                 }
             }
 

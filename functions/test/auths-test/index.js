@@ -244,7 +244,7 @@ describe('Auths', function () {
 
     });
 
-    describe('read request', function () {
+    describe.only('read request', function () {
 
         before(function () {
 
@@ -1097,6 +1097,25 @@ describe('Auths', function () {
             beforeEach(function () {
 
                 path = 'users/' + team1User1.getPathKey();
+
+            });
+
+            it('should read', function (done) {
+
+                assert.canRead(firebaseAdmin.app(appName), path, done);
+
+            });
+
+        });
+
+        describe('as user with active auth (team1User1Auth1) accessing own teams users (team1User2)', function () {
+
+            const appName = 'team1User1Auth1';
+            let path;
+
+            beforeEach(function () {
+
+                path = 'users/' + team1User2.getPathKey();
 
             });
 
