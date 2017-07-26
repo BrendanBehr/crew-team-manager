@@ -17,12 +17,7 @@
 
             #list {
                 background-color: lightslategray;
-                /*@apply(--layout-vertical);*/
                 @apply(--layout-flex);
-                /*top: 0px;
-                bottom: 0px;
-                left: 0px;
-                right: 0px;*/
             }
 
             .picture {
@@ -81,10 +76,6 @@
                 return {
                     data: {
                         type: Object,
-                    },
-
-                    _name: {
-                        type: String
                     }
                 }
             }
@@ -100,7 +91,6 @@
             }
         }
 
-        // Register custom element definition using standard platform API
         customElements.define(crewTeamManagerPictureListResults.is, crewTeamManagerPictureListResults);
     </script>
 </dom-module>

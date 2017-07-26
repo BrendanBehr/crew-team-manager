@@ -172,7 +172,6 @@
             }
 
             _handleActionCancel() {
-                console.log('here');
                 this._resetCreate();
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterCreate.is + '-action-cancel', {
                     bubbles: true,

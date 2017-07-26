@@ -11,13 +11,13 @@
 
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="crew-team-manager-fleet-detail-loading.html">
 <link rel="import" href="crew-team-manager-fleet-detail-results.html">
 <link rel="import" href="crew-team-manager-fleet-detail-message.html">
-
 
 <dom-module id="crew-team-manager-fleet-detail">
     <template>
@@ -26,6 +26,7 @@
                 background-color: lightslategray;
                 @apply(--layout-horizontal);
                 @apply(--paper-font-common-base);
+                @apply(--position-relative);
             }
 
              :host([menu-hidden]) #menu {
@@ -37,25 +38,55 @@
                 @apply(--layout-flex);
             }
 
-            #loading {
-                @apply(--layout-flex);
-            }
+
 
             #layout {
                 @apply(--layout-flex);
             }
 
-            #results {
+            #results,
+            #message,
+            #loading {
                 @apply(--layout-flex);
             }
 
-            #message {
-                @apply(--layout-flex);
-            }
 
             #toolbar {
-                background-color: #2e7d32;
+                background-color: #164410;
                 color: #fff;
+            }
+
+            #fabs-layout {
+                position: absolute;
+                bottom: 16px;
+                right: 16px;
+            }
+
+            .fab {
+                display: none;
+            }
+
+            #fabs-layout #add {
+                display: inherit;
+                background-color: #164410;
+            }
+
+            #fabs-layout:hover .fab {
+                display: inherit;
+            }
+
+            #fabs-layout:hover #add {
+                display: none;
+            }
+
+            #athlete {
+                background-color: #ff9800;
+                margin-bottom: 16px;
+            }
+
+            #rigger {
+                background-color: #311b92;
+                margin-bottom: 16px;
             }
         </style>
 
@@ -80,9 +111,17 @@
                 <crew-team-manager-fleet-detail-message id="message"></crew-team-manager-fleet-detail-message>
             </iron-pages>
 
-
         </app-header-layout>
 
+
+        <div id="fabs-layout">
+            <div id="fabs">
+                <paper-fab id="athlete" class="fab" icon="rowing" on-click="_handleActionAddAthlete"></paper-fab>
+                <paper-fab id="rigger" class="fab" icon="build" on-click="_handleActionAddRigger"></paper-fab>
+                <paper-fab id="oar" class="fab" icon="av:shuffle" on-click="_handleActionAddOar"></paper-fab>
+                <paper-fab id="add" class="fab" icon="icons:add"></paper-fab>
+            </div>
+        </div>
 
     </template>
 
@@ -122,6 +161,8 @@
                         value: ''
                     },
 
+                    teamId: String
+
                 }
             }
 
@@ -135,7 +176,12 @@
                 this._page = page;
             }
 
-
+            _handleActionAdd() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-add', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
 
             _handleActionBack(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-back', {
@@ -158,6 +204,30 @@
             _handleActionDelete(e) {
                 this.$.firebase.destroy();
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-delete', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionAddAthlete() {
+                console.log('athlete fire')
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-add-athlete', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionAddOar() {
+                console.log('oar fire')
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-add-oar', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionAddRigger() {
+                console.log('rigger fire')
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-add-rigger', {
                     bubbles: true,
                     composed: true
                 }));

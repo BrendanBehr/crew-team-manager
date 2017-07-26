@@ -102,7 +102,6 @@
             _handleTokenResponse(evt) {
                 this.$['auth'].signInWithCustomToken(evt.detail.xhr.getResponseHeader('x-firebase-custom-token'))
                     .then((e) => {
-                        console.log(e);
                         this.logout = false;
                         this.dispatchEvent(new CustomEvent(crewTeamManagerLogin.is +
                             '-action-login', {

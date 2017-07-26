@@ -15,12 +15,12 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-roster-list-loading.html">
-<link rel="import" href="crew-team-manager-roster-list-results.html">
-<link rel="import" href="crew-team-manager-roster-list-message.html">
+<link rel="import" href="../crew-team-manager-oar/crew-team-manager-oar-list-loading.html">
+<link rel="import" href="../crew-team-manager-oar/crew-team-manager-oar-list-results.html">
+<link rel="import" href="../crew-team-manager-oar/crew-team-manager-oar-list-message.html">
 
 
-<dom-module id="crew-team-manager-roster-list">
+<dom-module id="crew-team-manager-oar-list">
     <template>
         <style>
              :host {
@@ -34,6 +34,7 @@
             }
 
             #layout {
+                /*@apply(--layout-flex);*/
                 @apply(--layout-vertical);
             }
 
@@ -67,37 +68,33 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="teamAthletes/{{teamId}}" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="/teamOars/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
-        <app-header-layout id="layout" has-scrolling-region fullbleed>
+        <app-header-layout id="layout">
 
-            <app-header slot="header" reveals>
+            <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
-                    <div main-title id="title">Roster</div>
-                    <paper-icon-button id="logout" icon="exit-to-app" on-click="_handleActionLogout"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
+                    <div main-title id="title">Select Athletes To Add</div>
+                    <paper-icon-button id="add" icon="check" on-click="_handleActionAdd"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-roster-list-loading id="loading"></crew-team-manager-roster-list-loading>
-                <crew-team-manager-roster-list-results id="results" data="[[_data]]"></crew-team-manager-roster-list-results>
-                <crew-team-manager-roster-list-message id="message"></crew-team-manager-roster-list-message>
+                <crew-team-manager-oar-list-loading id="loading"></crew-team-manager-oar-list-loading>
+                <crew-team-manager-oar-list-results id="results" data="[[_data]]"></crew-team-manager-oar-list-results>
+                <crew-team-manager-oar-list-message id="message"></crew-team-manager-oar-list-message>
             </iron-pages>
-
-            <paper-fab id="fab" icon="add" on-click="_handleActionCreate"></paper-fab>
-
         </app-header-layout>
-
 
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRosterList extends Polymer.Element {
+        class crewTeamManagerOarList extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-roster-list'
+                return 'crew-team-manager-oar-list'
             }
 
             static get observers() {
@@ -123,25 +120,8 @@
                 }
             }
 
-            _handleActionMenu() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterList.is + '-action-menu', {
-                    bubbles: true,
-                    composed: true
-                }));
-            }
-
-            _handleActionLogout() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerStage.is + '-action-logout', {
-                    bubbles: true,
-                    composed: true
-                }));
-            }
-
-            _handleActionCreate() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterList.is + '-action-create', {
-                    bubbles: true,
-                    composed: true
-                }));
+            _handleActionAdd() {
+                console.log('add oars to the boat')
             }
 
             _updatePage(dataSplices) {
@@ -161,6 +141,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerRosterList.is, crewTeamManagerRosterList);
+        customElements.define(crewTeamManagerOarList.is, crewTeamManagerOarList);
     </script>
 </dom-module>

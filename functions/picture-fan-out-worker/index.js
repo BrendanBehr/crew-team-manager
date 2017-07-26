@@ -56,6 +56,7 @@ module.exports = firebaseFunctions.database.ref('/pictures/{picture}')
 
                 const value = {
                     caption: pictureCurrent.caption,
+                    url: pictureCurrent.url
                 };
 
                 update['teamPictures/' + pictureCurrent.team + '/' + triggerEvent.params.picture] = value;

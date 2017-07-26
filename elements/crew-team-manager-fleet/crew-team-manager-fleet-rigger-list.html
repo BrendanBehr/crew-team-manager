@@ -11,15 +11,16 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-team-list-loading.html">
+<link rel="import" href="../crew-team-manager-rigger/crew-team-manager-rigger-list-loading.html">
+<link rel="import" href="../crew-team-manager-rigger/crew-team-manager-rigger-list-results.html">
+<link rel="import" href="../crew-team-manager-rigger/crew-team-manager-rigger-list-message.html">
 
 
-<dom-module id="crew-team-manager-team-list">
-    <link rel="lazy-import" group="results" href="crew-team-manager-team-list-results.html">
-    <link rel="lazy-import" group="message" href="crew-team-manager-team-list-message.html">
+<dom-module id="crew-team-manager-rigger-list">
     <template>
         <style>
              :host {
@@ -58,27 +59,32 @@
             #message {
                 @apply(--layout-fit);
             }
+
+            #fab {
+                position: absolute;
+                background-color: #164410;
+                right: 16px;
+                bottom: 16px;
+            }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="/teams/{{teamId}}" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="/teamRiggers/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
-        <app-header-layout id="layout" has-scrolling-region fullbleed>
+        <app-header-layout id="layout">
 
-            <app-header slot="header" reveals>
+            <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
-                    <div main-title id="title">Team</div>
-                    <paper-icon-button id="logout" icon="exit-to-app" on-click="_handleActionLogout"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
+                    <div main-title id="title">Select Athletes To Add</div>
+                    <paper-icon-button id="add" icon="check" on-click="_handleActionAdd"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-team-list-loading id="loading"></crew-team-manager-team-list-loading>
-                <crew-team-manager-team-list-results id="results" data="[[_data]]"></crew-team-manager-team-list-results>
-                <crew-team-manager-team-list-message id="message"></crew-team-manager-team-list-message>
+                <crew-team-manager-rigger-list-loading id="loading"></crew-team-manager-rigger-list-loading>
+                <crew-team-manager-rigger-list-results id="results" data="[[_data]]" boat="{{_boat}}"></crew-team-manager-rigger-list-results>
+                <crew-team-manager-rigger-list-message id="message"></crew-team-manager-rigger-list-message>
             </iron-pages>
-
-
         </app-header-layout>
 
 
@@ -86,10 +92,10 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerTeamList extends Polymer.LazyImportsMixin(Polymer.Element) {
+        class crewTeamManagerRiggerList extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-team-list'
+                return 'crew-team-manager-rigger-list'
             }
 
             static get observers() {
@@ -115,19 +121,8 @@
                 }
             }
 
-            _handleActionMenu() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerTeamList.is + '-action-menu', {
-                    bubbles: true,
-                    composed: true
-                }));
-            }
-
-            _handleActionLogout() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerStage.is + '-action-logout', {
-                    bubbles: true,
-                    composed: true
-                }));
-
+            _handleActionAdd() {
+                console.log('add riggers to the boat')
             }
 
             _updatePage(dataSplices) {
@@ -138,19 +133,15 @@
                     if (dataSplices.indexSplices[0].object.length) {
                         page = 'results';
                     }
+
                 }
 
-                this.importLazyGroup(page).then(function (results) {
-                    this._page = page;
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
-
-
+                this._page = page;
             }
 
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerTeamList.is, crewTeamManagerTeamList);
+        customElements.define(crewTeamManagerRiggerList.is, crewTeamManagerRiggerList);
     </script>
 </dom-module>

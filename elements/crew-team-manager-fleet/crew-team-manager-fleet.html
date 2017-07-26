@@ -14,7 +14,9 @@
 <link rel="import" href="crew-team-manager-fleet-detail.html">
 <link rel="import" href="crew-team-manager-fleet-edit.html">
 <link rel="import" href="crew-team-manager-fleet-create.html">
-
+<link rel="import" href="crew-team-manager-fleet-roster-list.html">
+<link rel="import" href="crew-team-manager-fleet-oar-list.html">
+<link rel="import" href="crew-team-manager-fleet-rigger-list.html">
 
 <dom-module id="crew-team-manager-fleet">
     <template>
@@ -29,15 +31,12 @@
                 position: relative;
             }
 
-            #list {
-                @apply(--layout-fit);
-            }
-
-            #detail {
-                @apply(--layout-fit);
-            }
-
-            #edit {
+            #list,
+            #detail,
+            #edit,
+            #athlete,
+            #oar,
+            #rigger {
                 @apply(--layout-fit);
             }
 
@@ -53,7 +52,9 @@
             </crew-team-manager-fleet-list>
 
             <crew-team-manager-fleet-detail id="detail" boat="[[_boat]]" on-crew-team-manager-fleet-detail-action-back="_handleActionBack"
-                on-crew-team-manager-fleet-detail-action-edit="_handleActionEdit" on-crew-team-manager-fleet-detail-action-delete="_handleActionDelete">
+                on-crew-team-manager-fleet-detail-action-edit="_handleActionEdit" on-crew-team-manager-fleet-detail-action-delete="_handleActionDelete"
+                on-crew-team-manager-fleet-detail-action-add-rigger="_handleActionAddRigger" on-crew-team-manager-fleet-detail-action-add-athlete="_handleActionAddAthlete"
+                on-crew-team-manager-fleet-detail-action-add-oar="_handleActionAddOar" team-id="[[teamId]]">
             </crew-team-manager-fleet-detail>
 
             <crew-team-manager-fleet-edit edit="[[_edit]]" id="edit" boat="[[_boat]]" on-crew-team-manager-fleet-edit-action-back="_handleActionBackOnce"
@@ -62,6 +63,10 @@
 
             <crew-team-manager-fleet-create id="create" on-crew-team-manager-fleet-create-action-cancel="_handleActionCancel" on-crew-team-manager-fleet-create-action-created="_handleActionCreated">
             </crew-team-manager-fleet-create>
+
+            <crew-team-manager-fleet-roster-list id="athlete" team-id="[[teamId]]"></crew-team-manager-fleet-roster-list>
+            <crew-team-manager-fleet-oar-list id="oar" team-id="[[teamId]]"></crew-team-manager-fleet-oar-list>
+            <crew-team-manager-fleet-rigger-list id="rigger" team-id="[[teamId]]"></crew-team-manager-fleet-rigger-list>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -80,7 +85,7 @@
                 return {
                     _page: {
                         type: String,
-                        value: 'list'
+                        value: 'detail'
                     },
 
                     _edit: {
@@ -93,7 +98,8 @@
                     },
 
                     _boat: {
-                        type: String
+                        type: String,
+                        value: '-KpzmqYj_21bDN37kh5Q'
                     },
 
                     _toast: {
@@ -155,6 +161,18 @@
                 this._toast = 'Boat Created';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
+            }
+
+            _handleActionAddAthlete() {
+                this._page = 'athlete'
+            }
+
+            _handleActionAddOar() {
+                this._page = 'oar'
+            }
+
+            _handleActionAddRigger() {
+                this._page = 'rigger'
             }
         }
 

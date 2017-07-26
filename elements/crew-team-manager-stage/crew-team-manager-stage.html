@@ -21,6 +21,8 @@
 
 <link rel="import" href="../crew-team-manager-team/crew-team-manager-team.html">
 
+<link rel="import" href="../crew-team-manager-fleet/crew-team-manager-fleet.html">
+
 
 <dom-module id="crew-team-manager-stage">
     <link rel="lazy-import" group="roster" href="../crew-team-manager-roster/crew-team-manager-roster.html">
@@ -87,7 +89,7 @@
                     wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-rigger>
                 <crew-team-manager-picture id="picture" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-picture-list-action-menu="_toggleDrawer"
                     wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-picture>
-                <crew-team-manager-team id="team" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-team-list-action-menu="_toggleDrawer"
+                <crew-team-manager-team id="team" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-team-detail-action-menu="_toggleDrawer"
                     wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-team>
             </iron-pages>
 
@@ -149,7 +151,7 @@
                 return {
                     _page: {
                         type: String,
-                        value: 'team'
+                        value: 'fleet'
                     },
                     _wideLayout: {
                         type: Boolean,
