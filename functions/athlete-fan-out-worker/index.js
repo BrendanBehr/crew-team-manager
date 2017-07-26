@@ -46,6 +46,8 @@ module.exports = firebaseFunctions.database.ref('/athletes/{athlete}')
             const athletePrevious = triggerEvent.data.previous.val();
             const athleteCurrent = triggerEvent.data.val();
 
+            console.log(athleteCurrent);
+
             const update = {};
 
             if (athletePrevious) {
@@ -58,7 +60,10 @@ module.exports = firebaseFunctions.database.ref('/athletes/{athlete}')
 
                 const value = {
                     firstName: athleteCurrent.firstName,
-                    lastName: athleteCurrent.lastName
+                    lastName: athleteCurrent.lastName,
+                    city: athleteCurrent.city,
+                    state: athleteCurrent.state,
+                    streetAddress: athleteCurrent.streetAddress,
                 };
 
                 update['teamAthletes/' + athleteCurrent.team + '/' + triggerEvent.params.athlete] = value;

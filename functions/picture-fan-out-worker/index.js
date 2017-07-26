@@ -55,7 +55,7 @@ module.exports = firebaseFunctions.database.ref('/pictures/{picture}')
             if (pictureCurrent) {
 
                 const value = {
-                    Caption: pictureCurrent.caption
+                    caption: pictureCurrent.caption,
                 };
 
                 update['teamPictures/' + pictureCurrent.team + '/' + triggerEvent.params.picture] = value;

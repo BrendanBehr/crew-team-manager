@@ -55,7 +55,10 @@ module.exports = firebaseFunctions.database.ref('/regattas/{regatta}')
             if (regattaCurrent) {
 
                 const value = {
-                    Name: regattaCurrent.name
+                    name: regattaCurrent.name,
+                    city: regattaCurrent.city,
+                    streetAddress: regattaCurrent.streetAddress,
+                    state: regattaCurrent.state
                 };
 
                 update['teamRegattas/' + regattaCurrent.team + '/' + triggerEvent.params.regatta] = value;

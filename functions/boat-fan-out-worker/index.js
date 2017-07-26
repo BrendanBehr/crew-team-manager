@@ -55,7 +55,10 @@ module.exports = firebaseFunctions.database.ref('/boats/{boat}')
             if (boatCurrent) {
 
                 const value = {
-                    Name: boatCurrent.name
+                    name: boatCurrent.name,
+                    size: boatCurrent.size,
+                    type: boatCurrent.type,
+                    rigging: boatCurrent.rigging,
                 };
 
                 update['teamBoats/' + boatCurrent.team + '/' + triggerEvent.params.boat] = value;

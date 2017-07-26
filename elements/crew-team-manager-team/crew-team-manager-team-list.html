@@ -60,7 +60,7 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="/teams/-Kpu8p-MxYi3EOlOmK6X" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="/teams/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
         <app-header-layout id="layout" has-scrolling-region fullbleed>
@@ -110,7 +110,7 @@
                         type: Object
                     },
 
-                    behaviors: [Polymer.LazyImportsBehavior]
+                    teamId: String
 
                 }
             }
@@ -139,9 +139,6 @@
                         page = 'results';
                     }
                 }
-                console.log('loading team data');
-
-                console.log(page);
 
                 this.importLazyGroup(page).then(function (results) {
                     this._page = page;

@@ -55,7 +55,8 @@ module.exports = firebaseFunctions.database.ref('/races/{race}')
             if (raceCurrent) {
 
                 const value = {
-                    eventName: raceCurrent.eventName
+                    eventName: raceCurrent.eventName,
+                    raceTime: raceCurrent.raceTime,
                 };
 
                 update['teamRaces/' + raceCurrent.team + '/' + triggerEvent.params.race] = value;

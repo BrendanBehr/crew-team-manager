@@ -157,8 +157,9 @@
                     }
                     //If it is a head race then it will find the value of the specific name
                     let index = dataSplices.indexSplices[0].object.length - 1;
-                    if (dataSplices.indexSplices[0].object[index].head) {
-                        dataSplices.indexSplices[0].object[index].avatar = dataSplices.indexSplices[0].object[
+                    if (dataSplices.indexSplices[0].object[index].name) {
+                        dataSplices.indexSplices[
+                                0].object[index].avatar = dataSplices.indexSplices[0].object[
                                 index]
                             .name[12];
                     }
@@ -169,7 +170,6 @@
                     }
 
                 }
-                console.log('loading regatta data');
 
                 this._page = page;
 

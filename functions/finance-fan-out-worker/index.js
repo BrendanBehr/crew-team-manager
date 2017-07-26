@@ -55,7 +55,8 @@ module.exports = firebaseFunctions.database.ref('/finances/{finance}')
             if (financeCurrent) {
 
                 const value = {
-                    Reason: financeCurrent.reason
+                    reason: financeCurrent.reason,
+                    gross: financeCurrent.gross
                 };
 
                 update['teamFinances/' + financeCurrent.team + '/' + triggerEvent.params.finance] = value;

@@ -244,7 +244,7 @@ describe('Auths', function () {
 
     });
 
-    describe.only('read request', function () {
+    describe('read request', function () {
 
         before(function () {
 

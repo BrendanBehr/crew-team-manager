@@ -55,7 +55,9 @@ module.exports = firebaseFunctions.database.ref('/oars/{oar}')
             if (oarCurrent) {
 
                 const value = {
-                    Name: oarCurrent.name
+                    name: oarCurrent.name,
+                    color: oarCurrent.color,
+                    shape: oarCurrent.shape,
                 };
 
                 update['teamOars/' + oarCurrent.team + '/' + triggerEvent.params.oar] = value;

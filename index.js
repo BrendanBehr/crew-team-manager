@@ -6,7 +6,7 @@ const Generator = require('./src/generator');
 const generator = new Generator();
 generator.createTeams(2);
 
-//Creates 2 team objects
+//Creates 3 team objects
 const team1 = generator.createTeam();
 const team2 = generator.createTeam();
 const team3 = generator.createTeam();
@@ -15,15 +15,15 @@ const team3 = generator.createTeam();
 const team1Athlete1 = team1.createAthlete();
 const team2Athlete2 = team2.createAthlete();
 const team1Athlete3 = team1.createAthlete();
-const team1Athlete4 = team2.createAthletes(14);
-const team2Athlete5 = team3.createAthletes(25);
-const team1Athlete6 = team1.createAthletes(33);
+team2.createAthletes(14);
+team3.createAthletes(25);
+team1.createAthletes(33);
 
 //Cretes a more stuff
-const team1Boats = team1.createBoats(2);
+team1.createBoats(2);
 team1.createErgs(10);
 team1.createFinances(10);
-const oars1 = team1.createOars(12);
+team1.createOars(12);
 const races1 = team1.createRaces(16);
 team1.createPictures(20);
 
@@ -42,13 +42,13 @@ const team1User3 = team1.createUser({
 
 //Creates email objects for the athlete objects
 
-const email1 = team1User1.createEmail({
+team1User1.createEmail({
     value: team1User1.getValues().email
 });
-const email2 = team2User2.createEmail({
+team2User2.createEmail({
     value: team2User2.getValues().email
 });
-const email3 = team1User3.createEmail({
+team1User3.createEmail({
     value: team1User3.getValues().email
 });
 

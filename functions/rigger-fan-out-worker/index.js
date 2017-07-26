@@ -49,16 +49,18 @@ module.exports = firebaseFunctions.database.ref('/riggers/{rigger}')
             const update = {};
 
             if (riggerPrevious) {
-                update['boatRiggers/' + riggerPrevious.boat + '/' + triggerEvent.params.rigger] = null;
+                update['teamRiggers/' + riggerPrevious.team + '/' + triggerEvent.params.rigger] = null;
             }
 
             if (riggerCurrent) {
 
                 const value = {
-                    Side: riggerCurrent.side
+                    side: riggerCurrent.side,
+                    seat: riggerCurrent.seat,
+                    style: riggerCurrent.style,
                 };
 
-                update['boatRiggers/' + riggerCurrent.boat + '/' + triggerEvent.params.rigger] = value;
+                update['teamRiggers/' + riggerCurrent.team + '/' + triggerEvent.params.rigger] = value;
 
             }
 

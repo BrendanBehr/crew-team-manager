@@ -109,10 +109,13 @@
             }
 
             _dataChanged(dataSplices) {
-                if (dataSplices.indexSplices[0].object[8]) {
-                    let data = dataSplices.indexSplices[0].object[8];
-                    this._teamId = data.$val;
 
+                if (dataSplices) {
+                    if (dataSplices.indexSplices[0].object[8]) {
+                        let data = dataSplices.indexSplices[0].object[8];
+                        this._teamId = data.$val;
+
+                    }
                 }
             }
 

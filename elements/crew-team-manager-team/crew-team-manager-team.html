@@ -47,7 +47,7 @@
         </style>
 
         <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-team-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-team-list-results-action-detail="_handleActionDetail">
+            <crew-team-manager-team-list id="list" menu-hidden$="[[wideLayout]]" teamId="[[teamId]]" on-crew-team-manager-team-list-results-action-detail="_handleActionDetail">
             </crew-team-manager-team-list>
 
             <crew-team-manager-team-detail id="detail" team="[[_team]]" on-crew-team-manager-team-detail-action-back="_handleActionBack"
@@ -94,7 +94,8 @@
                     _toast: {
                         type: String
                     },
-                    behaviors: [Polymer.LazyImportsBehavior]
+
+                    teamId: String
                 }
             }
 

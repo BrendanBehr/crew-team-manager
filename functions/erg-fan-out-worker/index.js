@@ -55,7 +55,8 @@ module.exports = firebaseFunctions.database.ref('/ergs/{erg}')
             if (ergCurrent) {
 
                 const value = {
-                    Number: ergCurrent.number
+                    number: ergCurrent.number,
+                    location: ergCurrent.location
                 };
 
                 update['teamErgs/' + ergCurrent.team + '/' + triggerEvent.params.erg] = value;
