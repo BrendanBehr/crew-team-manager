@@ -11,12 +11,12 @@
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="crew-team-manager-erg-list.html">
-<link rel="import" href="crew-team-manager-erg-detail.html">
-<link rel="import" href="crew-team-manager-erg-edit.html">
-<link rel="import" href="crew-team-manager-erg-create.html">
 
 
 <dom-module id="crew-team-manager-erg">
+    <link rel="lazy-import" group="detail" href="crew-team-manager-erg-detail.html">
+    <link rel="lazy-import" group="edit" href="crew-team-manager-erg-edit.html">
+    <link rel="lazy-import" group="create" href="crew-team-manager-erg-create.html">
     <template>
         <style>
              :host {
@@ -70,7 +70,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerErg extends Polymer.Element {
+        class crewTeamManagerErg extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-erg'
@@ -105,12 +105,20 @@
             }
 
             _handleActionDetail(e) {
-                this._erg = e.detail.erg;
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._erg = e.detail.erg;
+                    this._page = 'detail';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionCreate() {
-                this._page = 'create';
+                this.importLazyGroup('create').then(function (results) {
+                    this._page = 'create';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionBack(e) {
@@ -118,36 +126,51 @@
             }
 
             _handleActionBackOnce(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionEdit(e) {
-
-                this._edit = e.detail.erg;
-                this._page = 'edit';
+                this.importLazyGroup('edit').then(function (results) {
+                    this._erg = e.detail.erg;
+                    this._page = 'edit';
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
 
             }
 
             _handleActionSaved(e) {
-                this._page = 'detail';
-                this._toast = 'Erg Saved';
-                this.$.toast.fitInto = this.$.pages;
-                this.$.toast.open();
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this._toast = 'Erg Saved';
+                    this.$.toast.fitInto = this.$.pages;
+                    this.$.toast.open();
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionDelete(e) {
                 this._page = 'list';
                 this._toast = 'Erg Deleted';
                 this.$.toast.fitInto = this.$.pages;
-                this.$.toast.open();
+                this._toggleDrawer();
             }
 
             _handleActionCreated(e) {
-                this._page = 'detail';
-                this._toast = 'Erg Created';
-                this._erg = e.detail.erg;
-                this.$.toast.fitInto = this.$.pages;
-                this.$.toast.open();
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this._toast = 'Erg Created';
+                    this._erg = e.detail.erg;
+                    this.$.toast.fitInto = this.$.pages;
+                    this.$.toast.open();
+                    this._toggleDrawer();
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionCancel(e) {
@@ -155,6 +178,7 @@
                 this._toast = 'Cancelled Erg Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
+                this._toggleDrawer();
             }
         }
 
