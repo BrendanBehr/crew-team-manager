@@ -11,14 +11,14 @@
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="crew-team-manager-fleet-list.html">
-<link rel="import" href="crew-team-manager-fleet-detail.html">
-<link rel="import" href="crew-team-manager-fleet-edit.html">
-<link rel="import" href="crew-team-manager-fleet-create.html">
-<link rel="import" href="crew-team-manager-fleet-roster-list.html">
-<link rel="import" href="crew-team-manager-fleet-oar-list.html">
-<link rel="import" href="crew-team-manager-fleet-rigger-list.html">
 
 <dom-module id="crew-team-manager-fleet">
+    <link rel="lazy-import" group="detail" href="crew-team-manager-fleet-detail.html">
+    <link rel="lazy-import" group="edit" href="crew-team-manager-fleet-edit.html">
+    <link rel="lazy-import" group="create" href="crew-team-manager-fleet-create.html">
+    <link rel="lazy-import" group="athlete" href="crew-team-manager-fleet-roster-list.html">
+    <link rel="lazy-import" group="oar" href="crew-team-manager-fleet-oar-list.html">
+    <link rel="lazy-import" group="rigger" href="crew-team-manager-fleet-rigger-list.html">
     <template>
         <style>
              :host {
@@ -75,7 +75,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerFleet extends Polymer.Element {
+        class crewTeamManagerFleet extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-fleet'
@@ -85,7 +85,7 @@
                 return {
                     _page: {
                         type: String,
-                        value: 'detail'
+                        value: 'list'
                     },
 
                     _edit: {
@@ -98,8 +98,7 @@
                     },
 
                     _boat: {
-                        type: String,
-                        value: '-KpzmqYj_21bDN37kh5Q'
+                        type: String
                     },
 
                     _toast: {
@@ -112,7 +111,9 @@
 
             _handleActionDetail(e) {
                 this._boat = e.detail.boat;
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
             }
 
             _handleActionBack(e) {
@@ -120,7 +121,9 @@
             }
 
             _handleActionCreate() {
-                this._page = 'create';
+                this.importLazyGroup('create').then(function () {
+                    this._page = 'create';
+                }.bind(this));
             }
 
             _handleActionCancel(e) {
@@ -131,18 +134,24 @@
             }
 
             _handleActionBackOnce(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.boat;
-                this._page = 'edit';
+                this.importLazyGroup('edit').then(function () {
+                    this._page = 'edit';
+                }.bind(this));
 
             }
 
             _handleActionSaved(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
                 this._toast = 'Boat Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
@@ -156,7 +165,9 @@
             }
 
             _handleActionCreated(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
                 this._boat = e.detail.boat;
                 this._toast = 'Boat Created';
                 this.$.toast.fitInto = this.$.pages;
@@ -164,15 +175,21 @@
             }
 
             _handleActionAddAthlete() {
-                this._page = 'athlete'
+                this.importLazyGroup('athlete').then(function () {
+                    this._page = 'athlete';
+                }.bind(this));
             }
 
             _handleActionAddOar() {
-                this._page = 'oar'
+                this.importLazyGroup('oar').then(function () {
+                    this._page = 'oar';
+                }.bind(this));
             }
 
             _handleActionAddRigger() {
-                this._page = 'rigger'
+                this.importLazyGroup('rigger').then(function () {
+                    this._page = 'rigger';
+                }.bind(this));
             }
         }
 

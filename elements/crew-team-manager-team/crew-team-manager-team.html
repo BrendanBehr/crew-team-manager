@@ -92,30 +92,20 @@
             }
 
             _handleActionBackOnce(e) {
-                this.importLazyGroup('detail').then(function (results) {
-                    this._page = 'detail';
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this._page = 'detail';
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.team;
-                this.importLazyGroup('edit').then(function (results) {
+                this.importLazyGroup('edit').then(function () {
                     this._page = 'edit';
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
 
             }
 
             _handleActionSaved(e) {
-                this.importLazyGroup('detail').then(function (results) {
-                    this._page = 'detail';
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this._page = 'detail';
                 this._toast = 'Team Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();

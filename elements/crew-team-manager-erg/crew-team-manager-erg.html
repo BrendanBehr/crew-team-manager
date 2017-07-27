@@ -105,19 +105,15 @@
             }
 
             _handleActionDetail(e) {
-                this.importLazyGroup('detail').then(function (results) {
+                this.importLazyGroup('detail').then(function () {
                     this._erg = e.detail.erg;
                     this._page = 'detail';
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
             }
 
             _handleActionCreate() {
-                this.importLazyGroup('create').then(function (results) {
+                this.importLazyGroup('create').then(function () {
                     this._page = 'create';
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
             }
 
@@ -126,31 +122,25 @@
             }
 
             _handleActionBackOnce(e) {
-                this.importLazyGroup('detail').then(function (results) {
+                this.importLazyGroup('detail').then(function () {
                     this._page = 'detail';
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
             }
 
             _handleActionEdit(e) {
-                this.importLazyGroup('edit').then(function (results) {
-                    this._erg = e.detail.erg;
+                this._edit = e.detail.erg;
+                this.importLazyGroup('edit').then(function () {
                     this._page = 'edit';
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
 
             }
 
             _handleActionSaved(e) {
-                this.importLazyGroup('detail').then(function (results) {
+                this.importLazyGroup('detail').then(function () {
                     this._page = 'detail';
                     this._toast = 'Erg Saved';
                     this.$.toast.fitInto = this.$.pages;
                     this.$.toast.open();
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
             }
 
@@ -158,18 +148,15 @@
                 this._page = 'list';
                 this._toast = 'Erg Deleted';
                 this.$.toast.fitInto = this.$.pages;
-                this._toggleDrawer();
             }
 
             _handleActionCreated(e) {
-                this.importLazyGroup('detail').then(function (results) {
+                this.importLazyGroup('detail').then(function () {
                     this._page = 'detail';
                     this._toast = 'Erg Created';
                     this._erg = e.detail.erg;
                     this.$.toast.fitInto = this.$.pages;
                     this.$.toast.open();
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
             }
 
@@ -178,7 +165,6 @@
                 this._toast = 'Cancelled Erg Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
-                this._toggleDrawer();
             }
         }
 

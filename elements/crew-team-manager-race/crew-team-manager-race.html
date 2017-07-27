@@ -11,11 +11,11 @@
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="crew-team-manager-race-list.html">
-<link rel="import" href="crew-team-manager-race-detail.html">
-<link rel="import" href="crew-team-manager-race-edit.html">
-<link rel="import" href="crew-team-manager-race-create.html">
 
 <dom-module id="crew-team-manager-race">
+    <link rel="lazy-import" group="detail" href="crew-team-manager-race-detail.html">
+    <link rel="lazy-import" group="edit" href="crew-team-manager-race-edit.html">
+    <link rel="lazy-import" group="create" href="crew-team-manager-race-create.html">
     <template>
         <style>
              :host {
@@ -69,7 +69,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRace extends Polymer.Element {
+        class crewTeamManagerRace extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-race'
@@ -105,11 +105,15 @@
 
             _handleActionDetail(e) {
                 this._race = e.detail.race;
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
             }
 
             _handleActionCreate(e) {
-                this._page = 'create';
+                this.importLazyGroup('create').then(function () {
+                    this._page = 'create';
+                }.bind(this));
             }
 
             _handleActionBack(e) {
@@ -117,18 +121,24 @@
             }
 
             _handleActionBackOnce(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.race;
-                this._page = 'edit';
+                this.importLazyGroup('edit').then(function () {
+                    this._page = 'edit';
+                }.bind(this));
 
             }
 
             _handleActionSaved(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
                 this._toast = 'Race Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
@@ -142,7 +152,9 @@
             }
 
             _handleActionCreated(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
                 this._toast = 'Race Created';
                 this._race = e.detail.race;
                 this.$.toast.fitInto = this.$.pages;
@@ -156,8 +168,6 @@
                 this.$.toast.open();
             }
         }
-
-
 
         // Register custom element definition using standard platform API
         customElements.define(crewTeamManagerRace.is, crewTeamManagerRace);

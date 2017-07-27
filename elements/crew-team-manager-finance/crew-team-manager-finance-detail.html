@@ -135,10 +135,8 @@
 
                 }
 
-                this.importLazyGroup(page).then(function (results) {
+                this.importLazyGroup(page).then(function () {
                     this._page = page;
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
             }
 

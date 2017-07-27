@@ -11,12 +11,12 @@
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="crew-team-manager-picture-list.html">
-<link rel="import" href="crew-team-manager-picture-detail.html">
-<link rel="import" href="crew-team-manager-picture-edit.html">
-<link rel="import" href="crew-team-manager-picture-create.html">
 
 
 <dom-module id="crew-team-manager-picture">
+    <link rel="lazy-import" group="detail" href="crew-team-manager-picture-detail.html">
+    <link rel="lazy-import" group="edit" href="crew-team-manager-picture-edit.html">
+    <link rel="lazy-import" group="create" href="crew-team-manager-picture-create.html">
     <template>
         <style>
              :host {
@@ -70,7 +70,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerPicture extends Polymer.Element {
+        class crewTeamManagerPicture extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-picture'
@@ -106,11 +106,17 @@
 
             _handleActionDetail(e) {
                 this._picture = e.detail.picture;
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionCreate(e) {
-                this._page = 'create';
+                this.importLazyGroup('create').then(function (results) {
+                    this._page = 'create';
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionBack(e) {
@@ -118,18 +124,27 @@
             }
 
             _handleActionBackOnce(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.picture;
-                this._page = 'edit';
+                this.importLazyGroup('edit').then(function (results) {
+                    this._page = 'edit';
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
 
             }
 
             _handleActionSaved(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
                 this._toast = 'Picture Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
@@ -143,7 +158,10 @@
             }
 
             _handleActionCreated(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function (results) {
+                    this._page = 'detail';
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
                 this._toast = 'Picture Created';
                 this._picture = e.detail.picture;
                 this.$.toast.fitInto = this.$.pages;

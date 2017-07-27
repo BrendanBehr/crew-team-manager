@@ -11,12 +11,12 @@
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="crew-team-manager-rigger-list.html">
-<link rel="import" href="crew-team-manager-rigger-detail.html">
-<link rel="import" href="crew-team-manager-rigger-edit.html">
-<link rel="import" href="crew-team-manager-rigger-create.html">
 
 
 <dom-module id="crew-team-manager-rigger">
+    <link rel="lazy-import" group="detail" href="crew-team-manager-rigger-detail.html">
+    <link rel="lazy-import" group="edit" href="crew-team-manager-rigger-edit.html">
+    <link rel="lazy-import" group="create" href="crew-team-manager-rigger-create.html">
     <template>
         <style>
              :host {
@@ -71,7 +71,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRigger extends Polymer.Element {
+        class crewTeamManagerRigger extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-rigger'
@@ -107,7 +107,9 @@
 
             _handleActionDetail(e) {
                 this._rigger = e.detail.rigger;
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
             }
 
             _handleActionBack(e) {
@@ -115,18 +117,24 @@
             }
 
             _handleActionBackOnce(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.rigger;
-                this._page = 'edit';
+                this.importLazyGroup('edit').then(function () {
+                    this._page = 'edit';
+                }.bind(this));
 
             }
 
             _handleActionSaved(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
                 this._toast = 'Rigger Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
@@ -140,7 +148,9 @@
             }
 
             _handleActionCreated(e) {
-                this._page = 'detail';
+                this.importLazyGroup('detail').then(function () {
+                    this._page = 'detail';
+                }.bind(this));
                 this._toast = 'Rigger Created';
                 this._rigger = e.detail.rigger;
                 this.$.toast.fitInto = this.$.pages;
@@ -155,7 +165,9 @@
             }
 
             _handleActionCreate(e) {
-                this._page = 'create';
+                this.importLazyGroup('create').then(function () {
+                    this._page = 'create';
+                }.bind(this));
             }
         }
 

@@ -15,11 +15,10 @@
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
 <link rel="import" href="crew-team-manager-picture-detail-loading.html">
-<link rel="import" href="crew-team-manager-picture-detail-results.html">
-<link rel="import" href="crew-team-manager-picture-detail-message.html">
-
 
 <dom-module id="crew-team-manager-picture-detail">
+    <link rel="lazy-import" group="results" href="crew-team-manager-picture-detail-results.html">
+    <link rel="lazy-import" group="messsage" href="crew-team-manager-picture-detail-message.html">
     <template>
         <style>
              :host {
@@ -88,7 +87,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerPictureDetail extends Polymer.Element {
+        class crewTeamManagerPictureDetail extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-picture-detail'
@@ -134,7 +133,10 @@
 
                 }
 
-                this._page = page;
+                this.importLazyGroup(page).then(function (results) {
+                    this._page = page;
+                    this.dispatchEvent(new CustomEvent('import-loaded', results));
+                }.bind(this));
             }
 
 
