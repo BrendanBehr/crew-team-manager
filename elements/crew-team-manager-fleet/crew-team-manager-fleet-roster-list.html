@@ -15,10 +15,10 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="../crew-team-manager-roster/crew-team-manager-roster-list-loading.html">
 
 
 <dom-module id="crew-team-manager-fleet-roster-list">
+    <link rel="lazy-import" group="loading" href="../crew-team-manager-roster/crew-team-manager-roster-list-loading.html">
     <link rel="lazy-import" group="results" href="../crew-team-manager-roster/crew-team-manager-roster-list-results.html">
     <link rel="lazy-import" group="message" href="../crew-team-manager-roster/crew-team-manager-roster-list-message.html">
     <template>
@@ -79,7 +79,7 @@
                     <paper-icon-button id="add" icon="check" on-click="_handleActionAdd"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-roster-list-loading id="loading"></crew-team-manager-roster-list-loading>
                 <crew-team-manager-roster-list-results id="results" data="[[_data]]"></crew-team-manager-roster-list-results>
                 <crew-team-manager-roster-list-message id="message"></crew-team-manager-roster-list-message>
@@ -99,16 +99,16 @@
 
             static get observers() {
                 return [
-                    '_updatePage(_data.splices)'
+                    '_updatePage(_data.splices)',
+                    '_changePage(page)'
                 ]
             }
 
 
             static get properties() {
                 return {
-                    _page: {
+                    page: {
                         type: String,
-                        value: 'loading'
                     },
 
                     _data: {
@@ -122,6 +122,11 @@
 
             _handleActionAdd() {
                 console.log('add athletes to the boat')
+            }
+
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
             }
 
             _updatePage(dataSplices) {
@@ -138,9 +143,7 @@
                     }
                 }
 
-                this.importLazyGroup(page).then(function () {
-                    this._page = page;
-                }.bind(this));
+                this.page = page;
 
             }
 

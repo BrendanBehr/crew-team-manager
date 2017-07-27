@@ -12,7 +12,6 @@
 
 <link rel="import" href="crew-team-manager-schedule-list.html">
 
-
 <dom-module id="crew-team-manager-schedule">
     <link rel="lazy-import" group="detail" href="crew-team-manager-schedule-detail.html">
     <link rel="lazy-import" group="edit" href="crew-team-manager-schedule-edit.html">
@@ -47,7 +46,7 @@
             }
         </style>
 
-        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
             <crew-team-manager-schedule-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-schedule-list-results-action-detail="_handleActionDetail"
                 on-crew-team-manager-schedule-list-action-create="_handleActionCreate" team-id="[[teamId]]">
             </crew-team-manager-schedule-list>
@@ -76,11 +75,16 @@
                 return 'crew-team-manager-schedule'
             }
 
+            static get observers() {
+                return [
+                    '_changePage(page)'
+                ]
+            }
+
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'list'
+                    page: {
+                        type: String
                     },
 
                     _edit: {
@@ -104,51 +108,44 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
+            }
+
             _handleActionDetail(e) {
                 this._regatta = e.detail.regatta;
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionCreate(e) {
-                this.importLazyGroup('create').then(function () {
-                    this._page = 'create';
-                }.bind(this));
+                this.page = 'create';
             }
 
             _handleActionBack(e) {
-                this._page = 'list';
+                this.page = 'list';
             }
 
             _handleActionBackOnce(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.regatta;
-                this.importLazyGroup('edit').then(function () {
-                    this._page = 'edit';
-                }.bind(this));
+                this.page = 'edit';
 
             }
 
             _handleActionSaved(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Regatta Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCreated(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._regatta = e.detail.regatta;
                 this._toast = 'Regatta Saved';
                 this.$.toast.fitInto = this.$.pages;
@@ -156,14 +153,14 @@
             }
 
             _handleActionDelete(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Regatta Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCancel(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Cancelled Regatta Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();

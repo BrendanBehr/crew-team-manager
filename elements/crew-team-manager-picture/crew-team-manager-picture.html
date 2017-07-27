@@ -10,10 +10,8 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-picture-list.html">
-
-
 <dom-module id="crew-team-manager-picture">
+    <link rel="lazy-import" group="list" href="crew-team-manager-picture-list.html">
     <link rel="lazy-import" group="detail" href="crew-team-manager-picture-detail.html">
     <link rel="lazy-import" group="edit" href="crew-team-manager-picture-edit.html">
     <link rel="lazy-import" group="create" href="crew-team-manager-picture-create.html">
@@ -47,16 +45,16 @@
             }
         </style>
 
-        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-picture-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-picture-list-results-action-detail="_handleActionDetail"
+        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <crew-team-manager-picture-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-crew-team-manager-picture-list-results-action-detail="_handleActionDetail"
                 on-crew-team-manager-picture-list-action-create="_handleActionCreate" team-id="[[teamId]]">
             </crew-team-manager-picture-list>
 
-            <crew-team-manager-picture-detail id="detail" picture="[[_picture]]" on-crew-team-manager-picture-detail-action-back="_handleActionBack"
+            <crew-team-manager-picture-detail id="detail" picture="[[picture]]" page="loading" on-crew-team-manager-picture-detail-action-back="_handleActionBack"
                 on-crew-team-manager-picture-detail-action-edit="_handleActionEdit" on-crew-team-manager-picture-detail-action-delete="_handleActionDelete">
             </crew-team-manager-picture-detail>
 
-            <crew-team-manager-picture-edit edit="[[_edit]]" id="edit" picture="[[_picture]]" on-crew-team-manager-picture-edit-action-back="_handleActionBackOnce"
+            <crew-team-manager-picture-edit edit="[[_edit]]" id="edit" picture="[[picture]]" on-crew-team-manager-picture-edit-action-back="_handleActionBackOnce"
                 on-crew-team-manager-picture-edit-action-saved="_handleActionSaved">
             </crew-team-manager-picture-edit>
 
@@ -76,11 +74,16 @@
                 return 'crew-team-manager-picture'
             }
 
+            static get observers() {
+                return [
+                    '_changePage(page)'
+                ]
+            }
+
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'list'
+                    page: {
+                        type: String
                     },
 
                     _edit: {
@@ -92,7 +95,7 @@
                         value: false,
                     },
 
-                    _picture: {
+                    picture: {
                         type: String
                     },
 
@@ -104,72 +107,59 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
+            }
+
             _handleActionDetail(e) {
-                this._picture = e.detail.picture;
-                this.importLazyGroup('detail').then(function (results) {
-                    this._page = 'detail';
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this.picture = e.detail.picture;
+                this.page = 'detail';
             }
 
             _handleActionCreate(e) {
-                this.importLazyGroup('create').then(function (results) {
-                    this._page = 'create';
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this.page = 'create';
             }
 
             _handleActionBack(e) {
-                this._page = 'list';
+                this.page = 'list';
             }
 
             _handleActionBackOnce(e) {
-                this.importLazyGroup('detail').then(function (results) {
-                    this._page = 'detail';
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.picture;
-                this.importLazyGroup('edit').then(function (results) {
-                    this._page = 'edit';
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this.page = 'edit';
 
             }
 
             _handleActionSaved(e) {
-                this.importLazyGroup('detail').then(function (results) {
-                    this._page = 'detail';
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Picture Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Picture Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCreated(e) {
-                this.importLazyGroup('detail').then(function (results) {
-                    this._page = 'detail';
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Picture Created';
-                this._picture = e.detail.picture;
+                this.picture = e.detail.picture;
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCancel(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Cancelled Picture Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();

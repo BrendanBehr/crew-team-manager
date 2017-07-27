@@ -10,10 +10,8 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-rigger-list.html">
-
-
 <dom-module id="crew-team-manager-rigger">
+    <link rel="lazy-import" group="list" href="crew-team-manager-rigger-list.html">
     <link rel="lazy-import" group="detail" href="crew-team-manager-rigger-detail.html">
     <link rel="lazy-import" group="edit" href="crew-team-manager-rigger-edit.html">
     <link rel="lazy-import" group="create" href="crew-team-manager-rigger-create.html">
@@ -47,7 +45,7 @@
             }
         </style>
 
-        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
             <crew-team-manager-rigger-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-rigger-list-results-action-detail="_handleActionDetail"
                 on-crew-team-manager-rigger-list-action-create="_handleActionCreate" team-id="[[teamId]]">
             </crew-team-manager-rigger-list>
@@ -77,11 +75,16 @@
                 return 'crew-team-manager-rigger'
             }
 
+            static get observers() {
+                return [
+                    '_changePage(page)'
+                ]
+            }
+
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'list'
+                    page: {
+                        type: String
                     },
 
                     _edit: {
@@ -105,52 +108,47 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
+            }
+
             _handleActionDetail(e) {
                 this._rigger = e.detail.rigger;
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionBack(e) {
-                this._page = 'list';
+                this.page = 'list';
             }
 
             _handleActionBackOnce(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.rigger;
-                this.importLazyGroup('edit').then(function () {
-                    this._page = 'edit';
-                }.bind(this));
+                this.page = 'edit';
 
             }
 
             _handleActionSaved(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Rigger Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Rigger Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCreated(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Rigger Created';
                 this._rigger = e.detail.rigger;
                 this.$.toast.fitInto = this.$.pages;
@@ -158,16 +156,14 @@
             }
 
             _handleActionCancel(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Cancelled Create Rigger';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCreate(e) {
-                this.importLazyGroup('create').then(function () {
-                    this._page = 'create';
-                }.bind(this));
+                this.page = 'create';
             }
         }
 

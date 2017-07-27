@@ -10,10 +10,8 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-roster-list.html">
-
-
 <dom-module id="crew-team-manager-roster">
+    <link rel="lazy-import" group="list" href="crew-team-manager-roster-list.html">
     <link rel="lazy-import" group="detail" href="crew-team-manager-roster-detail.html">
     <link rel="lazy-import" group="edit" href="crew-team-manager-roster-edit.html">
     <link rel="lazy-import" group="create" href="crew-team-manager-roster-create.html">
@@ -47,12 +45,12 @@
             }
         </style>
 
-        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]" selected-attribute="selected">
+        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]" page="loading" selected-attribute="selected">
             <crew-team-manager-roster-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-roster-list-results-action-detail="_handleActionDetail"
                 on-crew-team-manager-roster-list-action-create="_handleActionCreate" team-id="[[teamId]]">
             </crew-team-manager-roster-list>
 
-            <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
+            <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]" page="loading" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
                 on-crew-team-manager-roster-detail-action-edit="_handleActionEdit" on-crew-team-manager-roster-detail-action-delete="_handleActionDelete">
             </crew-team-manager-roster-detail>
 
@@ -76,11 +74,16 @@
                 return 'crew-team-manager-roster'
             }
 
+            static get observers() {
+                return [
+                    '_changePage(page)'
+                ]
+            }
+
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'list'
+                    page: {
+                        type: String
                     },
 
                     _edit: {
@@ -104,36 +107,33 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
+            }
+
             _handleActionDetail(e) {
                 this._athlete = e.detail.athlete;
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionBack(e) {
-                this._page = 'list';
+                this.page = 'list';
             }
 
             _handleActionBackOnce(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.athlete;
-                this.importLazyGroup('edit').then(function () {
-                    this._page = 'edit';
-                }.bind(this));
+                this.page = 'edit';
 
             }
 
             _handleActionCreated(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Athlete Created';
                 this._athlete = e.detail.athlete;
                 this.$.toast.fitInto = this.$.pages;
@@ -141,29 +141,25 @@
             }
 
             _handleActionSaved(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Athlete Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCreate(e) {
-                this.importLazyGroup('create').then(function () {
-                    this._page = 'create';
-                }.bind(this));
+                this.page = 'create';
             }
 
             _handleActionCancel(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Cancelled Athlete Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Athlete Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();

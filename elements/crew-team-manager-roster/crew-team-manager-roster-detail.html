@@ -14,10 +14,8 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-roster-detail-loading.html">
-
-
 <dom-module id="crew-team-manager-roster-detail">
+    <link rel="lazy-import" group="loading" href="crew-team-manager-roster-detail-loading.html">
     <link rel="lazy-import" group="results" href="crew-team-manager-roster-detail-results.html">
     <link rel="lazy-import" group="message" href="crew-team-manager-roster-detail-message.html">
     <template>
@@ -75,7 +73,7 @@
                     <paper-icon-button id="delete" icon="delete" on-click="_handleActionDelete"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-roster-detail-loading id="loading"></crew-team-manager-roster-detail-loading>
                 <crew-team-manager-roster-detail-results id="results" data="{{_data}}" team="{{_team}}"></crew-team-manager-roster-detail-results>
                 <crew-team-manager-roster-detail-message id="message"></crew-team-manager-roster-detail-message>
@@ -97,16 +95,16 @@
 
             static get observers() {
                 return [
-                    '_updatePage(athlete)'
+                    '_updatePage(athlete)',
+                    '_changePage(page)'
                 ]
 
             }
 
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'loading'
+                    page: {
+                        type: String
                     },
 
                     _data: {
@@ -127,6 +125,11 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
+            }
+
             _updatePage(athlete) {
                 let page = 'message';
 
@@ -135,9 +138,7 @@
 
                 }
 
-                this.importLazyGroup(page).then(function () {
-                    this._page = page;
-                }.bind(this));
+                this.page = page;
             }
 
 

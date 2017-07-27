@@ -15,10 +15,10 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-finance-list-loading.html">
 
 
 <dom-module id="crew-team-manager-finance-list">
+    <link rel="lazy-import" group="loading" href="crew-team-manager-finance-list-loading.html">
     <link rel="lazy-import" group="results" href="crew-team-manager-finance-list-results.html">
     <link rel="lazy-import" group="message" href="crew-team-manager-finance-list-message.html">
     <template>
@@ -80,7 +80,7 @@
                     <paper-icon-button id="logout" icon="exit-to-app" on-click="_handleActionLogout"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-finance-list-loading id="loading"></crew-team-manager-finance-list-loading>
                 <crew-team-manager-finance-list-results id="results" data="[[_data]]"></crew-team-manager-finance-list-results>
                 <crew-team-manager-finance-list-message id="message"></crew-team-manager-finance-list-message>
@@ -102,15 +102,15 @@
 
             static get observers() {
                 return [
-                    '_updatePage(_data.splices)'
+                    '_updatePage(_data.splices)',
+                    '_changePage(page)'
                 ]
             }
 
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'loading'
+                    page: {
+                        type: String
                     },
 
                     _data: {
@@ -120,6 +120,11 @@
                     teamId: String
 
                 }
+            }
+
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
             }
 
             _handleActionMenu() {
@@ -157,10 +162,7 @@
                     }
                 }
 
-                this.importLazyGroup(page).then(function () {
-                    this._page = page;
-                }.bind(this));
-
+                this.page = page;
             }
 
         }

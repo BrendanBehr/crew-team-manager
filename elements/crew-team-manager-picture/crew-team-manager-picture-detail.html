@@ -14,9 +14,8 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-picture-detail-loading.html">
-
 <dom-module id="crew-team-manager-picture-detail">
+    <link rel="lazy-import" group="loading" href="crew-team-manager-picture-detail-loading.html">
     <link rel="lazy-import" group="results" href="crew-team-manager-picture-detail-results.html">
     <link rel="lazy-import" group="messsage" href="crew-team-manager-picture-detail-message.html">
     <template>
@@ -73,7 +72,7 @@
                     <paper-icon-button id="delete" icon="delete" on-click="_handleActionDelete"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-picture-detail-loading id="loading"></crew-team-manager-picture-detail-loading>
                 <crew-team-manager-picture-detail-results id="results" data="{{_data}}" team="{{_team}}"></crew-team-manager-picture-detail-results>
                 <crew-team-manager-picture-detail-message id="message"></crew-team-manager-picture-detail-message>
@@ -95,16 +94,16 @@
 
             static get observers() {
                 return [
-                    '_updatePage(picture)'
+                    '_updatePage(picture)',
+                    '_changePage(page)'
                 ]
 
             }
 
             static get properties() {
                 return {
-                    _page: {
+                    page: {
                         type: String,
-                        value: 'loading'
                     },
 
                     _data: {
@@ -125,6 +124,11 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
+            }
+
             _updatePage(picture) {
                 let page = 'message';
 
@@ -132,11 +136,7 @@
                     page = 'results';
 
                 }
-
-                this.importLazyGroup(page).then(function (results) {
-                    this._page = page;
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this.page = page;
             }
 
 

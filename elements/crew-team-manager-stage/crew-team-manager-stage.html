@@ -19,9 +19,8 @@
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
-<link rel="import" href="../crew-team-manager-team/crew-team-manager-team.html">
-
 <dom-module id="crew-team-manager-stage">
+    <link rel="lazy-import" group="team" href="../crew-team-manager-team/crew-team-manager-team.html">
     <link rel="lazy-import" group="roster" href="../crew-team-manager-roster/crew-team-manager-roster.html">
     <link rel="lazy-import" group="picture" href="../crew-team-manager-picture/crew-team-manager-picture.html">
     <link rel="lazy-import" group="finance" href="../crew-team-manager-finance/crew-team-manager-finance.html">
@@ -67,27 +66,27 @@
         </style>
 
         <app-drawer-layout id="layout">
-            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-                <crew-team-manager-roster id="roster" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-roster-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-roster>
-                <crew-team-manager-fleet id="fleet" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-fleet-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-fleet>
-                <crew-team-manager-schedule id="schedule" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-schedule-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-schedule>
-                <crew-team-manager-erg id="erg" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-erg-list-action-menu="_toggleDrawer"
+            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+                <crew-team-manager-roster id="roster" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-roster-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-roster>
+                <crew-team-manager-fleet id="fleet" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-fleet-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-fleet>
+                <crew-team-manager-schedule id="schedule" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-schedule-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-schedule>
+                <crew-team-manager-erg id="erg" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-erg-list-action-menu="_toggleDrawer"
                     wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-erg>
-                <crew-team-manager-finance id="finance" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-finance-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-finance>
-                <crew-team-manager-oar id="oar" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-oar-list-action-menu="_toggleDrawer"
+                <crew-team-manager-finance id="finance" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-finance-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-finance>
+                <crew-team-manager-oar id="oar" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-oar-list-action-menu="_toggleDrawer"
                     wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-oar>
-                <crew-team-manager-race id="race" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-race-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-race>
-                <crew-team-manager-rigger id="rigger" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-rigger-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-rigger>
-                <crew-team-manager-picture id="picture" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-picture-list-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-picture>
-                <crew-team-manager-team id="team" class="page" on-crew-team-manager-stage-action-logout="_handleActionLogout" on-crew-team-manager-team-detail-action-menu="_toggleDrawer"
-                    wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-team>
+                <crew-team-manager-race id="race" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-race-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-race>
+                <crew-team-manager-rigger id="rigger" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-rigger-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-rigger>
+                <crew-team-manager-picture id="picture" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-picture-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-picture>
+                <crew-team-manager-team id="team" class="page" page="detail" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-team-detail-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-team>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
@@ -144,11 +143,16 @@
                 return 'crew-team-manager-stage'
             }
 
+            static get observers() {
+                return [
+                    '_changePage(page)'
+                ]
+            }
+
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'team'
+                    page: {
+                        type: String
                     },
                     _wideLayout: {
                         type: Boolean,
@@ -160,8 +164,13 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
+            }
+
             _handleActionLogout() {
-                this._page = 'team';
+                this.page = 'team';
             }
 
             connectedCallback() {
@@ -176,11 +185,8 @@
 
             _handleMenuClick(e) {
                 let page = e.target.getAttribute('page');
-                this.importLazyGroup(page).then(function (results) {
-                    this._page = page;
-                    this._toggleDrawer();
-                    this.dispatchEvent(new CustomEvent('import-loaded', results));
-                }.bind(this));
+                this.page = page;
+                this._toggleDrawer();
             }
         }
 

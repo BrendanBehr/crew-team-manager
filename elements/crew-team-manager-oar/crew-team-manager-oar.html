@@ -10,11 +10,11 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-oar-list.html">
 
 
 <dom-module id="crew-team-manager-oar">
-    <link rel="lazy-import" group=detail "" href="crew-team-manager-oar-detail.html">
+    <link rel="lazy-import" group="list" href="crew-team-manager-oar-list.html">
+    <link rel="lazy-import" group="detail" href="crew-team-manager-oar-detail.html">
     <link rel="lazy-import" group="edit" href="crew-team-manager-oar-edit.html">
     <link rel="lazy-import" group="create" href="crew-team-manager-oar-create.html">
     <template>
@@ -47,12 +47,12 @@
             }
         </style>
 
-        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-oar-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-oar-list-results-action-detail="_handleActionDetail"
+        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <crew-team-manager-oar-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-crew-team-manager-oar-list-results-action-detail="_handleActionDetail"
                 on-crew-team-manager-oar-list-action-create="_handleActionCreate" team-id="[[teamId]]">
             </crew-team-manager-oar-list>
 
-            <crew-team-manager-oar-detail id="detail" oar="[[_oar]]" on-crew-team-manager-oar-detail-action-back="_handleActionBack"
+            <crew-team-manager-oar-detail id="detail" oar="[[_oar]]" page="loading" on-crew-team-manager-oar-detail-action-back="_handleActionBack"
                 on-crew-team-manager-oar-detail-action-edit="_handleActionEdit" on-crew-team-manager-oar-detail-action-delete="_handleActionDelete">
             </crew-team-manager-oar-detail>
 
@@ -76,11 +76,16 @@
                 return 'crew-team-manager-oar'
             }
 
+            static get observers() {
+                return [
+                    '_changePage(page)'
+                ]
+            }
+
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'list'
+                    page: {
+                        type: String
                     },
 
                     _edit: {
@@ -104,58 +109,51 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
+            }
+
             _handleActionDetail(e) {
                 this._oar = e.detail.oar;
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionCreate(e) {
-                this.importLazyGroup('create').then(function () {
-                    this._page = 'create';
-                }.bind(this));
+                this.page = 'create';
             }
 
             _handleActionBack(e) {
-                this._page = 'list';
+                this.page = 'list';
             }
 
             _handleActionBackOnce(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.oar;
-                this.importLazyGroup('edit').then(function () {
-                    this._page = 'edit';
-                }.bind(this));
+                this.page = 'edit';
 
             }
 
             _handleActionSaved(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Oar Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Oar Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCreated(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Oar Saved';
                 this._oar = e.detail.oar;
                 this.$.toast.fitInto = this.$.pages;
@@ -163,7 +161,7 @@
             }
 
             _handleActionCancel(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Cancelled Oar Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();

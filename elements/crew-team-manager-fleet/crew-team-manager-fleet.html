@@ -10,9 +10,8 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-fleet-list.html">
-
 <dom-module id="crew-team-manager-fleet">
+    <link rel="lazy-import" group="list" href="crew-team-manager-fleet-list.html">
     <link rel="lazy-import" group="detail" href="crew-team-manager-fleet-detail.html">
     <link rel="lazy-import" group="edit" href="crew-team-manager-fleet-edit.html">
     <link rel="lazy-import" group="create" href="crew-team-manager-fleet-create.html">
@@ -46,12 +45,12 @@
             }
         </style>
 
-        <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
-            <crew-team-manager-fleet-list id="list" menu-hidden$="[[wideLayout]]" on-crew-team-manager-fleet-list-results-action-detail="_handleActionDetail"
+        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <crew-team-manager-fleet-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-crew-team-manager-fleet-list-results-action-detail="_handleActionDetail"
                 on-crew-team-manager-fleet-list-action-create="_handleActionCreate" team-id="[[teamId]]">
             </crew-team-manager-fleet-list>
 
-            <crew-team-manager-fleet-detail id="detail" boat="[[_boat]]" on-crew-team-manager-fleet-detail-action-back="_handleActionBack"
+            <crew-team-manager-fleet-detail id="detail" boat="[[_boat]]" page="loading" on-crew-team-manager-fleet-detail-action-back="_handleActionBack"
                 on-crew-team-manager-fleet-detail-action-edit="_handleActionEdit" on-crew-team-manager-fleet-detail-action-delete="_handleActionDelete"
                 on-crew-team-manager-fleet-detail-action-add-rigger="_handleActionAddRigger" on-crew-team-manager-fleet-detail-action-add-athlete="_handleActionAddAthlete"
                 on-crew-team-manager-fleet-detail-action-add-oar="_handleActionAddOar" team-id="[[teamId]]">
@@ -64,9 +63,9 @@
             <crew-team-manager-fleet-create id="create" on-crew-team-manager-fleet-create-action-cancel="_handleActionCancel" on-crew-team-manager-fleet-create-action-created="_handleActionCreated">
             </crew-team-manager-fleet-create>
 
-            <crew-team-manager-fleet-roster-list id="athlete" team-id="[[teamId]]"></crew-team-manager-fleet-roster-list>
-            <crew-team-manager-fleet-oar-list id="oar" team-id="[[teamId]]"></crew-team-manager-fleet-oar-list>
-            <crew-team-manager-fleet-rigger-list id="rigger" team-id="[[teamId]]"></crew-team-manager-fleet-rigger-list>
+            <crew-team-manager-fleet-roster-list id="athlete" team-id="[[teamId]]" page="loading"></crew-team-manager-fleet-roster-list>
+            <crew-team-manager-fleet-oar-list id="oar" team-id="[[teamId]]" page="loading"></crew-team-manager-fleet-oar-list>
+            <crew-team-manager-fleet-rigger-list id="rigger" team-id="[[teamId]]" page="loading"></crew-team-manager-fleet-rigger-list>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -81,11 +80,16 @@
                 return 'crew-team-manager-fleet'
             }
 
+            static get observers() {
+                return [
+                    '_changePage(page)'
+                ]
+            }
+
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'list'
+                    page: {
+                        type: String
                     },
 
                     _edit: {
@@ -109,65 +113,60 @@
                 }
             }
 
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {
+                    this.page = page;
+                }.bind(this));
+            }
+
             _handleActionDetail(e) {
                 this._boat = e.detail.boat;
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionBack(e) {
-                this._page = 'list';
+                this.page = 'list';
             }
 
             _handleActionCreate() {
-                this.importLazyGroup('create').then(function () {
-                    this._page = 'create';
-                }.bind(this));
+                this.page = 'create';
             }
 
             _handleActionCancel(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Cancelled Boat Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionBackOnce(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
             }
 
             _handleActionEdit(e) {
 
                 this._edit = e.detail.boat;
-                this.importLazyGroup('edit').then(function () {
-                    this._page = 'edit';
-                }.bind(this));
+                this.page = 'edit';
 
             }
 
             _handleActionSaved(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._toast = 'Boat Saved';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionDelete(e) {
-                this._page = 'list';
+                this.page = 'list';
                 this._toast = 'Boat Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }
 
             _handleActionCreated(e) {
-                this.importLazyGroup('detail').then(function () {
-                    this._page = 'detail';
-                }.bind(this));
+                this.page = 'detail';
                 this._boat = e.detail.boat;
                 this._toast = 'Boat Created';
                 this.$.toast.fitInto = this.$.pages;
@@ -175,21 +174,15 @@
             }
 
             _handleActionAddAthlete() {
-                this.importLazyGroup('athlete').then(function () {
-                    this._page = 'athlete';
-                }.bind(this));
+                this.page = 'athlete';
             }
 
             _handleActionAddOar() {
-                this.importLazyGroup('oar').then(function () {
-                    this._page = 'oar';
-                }.bind(this));
+                this.page = 'oar';
             }
 
             _handleActionAddRigger() {
-                this.importLazyGroup('rigger').then(function () {
-                    this._page = 'rigger';
-                }.bind(this));
+                this.page = 'rigger';
             }
         }
 
