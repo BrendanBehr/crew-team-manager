@@ -71,11 +71,37 @@
 
             <div id="editor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="boat-name" label="boat-name" value="Boat Name"></paper-input>
-                    <paper-input id="side" label="side" value="{{edit.side}}"></paper-input>
-                    <paper-input id="style" label="style" value="{{edit.style}}"></paper-input>
-                    <paper-input id="type" label="type" value="{{edit.type}}"></paper-input>
-                    <paper-input id="seat" label="seat" value="{{edit.seat}}"></paper-input>
+                    <paper-dropdown-menu label="side" value="{{edit.side}}">
+                        <paper-listbox slot="dropdown-content" id="side">
+                            <paper-item>Port</paper-item>
+                            <paper-item>Starboard</paper-item>
+                            <paper-item>Both</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="style" value="{{edit.style}}">
+                        <paper-listbox slot="dropdown-content" id="style">
+                            <paper-item>Sweep</paper-item>
+                            <paper-item>Scull</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="type" value="{{edit.type}}">
+                        <paper-listbox slot="dropdown-content" id="type">
+                            <paper-item>Wing</paper-item>
+                            <paper-item>European</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="seat" value="{{edit.seat}}">
+                        <paper-listbox slot="dropdown-content" id="seat">
+                            <paper-item>1</paper-item>
+                            <paper-item>2</paper-item>
+                            <paper-item>3</paper-item>
+                            <paper-item>4</paper-item>
+                            <paper-item>5</paper-item>
+                            <paper-item>6</paper-item>
+                            <paper-item>7</paper-item>
+                            <paper-item>8</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                 </form>
             </div>
 

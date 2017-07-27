@@ -54,7 +54,7 @@
         <div id="content">
 
             <paper-card id="rigger">
-                <crew-team-manager-avatar id="rigger-avatar" value="{{boat.name}}" large></crew-team-manager-avatar>
+                <crew-team-manager-avatar id="rigger-avatar" value="{{boatName}}" large></crew-team-manager-avatar>
                 <div id="rigger-name">
                     [[boat.name]]
                 </div>
@@ -62,11 +62,8 @@
                     <div id="subhead">
                         Details:
                     </div>
-                    <div id="team">
-                        Team: [[team.teamName]]
-                    </div>
                     <div id="boat">
-                        Boat: [[boat.name]]
+                        Boat: [[boatName]]
                     </div>
                     <div id="side">
                         Side: [[data.side ]]
@@ -104,11 +101,15 @@
                         type: Object
                     },
 
-                    team: {
-                        type: Object
+                    boatName: {
+                        type: String,
+                        value: 'none'
                     }
+
                 }
             }
+
+
         }
 
         // Register custom element definition using standard platform API

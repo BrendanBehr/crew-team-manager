@@ -121,14 +121,14 @@
                     bubbles: true,
                     composed: true
                 }));
-                _resetCreate();
+                this._resetCreate();
             }
 
             _handleActionCreate(e) {
                 this.$.firebase.saveValue('pictures')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
-                        _resetCreate();
+                        this._resetCreate();
                         let _key = '';
                         for (let x = 10; x < this.$.firebase.path.length; x++) {
                             _key = _key + this.$.firebase.path[x];

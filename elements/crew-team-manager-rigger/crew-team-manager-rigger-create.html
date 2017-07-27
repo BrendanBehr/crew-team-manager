@@ -71,11 +71,37 @@
 
             <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="boat-name" label="boat-name"></paper-input>
-                    <paper-input id="side" label="side" value="{{create.side}}"></paper-input>
-                    <paper-input id="style" label="style" value="{{create.style}}"></paper-input>
-                    <paper-input id="type" label="type" value="{{create.type}}"></paper-input>
-                    <paper-input id="seat" label="seat" value="{{create.seat}}"></paper-input>
+                    <paper-dropdown-menu label="side" value="{{create.side}}">
+                        <paper-listbox slot="dropdown-content" id="side">
+                            <paper-item>Port</paper-item>
+                            <paper-item>Starboard</paper-item>
+                            <paper-item>Both</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="style" value="{{create.style}}">
+                        <paper-listbox slot="dropdown-content" id="style">
+                            <paper-item>Sweep</paper-item>
+                            <paper-item>Scull</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="type" value="{{create.type}}">
+                        <paper-listbox slot="dropdown-content" id="type">
+                            <paper-item>Wing</paper-item>
+                            <paper-item>European</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-dropdown-menu label="seat" value="{{create.seat}}">
+                        <paper-listbox slot="dropdown-content" id="seat">
+                            <paper-item>1</paper-item>
+                            <paper-item>2</paper-item>
+                            <paper-item>3</paper-item>
+                            <paper-item>4</paper-item>
+                            <paper-item>5</paper-item>
+                            <paper-item>6</paper-item>
+                            <paper-item>7</paper-item>
+                            <paper-item>8</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                 </form>
             </div>
 
@@ -129,7 +155,7 @@
                     bubbles: true,
                     composed: true
                 }));
-                _resetCreate();
+                this._resetCreate();
             }
 
             _handleActionCreate(e) {
