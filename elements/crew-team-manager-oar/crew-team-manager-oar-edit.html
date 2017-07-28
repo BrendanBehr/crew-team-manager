@@ -89,7 +89,7 @@
                             <paper-item>Foam</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="length" label="length" value="{{edit.length}}"></paper-input>
+                    <paper-input id="length" label="length" value="{{edit.length}}" type="number"></paper-input>
                 </form>
             </div>
 
@@ -130,6 +130,8 @@
             }
 
             _handleActionSave(e) {
+                this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.edit.length = parseInt(this.edit.length);
                 this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
                 this.$.firebase.saveValue('oars', this.oar)
                     .then(() => {

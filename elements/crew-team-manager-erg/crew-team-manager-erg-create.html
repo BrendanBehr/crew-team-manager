@@ -72,7 +72,7 @@
             <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
                     <paper-input id="number" label="number" value="{{create.number}}"></paper-input>
-                    <paper-dropdown-menu label="location" value="{{create.model}}">
+                    <paper-dropdown-menu label="location" value="{{create.location}}">
                         <paper-listbox slot="dropdown-content" id="location">
                             <paper-item>Home</paper-item>
                             <paper-item>Away</paper-item>
@@ -129,9 +129,13 @@
                             location: '',
                             model: '',
                             screenType: '',
-                            condition: ''
+                            condition: '',
+                            created: 0,
+                            updated: 0
                         }
                     },
+
+                    teamId: String,
 
                     erg: {
                         type: String
@@ -150,7 +154,9 @@
                     location: '',
                     model: '',
                     screenType: '',
-                    condition: ''
+                    condition: '',
+                    updated: 0,
+                    created: 0
                 }
             }
 
@@ -163,6 +169,10 @@
             }
 
             _handleActionCreate(e) {
+                this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.team = this.teamId;
+                this.create.number = parseInt(this.create.number);
                 this.$.firebase.saveValue('ergs')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);

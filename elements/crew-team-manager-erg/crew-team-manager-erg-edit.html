@@ -145,6 +145,8 @@
             }
 
             _handleActionSave(e) {
+                this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.edit.number = parseInt(this.edit.number);
                 this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
                 this.$.firebase.saveValue('ergs', this.erg)
                     .then(() => {

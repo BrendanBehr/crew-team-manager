@@ -60,10 +60,11 @@
                 on-crew-team-manager-fleet-edit-action-saved="_handleActionSaved">
             </crew-team-manager-fleet-edit>
 
-            <crew-team-manager-fleet-create id="create" on-crew-team-manager-fleet-create-action-cancel="_handleActionCancel" on-crew-team-manager-fleet-create-action-created="_handleActionCreated">
+            <crew-team-manager-fleet-create id="create" team-id="[[teamId]]" on-crew-team-manager-fleet-create-action-cancel="_handleActionCancel"
+                on-crew-team-manager-fleet-create-action-created="_handleActionCreated">
             </crew-team-manager-fleet-create>
 
-            <crew-team-manager-fleet-roster-list id="athlete" team-id="[[teamId]]" page="loading"></crew-team-manager-fleet-roster-list>
+            <crew-team-manager-fleet-roster-list id="athlete" team-id="[[teamId]]" page="loading" on-crew-team-manager-fleet-roster-list-action-back="_handleActionBackOnce"></crew-team-manager-fleet-roster-list>
             <crew-team-manager-fleet-oar-list id="oar" team-id="[[teamId]]" page="loading"></crew-team-manager-fleet-oar-list>
             <crew-team-manager-fleet-rigger-list id="rigger" team-id="[[teamId]]" page="loading"></crew-team-manager-fleet-rigger-list>
         </iron-pages>

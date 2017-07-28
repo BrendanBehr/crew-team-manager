@@ -75,7 +75,12 @@
                     <paper-input id="street-address" label="street address" value="{{create.streetAddress}}"></paper-input>
                     <paper-input id="city" label="city" value="{{create.city}}"></paper-input>
                     <paper-input id="state" label="state" value="{{create.state}}"></paper-input>
-                    <paper-toggle-button id="toggle-button" on-click="_toggleDrive">Head Race: [[_head]]</paper-toggle-button>
+                    <paper-dropdown-menu label="Is head race" value="{{create.head}}">
+                        <paper-listbox slot="dropdown-content" id="head">
+                            <paper-item>Yes</paper-item>
+                            <paper-item>No</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                     <paper-input id="location-image" label="location image" value="{{create.locationImage}}"></paper-input>
                     <paper-input id="cost" label="cost" value="{{create.cost}}"></paper-input>
                 </form>
@@ -102,11 +107,15 @@
                             streetAddress: '',
                             city: '',
                             state: '',
-                            head: true,
+                            head: '',
                             locationImage: '',
-                            cost: ''
+                            cost: 0,
+                            created: 0,
+                            updated: 0
                         }
                     },
+
+                    teamId: String,
 
                     regatta: {
                         type: String
@@ -125,9 +134,11 @@
                     streetAddress: '',
                     city: '',
                     state: '',
-                    head: true,
+                    head: '',
                     locationImage: '',
-                    cost: ''
+                    cost: 0,
+                    created: 0,
+                    updated: 0
                 };
             }
 
@@ -139,6 +150,10 @@
             }
 
             _handleActionCreate(e) {
+                this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.team = this.teamId;
+                this.create.cost = parseInt(this.create.cost);
                 this.$.firebase.saveValue('regattas')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
@@ -158,17 +173,6 @@
                     });
 
 
-            }
-
-            _toggleDrive() {
-                if (this._head) {
-                    this.create.head = false;
-                    this._head = 'no';
-                } else {
-                    this.create.head = true;
-                    this._head = 'yes';
-
-                }
             }
 
         }

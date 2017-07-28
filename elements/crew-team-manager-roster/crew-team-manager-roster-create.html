@@ -85,7 +85,13 @@
                     <paper-input id="city" label="city" value="{{create.city}}"></paper-input>
                     <paper-input id="state" label="state" value="{{create.state}}"></paper-input>
                     <paper-input id="phone" label="phone number" value="{{create.phone}}"></paper-input>
-                    <paper-toggle-button id="toggle-button" on-click="_toggleDrive">Driver: [[create.driver]]</paper-toggle-button>
+                    <paper-input id="email" label="email" value="{{create.email}}"></paper-input>
+                    <paper-dropdown-menu label="Can drive" value="{{create.driver}}">
+                        <paper-listbox slot="dropdown-content" id="driver">
+                            <paper-item>Yes</paper-item>
+                            <paper-item>No</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                     <paper-input id="height" label="height" value="{{create.height}}"></paper-input>
                     <paper-input id="weight" label="weight" value="{{create.weight}}"></paper-input>
                     <paper-dropdown-menu label="Gender" value="{{create.gender}}">
@@ -124,22 +130,29 @@
                     create: {
                         type: Object,
                         value: {
-                            // city: '',
-                            // driver: '',
-                            // ergScore: '',
-                            // firstName: '',
-                            // fundRaising: '',
-                            // gender: '',
-                            // height: '',
-                            // lastName: '',
-                            // phone: '',
-                            // side: '',
-                            // stat: '',
-                            // streetAddress: '',
-                            // weight: '',
-                            // year: ''
+                            city: '',
+                            driver: '',
+                            ergScore: '',
+                            firstName: '',
+                            fundRaising: 0,
+                            gender: '',
+                            height: '',
+                            lastName: '',
+                            phone: '',
+                            side: '',
+                            state: '',
+                            streetAddress: '',
+                            weight: 0,
+                            year: '',
+                            email: '',
+                            credential: 'NA',
+                            created: 0,
+                            updated: 0
                         }
                     },
+
+                    teamId: String,
+
                     selected: {
                         type: Boolean,
                         observer: '_selectedChanged'
@@ -157,16 +170,20 @@
                     driver: '',
                     ergScore: '',
                     firstName: '',
-                    fundRaising: '',
+                    fundRaising: 0,
                     gender: '',
                     height: '',
                     lastName: '',
                     phone: '',
                     side: '',
-                    stat: '',
+                    state: '',
                     streetAddress: '',
-                    weight: '',
-                    year: ''
+                    weight: 0,
+                    year: '',
+                    email: '',
+                    credential: 'NA',
+                    updated: 0,
+                    created: 0
 
                 }
             }
@@ -180,7 +197,17 @@
             }
 
             _handleActionCreated(e) {
-                this._resetCreate();
+
+                this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.team = this.teamId;
+                this.create.fundRaising = parseInt(this.create.fundRaising);
+                this.create.weight = parseInt(this.create.weight);
+
+                if (!this.create.email) {
+                    this.create.email = 'NA';
+                }
+
                 this.$.firebase.saveValue('athletes')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
@@ -205,17 +232,6 @@
             _selectedChanged(newValue) {
                 if (!newValue) {
                     this.create = {};
-                }
-            }
-
-            _toggleDrive() {
-                if (this._drive) {
-                    this.create.driver = 'no';
-                    this._drive = false;
-                } else {
-                    this.create.driver = 'yes';
-                    this._drive = true;
-
                 }
             }
 

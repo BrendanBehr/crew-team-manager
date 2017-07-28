@@ -92,10 +92,6 @@ hasCreateAccess() {
     return getAuth().status == 'active'
 }
 
-hasAdminCreateAccess() {
-    return hasCreateAccess() && getAuthUser().permisions == 'admin'
-}
-
 hasTeamUpdateAccess(teamId) {
     return getAuthUser().team == teamId && getAuth().status == 'active'
 }
@@ -121,7 +117,7 @@ path /athletes/{athleteId} is Athlete {
 
 type Athlete {
     city: StringNotEmpty,
-    driver: Boolean,
+    driver: StringNotEmpty,
     ergScore: StringNotEmpty,
     firstName: StringNotEmpty,
     credential: Optional,
@@ -582,7 +578,7 @@ path /regattas/{regattaId} is Regatta {
 type Regatta {
     city: StringNotEmpty,
     cost: NonNegativeNumber,
-    head: Boolean,
+    head: StringNotEmpty,
     locationImage: StringNotEmpty,
     name: StringNotEmpty,
     state: StringNotEmpty,
@@ -717,7 +713,7 @@ path /boatAthletes/{boatId}/{athleteId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     update() {
@@ -757,7 +753,7 @@ path /boatOars/{boatId}/{oarId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     update() {
@@ -791,7 +787,7 @@ path /boatRiggers/{boatId}/{riggerId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     update() {
@@ -825,7 +821,7 @@ path /athleteEmails/{athleteId}/{emailId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     update() {
@@ -859,7 +855,7 @@ path /athleteErgs/{athleteId}/{ergId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     update() {
@@ -897,7 +893,7 @@ path /athleteFinances/{athleteId}/{financeId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -927,7 +923,7 @@ path /regattaRaces/{regattaId}/{raceId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     update() {
@@ -961,7 +957,7 @@ path /regattaPictures/{regattaId}/{pictureId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     update() {
@@ -995,7 +991,7 @@ path /teamAthletes/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -1020,7 +1016,7 @@ path /teamBoats/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -1044,7 +1040,7 @@ path /teamErgs/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -1069,7 +1065,7 @@ path /teamFinances/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -1093,7 +1089,7 @@ path /teamOars/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -1118,7 +1114,7 @@ path /teamPictures/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -1143,7 +1139,7 @@ path /teamRaces/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -1168,7 +1164,7 @@ path /teamRegattas/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {
@@ -1193,7 +1189,7 @@ path /teamRiggers/{teamId} is FanOut {
     }
 
     create() {
-        hasAdminCreateAccess()
+        hasCreateAccess()
     }
 
     delete() {

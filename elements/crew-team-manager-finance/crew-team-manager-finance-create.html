@@ -95,11 +95,15 @@
                         type: Object,
                         value: {
                             reason: '',
-                            incomes: '',
-                            expenses: '',
-                            gross: ''
+                            incomes: 0,
+                            expenses: 0,
+                            gross: 0,
+                            created: 0,
+                            updated: 0
                         }
                     },
+
+                    teamId: String,
 
                     finance: {
                         type: String
@@ -115,9 +119,11 @@
             _resetCreate() {
                 this.create = {
                     reason: '',
-                    incomes: '',
-                    expenses: '',
-                    gross: ''
+                    incomes: 0,
+                    expenses: 0,
+                    gross: 0,
+                    updated: 0,
+                    created: 0
                 }
             }
 
@@ -130,6 +136,12 @@
             }
 
             _handleActionCreate(e) {
+                this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.team = this.teamId;
+                this.create.incomes = parseInt(this.create.incomes);
+                this.create.expenses = parseInt(this.create.expenses);
+                this.create.gross = this.create.incomes - this.create.expenses;
                 this.$.firebase.saveValue('finances')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);

@@ -114,7 +114,10 @@
                             color: '',
                             shape: '',
                             handleGrip: '',
-                            length: ''
+                            length: '',
+                            team: '',
+                            updated: 0,
+                            created: 0
                         }
                     },
 
@@ -125,7 +128,9 @@
                     _drive: {
                         type: Boolean,
                         value: false
-                    }
+                    },
+
+                    teamId: String
                 }
             }
 
@@ -135,7 +140,10 @@
                     color: '',
                     shape: '',
                     handleGrip: '',
-                    length: ''
+                    length: '',
+                    team: '',
+                    updated: 0,
+                    created: 0
                 }
             }
 
@@ -148,6 +156,10 @@
             }
 
             _handleActionCreate(e) {
+                this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.team = this.teamId;
+                this.create.length = parseInt(this.create.length);
                 this.$.firebase.saveValue('oars')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);

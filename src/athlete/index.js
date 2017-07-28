@@ -25,7 +25,7 @@ class Athlete extends Entity {
         options.values.year = options.values.year || 'freshman';
         options.values.gender = options.values.gender || 'M/F';
         options.values.fundRaising = options.values.fundRaising || faker.random.number() / 100;
-        options.values.driver = options.values.driver || faker.random.boolean();
+        options.values.driver = options.values.driver || 'no';
         options.values.email = options.values.email || faker.internet.email();
         options.values.updated = options.values.updated || faker.random.number();
         options.values.created = options.values.created || faker.random.number();

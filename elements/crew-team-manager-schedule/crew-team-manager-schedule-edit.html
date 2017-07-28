@@ -75,7 +75,12 @@
                     <paper-input id="street-address" label="street address" value="{{edit.streetAddress}}"></paper-input>
                     <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
                     <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
-                    <paper-toggle-button id="toggle-button" on-click="_toggleDrive">Head Race: [[_head]]</paper-toggle-button>
+                    <paper-dropdown-menu label="Is head race" value="{{edit.head}}">
+                        <paper-listbox slot="dropdown-content" id="head">
+                            <paper-item>Yes</paper-item>
+                            <paper-item>No</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                     <paper-input id="location-image" label="location image" value="{{edit.locationImage}}"></paper-input>
                     <paper-input id="cost" label="cost" value="{{edit.cost}}"></paper-input>
                 </form>
@@ -118,6 +123,8 @@
             }
 
             _handleActionSave(e) {
+                this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.edit.cost = parseInt(this.edit.cost);
                 this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
                 this.$.firebase.saveValue('regattas', this.regatta)
                     .then(() => {
@@ -128,17 +135,6 @@
                     });
 
 
-            }
-
-            _toggleDrive() {
-                if (this._head) {
-                    this.edit.head = false;
-                    this._head = 'no';
-                } else {
-                    this.edit.head = true;
-                    this._head = 'yes';
-
-                }
             }
 
         }

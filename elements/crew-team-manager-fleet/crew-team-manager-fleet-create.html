@@ -115,12 +115,16 @@
                         type: Object,
                         value: {
                             name: '',
-                            size: '',
+                            size: 0,
                             rigging: '',
                             type: '',
-                            manufacturer: ''
+                            manufacturer: '',
+                            created: 0,
+                            updated: 0
                         }
                     },
+
+                    teamId: String,
 
                     boat: {
                         type: String
@@ -136,10 +140,12 @@
             _resetCreate() {
                 this.create = {
                     name: '',
-                    size: '',
+                    size: 0,
                     rigging: '',
                     type: '',
-                    manufacturer: ''
+                    manufacturer: '',
+                    updated: 0,
+                    created: 0
                 }
             }
 
@@ -152,6 +158,10 @@
             }
 
             _handleActionCreate(e) {
+                this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.team = this.teamId;
+                this.create.size = parseInt(this.create.size);
                 this.$.firebase.saveValue('boats')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);

@@ -3449,7 +3449,7 @@ describe('Auths', function () {
             });
         });
 
-        describe('Athlete tests', function () {
+        describe.only('Athlete tests', function () {
 
             describe('as anonymous', function () {
 
@@ -3464,6 +3464,7 @@ describe('Auths', function () {
                         reference: false
                     });
                     athlete.updated = firebaseAdmin.database.ServerValue.TIMESTAMP;
+                    console.log(athlete.updated);
 
                 });
 

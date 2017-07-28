@@ -98,9 +98,13 @@
                             eventName: '',
                             raceTime: '',
                             suggestedLaunchTime: '',
-                            bowNumber: ''
+                            bowNumber: 0,
+                            created: 0,
+                            updated: 0
                         }
                     },
+
+                    teamId: String,
 
                     race: {
                         type: String
@@ -118,7 +122,9 @@
                     eventName: '',
                     raceTime: '',
                     suggestedLaunchTime: '',
-                    bowNumber: ''
+                    bowNumber: 0,
+                    updated: 0,
+                    created: 0
                 }
             }
 
@@ -131,6 +137,10 @@
             }
 
             _handleActionCreate(e) {
+                this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.create.team = this.teamId;
+                this.create.bowNumber = parseInt(this.create.bowNumber);
                 this.$.firebase.saveValue('races')
                     .then(() => {
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);

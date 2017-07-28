@@ -134,6 +134,8 @@
             }
 
             _handleActionSave(e) {
+                this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.edit.size = parseInt(this.edit.size);
                 this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
                 this.$.firebase.saveValue('boats', this.boat)
                     .then(() => {

@@ -85,7 +85,12 @@
                     <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
                     <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
                     <paper-input id="phone" label="phone number" value="{{edit.phone}}"></paper-input>
-                    <paper-toggle-button id="toggle-button" on-click="_toggleDrive">Driver: [[edit.driver]]</paper-toggle-button>
+                    <paper-dropdown-menu label="Can drive" value="{{edit.driver}}">
+                        <paper-listbox slot="dropdown-content" id="driver">
+                            <paper-item>Yes</paper-item>
+                            <paper-item>No</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                     <paper-input id="height" label="height" value="{{edit.height}}"></paper-input>
                     <paper-input id="weight" label="weight" value="{{edit.weight}}"></paper-input>
                     <paper-dropdown-menu label="Gender" value="{{edit.gender}}">
@@ -144,6 +149,10 @@
             }
 
             _handleActionSave(e) {
+                this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                this.edit.fundRaising = parseInt(this.edit.fundRaising);
+                this.edit.weight = parseInt(this.edit.weight);
+
                 this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
                 this.$.firebase.saveValue('athletes', this.athlete)
                     .then(() => {
@@ -154,17 +163,6 @@
                     });
 
 
-            }
-
-            _toggleDrive() {
-                if (this._drive) {
-                    this.edit.driver = 'no';
-                    this._drive = false;
-                } else {
-                    this.edit.driver = 'yes';
-                    this._drive = true;
-
-                }
             }
 
         }
