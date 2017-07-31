@@ -89,10 +89,20 @@
             }
         </style>
 
+        <firebase-query app-name="laborsync-ctm" id="athlete-query" path="/boatAthletes/{{boat}}" data="{{_athletes}}">
+        </firebase-query>
+
+        <firebase-query app-name="laborsync-ctm" id="rigger-query" path="/boatOars/{{boat}}" data="{{_oars}}">
+        </firebase-query>
+
+        <firebase-query app-name="laborsync-ctm" id="oar-query" path="/boatRiggers/{{boat}}" data="{{_riggers}}">
+        </firebase-query>
+
         <firebase-document id="firebase" app-name="laborsync-ctm" path="/boats/{{boat}}" data="{{_data}}"> </firebase-document>
 
         <firebase-document id="firebase-team" app-name="laborsync-ctm" path="/teams/{{_data.team}}" data="{{_team}}">
         </firebase-document>
+
 
         <app-header-layout id="layout">
 
@@ -106,7 +116,8 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-fleet-detail-loading id="loading"></crew-team-manager-fleet-detail-loading>
-                <crew-team-manager-fleet-detail-results id="results" data="{{_data}}" team={{_team}}></crew-team-manager-fleet-detail-results>
+                <crew-team-manager-fleet-detail-results id="results" data="{{_data}}" team={{_team}} athlete="[[_athletes]]" oar="[[_oars]]"
+                    rigger="[[_riggers]]"></crew-team-manager-fleet-detail-results>
                 <crew-team-manager-fleet-detail-message id="message"></crew-team-manager-fleet-detail-message>
             </iron-pages>
 
@@ -150,6 +161,18 @@
                         value: {}
                     },
 
+                    _athletes: {
+                        type: Object
+                    },
+
+                    _oars: {
+                        type: Object
+                    },
+
+                    _riggers: {
+                        type: Object
+                    },
+
                     _team: {
                         type: Object,
                         value: {}
@@ -166,11 +189,12 @@
             }
 
             _changePage(page) {
-
+                console.log(this._athletes, this._oars, this._riggers)
                 this.importLazyGroup(page).then(function () {}.bind(this));
             }
 
             _updatePage(boat) {
+                console.log(boat);
                 let page = 'message';
 
                 if (boat) {
@@ -221,7 +245,6 @@
             }
 
             _handleActionAddOar() {
-                console.log('oar fire')
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-add-oar', {
                     bubbles: true,
                     composed: true
@@ -229,7 +252,6 @@
             }
 
             _handleActionAddRigger() {
-                console.log('rigger fire')
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-add-rigger', {
                     bubbles: true,
                     composed: true

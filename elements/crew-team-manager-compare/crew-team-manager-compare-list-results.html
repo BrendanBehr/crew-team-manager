@@ -85,14 +85,15 @@
                                 [[item.streetAddress]] [[item.city]] [[item.state]]
                             </div>
                         </div>
-                        <iron-icon class$="[[_selected(selectedItemOne, selectedItemTwo)]]" selected$="_selected" icon="rowing"></iron-icon>
+                        <iron-icon class$="[[_selected(selectedItemOne)]]" selected$="_selected" icon="rowing"></iron-icon>
                     </div>
                 </template>
             </iron-list>
         </div>
 
         <div id="athletes-list-two">
-            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-two" selected-item="{{selectedItemTwo}}" selection-enabled>
+            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-two" selected-item="{{selectedItemTwo}}" selection-enabled
+                on-selected-item-changed="_handleItemSelect">
                 <template>
                     <div class="athlete" on-click="_handleItemClick2">
 
@@ -105,7 +106,7 @@
                                 [[item.streetAddress]] [[item.city]] [[item.state]]
                             </div>
                         </div>
-                        <iron-icon class$="[[_selected(selectedItemOne, selectedItemTwo)]]" icon="rowing"></iron-icon>
+                        <iron-icon class$="[[_selected(selectedItemTwo)]]" icon="rowing"></iron-icon>
                     </div>
                 </template>
             </iron-list>
@@ -143,10 +144,14 @@
                 }
             }
 
-            _selected(selectedItemOne, selectedItemTwo) {
+            _handleItemSelect() {
+                console.log(this.selectedItemTwo)
+            }
+
+            _selected(item) {
                 let classes = 'selector';
 
-                if (selectedItemOne || selectedItemTwo) {
+                if (item) {
                     classes += ' selected';
                 }
 

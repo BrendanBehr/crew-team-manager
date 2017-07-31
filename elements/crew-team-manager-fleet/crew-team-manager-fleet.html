@@ -53,7 +53,7 @@
             <crew-team-manager-fleet-detail id="detail" boat="[[_boat]]" page="loading" on-crew-team-manager-fleet-detail-action-back="_handleActionBack"
                 on-crew-team-manager-fleet-detail-action-edit="_handleActionEdit" on-crew-team-manager-fleet-detail-action-delete="_handleActionDelete"
                 on-crew-team-manager-fleet-detail-action-add-rigger="_handleActionAddRigger" on-crew-team-manager-fleet-detail-action-add-athlete="_handleActionAddAthlete"
-                on-crew-team-manager-fleet-detail-action-add-oar="_handleActionAddOar" team-id="[[teamId]]">
+                on-crew-team-manager-fleet-detail-action-add-oar="_handleActionAddOar" team-id="[[teamId]]" athlete="[[athlete]]">
             </crew-team-manager-fleet-detail>
 
             <crew-team-manager-fleet-edit edit="[[_edit]]" id="edit" boat="[[_boat]]" on-crew-team-manager-fleet-edit-action-back="_handleActionBackOnce"
@@ -64,9 +64,12 @@
                 on-crew-team-manager-fleet-create-action-created="_handleActionCreated">
             </crew-team-manager-fleet-create>
 
-            <crew-team-manager-fleet-roster-list id="athlete" team-id="[[teamId]]" page="loading" on-crew-team-manager-fleet-roster-list-action-back="_handleActionBackOnce"></crew-team-manager-fleet-roster-list>
-            <crew-team-manager-fleet-oar-list id="oar" team-id="[[teamId]]" page="loading"></crew-team-manager-fleet-oar-list>
-            <crew-team-manager-fleet-rigger-list id="rigger" team-id="[[teamId]]" page="loading"></crew-team-manager-fleet-rigger-list>
+            <crew-team-manager-fleet-roster-list id="athlete" team-id="[[teamId]]" boat="[[_boat]]" page="loading" on-crew-team-manager-fleet-roster-list-action-back="_handleActionBackOnce"
+                on-crew-team-manager-fleet-roster-list-action-add-athletes="_handleActionAddedAthletes"></crew-team-manager-fleet-roster-list>
+            <crew-team-manager-fleet-oar-list id="oar" team-id="[[teamId]]" boat="[[_boat]]" page="loading" on-crew-team-manager-fleet-oar-list-action-back="_handleActionBackOnce"
+                on-crew-team-manager-fleet-oar-list-action-add-oars="_handleActionAddedOars"></crew-team-manager-fleet-oar-list>
+            <crew-team-manager-fleet-rigger-list id="rigger" team-id="[[teamId]]" boat="[[_boat]]" page="loading" on-crew-team-manager-fleet-rigger-list-action-back="_handleActionBackOnce"
+                on-crew-team-manager-fleet-rigger-list-action-add-riggers="_handleActionAddedRiggers"></crew-team-manager-fleet-rigger-list>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -110,7 +113,19 @@
                         type: String
                     },
 
-                    teamId: String
+                    teamId: String,
+
+                    athlete: {
+                        type: Object
+                    },
+
+                    oars: {
+                        type: Object
+                    },
+
+                    riggers: {
+                        type: Object
+                    }
                 }
             }
 
@@ -178,12 +193,25 @@
                 this.page = 'athlete';
             }
 
+            _handleActionAddedAthletes(e) {
+                this.athlete = e.detail.athletes;
+                this.page = 'detail';
+            }
+
             _handleActionAddOar() {
                 this.page = 'oar';
             }
 
+            _handleActionAddedOars(e) {
+                this.page = 'detail';
+            }
+
             _handleActionAddRigger() {
                 this.page = 'rigger';
+            }
+
+            _handleActionAddedRiggers(e) {
+                this.page = 'detail';
             }
         }
 

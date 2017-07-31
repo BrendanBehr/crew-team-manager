@@ -53,6 +53,16 @@
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
+
+            #boat-oars {
+                border-bottom: solid 1px grey;
+                padding: 16px;
+            }
+
+            #boat-riggers {
+                border-bottom: solid 1px grey;
+                padding: 16px;
+            }
         </style>
 
         <div id="content">
@@ -87,8 +97,51 @@
                         Athletes:
                     </div>
 
-                    <div id="athletes">
+                    <iron-list id="list" items="[[athlete]]" as="item">
+                        <template>
+                            <div class="athlete" on-click="_handleItemClick">
+                                <div class="athlete-info">
+                                    <div class="athlete-info-name">
+                                        [[item.firstName]] [[item.lastName]]
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </iron-list>
+                </div>
+                <div id="boat-oars">
+                    <div id="subhead">
+                        Oars:
                     </div>
+
+                    <iron-list id="list" items="[[oar]]" as="item">
+                        <template>
+                            <div class="oar" on-click="_handleItemClick">
+                                <div class="oar-info">
+                                    <div class="oar-info-name">
+                                        [[item.name]]
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </iron-list>
+                </div>
+                <div id="boat-riggers">
+                    <div id="subhead">
+                        Riggers:
+                    </div>
+
+                    <iron-list id="list" items="[[rigger]]" as="item">
+                        <template>
+                            <div class="rigger" on-click="_handleItemClick">
+                                <div class="rigger-info">
+                                    <div class="rigger-info-name">
+                                        [[item.style]] [[item.seat]]
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </iron-list>
                 </div>
             </paper-card>
         </div>
@@ -109,6 +162,18 @@
                     },
 
                     team: {
+                        type: Object
+                    },
+
+                    athlete: {
+                        type: Object
+                    },
+
+                    oar: {
+                        type: Object
+                    },
+
+                    rigger: {
                         type: Object
                     }
                 }

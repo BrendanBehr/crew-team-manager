@@ -87,7 +87,7 @@ team1Boat1.addAthlete(team1Athlete3);
 team1Boat1.removeAthlete(team1Athlete1);
 
 for (let x = 0; x < team1Oar1.length; x++) {
-    team1Boat1.addOars(team1Oar1[x]);
+    team1Boat1.addOar(team1Oar1[x]);
 
 }
 

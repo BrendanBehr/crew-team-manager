@@ -6,7 +6,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-fleet-roster-list-results">
+<dom-module id="crew-team-manager-fleet-rigger-list-results">
     <template>
         <style>
              :host {
@@ -16,58 +16,66 @@
 
             #list {
                 background-color: lightslategray;
+                /*@apply(--layout-vertical);*/
                 @apply(--layout-flex);
+                /*top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;*/
             }
 
-            .athlete {
+            .rigger {
                 background-color: white;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
             }
 
-            .athlete-avatar {
+            .rigger-avatar {
                 margin: 8px;
             }
 
-            .athlete-info {
+            .rigger-info {
                 font-size: 18px;
                 @apply(--layout-flex);
                 padding: 8px;
             }
 
-            .athlete-info-name {
+            .rigger-info-name {
                 @apply(--paper-font-title);
             }
 
-            .athlete-info-location {
+            .rigger-info-helpers {
                 @apply(--paper-font-caption);
             }
         </style>
 
+
         <iron-list id="list" items="[[data]]" as="item">
             <template>
-                <div class="athlete" on-click="_handleItemClick">
+                <div class="rigger" on-click="_handleItemClick">
 
-                    <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
-                    <div class="athlete-info">
-                        <div class="athlete-info-name">
-                            [[item.firstName]] [[item.lastName]]
+                    <crew-team-manager-avatar class="rigger-avatar" value="[[item.style]]"></crew-team-manager-avatar>
+                    <div class="rigger-info">
+                        <div class="rigger-info-name">
+                            [[item.style]]
                         </div>
-                        <div class="athlete-info-location">
-                            [[item.streetAddress]] [[item.city]] [[item.state]]
+                        <div class="rigger-info-helpers">
+                            [[item.side]] [[item.seat]]
                         </div>
                     </div>
                 </div>
             </template>
         </iron-list>
+
+
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerFleetRosterListResults extends Polymer.Element {
+        class crewTeamManagerFleetRiggerListResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-fleet-roster-list-results'
+                return 'crew-team-manager-fleet-rigger-list-results'
             }
 
             static get properties() {
@@ -75,23 +83,24 @@
                     data: {
                         type: Object,
                     }
+
                 }
             }
 
+
             _handleItemClick(e) {
-                // console.log(e.model.item)
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterListResults.is +
-                    '-action-select-athletes', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRiggerListResults.is +
+                    '-action-select-riggers', {
                         bubbles: true,
                         composed: true,
                         detail: {
-                            athlete: e.model.item.$key,
+                            rigger: e.model.item.$key
                         }
                     }));
             }
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerFleetRosterListResults.is, crewTeamManagerFleetRosterListResults);
+        customElements.define(crewTeamManagerFleetRiggerListResults.is, crewTeamManagerFleetRiggerListResults);
     </script>
 </dom-module>

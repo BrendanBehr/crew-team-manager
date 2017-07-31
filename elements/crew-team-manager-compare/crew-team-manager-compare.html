@@ -13,8 +13,6 @@
 <dom-module id="crew-team-manager-compare">
     <link rel="lazy-import" group="list" href="crew-team-manager-compare-list.html">
     <link rel="lazy-import" group="detail" href="crew-team-manager-compare-detail.html">
-    <link rel="lazy-import" group="edit" href="crew-team-manager-compare-edit.html">
-    <link rel="lazy-import" group="create" href="crew-team-manager-compare-create.html">
     <template>
         <style>
              :host {
@@ -42,8 +40,7 @@
             <crew-team-manager-compare-list id="list" menu-hidden$="[[wideLayout]]" page="loading" team-id="{{teamId}}" on-crew-team-manager-compare-list-results-action-detail="_handleActionDetail">
             </crew-team-manager-compare-list>
 
-            <crew-team-manager-compare-detail id="detail" athletes="[[_athletes]]" page="loading" team-id="{{teamId}}" on-crew-team-manager-compare-detail-action-back="_handleActionBack"
-                on-crew-team-manager-compare-detail-action-edit="_handleActionEdit" on-crew-team-manager-compare-detail-action-delete="_handleActionDelete">
+            <crew-team-manager-compare-detail id="detail" athletes="[[_athletes]]" page="loading" team-id="{{teamId}}" on-crew-team-manager-compare-detail-action-back="_handleActionBack">
             </crew-team-manager-compare-detail>
         </iron-pages>
 
@@ -106,50 +103,6 @@
 
             _handleActionBack(e) {
                 this.page = 'list';
-            }
-
-            _handleActionBackOnce(e) {
-                this.page = 'detail';
-            }
-
-            _handleActionEdit(e) {
-
-                this._edit = e.detail.athlete;
-                this.page = 'edit';
-
-            }
-
-            _handleActionCreated(e) {
-                this.page = 'detail';
-                this._toast = 'Athlete Created';
-                this._athlete = e.detail.athlete;
-                this.$.toast.fitInto = this.$.pages;
-                this.$.toast.open();
-            }
-
-            _handleActionSaved(e) {
-                this.page = 'detail';
-                this._toast = 'Athlete Saved';
-                this.$.toast.fitInto = this.$.pages;
-                this.$.toast.open();
-            }
-
-            _handleActionCreate(e) {
-                this.page = 'create';
-            }
-
-            _handleActionCancel(e) {
-                this.page = 'list';
-                this._toast = 'Cancelled Athlete Create';
-                this.$.toast.fitInto = this.$.pages;
-                this.$.toast.open();
-            }
-
-            _handleActionDelete(e) {
-                this.page = 'list';
-                this._toast = 'Athlete Deleted';
-                this.$.toast.fitInto = this.$.pages;
-                this.$.toast.open();
             }
 
             _handleActionCompareError(e) {

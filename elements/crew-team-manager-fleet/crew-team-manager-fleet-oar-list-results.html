@@ -6,7 +6,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-fleet-roster-list-results">
+<dom-module id="crew-team-manager-fleet-oar-list-results">
     <template>
         <style>
              :host {
@@ -16,45 +16,50 @@
 
             #list {
                 background-color: lightslategray;
+                /*@apply(--layout-vertical);*/
                 @apply(--layout-flex);
+                /*top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;*/
             }
 
-            .athlete {
+            .oar {
                 background-color: white;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
             }
 
-            .athlete-avatar {
+            .oar-avatar {
                 margin: 8px;
             }
 
-            .athlete-info {
+            .oar-info {
                 font-size: 18px;
                 @apply(--layout-flex);
                 padding: 8px;
             }
 
-            .athlete-info-name {
+            .oar-info-name {
                 @apply(--paper-font-title);
             }
 
-            .athlete-info-location {
+            .oar-info-helper {
                 @apply(--paper-font-caption);
             }
         </style>
 
         <iron-list id="list" items="[[data]]" as="item">
             <template>
-                <div class="athlete" on-click="_handleItemClick">
+                <div class="oar" on-click="_handleItemClick">
 
-                    <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
-                    <div class="athlete-info">
-                        <div class="athlete-info-name">
-                            [[item.firstName]] [[item.lastName]]
+                    <crew-team-manager-avatar class="oar-avatar" value="[[item.name]]"></crew-team-manager-avatar>
+                    <div class="oar-info">
+                        <div class="oar-info-name">
+                            [[item.name]]
                         </div>
-                        <div class="athlete-info-location">
-                            [[item.streetAddress]] [[item.city]] [[item.state]]
+                        <div class="oar-info-helper">
+                            [[item.color]] [[item.shape]]
                         </div>
                     </div>
                 </div>
@@ -64,34 +69,36 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerFleetRosterListResults extends Polymer.Element {
+        class crewTeamManagerFleetOarListResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-fleet-roster-list-results'
+                return 'crew-team-manager-fleet-oar-list-results'
             }
 
             static get properties() {
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    _name: {
+                        type: String
                     }
                 }
             }
 
             _handleItemClick(e) {
-                // console.log(e.model.item)
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterListResults.is +
-                    '-action-select-athletes', {
-                        bubbles: true,
-                        composed: true,
-                        detail: {
-                            athlete: e.model.item.$key,
-                        }
-                    }));
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetOarListResults.is + '-action-select-oar', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        oar: e.model.item.$key
+                    }
+                }));
             }
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerFleetRosterListResults.is, crewTeamManagerFleetRosterListResults);
+        customElements.define(crewTeamManagerFleetOarListResults.is, crewTeamManagerFleetOarListResults);
     </script>
 </dom-module>
