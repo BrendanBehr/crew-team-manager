@@ -19,7 +19,7 @@
 
 <dom-module id="crew-team-manager-fleet-roster-list">
     <link rel="lazy-import" group="loading" href="../crew-team-manager-roster/crew-team-manager-roster-list-loading.html">
-    <link rel="lazy-import" group="results" href="../crew-team-manager-roster/crew-team-manager-roster-list-results.html">
+    <link rel="lazy-import" group="results" href="crew-team-manager-fleet-roster-list-results.html">
     <link rel="lazy-import" group="message" href="../crew-team-manager-roster/crew-team-manager-roster-list-message.html">
     <template>
         <style>
@@ -62,7 +62,7 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="teamAthletes/{{teamId}}" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="/teamAthletes/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
         <app-header-layout id="layout">
@@ -144,6 +144,8 @@
                         page = 'results';
                     }
                 }
+
+                console.log(dataSplices);
 
                 this.page = page;
 

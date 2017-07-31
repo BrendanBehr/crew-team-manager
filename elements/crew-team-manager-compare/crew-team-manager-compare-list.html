@@ -14,12 +14,12 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-compare-list-loading.html">
-<link rel="import" href="crew-team-manager-compare-list-results.html">
-<link rel="import" href="crew-team-manager-compare-list-message.html">
 
 
 <dom-module id="crew-team-manager-compare-list">
+    <link rel="lazy-import" group="loading" href="crew-team-manager-compare-list-loading.html">
+    <link rel="lazy-import" group="results" href="crew-team-manager-compare-list-results.html">
+    <link rel="lazy-import" group="message" href="crew-team-manager-compare-list-message.html">
     <template>
         <style>
              :host {
@@ -47,14 +47,8 @@
                 position: relative;
             }
 
-            #loading {
-                @apply(--layout-fit);
-            }
-
-            #results {
-                @apply(--layout-fit);
-            }
-
+            #loading,
+            #results,
             #message {
                 @apply(--layout-fit);
             }
@@ -81,7 +75,7 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="/athletes" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="/teamAthletes/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
         <app-header-layout id="layout" has-scrolling-region fullbleed>
@@ -102,7 +96,7 @@
             </app-header>
 
 
-            <iron-pages id="pages" attr-for-selected="id" selected="[[_page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-compare-list-loading id="loading"></crew-team-manager-compare-list-loading>
                 <crew-team-manager-compare-list-results id="results" data="[[_data]]" small-cards$="[[wideLayout]]" on-crew-team-manager-compare-list-results-first-athlete="_handleAthlete1"
                     on-crew-team-manager-compare-list-results-second-athlete="_handleAthlete2"></crew-team-manager-compare-list-results>
@@ -116,7 +110,7 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerCompareList extends Polymer.Element {
+        class crewTeamManagerCompareList extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-compare-list'
@@ -124,16 +118,16 @@
 
             static get observers() {
                 return [
-                    '_updatePage(_data.splices)'
+                    '_updatePage(_data.splices)',
+                    '_changePage(page)'
                 ]
             }
 
 
             static get properties() {
                 return {
-                    _page: {
-                        type: String,
-                        value: 'loading'
+                    page: {
+                        type: String
                     },
 
                     _data: {
@@ -163,7 +157,14 @@
                         value: 'false'
                     },
 
+                    teamId: String
+
                 }
+            }
+
+            _changePage(page) {
+
+                this.importLazyGroup(page).then(function () {}.bind(this));
             }
 
             _handleActionMenu() {
@@ -191,20 +192,16 @@
                     }
                 }
 
-                this._page = page;
+                this.page = page;
 
             }
 
             _handleAthlete1(e) {
                 this._athlete1 = e.detail.athlete;
-                console.log('here');
-                console.log(this._athlete1.firstName);
             }
 
             _handleAthlete2(e) {
                 this._athlete2 = e.detail.athlete;
-                console.log('here');
-                console.log(this._athlete2.firstName);
             }
 
             _handleActionLogout() {
@@ -218,10 +215,6 @@
                 const athlete1 = this._athlete1;
                 const athlete2 = this._athlete2;
                 if (athlete1 && athlete2) {
-                    console.log({
-                        athlete1Path: athlete1.$key,
-                        athlete2Path: athlete2.$key,
-                    });
                     this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-action-detail', {
                         bubbles: true,
                         composed: true,

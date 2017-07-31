@@ -18,8 +18,10 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
 
 <dom-module id="crew-team-manager-stage">
+    <link rel="lazy-import" group="compare" href="../crew-team-manager-compare/crew-team-manager-compare.html">
     <link rel="lazy-import" group="team" href="../crew-team-manager-team/crew-team-manager-team.html">
     <link rel="lazy-import" group="roster" href="../crew-team-manager-roster/crew-team-manager-roster.html">
     <link rel="lazy-import" group="picture" href="../crew-team-manager-picture/crew-team-manager-picture.html">
@@ -87,50 +89,56 @@
                     on-crew-team-manager-picture-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-picture>
                 <crew-team-manager-team id="team" class="page" page="detail" on-crew-team-manager-stage-action-logout="_handleActionLogout"
                     on-crew-team-manager-team-detail-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-team>
+                <crew-team-manager-compare id="compare" class="page" page="list" on-crew-team-manager-stage-action-logout="_handleActionLogout"
+                    on-crew-team-manager-compare-list-action-menu="_toggleDrawer" wide-layout$="[[_wideLayout]]" team-id="[[teamId]]"></crew-team-manager-compare>
             </iron-pages>
 
             <app-drawer id="drawer" slot="drawer" opened$="[[_wideLayout]]" persistent$="[[_wideLayout]]">
                 <paper-listbox>
-                    <paper-item page="erg" on-click="_handleMenuClick">
+                    <paper-icon-item page="compare" on-tap="_handleMenuClick">
+                        <iron-icon page="compare" icon="supervisor-account"></iron-icon>
+                        Compare
+                    </paper-icon-item>
+                    <paper-icon-item page="erg" on-tap="_handleMenuClick">
                         <iron-icon page="erg" icon="places:fitness-center"></iron-icon>
-                        <button page="erg">ergs</button>
-                    </paper-item>
-                    <paper-item page="finance" on-click="_handleMenuClick">
+                        Erg
+                    </paper-icon-item>
+                    <paper-icon-item page="finance" on-tap="_handleMenuClick">
                         <iron-icon page="finance" icon="editor:attach-money"></iron-icon>
-                        <button page="finance">finance</button>
-                    </paper-item>
-                    <paper-item page="fleet" on-click="_handleMenuClick">
+                        Finance
+                    </paper-icon-item>
+                    <paper-icon-item page="fleet" on-tap="_handleMenuClick">
                         <iron-icon page="fleet" icon="maps:directions-boat"></iron-icon>
-                        <button page="fleet">fleet</button>
-                    </paper-item>
-                    <paper-item page="oar" on-click="_handleMenuClick">
-                        <iron-icon page="oar" icon="av:shuffle" on-click="_handleMenuClick"></iron-icon>
-                        <button page="oar">oars</button>
-                    </paper-item>
-                    <paper-item page="picture" on-click="_handleMenuClick">
+                        Fleet
+                    </paper-icon-item>
+                    <paper-icon-item page="oar" on-tap="_handleMenuClick">
+                        <iron-icon page="oar" icon="av:shuffle" on-tap="_handleMenuClick"></iron-icon>
+                        Oar
+                    </paper-icon-item>
+                    <paper-icon-item page="picture" on-tap="_handleMenuClick">
                         <iron-icon page="picture" icon="image:camera-roll"></iron-icon>
-                        <button page="picture">pictures</button>
-                    </paper-item>
-                    <paper-item page="race" on-click="_handleMenuClick">
+                        Picture
+                    </paper-icon-item>
+                    <paper-icon-item page="race" on-tap="_handleMenuClick">
                         <iron-icon page="race" icon="gavel"></iron-icon>
-                        <button page="race">races</button>
-                    </paper-item>
-                    <paper-item page="rigger" on-click="_handleMenuClick">
+                        Race
+                    </paper-icon-item>
+                    <paper-icon-item page="rigger" on-tap="_handleMenuClick">
                         <iron-icon page="rigger" icon="build"></iron-icon>
-                        <button page="rigger">riggers</button>
-                    </paper-item>
-                    <paper-item page="roster" on-click="_handleMenuClick">
+                        Rigger
+                    </paper-icon-item>
+                    <paper-icon-item page="roster" on-tap="_handleMenuClick">
                         <iron-icon page="roster" icon="rowing"></iron-icon>
-                        <button page="roster">roster</button>
-                    </paper-item>
-                    <paper-item page="schedule" on-click="_handleMenuClick">
+                        Roster
+                    </paper-icon-item>
+                    <paper-icon-item page="schedule" on-tap="_handleMenuClick">
                         <iron-icon page="schedule" icon="assignment"></iron-icon>
-                        <button page="schedule">schedule</button>
-                    </paper-item>
-                    <paper-item page="team" on-click="_handleMenuClick">
+                        Schedule
+                    </paper-icon-item>
+                    <paper-icon-item page="team" on-tap="_handleMenuClick">
                         <iron-icon page="team" icon="home"></iron-icon>
-                        <button page="team">team</button>
-                    </paper-item>
+                        Team
+                    </paper-icon-item>
                 </paper-listbox>
             </app-drawer>
             <iron-media-query query="min-width: 600px" query-matches="{{_wideLayout}}"></iron-media-query>

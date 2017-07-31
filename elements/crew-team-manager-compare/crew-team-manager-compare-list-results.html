@@ -22,11 +22,13 @@
             #athletes-list-one {
                 @apply(--layout-flex);
                 border-right: solid 1px grey;
+                overflow: auto;
             }
 
             #athletes-list-two {
                 @apply(--layout-flex);
                 border-left: solid 1px grey;
+                overflow: auto;
             }
 
             #list {
@@ -38,10 +40,6 @@
                 background-color: white;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
-            }
-
-            .selector[selected="true"] {
-                color: #4caf50;
             }
 
             .athlete-avatar {
@@ -67,10 +65,14 @@
                 height: 32px;
                 width: 32px;
             }
+
+            .selector.selected {
+                color: #311b92;
+            }
         </style>
 
         <div id="athletes-list-one">
-            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-one">
+            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-one" selected-item="{{selectedItemOne}}" selection-enabled>
                 <template>
                     <div class="athlete" on-click="_handleItemClick1">
 
@@ -83,14 +85,14 @@
                                 [[item.streetAddress]] [[item.city]] [[item.state]]
                             </div>
                         </div>
-                        <iron-icon class="selector" selected$="[[_selected]" icon="rowing"></iron-icon>
+                        <iron-icon class$="[[_selected(selectedItemOne, selectedItemTwo)]]" selected$="_selected" icon="rowing"></iron-icon>
                     </div>
                 </template>
             </iron-list>
         </div>
 
         <div id="athletes-list-two">
-            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-two">
+            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-two" selected-item="{{selectedItemTwo}}" selection-enabled>
                 <template>
                     <div class="athlete" on-click="_handleItemClick2">
 
@@ -103,7 +105,7 @@
                                 [[item.streetAddress]] [[item.city]] [[item.state]]
                             </div>
                         </div>
-                        <iron-icon class="selector" selected$="[[_selected]" icon="rowing"></iron-icon>
+                        <iron-icon class$="[[_selected(selectedItemOne, selectedItemTwo)]]" icon="rowing"></iron-icon>
                     </div>
                 </template>
             </iron-list>
@@ -118,21 +120,56 @@
                 return 'crew-team-manager-compare-list-results'
             }
 
+            static get observers() {
+                return [
+                    '_selectedItemOneChange(selectedItemOne)',
+                    '_selectedItemTwoChange(selectedItemTwo)'
+                ]
+            }
+
             static get properties() {
                 return {
                     data: {
                         type: Object,
                     },
 
-                    _selected: {
-                        type: String,
-                        value: 'false'
-                    }
+                    selectedItemOne: {
+                        type: Object
+                    },
+
+                    selectedItemTwo: {
+                        type: Object
+                    },
                 }
             }
 
+            _selected(selectedItemOne, selectedItemTwo) {
+                let classes = 'selector';
+
+                if (selectedItemOne || selectedItemTwo) {
+                    classes += ' selected';
+                }
+
+                return classes;
+            }
+
+            _selectedItemOneChange(item) {
+                if (item === 'undefined') {
+                    return;
+                }
+
+                this._selected();
+            }
+
+            _selectedItemTwoChange(item) {
+                if (item === 'undefined') {
+                    return;
+                }
+
+                this._selected();
+            }
+
             _handleItemClick1(e) {
-                this._selected = 'true';
                 this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-first-athlete', {
                     bubbles: true,
                     composed: true,
@@ -145,7 +182,6 @@
             }
 
             _handleItemClick2(e) {
-                this._selected = 'true';
                 this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-second-athlete', {
                     bubbles: true,
                     composed: true,
