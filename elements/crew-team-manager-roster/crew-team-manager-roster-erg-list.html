@@ -15,12 +15,10 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-
-
-<dom-module id="crew-team-manager-fleet-roster-list">
-    <link rel="lazy-import" group="loading" href="crew-team-manager-fleet-roster-list-loading.html">
-    <link rel="lazy-import" group="results" href="crew-team-manager-fleet-roster-list-results.html">
-    <link rel="lazy-import" group="message" href="crew-team-manager-fleet-roster-list-message.html">
+<dom-module id="crew-team-manager-roster-erg-list">
+    <link rel="lazy-import" group="loading" href="crew-team-manager-roster-erg-list-loading.html">
+    <link rel="lazy-import" group="results" href="crew-team-manager-roster-erg-list-results.html">
+    <link rel="lazy-import" group="message" href="crew-team-manager-roster-erg-list-message.html">
     <template>
         <style>
              :host {
@@ -34,8 +32,8 @@
             }
 
             #layout {
+                /*@apply(--layout-flex);*/
                 @apply(--layout-vertical);
-                @apply(--layout-flex);
             }
 
             #toolbar {
@@ -48,8 +46,14 @@
                 position: relative;
             }
 
-            #loading,
-            #results,
+            #loading {
+                @apply(--layout-fit);
+            }
+
+            #results {
+                @apply(--layout-fit);
+            }
+
             #message {
                 @apply(--layout-fit);
             }
@@ -62,36 +66,36 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="query" path="/teamAthletes/{{teamId}}" data="{{_data}}">
+        <firebase-query app-name="laborsync-ctm" id="query" path="/teamErgs/{{teamId}}" data="{{_data}}">
         </firebase-query>
-
-        <firebase-document id="firebase" app-name="laborsync-ctm">
-        </firebase-document>
 
         <app-header-layout id="layout" has-scrolling-region fullbleed>
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
                     <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
-                    <div main-title id="title">Select Athletes To Add</div>
+                    <div main-title id="title">Select Ergs To Add</div>
                     <paper-icon-button id="add" icon="check" on-click="_handleActionAdd"></paper-icon-button>
                 </app-toolbar>
             </app-header>
+
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-                <crew-team-manager-fleet-roster-list-loading id="loading"></crew-team-manager-fleet-roster-list-loading>
-                <crew-team-manager-fleet-roster-list-results id="results" data="[[_data]]" on-crew-team-manager-fleet-roster-list-results-action-select-athletes="_selectAthletes"></crew-team-manager-fleet-roster-list-results>
-                <crew-team-manager-fleet-roster-list-message id="message"></crew-team-manager-fleet-roster-list-message>
+                <crew-team-manager-roster-erg-list-loading id="loading"></crew-team-manager-roster-erg-list-loading>
+                <crew-team-manager-roster-erg-list-results id="results" data="[[_data]]" on-crew-team-manager-roster-erg-list-results-action-select-ergs="_selectErgs"></crew-team-manager-roster-erg-list-results>
+                <crew-team-manager-roster-erg-list-message id="message"></crew-team-manager-roster-erg-list-message>
             </iron-pages>
 
         </app-header-layout>
+
+
     </template>
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerFleetRosterList extends Polymer.LazyImportsMixin(Polymer.Element) {
+        class crewTeamManagerRosterErgList extends Polymer.LazyImportsMixin(Polymer.Element) {
 
             static get is() {
-                return 'crew-team-manager-fleet-roster-list'
+                return 'crew-team-manager-roster-erg-list'
             }
 
             static get observers() {
@@ -114,35 +118,36 @@
 
                     teamId: String,
 
-                    selectedAthletes: {
+                    selectedErgs: {
                         type: Array,
                         value: []
                     },
 
-                    boat: {
+                    athlete: {
                         type: String,
                         value: ''
                     }
                 }
             }
 
-            _selectAthletes(e) {
+            _selectErgs(e) {
 
-                for (let x = 0; x < this.selectedAthletes.length; x++) {
-                    if (this.selectedAthletes[x] == e.detail.athlete) {
-                        this.selectedAthletes.splice(x, x);
+                for (let x = 0; x < this.selectedErgs.length; x++) {
+                    if (this.selectedErgs[x] == e.detail.erg) {
+                        this.selectedErgs.splice(x, x);
                         return;
                     }
                 }
 
-                this.selectedAthletes.push(e.detail.athlete)
+                this.selectedErgs.push(e.detail.erg)
             }
 
             _handleActionAdd() {
                 let path;
-                for (let x = 0; x < this.selectedAthletes.length; x++) {
-                    path = 'boatAthletes/' + this.boat + '/' + this.selectedAthletes[x]
-                    this.$.firebase.saveValue('boatAthletes', this.boat)
+                for (let x = 0; x < this.selectedErgs.length; x++) {
+                    path = 'athleteErgs/' + this.athlete + '/' + this.selectedErgs[x]
+                    console.log(path)
+                    this.$.firebase.saveValue('athleteErgs', this.athlete)
                         .then(() => {
 
                             this.$.firebase.setStoredValue(path, true);
@@ -150,25 +155,24 @@
 
                         });
                 }
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is +
-                    '-action-add-athletes', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is +
+                    '-action-add-ergs', {
                         bubbles: true,
                         composed: true,
                         detail: {
-                            athletes: this.selectedAthletes
+                            ergs: this.selectedErgs
                         }
                     }));
             }
 
             _handleActionBack() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is + '-action-back', {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is + '-action-back', {
                     bubbles: true,
                     composed: true,
                 }));
             }
 
             _changePage(page) {
-
                 this.importLazyGroup(page).then(function () {}.bind(this));
             }
 
@@ -185,7 +189,6 @@
                         page = 'results';
                     }
                 }
-
                 this.page = page;
 
             }
@@ -193,6 +196,6 @@
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerFleetRosterList.is, crewTeamManagerFleetRosterList);
+        customElements.define(crewTeamManagerRosterErgList.is, crewTeamManagerRosterErgList);
     </script>
 </dom-module>

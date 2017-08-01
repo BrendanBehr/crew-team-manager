@@ -6,7 +6,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-fleet-roster-list-results">
+<dom-module id="crew-team-manager-roster-erg-list-results">
     <template>
         <style>
              :host {
@@ -19,42 +19,42 @@
                 @apply(--layout-flex);
             }
 
-            .athlete {
+            .erg {
                 background-color: white;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
             }
 
-            .athlete-avatar {
+            .erg-avatar {
                 margin: 8px;
             }
 
-            .athlete-info {
+            .erg-info {
                 font-size: 18px;
                 @apply(--layout-flex);
                 padding: 8px;
             }
 
-            .athlete-info-name {
+            .erg-info-name {
                 @apply(--paper-font-title);
             }
 
-            .athlete-info-location {
+            .erg-info-location {
                 @apply(--paper-font-caption);
             }
         </style>
 
         <iron-list id="list" items="[[data]]" as="item">
             <template>
-                <div class="athlete" on-click="_handleItemClick">
+                <div class="erg" on-click="_handleItemClick">
 
-                    <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
-                    <div class="athlete-info">
-                        <div class="athlete-info-name">
-                            [[item.firstName]] [[item.lastName]]
+                    <crew-team-manager-avatar class="erg-avatar" value="[[item.number]] % 10"></crew-team-manager-avatar>
+                    <div class="erg-info">
+                        <div class="erg-info-number">
+                            [[item.number]]
                         </div>
-                        <div class="athlete-info-location">
-                            [[item.streetAddress]] [[item.city]] [[item.state]]
+                        <div class="erg-info-location">
+                            [[item.location]]
                         </div>
                     </div>
                 </div>
@@ -64,33 +64,38 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerFleetRosterListResults extends Polymer.Element {
+        class crewTeamManagerRosterErgListResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-fleet-roster-list-results'
+                return 'crew-team-manager-roster-erg-list-results'
             }
 
             static get properties() {
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    _name: {
+                        type: String
                     }
                 }
             }
 
             _handleItemClick(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterListResults.is +
-                    '-action-select-athletes', {
+                // console.log(e.model.item)
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgListResults.is +
+                    '-action-select-ergs', {
                         bubbles: true,
                         composed: true,
                         detail: {
-                            athlete: e.model.item.$key,
+                            erg: e.model.item.$key,
                         }
                     }));
             }
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerFleetRosterListResults.is, crewTeamManagerFleetRosterListResults);
+        customElements.define(crewTeamManagerRosterErgListResults.is, crewTeamManagerRosterErgListResults);
     </script>
 </dom-module>

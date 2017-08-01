@@ -707,9 +707,9 @@ hasUserDeleteAccess(userId){
 //*****************************Fan outs********************************
 //-----------------------------BoatAthlete-------------------------------
 
-path /boatAthletes/{boatId}/{athleteId} is FanOut {
+path /boatAthletes/{boatId} is FanOut {
     read() {
-        hasBoatAthleteReadAccess(boatId, athleteId)
+        hasBoatAthleteReadAccess(boatId)
     }
 
     create() {
@@ -717,39 +717,37 @@ path /boatAthletes/{boatId}/{athleteId} is FanOut {
     }
 
     update() {
-        hasBoatAthleteUpdateAccess(boatId, athleteId)
+        hasBoatAthleteUpdateAccess(boatId)
     }
 
     delete() {
-        hasBoatAthleteDeleteAccess(boatId, athleteId)
+        hasBoatAthleteDeleteAccess(boatId)
     }
 
-        validate() {getAthlete(athleteId).team == getBoat(boatId).team && getBoat(boatId).team == getAuthUser().team}
-
-
+        validate() {getBoat(boatId).team == getAuthUser().team}
 }
 
-type FanOut extends Boolean {
+type FanOut  {
     validate() { getAuthUser().permisions == 'admin' }
 }
 
-hasBoatAthleteReadAccess(boatId, athleteId){
-    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getAthlete(athleteId).team && getAuth().status == 'active'
+hasBoatAthleteReadAccess(boatId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getAuth().status == 'active'
 }
 
-hasBoatAthleteUpdateAccess(boatId, athleteId){
-    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getAthlete(athleteId).team
+hasBoatAthleteUpdateAccess(boatId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team
 }
 
-hasBoatAthleteDeleteAccess(boatId, athleteId){
-    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().permisions == 'admin'
+hasBoatAthleteDeleteAccess(boatId){
+    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().permisions == 'admin'
 }
 
 //----------------------------------BoatOar--------------------------------
 
-path /boatOars/{boatId}/{oarId} is FanOut {
+path /boatOars/{boatId} is FanOut {
     read() {
-        hasBoatOarReadAccess(boatId, oarId)
+        hasBoatOarReadAccess(boatId)
     }
 
     create() {
@@ -757,33 +755,33 @@ path /boatOars/{boatId}/{oarId} is FanOut {
     }
 
     update() {
-        hasBoatOarUpdateAccess(boatId, oarId)
+        hasBoatOarUpdateAccess(boatId)
     }
 
     delete() {
-        hasBoatOarDeleteAccess(boatId, oarId)
+        hasBoatOarDeleteAccess(boatId)
     }
 
-    validate() {getOar(oarId).team == getBoat(boatId).team && getBoat(boatId).team == getAuthUser().team}
+    validate() {getBoat(boatId).team == getAuthUser().team}
 }
 
-hasBoatOarReadAccess(boatId, oarId){
-    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getOar(oarId).team && getAuth().status == 'active'
+hasBoatOarReadAccess(boatId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getAuth().status == 'active'
 }
 
-hasBoatOarUpdateAccess(boatId, oarId){
-    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getOar(oarId).team
+hasBoatOarUpdateAccess(boatId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team
 }
 
-hasBoatOarDeleteAccess(boatId, oarId){
-    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getOar(oarId).team && getAuthUser().permisions == 'admin'
+hasBoatOarDeleteAccess(boatId){
+    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().permisions == 'admin'
 }
 
 //----------------------------------BoatRigger--------------------------------
 
-path /boatRiggers/{boatId}/{riggerId} is FanOut {
+path /boatRiggers/{boatId} is FanOut {
     read() {
-        hasBoatRiggerReadAccess(boatId, riggerId)
+        hasBoatRiggerReadAccess(boatId)
     }
 
     create() {
@@ -791,33 +789,33 @@ path /boatRiggers/{boatId}/{riggerId} is FanOut {
     }
 
     update() {
-        hasBoatRiggerUpdateAccess(boatId, riggerId)
+        hasBoatRiggerUpdateAccess(boatId)
     }
 
     delete() {
-        hasBoatRiggerDeleteAccess(boatId, riggerId)
+        hasBoatRiggerDeleteAccess(boatId)
     }
 
-    validate() {getRigger(riggerId).team == getBoat(boatId).team && getBoat(boatId).team == getAuthUser().team}
+    validate() {getBoat(boatId).team == getAuthUser().team}
 }
 
-hasBoatRiggerUpdateAccess(boatId, riggerId){
-    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getRigger(riggerId).team && getAuth().status == 'active'
+hasBoatRiggerUpdateAccess(boatId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getAuth().status == 'active'
 }
 
-hasBoatRiggerReadAccess(boatId, riggerId){
-    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getBoat(boatId).team == getRigger(riggerId).team && getAuth().status == 'active'
+hasBoatRiggerReadAccess(boatId){
+    return isAuthenticatedUser() && getAuthUser().team == getBoat(boatId).team && getAuth().status == 'active'
 }
 
-hasBoatRiggerDeleteAccess(boatId, riggerId){
-    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().team == getRigger(riggerId).team && getAuthUser().permisions == 'admin'
+hasBoatRiggerDeleteAccess(boatId){
+    return  getAuth().status == 'active' && getAuthUser().team == getBoat(boatId).team && getAuthUser().permisions == 'admin'
 }
 
 //----------------------------------AthleteEmail--------------------------------
 
-path /athleteEmails/{athleteId}/{emailId} is FanOut {
+path /athleteEmails/{athleteId} is FanOut {
     read() {
-        hasAthleteEmailReadAccess(athleteId, emailId)
+        hasAthleteEmailReadAccess(athleteId)
     }
 
     create() {
@@ -825,33 +823,33 @@ path /athleteEmails/{athleteId}/{emailId} is FanOut {
     }
 
     update() {
-        hasAthleteEmailUpdateAccess(athleteId, emailId)
+        hasAthleteEmailUpdateAccess(athleteId)
     }
 
     delete() {
-        hasAthleteEmailDeleteAccess(athleteId, emailId)
+        hasAthleteEmailDeleteAccess(athleteId)
     }
 
-    validate() {getAthlete(athleteId).team == getUser(getEmail(emailId).user).team && getAthlete(athleteId).team == getAuthUser().team}
+    validate() {getAthlete(athleteId).team == getAuthUser().team}
 }
 
-hasAthleteEmailReadAccess(athleteId, emailId){
-    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getUser(getEmail(emailId).user).team && getAuth().status == 'active'
+hasAthleteEmailReadAccess(athleteId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAuth().status == 'active'
 }
 
-hasAthleteEmailUpdateAccess(athleteId, emailId){
-    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getUser(getEmail(emailId).user).team
+hasAthleteEmailUpdateAccess(athleteId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team
 }
 
-hasAthleteEmailDeleteAccess(athleteId, emailId){
-    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().team == getUser(getEmail(emailId).user).team && getAuthUser().permisions == 'admin'
+hasAthleteEmailDeleteAccess(athleteId){
+    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().permisions == 'admin'
 }
 
 //----------------------------------AthleteErg--------------------------------
 
-path /athleteErgs/{athleteId}/{ergId} is FanOut {
+path /athleteErgs/{athleteId} is FanOut {
     read() {
-        hasAthleteErgReadAccess(athleteId, ergId)
+        hasAthleteErgReadAccess(athleteId)
     }
 
     create() {
@@ -859,37 +857,37 @@ path /athleteErgs/{athleteId}/{ergId} is FanOut {
     }
 
     update() {
-        hasAthleteErgUpdateAccess(athleteId, ergId)
+        hasAthleteErgUpdateAccess(athleteId)
     }
 
     delete() {
-        hasAthleteErgDeleteAccess(athleteId, ergId)
+        hasAthleteErgDeleteAccess(athleteId)
     }
 
-    validate() {getAthlete(athleteId).team == getErg(ergId).team && getAthlete(athleteId).team == getAuthUser().team}
+    validate() {getAthlete(athleteId).team == getAuthUser().team}
 }
 
-hasAthleteErgReadAccess(athleteId, ergId){
-    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getErg(ergId).team && getAuth().status == 'active'
+hasAthleteErgReadAccess(athleteId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAuth().status == 'active'
 }
 
-hasAthleteErgUpdateAccess(athleteId, ergId){
-    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getErg(ergId).team
+hasAthleteErgUpdateAccess(athleteId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team
 }
 
-hasAthleteErgDeleteAccess(athleteId, ergId){
-    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().team == getErg(ergId).team && getAuthUser().permisions == 'admin'
+hasAthleteErgDeleteAccess(athleteId){
+    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().permisions == 'admin'
 }
 
 //----------------------------------AthleteFinance--------------------------------
 
-path /athleteFinances/{athleteId}/{financeId} is FanOut {
+path /athleteFinances/{athleteId} is FanOut {
     read() {
-        hasAthleteFinanceReadAccess(athleteId, financeId)
+        hasAthleteFinanceReadAccess(athleteId)
     }
 
     update() {
-        hasAthleteFinanceUpdateAccess(athleteId, financeId)
+        hasAthleteFinanceUpdateAccess(athleteId)
     }
 
     create() {
@@ -897,29 +895,29 @@ path /athleteFinances/{athleteId}/{financeId} is FanOut {
     }
 
     delete() {
-        hasAthleteFinanceDeleteAccess(athleteId, financeId)
+        hasAthleteFinanceDeleteAccess(athleteId)
     }
 
-    validate() {getAthlete(athleteId).team == getFinance(financeId).team && getAthlete(athleteId).team == getAuthUser().team}
+    validate() {getAthlete(athleteId).team == getAuthUser().team}
 }
 
-hasAthleteFinanceReadAccess(athleteId, financeId){
-    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getFinance(financeId).team && getAuth().status == 'active'
+hasAthleteFinanceReadAccess(athleteId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAuth().status == 'active'
 }
 
-hasAthleteFinanceUpdateAccess(athleteId, financeId){
-    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team && getAthlete(athleteId).team == getFinance(financeId).team
+hasAthleteFinanceUpdateAccess(athleteId){
+    return isAuthenticatedUser() && getAuthUser().team == getAthlete(athleteId).team 
 }
 
-hasAthleteFinanceDeleteAccess(athleteId, financeId){
-    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().team == getFinance(financeId).team && getAuthUser().permisions == 'admin'
+hasAthleteFinanceDeleteAccess(athleteId){
+    return  getAuth().status == 'active' && getAuthUser().team == getAthlete(athleteId).team && getAuthUser().permisions == 'admin'
 }
 
 //----------------------------------RegattaRace--------------------------------
 
-path /regattaRaces/{regattaId}/{raceId} is FanOut {
+path /regattaRaces/{regattaId} is FanOut {
     read() {
-        hasRegattaRaceReadAccess(regattaId, raceId)
+        hasRegattaRaceReadAccess(regattaId)
     }
 
     create() {
@@ -927,33 +925,33 @@ path /regattaRaces/{regattaId}/{raceId} is FanOut {
     }
 
     update() {
-        hasRegattaRaceUpdateAccess(regattaId, raceId)
+        hasRegattaRaceUpdateAccess(regattaId)
     }
 
     delete() {
-        hasRegattaRaceDeleteAccess(regattaId, raceId)
+        hasRegattaRaceDeleteAccess(regattaId)
     }
 
-    validate() {getRace(raceId).team == getRegatta(regattaId).team && getRegatta(regattaId).team == getAuthUser().team}
+    validate() {getRegatta(regattaId).team == getAuthUser().team}
 }
 
-hasRegattaRaceReadAccess(regattaId, raceId){
-    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getRegatta(regattaId).team == getRace(raceId).team && getAuth().status == 'active'
+hasRegattaRaceReadAccess(regattaId){
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getAuth().status == 'active'
 }
 
-hasRegattaRaceUpdateAccess(regattaId, raceId){
-    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getRegatta(regattaId).team == getRace(raceId).team
+hasRegattaRaceUpdateAccess(regattaId){
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team
 }
 
-hasRegattaRaceDeleteAccess(regattaId, raceId){
-    return  getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().team == getRace(raceId).team && getAuthUser().permisions == 'admin'
+hasRegattaRaceDeleteAccess(regattaId){
+    return  getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().permisions == 'admin'
 }
 
 //----------------------------------RegattaPicture--------------------------------
 
-path /regattaPictures/{regattaId}/{pictureId} is FanOut {
+path /regattaPictures/{regattaId} is FanOut {
     read() {
-        hasRegattaPictureReadAccess(regattaId, pictureId)
+        hasRegattaPictureReadAccess(regattaId)
     }
 
     create() {
@@ -961,26 +959,26 @@ path /regattaPictures/{regattaId}/{pictureId} is FanOut {
     }
 
     update() {
-        hasRegattaPictureUpdateAccess(regattaId, pictureId)
+        hasRegattaPictureUpdateAccess(regattaId)
     }
 
     delete() {
-        hasRegattaPictureDeleteAccess(regattaId, pictureId)
+        hasRegattaPictureDeleteAccess(regattaId)
     }
 
-    validate() {getRegatta(regattaId).team == getPicture(pictureId).team && getRegatta(regattaId).team == getAuthUser().team}
+    validate() {getRegatta(regattaId).team == getAuthUser().team}
 }
 
-hasRegattaPictureReadAccess(regattaId, pictureId){
-    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getRegatta(regattaId).team == getPicture(pictureId).team && getAuth().status == 'active'
+hasRegattaPictureReadAccess(regattaId){
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getAuth().status == 'active'
 }
 
-hasRegattaPictureUpdateAccess(regattaId, pictureId){
-    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team && getRegatta(regattaId).team == getPicture(pictureId).team
+hasRegattaPictureUpdateAccess(regattaId){
+    return isAuthenticatedUser() && getAuthUser().team == getRegatta(regattaId).team
 }
 
-hasRegattaPictureDeleteAccess(regattaId, pictureId){
-    return  getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().team == getPicture(pictureId).team && getAuthUser().permisions == 'admin'
+hasRegattaPictureDeleteAccess(regattaId){
+    return  getAuth().status == 'active' && getAuthUser().team == getRegatta(regattaId).team && getAuthUser().permisions == 'admin'
 }
 
 //**************************TeamFanOuts********************************

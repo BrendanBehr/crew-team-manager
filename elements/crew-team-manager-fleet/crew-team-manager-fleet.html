@@ -195,6 +195,9 @@
 
             _handleActionAddedAthletes(e) {
                 this.athlete = e.detail.athletes;
+                this._toast = 'Athletes Added';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
                 this.page = 'detail';
             }
 
@@ -203,6 +206,9 @@
             }
 
             _handleActionAddedOars(e) {
+                this._toast = 'Oars Added';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
                 this.page = 'detail';
             }
 
@@ -211,6 +217,9 @@
             }
 
             _handleActionAddedRiggers(e) {
+                this._toast = 'Riggers Added';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
                 this.page = 'detail';
             }
         }

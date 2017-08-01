@@ -10,12 +10,14 @@
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
-<link rel="import" href="crew-team-manager-schedule-list.html">
 
 <dom-module id="crew-team-manager-schedule">
+    <link rel="lazy-import" group="list" href="crew-team-manager-schedule-list.html">
     <link rel="lazy-import" group="detail" href="crew-team-manager-schedule-detail.html">
     <link rel="lazy-import" group="edit" href="crew-team-manager-schedule-edit.html">
     <link rel="lazy-import" group="create" href="crew-team-manager-schedule-create.html">
+    <link rel="lazy-import" group="race" href="crew-team-manager-schedule-race-list.html">
+    <link rel="lazy-import" group="picture" href="crew-team-manager-schedule-picture-create.html">
     <template>
         <style>
              :host {
@@ -28,15 +30,12 @@
                 position: relative;
             }
 
-            #list {
-                @apply(--layout-fit);
-            }
-
-            #detail {
-                @apply(--layout-fit);
-            }
-
-            #edit {
+            #list,
+            #detail,
+            #edit,
+            #create,
+            #race,
+            #picture {
                 @apply(--layout-fit);
             }
 
@@ -52,7 +51,8 @@
             </crew-team-manager-schedule-list>
 
             <crew-team-manager-schedule-detail id="detail" regatta="[[_regatta]]" on-crew-team-manager-schedule-detail-action-back="_handleActionBack"
-                on-crew-team-manager-schedule-detail-action-edit="_handleActionEdit" on-crew-team-manager-schedule-detail-action-delete="_handleActionDelete">
+                on-crew-team-manager-schedule-detail-action-edit="_handleActionEdit" on-crew-team-manager-schedule-detail-action-delete="_handleActionDelete"
+                on-crew-team-manager-schedule-detail-action-add-race="_handleActionAddRace" on-crew-team-manager-schedule-detail-action-add-picture="_handleActionAddPicture">
             </crew-team-manager-schedule-detail>
 
             <crew-team-manager-schedule-edit edit="[[_edit]]" id="edit" regatta="[[_regatta]]" on-crew-team-manager-schedule-edit-action-back="_handleActionBackOnce"
@@ -62,6 +62,14 @@
             <crew-team-manager-schedule-create id="create" team-id="[[teamId]]" on-crew-team-manager-schedule-create-action-cancel="_handleActionCancel"
                 on-crew-team-manager-schedule-create-action-created="_handleActionCreated">
             </crew-team-manager-schedule-create>
+
+            <crew-team-manager-schedule-race-list id="race" team-id="[[teamId]]" regatta="[[_regatta]]" page="loading" on-crew-team-manager-schedule-race-list-action-back="_handleActionBackOnce"
+                on-crew-team-manager-schedule-race-list-action-add-race="_handleActionAddedRaces">
+            </crew-team-manager-schedule-race-list>
+
+            <crew-team-manager-schedule-picture-create id="picture" team-id="[[teamId]]" on-crew-team-manager-schedule-picture-create-action-cancel="_handleActionCanceled"
+                on-crew-team-manager-schedule-picture-create-action-created="_handleActionAddedPicture">
+            </crew-team-manager-schedule-picture-create>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -105,7 +113,12 @@
                         type: String
                     },
 
-                    teamId: String
+                    teamId: String,
+
+                    races: {
+                        type: Object,
+                        value: {}
+                    }
                 }
             }
 
@@ -165,6 +178,34 @@
                 this._toast = 'Cancelled Regatta Create';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
+            }
+
+            _handleActionAddRace() {
+                this.page = 'race';
+            }
+
+            _handleActionAddedRaces(e) {
+                this.race = e.detail.races;
+                this._toast = 'RacesAdded';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+                this.page = 'detail';
+            }
+
+            _handleActionCanceled() {
+                this.page = 'detail'
+            }
+
+            _handleActionAddPicture() {
+                this.page = 'picture';
+                console.log(this.page)
+            }
+
+            _handleActionAddedPicture() {
+                this._toast = 'Pictures Added';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+                this.page = 'detail'
             }
         }
 

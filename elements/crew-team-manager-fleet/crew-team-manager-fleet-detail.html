@@ -92,17 +92,16 @@
         <firebase-query app-name="laborsync-ctm" id="athlete-query" path="/boatAthletes/{{boat}}" data="{{_athletes}}">
         </firebase-query>
 
-        <firebase-query app-name="laborsync-ctm" id="rigger-query" path="/boatOars/{{boat}}" data="{{_oars}}">
+        <firebase-query app-name="laborsync-ctm" id="oar-query" path="/boatOars/{{boat}}" data="{{_oars}}">
         </firebase-query>
 
-        <firebase-query app-name="laborsync-ctm" id="oar-query" path="/boatRiggers/{{boat}}" data="{{_riggers}}">
+        <firebase-query app-name="laborsync-ctm" id="rigger-query" path="/boatRiggers/{{boat}}" data="{{_riggers}}">
         </firebase-query>
 
         <firebase-document id="firebase" app-name="laborsync-ctm" path="/boats/{{boat}}" data="{{_data}}"> </firebase-document>
 
-        <firebase-document id="firebase-team" app-name="laborsync-ctm" path="/teams/{{_data.team}}" data="{{_team}}">
+        <firebase-document id="fanout" app-name="laborsync-ctm">
         </firebase-document>
-
 
         <app-header-layout id="layout">
 
@@ -116,8 +115,8 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-fleet-detail-loading id="loading"></crew-team-manager-fleet-detail-loading>
-                <crew-team-manager-fleet-detail-results id="results" data="{{_data}}" team={{_team}} athlete="[[_athletes]]" oar="[[_oars]]"
-                    rigger="[[_riggers]]"></crew-team-manager-fleet-detail-results>
+                <crew-team-manager-fleet-detail-results id="results" data="{{_data}}" team={{_team}} athlete="[[athletes]]" oar="[[oars]]"
+                    rigger="[[riggers]]"></crew-team-manager-fleet-detail-results>
                 <crew-team-manager-fleet-detail-message id="message"></crew-team-manager-fleet-detail-message>
             </iron-pages>
 
@@ -146,7 +145,8 @@
             static get observers() {
                 return [
                     '_updatePage(boat)',
-                    '_changePage(page)'
+                    '_changePage(page)',
+                    '_getData(_athletes.splices, _oars.splices, _riggers.splices)'
                 ]
             }
 
@@ -173,6 +173,21 @@
                         type: Object
                     },
 
+                    athletes: {
+                        type: Array,
+                        value: []
+                    },
+
+                    oars: {
+                        type: Array,
+                        value: []
+                    },
+
+                    riggers: {
+                        type: Array,
+                        value: []
+                    },
+
                     _team: {
                         type: Object,
                         value: {}
@@ -188,13 +203,51 @@
                 }
             }
 
+            _getData(athletes, oars, riggers) {
+                let value = {};
+                let index;
+                let path;
+                let name;
+
+                if (athletes) {
+                    index = athletes.indexSplices[0].object.length - 1;
+                    path = 'athletes/' + athletes.indexSplices[0].object[index].$key;
+                    this.$.fanout.getStoredValue(path)
+                        .then((val) => {
+                            name = val.firstName + ' ' + val.lastName;
+                            value.name = name;
+                        });
+                    this.athletes.push(value);
+                }
+
+                if (oars) {
+                    index = oars.indexSplices[0].object.length - 1;
+                    path = 'oars/' + oars.indexSplices[0].object[index].$key;
+                    this.$.fanout.getStoredValue(path)
+                        .then((val) => {
+                            name = val.name;
+                            value.name = name;
+                        });
+                    this.oars.push(value);
+                }
+
+                if (riggers) {
+                    index = riggers.indexSplices[0].object.length - 1;
+                    path = 'riggers/' + riggers.indexSplices[0].object[index].$key;
+                    this.$.fanout.getStoredValue(path)
+                        .then((val) => {
+                            name = val.seat + ', ' + val.side;
+                            value.name = name;
+                        });
+                    this.riggers.push(value);
+                }
+            }
+
             _changePage(page) {
-                console.log(this._athletes, this._oars, this._riggers)
                 this.importLazyGroup(page).then(function () {}.bind(this));
             }
 
             _updatePage(boat) {
-                console.log(boat);
                 let page = 'message';
 
                 if (boat) {

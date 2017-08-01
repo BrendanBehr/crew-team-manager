@@ -110,7 +110,7 @@
 
                     teamId: String,
 
-                    selectOar: {
+                    selectedOars: {
                         type: Array,
                         value: []
                     }
@@ -131,11 +131,26 @@
             }
 
             _handleActionAdd() {
-                console.log('add athletes to the boat');
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetOarList.is + '-action-add-oars', {
-                    bubbles: true,
-                    composed: true,
-                }));
+                let path;
+                for (let x = 0; x < this.selectedOars.length; x++) {
+                    path = 'boatOars/' + this.boat + '/' + this.selectedOars[x]
+                    console.log(path)
+                    this.$.firebase.saveValue('boatOars', this.boat)
+                        .then(() => {
+
+                            this.$.firebase.setStoredValue(path, true);
+
+
+                        });
+                }
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetOarList.is +
+                    '-action-add-oars', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {
+                            oars: this.selectedOars
+                        }
+                    }));
             }
 
             _handleActionBack() {

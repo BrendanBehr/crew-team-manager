@@ -30,7 +30,8 @@ team1.createPictures(20);
 //Creates user objects for the respective athlete objects
 
 const team1User1 = team1.createUser({
-    email: 'babehrensbb@gmail.com'
+    email: 'babehrensbb@gmail.com',
+    permisions: 'admin'
 });
 const team2User2 = team2.createUser({
     email: 'behrenb2@tcnj.edu',

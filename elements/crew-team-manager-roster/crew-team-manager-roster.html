@@ -15,6 +15,8 @@
     <link rel="lazy-import" group="detail" href="crew-team-manager-roster-detail.html">
     <link rel="lazy-import" group="edit" href="crew-team-manager-roster-edit.html">
     <link rel="lazy-import" group="create" href="crew-team-manager-roster-create.html">
+    <link rel="lazy-import" group="erg" href="crew-team-manager-roster-erg-list.html">
+    <link rel="lazy-import" group="finance" href="crew-team-manager-roster-finance-create.html">
     <template>
         <style>
              :host {
@@ -27,15 +29,10 @@
                 position: relative;
             }
 
-            #list {
-                @apply(--layout-fit);
-            }
-
-            #detail {
-                @apply(--layout-fit);
-            }
-
-            #edit {
+            #list,
+            #detail,
+            #edit,
+            #erg {
                 @apply(--layout-fit);
             }
 
@@ -51,7 +48,8 @@
             </crew-team-manager-roster-list>
 
             <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]" page="loading" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
-                on-crew-team-manager-roster-detail-action-edit="_handleActionEdit" on-crew-team-manager-roster-detail-action-delete="_handleActionDelete">
+                on-crew-team-manager-roster-detail-action-edit="_handleActionEdit" on-crew-team-manager-roster-detail-action-delete="_handleActionDelete"
+                on-crew-team-manager-roster-detail-action-add-erg="_handleActionAddErg" on-crew-team-manager-roster-detail-action-add-finance="_handleActionAddFinance">
             </crew-team-manager-roster-detail>
 
             <crew-team-manager-roster-edit edit="[[_edit]]" id="edit" athlete="[[_athlete]]" on-crew-team-manager-roster-edit-action-back="_handleActionBackOnce"
@@ -60,7 +58,15 @@
 
             <crew-team-manager-roster-create id="create" team-id="[[teamId]]" on-crew-team-manager-roster-create-action-cancel="_handleActionCancel"
                 on-crew-team-manager-roster-create-action-created="_handleActionCreated">
-                </crew-team-manager-creater-edit>
+            </crew-team-manager-roster-create>
+
+            <crew-team-manager-roster-erg-list id="erg" team-id="[[teamId]]" athlete="[[_athlete]]" page="loading" on-crew-team-manager-roster-erg-list-action-back="_handleActionBackOnce"
+                on-crew-team-manager-roster-erg-list-action-add-ergs="_handleActionAddedErgs">
+            </crew-team-manager-roster-erg-list>
+
+            <crew-team-manager-roster-finance-create id="finance" team-id="[[teamId]]" on-crew-team-manager-roster-finance-create-action-cancel="_handleActionCanceled"
+                on-crew-team-manager-roster-finance-create-action-created="_handleActionAddedFinance">
+            </crew-team-manager-roster-finance-create>
         </iron-pages>
 
         <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
@@ -104,7 +110,11 @@
                         type: String
                     },
 
-                    teamId: String
+                    teamId: String,
+
+                    ergs: {
+                        type: Object
+                    },
                 }
             }
 
@@ -164,6 +174,33 @@
                 this._toast = 'Athlete Deleted';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
+            }
+
+            _handleActionAddErg() {
+                this.page = 'erg';
+            }
+
+            _handleActionAddedErgs(e) {
+                this.erg = e.detail.ergs;
+                this._toast = 'Erg Added';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+                this.page = 'detail';
+            }
+
+            _handleActionCanceled() {
+                this.page = 'detail'
+            }
+
+            _handleActionAddFinance() {
+                this.page = 'finance';
+            }
+
+            _handleActionAddedFinance() {
+                this._toast = 'Finance Added';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+                this.page = 'detail'
             }
         }
 

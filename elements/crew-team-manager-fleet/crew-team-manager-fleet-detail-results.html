@@ -99,11 +99,9 @@
 
                     <iron-list id="list" items="[[athlete]]" as="item">
                         <template>
-                            <div class="athlete" on-click="_handleItemClick">
-                                <div class="athlete-info">
-                                    <div class="athlete-info-name">
-                                        [[item.firstName]] [[item.lastName]]
-                                    </div>
+                            <div class="athlete-info">
+                                <div class="athlete-info-name">
+                                    [[item.name]]
                                 </div>
                             </div>
                         </template>
@@ -136,7 +134,7 @@
                             <div class="rigger" on-click="_handleItemClick">
                                 <div class="rigger-info">
                                     <div class="rigger-info-name">
-                                        [[item.style]] [[item.seat]]
+                                        [[item.name]]
                                     </div>
                                 </div>
                             </div>
@@ -153,6 +151,12 @@
 
             static get is() {
                 return 'crew-team-manager-fleet-detail-results'
+            }
+
+            static get observers() {
+                return [
+                    '_getData(athlete, oar, rigger)'
+                ]
             }
 
             static get properties() {
@@ -177,6 +181,13 @@
                         type: Object
                     }
                 }
+            }
+
+            _getData(athlete, oar, rigger) {
+
+                console.log(athlete)
+                console.log(oar)
+                console.log(rigger)
             }
         }
 

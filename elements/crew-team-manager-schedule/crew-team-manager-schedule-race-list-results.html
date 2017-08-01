@@ -6,7 +6,7 @@
 
 <link rel="import" href="../crew-team-manager-avatar/crew-team-manager-avatar.html">
 
-<dom-module id="crew-team-manager-fleet-roster-list-results">
+<dom-module id="crew-team-manager-schedule-race-list-results">
     <template>
         <style>
              :host {
@@ -16,45 +16,50 @@
 
             #list {
                 background-color: lightslategray;
+                /*@apply(--layout-vertical);*/
                 @apply(--layout-flex);
+                /*top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;*/
             }
 
-            .athlete {
+            .race {
                 background-color: white;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
             }
 
-            .athlete-avatar {
+            .race-avatar {
                 margin: 8px;
             }
 
-            .athlete-info {
+            .race-info {
                 font-size: 18px;
                 @apply(--layout-flex);
                 padding: 8px;
             }
 
-            .athlete-info-name {
+            .race-info-name {
                 @apply(--paper-font-title);
             }
 
-            .athlete-info-location {
+            .race-info-time {
                 @apply(--paper-font-caption);
             }
         </style>
 
         <iron-list id="list" items="[[data]]" as="item">
             <template>
-                <div class="athlete" on-click="_handleItemClick">
+                <div class="race" on-click="_handleItemClick">
 
-                    <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
-                    <div class="athlete-info">
-                        <div class="athlete-info-name">
-                            [[item.firstName]] [[item.lastName]]
+                    <crew-team-manager-avatar class="race-avatar" value="[[item.eventName]]"></crew-team-manager-avatar>
+                    <div class="race-info">
+                        <div class="race-info-eventName">
+                            [[item.eventName]]
                         </div>
-                        <div class="athlete-info-location">
-                            [[item.streetAddress]] [[item.city]] [[item.state]]
+                        <div class="race-info-time">
+                            [[item.raceTime]]
                         </div>
                     </div>
                 </div>
@@ -64,33 +69,36 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerFleetRosterListResults extends Polymer.Element {
+        class crewTeamManagerScheduleRaceListResults extends Polymer.Element {
 
             static get is() {
-                return 'crew-team-manager-fleet-roster-list-results'
+                return 'crew-team-manager-schedule-race-list-results'
             }
 
             static get properties() {
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    _name: {
+                        type: String
                     }
                 }
             }
 
             _handleItemClick(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterListResults.is +
-                    '-action-select-athletes', {
-                        bubbles: true,
-                        composed: true,
-                        detail: {
-                            athlete: e.model.item.$key,
-                        }
-                    }));
+                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleRaceListResults.is + '-action-detail', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        race: e.model.item.$key
+                    }
+                }));
             }
         }
 
         // Register custom element definition using standard platform API
-        customElements.define(crewTeamManagerFleetRosterListResults.is, crewTeamManagerFleetRosterListResults);
+        customElements.define(crewTeamManagerScheduleRaceListResults.is, crewTeamManagerScheduleRaceListResults);
     </script>
 </dom-module>

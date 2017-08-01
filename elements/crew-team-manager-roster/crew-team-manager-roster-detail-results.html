@@ -62,6 +62,11 @@
                 border-bottom: solid 1px grey;
                 padding: 16px;
             }
+
+            #erg {
+                border-bottom: solid 1px grey;
+                padding: 16px;
+            }
         </style>
 
         <div id="content">
@@ -119,6 +124,23 @@
                     </div>
                 </div>
 
+                <div id="erg">
+                    <div id="subhead">
+                        Ergs taken out:
+                    </div>
+
+                    <iron-list id="list" items="[[erg]]" as="item">
+                        <template>
+                            <div class="erg" on-click="_handleItemClick">
+                                <div class="erg-info">
+                                    <div class="erg-info-name">
+                                        [[item.name]]
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </iron-list>
+                </div>
             </paper-card>
         </div>
     </template>
@@ -131,9 +153,10 @@
                 return 'crew-team-manager-roster-detail-results'
             }
 
-            static get observer() {
+            static get observers() {
                 return [
-                    '_dataChanged(data)'
+                    '_dataChanged(data)',
+                    '_getErg(erg)'
                 ]
             }
 
@@ -144,6 +167,10 @@
                     },
 
                     team: {
+                        type: Object
+                    },
+
+                    erg: {
                         type: Object
                     }
                 }
@@ -159,6 +186,10 @@
                     //TODO make an updated toast pop up and ask if 
                     //the user wants to go refresh to the page
                 }
+            }
+
+            _getErg(erg) {
+                console.log(erg)
             }
         }
 

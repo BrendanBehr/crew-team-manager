@@ -80,7 +80,7 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-fleet-rigger-list-loading id="loading"></crew-team-manager-fleet-rigger-list-loading>
-                <crew-team-manager-fleet-rigger-list-results id="results" data="[[_data]]" on-crew-team-manager-fleet-rigger-list-results-action-select-athletes="_selectRiggers"></crew-team-manager-fleet-rigger-list-results>
+                <crew-team-manager-fleet-rigger-list-results id="results" data="[[_data]]" on-crew-team-manager-fleet-rigger-list-results-action-select-riggers="_selectRiggers"></crew-team-manager-fleet-rigger-list-results>
                 <crew-team-manager-fleet-rigger-list-message id="message"></crew-team-manager-fleet-rigger-list-message>
             </iron-pages>
 
@@ -117,7 +117,7 @@
 
                     teamId: String,
 
-                    selectRiggers: {
+                    selectedRiggers: {
                         type: Array,
                         value: []
                     }
@@ -133,18 +133,31 @@
                         return;
                     }
                 }
-
                 this.selectedRiggers.push(e.detail.rigger)
+                console.log(this.selectedRiggers)
             }
 
             _handleActionAdd() {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRiggerList.is + '-action-add-riggers', {
-                    bubbles: true,
-                    composed: true,
-                    detail: {
-                        athletes: this.selectedAthletes
-                    }
-                }));
+                let path;
+                for (let x = 0; x < this.selectedRiggers.length; x++) {
+                    path = 'boatRiggers/' + this.boat + '/' + this.selectedRiggers[x]
+                    console.log(path)
+                    this.$.firebase.saveValue('boatRiggers', this.boat)
+                        .then(() => {
+
+                            this.$.firebase.setStoredValue(path, true);
+
+
+                        });
+                }
+                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is +
+                    '-action-add-riggers', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {
+                            riggers: this.selectedRiggers
+                        }
+                    }));
             }
 
             _handleActionBack() {

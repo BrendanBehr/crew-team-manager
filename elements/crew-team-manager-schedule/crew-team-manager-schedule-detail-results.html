@@ -55,6 +55,11 @@
                 padding: 16px;
             }
 
+            #regatta-races {
+                border-bottom: solid 1px grey;
+                padding: 16px;
+            }
+
             #regatta-cost {
                 border-bottom: solid 1px grey;
                 padding: 16px;
@@ -94,6 +99,24 @@
                     </div>
                 </div>
 
+                <div id="regatta-races">
+                    <div id="subhead">
+                        ScheduleRaces:
+                    </div>
+
+                    <iron-list id="list" items="[[race]]" as="item">
+                        <template>
+                            <div class="race" on-click="_handleItemClick">
+                                <div class="race-info">
+                                    <div class="race-info-name">
+                                        [[item.name]]
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </iron-list>
+                </div>
+
             </paper-card>
         </div>
     </template>
@@ -108,7 +131,8 @@
 
             static get observers() {
                 return [
-                    '_getData(data)'
+                    '_getData(data)',
+                    '_getScheduleRace(race)'
                 ]
             }
 
@@ -118,8 +142,10 @@
                         type: Object,
                     },
 
-                    _name: {
-                        type: String
+                    _name: String,
+
+                    race: {
+                        type: Object
                     }
                 }
             }
@@ -134,6 +160,10 @@
                 } else {
                     this._name = data.name;
                 }
+            }
+
+            _getScheduleRace(race) {
+                console.log(race)
             }
         }
 

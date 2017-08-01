@@ -55,7 +55,45 @@
                 background-color: #164410;
                 color: #fff;
             }
+
+            #fabs-layout {
+                position: absolute;
+                bottom: 16px;
+                right: 16px;
+            }
+
+            .fab {
+                display: none;
+            }
+
+            #fabs-layout #add {
+                display: inherit;
+                background-color: #164410;
+            }
+
+            #fabs-layout:hover .fab {
+                display: inherit;
+            }
+
+            #fabs-layout:hover #add {
+                display: none;
+            }
+
+            #erg {
+                background-color: #ff9800;
+                margin-bottom: 16px;
+            }
+
+            #finance {
+                background-color: #311b92;
+            }
         </style>
+
+        <firebase-query app-name="laborsync-ctm" id="erg-query" path="/athleteErgs/{{athlete}}" data="{{_ergs}}">
+        </firebase-query>
+
+        <firebase-document id="fanout" app-name="laborsync-ctm">
+        </firebase-document>
 
         <firebase-document id="firebase" app-name="laborsync-ctm" path="/athletes/{{athlete}}" data="{{_data}}">
         </firebase-document>
@@ -75,13 +113,20 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-roster-detail-loading id="loading"></crew-team-manager-roster-detail-loading>
-                <crew-team-manager-roster-detail-results id="results" data="{{_data}}" team="{{_team}}"></crew-team-manager-roster-detail-results>
+                <crew-team-manager-roster-detail-results id="results" data="{{_data}}" team="{{_team}}" erg="[[ergs]]"></crew-team-manager-roster-detail-results>
                 <crew-team-manager-roster-detail-message id="message"></crew-team-manager-roster-detail-message>
             </iron-pages>
 
 
         </app-header-layout>
 
+        <div id="fabs-layout">
+            <div id="fabs">
+                <paper-fab id="erg" class="fab" icon="places:fitness-center" on-click="_handleActionAddErg"></paper-fab>
+                <paper-fab id="finance" class="fab" icon="editor:attach-money" on-click="_handleActionAddFinance"></paper-fab>
+                <paper-fab id="add" class="fab" icon="icons:add"></paper-fab>
+            </div>
+        </div>
 
     </template>
 
@@ -96,7 +141,8 @@
             static get observers() {
                 return [
                     '_updatePage(athlete)',
-                    '_changePage(page)'
+                    '_changePage(page)',
+                    '_getData(_ergs.splices)'
                 ]
 
             }
@@ -122,6 +168,34 @@
                         value: ''
                     },
 
+                    _ergs: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    ergs: {
+                        type: Array,
+                        value: []
+                    }
+
+                }
+            }
+
+            _getData(ergs) {
+                let value = {};
+                let index;
+                let path;
+                let name;
+
+                if (ergs) {
+                    index = ergs.indexSplices[0].object.length - 1;
+                    path = 'ergs/' + ergs.indexSplices[0].object[index].$key;
+                    this.$.fanout.getStoredValue(path)
+                        .then((val) => {
+                            name = val.number + ', ' + val.model;
+                            value.name = name;
+                        });
+                    this.ergs.push(value);
                 }
             }
 
@@ -140,8 +214,6 @@
 
                 this.page = page;
             }
-
-
 
             _handleActionBack(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-back', {
@@ -164,6 +236,20 @@
             _handleActionDelete(e) {
                 this.$.firebase.destroy();
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-delete', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionAddErg() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-add-erg', {
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+
+            _handleActionAddFinance() {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-add-finance', {
                     bubbles: true,
                     composed: true
                 }));
