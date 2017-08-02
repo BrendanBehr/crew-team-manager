@@ -164,7 +164,6 @@
                 this.create.size = parseInt(this.create.size);
                 this.$.firebase.saveValue('boats')
                     .then(() => {
-                        console.log(this.$.firebase.path)
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
                         this._resetCreate();
                         let _key = '';

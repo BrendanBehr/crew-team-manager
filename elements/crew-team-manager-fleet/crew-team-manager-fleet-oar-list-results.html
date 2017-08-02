@@ -16,16 +16,17 @@
 
             #list {
                 background-color: lightslategray;
-                /*@apply(--layout-vertical);*/
                 @apply(--layout-flex);
-                /*top: 0px;
-                bottom: 0px;
-                left: 0px;
-                right: 0px;*/
             }
 
             .oar {
                 background-color: white;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
+            .oar-selected {
+                background-color: #ddd;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
             }
@@ -49,9 +50,9 @@
             }
         </style>
 
-        <iron-list id="list" items="[[data]]" as="item">
+        <iron-list id="list" items="[[data]]" as="item" selected-items="selectedItems" selection-enabled multi-selection>
             <template>
-                <div class="oar" on-click="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]" on-click="_handleItemClick">
 
                     <crew-team-manager-avatar class="oar-avatar" value="[[item.name]]"></crew-team-manager-avatar>
                     <div class="oar-info">
@@ -83,8 +84,21 @@
 
                     _name: {
                         type: String
+                    },
+
+                    selectedItems: {
+                        type: Object,
+                        value: {}
                     }
                 }
+            }
+
+            _computedClass(isSelected) {
+                let classes = 'oar';
+                if (isSelected) {
+                    classes += '-selected';
+                }
+                return classes;
             }
 
             _handleItemClick(e) {

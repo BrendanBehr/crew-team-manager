@@ -25,6 +25,12 @@
                 border-bottom: solid 1px grey;
             }
 
+            .erg-selected {
+                background-color: #ddd;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
             .erg-avatar {
                 margin: 8px;
             }
@@ -44,9 +50,9 @@
             }
         </style>
 
-        <iron-list id="list" items="[[data]]" as="item">
+        <iron-list id="list" items="[[data]]" as="item" selected-item="{{selectedItem}}" selection-enabled>
             <template>
-                <div class="erg" on-click="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]" on-click="_handleItemClick">
 
                     <crew-team-manager-avatar class="erg-avatar" value="[[item.number]] % 10"></crew-team-manager-avatar>
                     <div class="erg-info">
@@ -78,12 +84,26 @@
 
                     _name: {
                         type: String
-                    }
+                    },
+
+                    selectedItem: {
+                        type: Object,
+                        value: {}
+                    },
+
+
                 }
             }
 
+            _computedClass(isSelected) {
+                let classes = 'erg';
+                if (isSelected) {
+                    classes += '-selected';
+                }
+                return classes;
+            }
+
             _handleItemClick(e) {
-                // console.log(e.model.item)
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgListResults.is +
                     '-action-select-ergs', {
                         bubbles: true,
@@ -92,6 +112,7 @@
                             erg: e.model.item.$key,
                         }
                     }));
+
             }
         }
 

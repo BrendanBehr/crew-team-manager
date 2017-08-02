@@ -25,6 +25,12 @@
                 border-bottom: solid 1px grey;
             }
 
+            .athlete-selected {
+                background-color: #ddd;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
             .athlete-avatar {
                 margin: 8px;
             }
@@ -44,9 +50,9 @@
             }
         </style>
 
-        <iron-list id="list" items="[[data]]" as="item">
+        <iron-list id="list" items="[[data]]" as="item" elected-items="selectedItems" selection-enabled multi-selection>
             <template>
-                <div class="athlete" on-click="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]" on-click="_handleItemClick">
 
                     <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
                     <div class="athlete-info">
@@ -74,8 +80,22 @@
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    selectedItems: {
+                        type: Object,
+                        value: {}
                     }
+
                 }
+            }
+
+            _computedClass(isSelected) {
+                let classes = 'athlete';
+                if (isSelected) {
+                    classes += '-selected';
+                }
+                return classes;
             }
 
             _handleItemClick(e) {

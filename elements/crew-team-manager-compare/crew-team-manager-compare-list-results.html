@@ -66,7 +66,7 @@
                 width: 32px;
             }
 
-            .selector.selected {
+            .selector-selected {
                 color: #311b92;
             }
         </style>
@@ -85,7 +85,7 @@
                                 [[item.streetAddress]] [[item.city]] [[item.state]]
                             </div>
                         </div>
-                        <iron-icon class$="[[_selected(selectedItemOne)]]" selected$="_selected" icon="rowing"></iron-icon>
+                        <iron-icon class$="[[_computedClass(selected)]]" selected$="_selected" icon="rowing"></iron-icon>
                     </div>
                 </template>
             </iron-list>
@@ -106,7 +106,7 @@
                                 [[item.streetAddress]] [[item.city]] [[item.state]]
                             </div>
                         </div>
-                        <iron-icon class$="[[_selected(selectedItemTwo)]]" icon="rowing"></iron-icon>
+                        <iron-icon class$="[[_computedClass(selected)]]" icon="rowing"></iron-icon>
                     </div>
                 </template>
             </iron-list>
@@ -144,31 +144,31 @@
                 }
             }
 
-            _selected(item) {
+
+
+            _computedClass(isSelected) {
                 let classes = 'selector';
-
-                if (item) {
-                    classes += ' selected';
+                if (isSelected) {
+                    classes += '-selected';
                 }
-
                 return classes;
             }
 
-            _selectedItemOneChange(item) {
-                if (item === 'undefined') {
-                    return;
-                }
+            // _selectedItemOneChange(item) {
+            //     if (item === 'undefined') {
+            //         return;
+            //     }
 
-                this._selected();
-            }
+            //     this._selected();
+            // }
 
-            _selectedItemTwoChange(item) {
-                if (item === 'undefined') {
-                    return;
-                }
+            // _selectedItemTwoChange(item) {
+            //     if (item === 'undefined') {
+            //         return;
+            //     }
 
-                this._selected();
-            }
+            //     this._selected();
+            // }
 
             _handleItemClick1(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-first-athlete', {

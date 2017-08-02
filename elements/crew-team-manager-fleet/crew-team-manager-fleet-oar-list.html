@@ -77,7 +77,7 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-fleet-oar-list-loading id="loading"></crew-team-manager-fleet-oar-list-loading>
-                <crew-team-manager-fleet-oar-list-results id="results" data="[[_data]]" on-crew-team-manager-fleet-roster-list-results-action-select-oar="_selectOars"></crew-team-manager-fleet-oar-list-results>
+                <crew-team-manager-fleet-oar-list-results id="results" data="[[_data]]" on-crew-team-manager-fleet-oar-list-results-action-select-oar="_selectOars"></crew-team-manager-fleet-oar-list-results>
                 <crew-team-manager-fleet-oar-list-message id="message"></crew-team-manager-fleet-oar-list-message>
             </iron-pages>
 
@@ -121,8 +121,7 @@
                 }
             }
 
-            _selectOars() {
-
+            _selectOars(e) {
                 for (let x = 0; x < this.selectedOars.length; x++) {
                     if (this.selectedOars[x] == e.detail.oar) {
                         this.selectedOars.splice(x, x);
@@ -135,22 +134,20 @@
 
             _handleActionAdd() {
                 let path;
-                for (let x = 0; x < this.selectedOars.length; x++) {
-                    path = 'boatOars/' + this.boat + '/' + this.selectedOars[x]
-                    console.log(path)
-                    this.$.firebase.saveValue('boatOars', this.boat)
-                        .then(() => {
-
+                this.$.firebase.saveValue('boatOars', this.boat)
+                    .then(() => {
+                        for (let x = 0; x < this.selectedOars.length; x++) {
+                            path = 'boatOars/' + this.boat + '/' + this.selectedOars[x]
                             this.$.firebase.setStoredValue(path, true);
+                        }
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerFleetOarList.is +
+                            '-action-add-oars', {
+                                bubbles: true,
+                                composed: true
+                            }));
 
 
-                        });
-                }
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetOarList.is +
-                    '-action-add-oars', {
-                        bubbles: true,
-                        composed: true
-                    }));
+                    });
             }
 
             _handleActionBack() {

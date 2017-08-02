@@ -113,12 +113,7 @@
                         type: String
                     },
 
-                    teamId: String,
-
-                    races: {
-                        type: Object,
-                        value: {}
-                    }
+                    teamId: String
                 }
             }
 
@@ -185,7 +180,6 @@
             }
 
             _handleActionAddedRaces(e) {
-                this.race = e.detail.races;
                 this._toast = 'RacesAdded';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();

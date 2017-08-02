@@ -30,6 +30,12 @@
                 border-bottom: solid 1px grey;
             }
 
+            .race-selected {
+                background-color: #ddd;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
             .race-avatar {
                 margin: 8px;
             }
@@ -49,9 +55,9 @@
             }
         </style>
 
-        <iron-list id="list" items="[[data]]" as="item">
+        <iron-list id="list" items="[[data]]" as="item" selected-items="{{selectedItems}}" selection-enabled multi-selection>
             <template>
-                <div class="race" on-click="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]" on-click="_handleItemClick">
 
                     <crew-team-manager-avatar class="race-avatar" value="[[item.eventName]]"></crew-team-manager-avatar>
                     <div class="race-info">
@@ -83,18 +89,32 @@
 
                     _name: {
                         type: String
+                    },
+
+                    selectedItems: {
+                        type: Object,
+                        value: {}
                     }
                 }
             }
 
+            _computedClass(isSelected) {
+                let classes = 'race';
+                if (isSelected) {
+                    classes += '-selected';
+                }
+                return classes;
+            }
+
             _handleItemClick(e) {
-                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleRaceListResults.is + '-action-detail', {
-                    bubbles: true,
-                    composed: true,
-                    detail: {
-                        race: e.model.item.$key
-                    }
-                }));
+                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleRaceListResults.is +
+                    '-action-select-races', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {
+                            race: e.model.item.$key
+                        }
+                    }));
             }
         }
 

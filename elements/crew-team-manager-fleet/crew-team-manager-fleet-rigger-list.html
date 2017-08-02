@@ -137,7 +137,6 @@
                     }
                 }
                 this.selectedRiggers.push(e.detail.rigger)
-                console.log(this.selectedRiggers)
             }
 
             _handleActionAdd() {
@@ -149,7 +148,7 @@
                             path = 'boatRiggers/' + this.boat + '/' + this.selectedRiggers[x]
                             this.$.firebase.setStoredValue(path, true);
                         }
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is +
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRiggerList.is +
                             '-action-add-riggers', {
                                 bubbles: true,
                                 composed: true
