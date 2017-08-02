@@ -69,6 +69,9 @@
         <firebase-query app-name="laborsync-ctm" id="query" path="/teamRiggers/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
+        <firebase-document id="firebase" app-name="laborsync-ctm">
+        </firebase-document>
+
         <app-header-layout id="layout" has-scrolling-region fullbleed>
 
             <app-header slot="header" reveals>
@@ -139,25 +142,21 @@
 
             _handleActionAdd() {
                 let path;
-                for (let x = 0; x < this.selectedRiggers.length; x++) {
-                    path = 'boatRiggers/' + this.boat + '/' + this.selectedRiggers[x]
-                    console.log(path)
-                    this.$.firebase.saveValue('boatRiggers', this.boat)
-                        .then(() => {
 
+                this.$.firebase.saveValue('boatRiggers', this.boat)
+                    .then(() => {
+                        for (let x = 0; x < this.selectedRiggers.length; x++) {
+                            path = 'boatRiggers/' + this.boat + '/' + this.selectedRiggers[x]
                             this.$.firebase.setStoredValue(path, true);
-
-
-                        });
-                }
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is +
-                    '-action-add-riggers', {
-                        bubbles: true,
-                        composed: true,
-                        detail: {
-                            riggers: this.selectedRiggers
                         }
-                    }));
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is +
+                            '-action-add-riggers', {
+                                bubbles: true,
+                                composed: true
+                            }));
+
+
+                    });
             }
 
             _handleActionBack() {

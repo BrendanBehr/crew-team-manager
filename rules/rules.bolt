@@ -121,7 +121,7 @@ type Athlete {
     ergScore: StringNotEmpty,
     firstName: StringNotEmpty,
     credential: Optional,
-    fundRaising: NonNegativeNumber,
+    fundRaising: Number,
     gender: StringNotEmpty,
     height: StringNotEmpty,
     lastName: StringNotEmpty,
@@ -396,9 +396,9 @@ path /finances/{financeId} is Finance {
 }
 
 type Finance {
-    expenses: NonNegativeNumber,
+    expenses: Number,
     gross: Number,
-    incomes: NonNegativeNumber,
+    incomes: Number,
     reason: StringNotEmpty,
     team: CheckTeam,
     created: CreatedTimestamp,

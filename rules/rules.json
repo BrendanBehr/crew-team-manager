@@ -50,7 +50,7 @@
           ".validate": "newData.isString() && (newData.val().length > 0 || newData.val() == null)"
         },
         "fundRaising": {
-          ".validate": "newData.isNumber() && newData.val() >= 0"
+          ".validate": "newData.isNumber()"
         },
         "gender": {
           ".validate": "newData.isString() && newData.val().length > 0"
@@ -251,13 +251,13 @@
       "$financeId": {
         ".validate": "newData.hasChildren(['expenses', 'gross', 'incomes', 'reason', 'team', 'created', 'updated']) && newData.child('updated').val() == now",
         "expenses": {
-          ".validate": "newData.isNumber() && newData.val() >= 0"
+          ".validate": "newData.isNumber()"
         },
         "gross": {
           ".validate": "newData.isNumber()"
         },
         "incomes": {
-          ".validate": "newData.isNumber() && newData.val() >= 0"
+          ".validate": "newData.isNumber()"
         },
         "reason": {
           ".validate": "newData.isString() && newData.val().length > 0"

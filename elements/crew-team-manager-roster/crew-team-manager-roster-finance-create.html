@@ -100,7 +100,9 @@
                             gross: 0,
                             created: 0,
                             updated: 0
-                        }
+                        },
+
+                        athlete: String
                     },
 
                     teamId: String,
@@ -144,16 +146,19 @@
                 this.create.gross = this.create.incomes - this.create.expenses;
                 this.$.firebase.saveValue('finances')
                     .then(() => {
+                        const gross = this.create.gross
                         this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
                         this._resetCreate();
                         let _key = '';
                         for (let x = 10; x < this.$.firebase.path.length; x++) {
                             _key = _key + this.$.firebase.path[x];
                         }
+                        const path = 'athleteFinances/' + this.athlete + '/' + _key;
+                        this.$.firebase.setStoredValue(path, true);
                         this.dispatchEvent(new CustomEvent(crewTeamManagerRosterFinanceCreate.is +
                             '-action-created', {
                                 detail: {
-                                    finance: _key
+                                    finance: gross
                                 },
                                 bubbles: true,
                                 composed: true

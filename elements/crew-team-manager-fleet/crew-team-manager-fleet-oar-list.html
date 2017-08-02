@@ -63,6 +63,9 @@
         <firebase-query app-name="laborsync-ctm" id="query" path="/teamOars/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
+        <firebase-document id="firebase" app-name="laborsync-ctm">
+        </firebase-document>
+
         <app-header-layout id="layout" has-scrolling-region fullbleed>
 
             <app-header slot="header" reveals>
@@ -146,10 +149,7 @@
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetOarList.is +
                     '-action-add-oars', {
                         bubbles: true,
-                        composed: true,
-                        detail: {
-                            oars: this.selectedOars
-                        }
+                        composed: true
                     }));
             }
 

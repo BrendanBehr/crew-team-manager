@@ -109,7 +109,9 @@
                     _drive: {
                         type: Boolean,
                         value: false
-                    }
+                    },
+
+                    regatta: String,
                 }
             }
 
@@ -142,11 +144,10 @@
                         for (let x = 10; x < this.$.firebase.path.length; x++) {
                             _key = _key + this.$.firebase.path[x];
                         }
+                        const path = 'regattaPictures/' + this.regatta + '/' + _key;
+                        this.$.firebase.setStoredValue(path, true);
                         this.dispatchEvent(new CustomEvent(crewTeamManagerSchedulePictureCreate.is +
                             '-action-created', {
-                                detail: {
-                                    picture: _key
-                                },
                                 bubbles: true,
                                 composed: true
                             }));

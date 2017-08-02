@@ -152,7 +152,7 @@
                 this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
                 this.edit.fundRaising = parseInt(this.edit.fundRaising);
                 this.edit.weight = parseInt(this.edit.weight);
-
+                console.log(this.edit)
                 this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
                 this.$.firebase.saveValue('athletes', this.athlete)
                     .then(() => {

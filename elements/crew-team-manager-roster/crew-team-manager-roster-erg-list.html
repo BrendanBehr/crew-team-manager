@@ -69,6 +69,8 @@
         <firebase-query app-name="laborsync-ctm" id="query" path="/teamErgs/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
+        <firebase-document id="firebase" app-name="laborsync-ctm"></firebase-document>
+
         <app-header-layout id="layout" has-scrolling-region fullbleed>
 
             <app-header slot="header" reveals>
@@ -144,25 +146,21 @@
 
             _handleActionAdd() {
                 let path;
-                for (let x = 0; x < this.selectedErgs.length; x++) {
-                    path = 'athleteErgs/' + this.athlete + '/' + this.selectedErgs[x]
-                    console.log(path)
-                    this.$.firebase.saveValue('athleteErgs', this.athlete)
-                        .then(() => {
 
+                this.$.firebase.saveValue('athleteErgs', this.athlete)
+                    .then(() => {
+
+                        for (let x = 0; x < this.selectedErgs.length; x++) {
+                            path = 'athleteErgs/' + this.athlete + '/' + this.selectedErgs[x];
                             this.$.firebase.setStoredValue(path, true);
-
-
-                        });
-                }
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is +
-                    '-action-add-ergs', {
-                        bubbles: true,
-                        composed: true,
-                        detail: {
-                            ergs: this.selectedErgs
                         }
-                    }));
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is +
+                            '-action-add-ergs', {
+                                bubbles: true,
+                                composed: true
+                            }));
+
+                    });
             }
 
             _handleActionBack() {

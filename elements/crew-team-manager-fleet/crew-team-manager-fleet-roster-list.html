@@ -140,24 +140,21 @@
 
             _handleActionAdd() {
                 let path;
-                for (let x = 0; x < this.selectedAthletes.length; x++) {
-                    path = 'boatAthletes/' + this.boat + '/' + this.selectedAthletes[x]
-                    this.$.firebase.saveValue('boatAthletes', this.boat)
-                        .then(() => {
 
+                this.$.firebase.saveValue('boatAthletes', this.boat)
+                    .then(() => {
+                        for (let x = 0; x < this.selectedAthletes.length; x++) {
+                            path = 'boatAthletes/' + this.boat + '/' + this.selectedAthletes[x]
                             this.$.firebase.setStoredValue(path, true);
 
-
-                        });
-                }
-                this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is +
-                    '-action-add-athletes', {
-                        bubbles: true,
-                        composed: true,
-                        detail: {
-                            athletes: this.selectedAthletes
                         }
-                    }));
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is +
+                            '-action-add-athletes', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    });
+
             }
 
             _handleActionBack() {

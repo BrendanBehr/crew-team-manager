@@ -48,7 +48,7 @@
             </crew-team-manager-roster-list>
 
             <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]" page="loading" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
-                on-crew-team-manager-roster-detail-action-edit="_handleActionEdit" on-crew-team-manager-roster-detail-action-delete="_handleActionDelete"
+                on-crew-team-manager-roster-detail-action-edit="_handleActionEdit" gross="[[_gross]]" on-crew-team-manager-roster-detail-action-delete="_handleActionDelete"
                 on-crew-team-manager-roster-detail-action-add-erg="_handleActionAddErg" on-crew-team-manager-roster-detail-action-add-finance="_handleActionAddFinance">
             </crew-team-manager-roster-detail>
 
@@ -64,7 +64,7 @@
                 on-crew-team-manager-roster-erg-list-action-add-ergs="_handleActionAddedErgs">
             </crew-team-manager-roster-erg-list>
 
-            <crew-team-manager-roster-finance-create id="finance" team-id="[[teamId]]" on-crew-team-manager-roster-finance-create-action-cancel="_handleActionCanceled"
+            <crew-team-manager-roster-finance-create id="finance" team-id="[[teamId]]" athlete="[[_athlete]]" on-crew-team-manager-roster-finance-create-action-cancel="_handleActionCanceled"
                 on-crew-team-manager-roster-finance-create-action-created="_handleActionAddedFinance">
             </crew-team-manager-roster-finance-create>
         </iron-pages>
@@ -112,9 +112,7 @@
 
                     teamId: String,
 
-                    ergs: {
-                        type: Object
-                    },
+                    _gross: Number
                 }
             }
 
@@ -180,8 +178,7 @@
                 this.page = 'erg';
             }
 
-            _handleActionAddedErgs(e) {
-                this.erg = e.detail.ergs;
+            _handleActionAddedErgs() {
                 this._toast = 'Erg Added';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
@@ -196,7 +193,8 @@
                 this.page = 'finance';
             }
 
-            _handleActionAddedFinance() {
+            _handleActionAddedFinance(e) {
+                this._gross = e.detail.finance;
                 this._toast = 'Finance Added';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();

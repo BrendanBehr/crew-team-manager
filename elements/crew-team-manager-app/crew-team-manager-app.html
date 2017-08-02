@@ -99,6 +99,8 @@
                 this.$.auth.signOut()
                     .then(() => {
                         this._toast = 'User Logged Out';
+                        this.$.toast.fitInto = this.$.pages;
+                        this.$.toast.open();
                     })
                     .catch((err) => {
                         console.log(err);
@@ -133,9 +135,9 @@
                     this._page = page;
                     if (page == 'login') {
                         this._toast = 'User Logged In';
+                        this.$.toast.fitInto = this.$.pages;
+                        this.$.toast.open();
                     }
-                    this.$.toast.fitInto = this.$.pages;
-                    this.$.toast.open();
                     this.dispatchEvent(new CustomEvent('import-loaded', results));
                 }.bind(this));
             }

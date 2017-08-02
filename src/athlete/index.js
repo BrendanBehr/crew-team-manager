@@ -29,12 +29,12 @@ class Athlete extends Entity {
         options.values.email = options.values.email || faker.internet.email();
         options.values.updated = options.values.updated || faker.random.number();
         options.values.created = options.values.created || faker.random.number();
+        options.values.credential = options.values.credential || 'NA';
 
         super(options);
 
         this._ergs = [];
         this._finances = [];
-        this._credential;
         this._emails = [];
 
         this.getGenerator().getAthletes().push(this);

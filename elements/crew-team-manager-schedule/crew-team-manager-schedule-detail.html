@@ -199,9 +199,13 @@
                 this.page = page;
             }
 
-
+            _resetData() {
+                this._regattas = {};
+                this.regattas = [];
+            }
 
             _handleActionBack(e) {
+                this._resetData();
                 this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleDetail.is + '-action-back', {
                     bubbles: true,
                     composed: true

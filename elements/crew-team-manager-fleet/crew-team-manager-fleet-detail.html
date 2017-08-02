@@ -264,7 +264,19 @@
                 }));
             }
 
+
+
+            _resetData() {
+                this._athletes = {};
+                this._oars = {};
+                this._riggers = {};
+                this.athletes = [];
+                this.oars = [];
+                this.riggers = [];
+            }
+
             _handleActionBack(e) {
+                this._resetData();
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is + '-action-back', {
                     bubbles: true,
                     composed: true

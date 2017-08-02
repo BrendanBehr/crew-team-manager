@@ -142,7 +142,8 @@
                 return [
                     '_updatePage(athlete)',
                     '_changePage(page)',
-                    '_getData(_ergs.splices)'
+                    '_getData(_ergs.splices)',
+                    '_getGross(gross)'
                 ]
 
             }
@@ -176,6 +177,11 @@
                     ergs: {
                         type: Array,
                         value: []
+                    },
+
+                    gross: {
+                        type: Number,
+                        value: 0
                     }
 
                 }
@@ -199,6 +205,12 @@
                 }
             }
 
+            _resetData() {
+                this._ergs = {};
+                this.ergs = [];
+                this.gross = 0;
+            }
+
             _changePage(page) {
 
                 this.importLazyGroup(page).then(function () {}.bind(this));
@@ -216,6 +228,7 @@
             }
 
             _handleActionBack(e) {
+                this._resetData();
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-back', {
                     bubbles: true,
                     composed: true
@@ -253,6 +266,21 @@
                     bubbles: true,
                     composed: true
                 }));
+            }
+
+            _getGross(gross) {
+                if (gross != 0) {
+
+
+                    this._data.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+                    this._data.fundRaising = gross + this._data.fundRaising;
+                    console.log(this._data.fundRaising);
+                    this.$.firebase.data = JSON.parse(JSON.stringify(this._data));
+                    this.$.firebase.saveValue('athletes', this.athlete)
+                        .then(() => {
+                            console.log(this._data)
+                        });
+                }
             }
         }
 
