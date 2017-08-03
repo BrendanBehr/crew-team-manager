@@ -190,12 +190,6 @@
                 return 'crew-team-manager-compare-detail-results'
             }
 
-            static get observer() {
-                return [
-                    '_dataChanged(dataOne, dataTwo)'
-                ]
-            }
-
             static get properties() {
                 return {
                     dataOne: {
@@ -209,19 +203,6 @@
                     team: {
                         type: Object
                     }
-                }
-            }
-
-            _dataChanged(data1, data2) {
-                console.log(data1, data2)
-                if (data1 == null || data2 == null) {
-                    //TODO make a deleted toast pop up and ask if 
-                    //the user wants to go back to the list page
-                }
-
-                if (data1 != null || data2 != null) {
-                    //TODO make an updated toast pop up and ask if 
-                    //the user wants to go refresh to the page
                 }
             }
         }

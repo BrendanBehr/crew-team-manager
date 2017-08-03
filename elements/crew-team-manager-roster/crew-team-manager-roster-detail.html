@@ -11,6 +11,7 @@
 
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 
@@ -92,14 +93,11 @@
         <firebase-query app-name="laborsync-ctm" id="erg-query" path="/athleteErgs/{{athlete}}" data="{{_ergs}}">
         </firebase-query>
 
-        <firebase-document id="fanout" app-name="laborsync-ctm">
-        </firebase-document>
-
         <firebase-document id="firebase" app-name="laborsync-ctm" path="/athletes/{{athlete}}" data="{{_data}}">
         </firebase-document>
+
         <firebase-document id="firebase-team" app-name="laborsync-ctm" path="/teams/{{_data.team}}" data="{{_team}}">
         </firebase-document>
-
 
         <app-header-layout id="layout">
 
@@ -117,6 +115,7 @@
                 <crew-team-manager-roster-detail-message id="message"></crew-team-manager-roster-detail-message>
             </iron-pages>
 
+            <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
 
         </app-header-layout>
 
@@ -248,12 +247,9 @@
 
                     this._data.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
                     this._data.fundRaising = gross + this._data.fundRaising;
-                    console.log(this._data.fundRaising);
                     this.$.firebase.data = JSON.parse(JSON.stringify(this._data));
                     this.$.firebase.saveValue('athletes', this.athlete)
-                        .then(() => {
-                            console.log(this._data)
-                        });
+                        .then(() => {});
                 }
             }
         }

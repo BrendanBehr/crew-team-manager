@@ -148,7 +148,6 @@
                     .then(() => {
                         for (let x = 0; x < this.selectedRace.length; x++) {
                             path = 'regattaRaces/' + this.regatta + '/' + this.selectedRace[x];
-                            console.log(path)
                             this.$.firebase.setStoredValue(path, true);
                         }
                         this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleRaceList.is +

@@ -153,12 +153,6 @@
                 return 'crew-team-manager-fleet-detail-results'
             }
 
-            static get observers() {
-                return [
-                    '_getData(athlete, oar, rigger)'
-                ]
-            }
-
             static get properties() {
                 return {
                     data: {
@@ -181,13 +175,6 @@
                         type: Object
                     }
                 }
-            }
-
-            _getData(athlete, oar, rigger) {
-
-                console.log('Athletes:', athlete)
-                console.log('Oars:', oar)
-                console.log('Riggers:', rigger)
             }
         }
 

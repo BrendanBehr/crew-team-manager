@@ -121,13 +121,6 @@
                 return 'crew-team-manager-compare-list-results'
             }
 
-            static get observers() {
-                return [
-                    '_selectedItemOneChange(selectedItemOne)',
-                    '_selectedItemTwoChange(selectedItemTwo)'
-                ]
-            }
-
             static get properties() {
                 return {
                     data: {
