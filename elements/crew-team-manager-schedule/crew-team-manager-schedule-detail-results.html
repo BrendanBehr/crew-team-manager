@@ -109,7 +109,7 @@
                             <div class="race" on-click="_handleItemClick">
                                 <div class="race-info">
                                     <div class="race-info-name">
-                                        [[item.name]]
+                                        Event: [[item.eventNme]], Race time: [[item.raceTime]]
                                     </div>
                                 </div>
                             </div>
@@ -131,8 +131,7 @@
 
             static get observers() {
                 return [
-                    '_getData(data)',
-                    '_getScheduleRace(race)'
+                    '_getData(data)'
                 ]
             }
 
@@ -160,10 +159,6 @@
                 } else {
                     this._name = data.name;
                 }
-            }
-
-            _getScheduleRace(race) {
-                console.log(race)
             }
         }
 

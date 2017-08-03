@@ -71,7 +71,11 @@ class Athlete extends Entity {
             this.getData().athleteErgs[this.getPathKey()] = this.getData().athleteErgs[this.getPathKey()] || {};
 
             if (!this.getData().athleteErgs[this.getPathKey()][erg.getPathKey()]) {
-                this.getData().athleteErgs[this.getPathKey()][erg.getPathKey()] = true;
+                const value = {
+                    number: val.number,
+                    model: val.model
+                };
+                this.getData().athleteErgs[this.getPathKey()][erg.getPathKey()] = value;
                 this._ergs.push(erg);
             }
 
@@ -127,7 +131,11 @@ class Athlete extends Entity {
             this.getData().athleteFinances[this.getPathKey()] = this.getData().athleteFinances[this.getPathKey()] || {};
 
             if (!this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()]) {
-                this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()] = true;
+                const value = {
+                    reason: val.reason,
+                    gross: val.gross
+                };
+                this.getData().athleteFinances[this.getPathKey()][finance.getPathKey()] = value;
                 this._finances.push(finance);
             }
         }

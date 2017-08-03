@@ -113,7 +113,7 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-roster-detail-loading id="loading"></crew-team-manager-roster-detail-loading>
-                <crew-team-manager-roster-detail-results id="results" data="{{_data}}" team="{{_team}}" erg="[[ergs]]"></crew-team-manager-roster-detail-results>
+                <crew-team-manager-roster-detail-results id="results" data="{{_data}}" team="{{_team}}" erg="[[_ergs]]"></crew-team-manager-roster-detail-results>
                 <crew-team-manager-roster-detail-message id="message"></crew-team-manager-roster-detail-message>
             </iron-pages>
 
@@ -142,7 +142,6 @@
                 return [
                     '_updatePage(athlete)',
                     '_changePage(page)',
-                    '_getData(_ergs.splices)',
                     '_getGross(gross)'
                 ]
 
@@ -174,11 +173,6 @@
                         value: {}
                     },
 
-                    ergs: {
-                        type: Array,
-                        value: []
-                    },
-
                     gross: {
                         type: Number,
                         value: 0
@@ -187,27 +181,7 @@
                 }
             }
 
-            _getData(ergs) {
-                let value = {};
-                let index;
-                let path;
-                let name;
-
-                if (ergs) {
-                    index = ergs.indexSplices[0].object.length - 1;
-                    path = 'ergs/' + ergs.indexSplices[0].object[index].$key;
-                    this.$.fanout.getStoredValue(path)
-                        .then((val) => {
-                            name = val.number + ', ' + val.model;
-                            value.name = name;
-                        });
-                    this.ergs.push(value);
-                }
-            }
-
             _resetData() {
-                this._ergs = {};
-                this.ergs = [];
                 this.gross = 0;
             }
 

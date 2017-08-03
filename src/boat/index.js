@@ -39,7 +39,11 @@ class Boat extends Entity {
             this.getData().boatAthletes[this.getPathKey()] = this.getData().boatAthletes[this.getPathKey()] || {};
 
             if (!this.getData().boatAthletes[this.getPathKey()][athlete.getPathKey()]) {
-                this.getData().boatAthletes[this.getPathKey()][athlete.getPathKey()] = true;
+                const value = {
+                    firstName: val.firstName,
+                    lastName: val.lastName
+                };
+                this.getData().boatAthletes[this.getPathKey()][athlete.getPathKey()] = value;
                 this._athletes.push(athlete);
             }
         }
@@ -77,7 +81,11 @@ class Boat extends Entity {
             this.getData().boatOars[this.getPathKey()] = this.getData().boatOars[this.getPathKey()] || {};
 
             if (!this.getData().boatOars[this.getPathKey()][oar.getPathKey()]) {
-                this.getData().boatOars[this.getPathKey()][oar.getPathKey()] = true;
+
+                const value = {
+                    name: val.name
+                };
+                this.getData().boatOars[this.getPathKey()][oar.getPathKey()] = value;
                 this._oars.push(oar);
             }
         }
@@ -113,7 +121,11 @@ class Boat extends Entity {
             this.getData().boatRiggers[this.getPathKey()] = this.getData().boatRiggers[this.getPathKey()] || {};
 
             if (!this.getData().boatRiggers[this.getPathKey()][rigger.getPathKey()]) {
-                this.getData().boatRiggers[this.getPathKey()][rigger.getPathKey()] = true;
+                const value = {
+                    side: val.side,
+                    seat: val.seat
+                };
+                this.getData().boatRiggers[this.getPathKey()][rigger.getPathKey()] = value;
                 this._riggers.push(rigger);
             }
         }

@@ -120,7 +120,10 @@
 
                     teamId: String,
 
-                    selectedErgs: String,
+                    selectedErgs: {
+                        type: Object,
+                        value: {}
+                    },
 
                     athlete: {
                         type: String,
@@ -132,17 +135,16 @@
             _selectErgs(e) {
                 this.selectedErgs = e.detail.erg;
                 console.log(this.selectedErgs)
-
             }
 
             _handleActionAdd() {
                 let path;
-
+                let name;
                 this.$.firebase.saveValue('athleteErgs', this.athlete)
                     .then(() => {
-
-                        path = 'athleteErgs/' + this.athlete + '/' + this.selectedErgs;
-                        this.$.firebase.setStoredValue(path, true);
+                        name = this.selectedErgs.number + ', ' + this.selectedErgs.model
+                        path = 'athleteErgs/' + this.athlete + '/' + this.selectedErgs.$key;
+                        this.$.firebase.setStoredValue(path, name);
                         this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is +
                             '-action-add-ergs', {
                                 bubbles: true,

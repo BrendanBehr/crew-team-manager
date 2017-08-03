@@ -47,7 +47,11 @@ class Regatta extends Entity {
             this.getData().regattaRaces = this.getData().regattaRaces || {};
             this.getData().regattaRaces[this.getPathKey()] = this.getData().regattaRaces[this.getPathKey()] || {};
             if (!this.getData().regattaRaces[this.getPathKey()][race.getPathKey()]) {
-                this.getData().regattaRaces[this.getPathKey()][race.getPathKey()] = true;
+                const value = {
+                    eventName: val.eventName,
+                    raceTime: val.raceTime,
+                };
+                this.getData().regattaRaces[this.getPathKey()][race.getPathKey()] = value;
                 this._races.push(race);
             }
         }

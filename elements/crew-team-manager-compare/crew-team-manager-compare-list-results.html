@@ -85,7 +85,7 @@
                                 [[item.streetAddress]] [[item.city]] [[item.state]]
                             </div>
                         </div>
-                        <iron-icon class$="[[_computedClass(selected)]]" selected$="_selected" icon="rowing"></iron-icon>
+                        <iron-icon class$="[[_computedClass(selected)]]" icon="rowing"></iron-icon>
                     </div>
                 </template>
             </iron-list>
@@ -153,22 +153,6 @@
                 }
                 return classes;
             }
-
-            // _selectedItemOneChange(item) {
-            //     if (item === 'undefined') {
-            //         return;
-            //     }
-
-            //     this._selected();
-            // }
-
-            // _selectedItemTwoChange(item) {
-            //     if (item === 'undefined') {
-            //         return;
-            //     }
-
-            //     this._selected();
-            // }
 
             _handleItemClick1(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerCompareListResults.is + '-first-athlete', {

@@ -81,7 +81,7 @@
             }
         </style>
 
-        <firebase-query app-name="laborsync-ctm" id="race-query" path="/regattaScheduleRaces/{{regatta}}" data="{{_races}}">
+        <firebase-query app-name="laborsync-ctm" id="race-query" path="/regattaRaces/{{regatta}}" data="{{_races}}">
         </firebase-query>
 
         <firebase-document id="fanout" app-name="laborsync-ctm">
@@ -102,7 +102,7 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-schedule-detail-loading id="loading"></crew-team-manager-schedule-detail-loading>
-                <crew-team-manager-schedule-detail-results id="results" data="{{_data}}" race="[[races]]"></crew-team-manager-schedule-detail-results>
+                <crew-team-manager-schedule-detail-results id="results" data="{{_data}}" race="[[_races]]"></crew-team-manager-schedule-detail-results>
                 <crew-team-manager-schedule-detail-message id="message"></crew-team-manager-schedule-detail-message>
             </iron-pages>
 
@@ -130,8 +130,7 @@
             static get observers() {
                 return [
                     '_updatePage(regatta)',
-                    '_changePage(page)',
-                    '_getData(_races.splices)'
+                    '_changePage(page)'
                 ]
 
             }
@@ -155,31 +154,8 @@
                     _races: {
                         type: Object,
                         value: {}
-                    },
-
-                    races: {
-                        type: Array,
-                        value: []
                     }
 
-                }
-            }
-
-            _getData(races) {
-                let value = {};
-                let index;
-                let path;
-                let name;
-
-                if (races) {
-                    index = races.indexSplices[0].object.length - 1;
-                    path = 'races/' + races.indexSplices[0].object[index].$key;
-                    this.$.fanout.getStoredValue(path)
-                        .then((val) => {
-                            name = val.eventName + ', ' + val.raceTime;
-                            value.name = name;
-                        });
-                    this.races.push(value);
                 }
             }
 
@@ -199,13 +175,7 @@
                 this.page = page;
             }
 
-            _resetData() {
-                this._regattas = {};
-                this.regattas = [];
-            }
-
             _handleActionBack(e) {
-                this._resetData();
                 this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleDetail.is + '-action-back', {
                     bubbles: true,
                     composed: true

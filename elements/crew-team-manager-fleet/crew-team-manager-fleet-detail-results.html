@@ -97,11 +97,11 @@
                         Athletes:
                     </div>
 
-                    <iron-list id="list" items="[[athlete]]" as="item">
+                    <iron-list id="athlete-list" items="[[athlete]]" as="item">
                         <template>
                             <div class="athlete-info">
                                 <div class="athlete-info-name">
-                                    [[item.name]]
+                                    [[item.firstName]] [[item.lastName]]
                                 </div>
                             </div>
                         </template>
@@ -112,7 +112,7 @@
                         Oars:
                     </div>
 
-                    <iron-list id="list" items="[[oar]]" as="item">
+                    <iron-list id="oar-list" items="[[oar]]" as="item">
                         <template>
                             <div class="oar" on-click="_handleItemClick">
                                 <div class="oar-info">
@@ -129,12 +129,12 @@
                         Riggers:
                     </div>
 
-                    <iron-list id="list" items="[[rigger]]" as="item">
+                    <iron-list id="rigger-list" items="[[rigger]]" as="item">
                         <template>
                             <div class="rigger" on-click="_handleItemClick">
                                 <div class="rigger-info">
                                     <div class="rigger-info-name">
-                                        [[item.name]]
+                                        [[item.seat]] [[item.side]]
                                     </div>
                                 </div>
                             </div>
@@ -185,9 +185,9 @@
 
             _getData(athlete, oar, rigger) {
 
-                console.log(athlete)
-                console.log(oar)
-                console.log(rigger)
+                console.log('Athletes:', athlete)
+                console.log('Oars:', oar)
+                console.log('Riggers:', rigger)
             }
         }
 

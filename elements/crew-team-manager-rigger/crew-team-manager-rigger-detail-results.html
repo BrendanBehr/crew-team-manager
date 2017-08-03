@@ -62,6 +62,9 @@
                     <div id="subhead">
                         Details:
                     </div>
+                    <div id="team">
+                        Team: [[team.teamName]]
+                    </div>
                     <div id="boat">
                         Boat: [[boatName]]
                     </div>
@@ -104,6 +107,11 @@
                     boatName: {
                         type: String,
                         value: 'none'
+                    },
+
+                    team: {
+                        type: Object,
+                        value: {}
                     }
 
                 }

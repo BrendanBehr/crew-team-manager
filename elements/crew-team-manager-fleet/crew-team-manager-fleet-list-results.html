@@ -84,12 +84,6 @@
                 }
             }
 
-            static get observers() {
-                return [
-                    '_getData(data)'
-                ]
-            }
-
             _handleItemClick(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetListResults.is + '-action-detail', {
                     bubbles: true,

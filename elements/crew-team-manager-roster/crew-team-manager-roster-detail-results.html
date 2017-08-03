@@ -134,7 +134,7 @@
                             <div class="erg" on-click="_handleItemClick">
                                 <div class="erg-info">
                                     <div class="erg-info-name">
-                                        [[item.name]]
+                                        [[item.number]], Model:[[item.model]]
                                     </div>
                                 </div>
                             </div>
@@ -155,8 +155,7 @@
 
             static get observers() {
                 return [
-                    '_dataChanged(data)',
-                    '_getErg(erg)'
+                    '_dataChanged(data)'
                 ]
             }
 
@@ -186,10 +185,6 @@
                     //TODO make an updated toast pop up and ask if 
                     //the user wants to go refresh to the page
                 }
-            }
-
-            _getErg(erg) {
-                console.log(erg)
             }
         }
 
