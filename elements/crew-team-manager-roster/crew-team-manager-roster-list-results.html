@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
 
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 
@@ -16,16 +17,17 @@
 
             #list {
                 background-color: lightslategray;
-                /*@apply(--layout-vertical);*/
                 @apply(--layout-flex);
-                /*top: 0px;
-                bottom: 0px;
-                left: 0px;
-                right: 0px;*/
             }
 
             .athlete {
                 background-color: white;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
+            .athlete-selected {
+                background-color: #ddd;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
             }
@@ -47,14 +49,35 @@
             .athlete-info-location {
                 @apply(--paper-font-caption);
             }
+
+            .athlete-avatar[reveal],
+            .check-avatar {
+                display: none;
+            }
+
+            .athlete-avatar,
+            .check-avatar[reveal] {
+                display: inline-block;
+            }
+
+            .check-avatar[reveal] {
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                margin: 8px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background-color: #A3A3A3;
+            }
         </style>
 
-        <iron-list id="list" items="[[data]]" as="item">
+        <iron-list id="list" items="[[data]]" as="item" selected-items="{{deleteItems}}" selection-enabled multi-selection>
             <template>
-                <div class="athlete" on-click="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]">
 
-                    <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
-                    <div class="athlete-info">
+                    <crew-team-manager-avatar class="athlete-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.firstName]]" on-tap="_handleActionDeleteMultiple"></crew-team-manager-avatar>
+                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
+                    <div class="athlete-info" on-tap="_handleItemClick">
                         <div class="athlete-info-name">
                             [[item.firstName]] [[item.lastName]]
                         </div>
@@ -69,10 +92,16 @@
 
     <script>
         // Extend Polymer.Element with MyMixin
-        class crewTeamManagerRosterListResults extends Polymer.Element {
+        class crewTeamManagerRosterListResults extends Polymer.GestureEventListeners(Polymer.Element) {
 
             static get is() {
                 return 'crew-team-manager-roster-list-results'
+            }
+
+            static get observers() {
+                return [
+                    '_selectedChange(selected)'
+                ]
             }
 
             static get properties() {
@@ -80,7 +109,50 @@
                     data: {
                         type: Object,
                     },
+
+                    deleteItems: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    selected: Boolean
                 }
+            }
+
+            _computedClass(isSelected) {
+                let classes = 'athlete';
+                if (isSelected) {
+                    classes += '-selected';
+                }
+                return classes;
+            }
+
+            _isCheck(isSelected) {
+                let value = false;
+                if (isSelected) {
+                    value = true;
+                }
+
+                return value;
+            }
+
+            _selectedChange(selected) {
+                if (!selected) {
+                    while (this.deleteItems.length > 0) {
+                        this.$.list.deselectItem(this.deleteItems[0])
+                    }
+                }
+            }
+
+            _handleActionDeleteMultiple(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterListResults.is +
+                    '-action-delete-multiple', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {
+                            athlete: e.model.item
+                        }
+                    }));
             }
 
             _handleItemClick(e) {
@@ -91,6 +163,7 @@
                         athlete: e.model.item.$key
                     }
                 }));
+
             }
         }
 

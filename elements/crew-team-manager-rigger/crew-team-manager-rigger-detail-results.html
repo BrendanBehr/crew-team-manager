@@ -54,7 +54,7 @@
         <div id="content">
 
             <paper-card id="rigger">
-                <crew-team-manager-avatar id="rigger-avatar" value="{{boatName}}" large></crew-team-manager-avatar>
+                <crew-team-manager-avatar id="rigger-avatar" value="{{data.side}}" large></crew-team-manager-avatar>
                 <div id="rigger-name">
                     [[boat.name]]
                 </div>
@@ -65,11 +65,8 @@
                     <div id="team">
                         Team: [[team.teamName]]
                     </div>
-                    <div id="boat">
-                        Boat: [[boatName]]
-                    </div>
                     <div id="side">
-                        Side: [[data.side ]]
+                        Side: [[data.side]]
                     </div>
                     <div id="style">
                         Style: [[data.style]]

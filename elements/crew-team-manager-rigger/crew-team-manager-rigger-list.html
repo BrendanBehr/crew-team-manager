@@ -64,30 +64,46 @@
                 right: 16px;
                 bottom: 16px;
             }
+
+            #delete,
+            #back {
+                display: none;
+            }
+
+            #back[reveal],
+            #delete[reveal] {
+                display: inline-block;
+            }
         </style>
 
         <firebase-query app-name="laborsync-ctm" id="query" path="/teamRiggers/{{teamId}}" data="{{_data}}">
         </firebase-query>
 
+        <firebase-document id="firebase" app-name="laborsync-ctm">
+        </firebase-document>
+
         <app-header-layout id="layout" has-scrolling-region fullbleed>
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
+                    <paper-icon-button id="menu" icon="menu" on-tap="_handleActionMenu"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" reveal$="[[reveal]]" on-tap="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Riggers</div>
-                    <paper-icon-button id="logout" icon="exit-to-app" on-click="_handleActionLogout"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" reveal$="[[reveal]]" on-tap="_handleActionDeleteItems"></paper-icon-button>
+                    <paper-icon-button id="logout" icon="exit-to-app" on-tap="_handleActionLogout"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-rigger-list-loading id="loading"></crew-team-manager-rigger-list-loading>
-                <crew-team-manager-rigger-list-results id="results" data="[[_data]]" boat="{{_boat}}"></crew-team-manager-rigger-list-results>
+                <crew-team-manager-rigger-list-results id="results" data="[[_data]]" boat="{{_boat}}" selected="{{selected}}" on-crew-team-manager-rigger-list-results-action-delete-multiple="_prepareDelete"></crew-team-manager-rigger-list-results>
                 <crew-team-manager-rigger-list-message id="message"></crew-team-manager-rigger-list-message>
             </iron-pages>
-            <paper-fab id="fab" icon="add" on-click="_handleActionCreate">
+            <paper-fab id="fab" icon="add" on-tap="_handleActionCreate">
             </paper-fab>
 
         </app-header-layout>
 
+        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
 
 
     </template>
@@ -118,7 +134,17 @@
                         type: Object
                     },
 
-                    teamId: String
+                    teamId: String,
+
+                    _deleteItems: {
+                        type: Object,
+                        value: []
+                    },
+
+                    selected: {
+                        type: Boolean,
+                        value: false
+                    }
 
                 }
             }
@@ -165,6 +191,34 @@
                 }
 
                 this.page = page;
+            }
+
+            _handleActionBack() {
+                this.reveal = false;
+                this.selected = false;
+                this._deleteItems = [];
+            }
+
+            _prepareDelete(e) {
+                this.reveal = true;
+                this.selected = true;
+                this._deleteItems.push(e.detail.rigger)
+            }
+
+            _handleActionDeleteItems() {
+                let key;
+                let path;
+                this._toast = 'Deleting Items';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+                this.reveal = false;
+                this.selected = false;
+                for (let x = 0; x < this._deleteItems.length; x++) {
+                    key = this._deleteItems[x].$key;
+                    path = 'riggers/' + key;
+                    this.$.firebase.path = path;
+                    this.$.firebase.destroy();
+                }
             }
 
         }

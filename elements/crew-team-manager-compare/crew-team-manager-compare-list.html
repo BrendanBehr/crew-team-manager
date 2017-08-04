@@ -62,16 +62,10 @@
                 @apply(--layout-horizontal);
             }
 
-            #first-athlete[show='false'] {
+            #first-athlete,
+            #second-athlete {
                 @apply(--layout-flex);
                 background-color: #4caf50;
-                display: hidden;
-            }
-
-            #second-athlete[show='false'] {
-                @apply(--layout-flex);
-                background-color: #4caf50;
-                display: hidden
             }
         </style>
 
@@ -82,15 +76,15 @@
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="menu" icon="menu" on-click="_handleActionMenu"></paper-icon-button>
+                    <paper-icon-button id="menu" icon="menu" on-tap="_handleActionMenu"></paper-icon-button>
                     <div main-title id="title">Compare Athletes</div>
-                    <paper-icon-button id="compare" icon="arrow-forward" on-click="_handleActionCompare"></paper-icon-button>
-                    <paper-icon-button id="logout" icon="exit-to-app" on-click="_handleActionLogout"></paper-icon-button>
+                    <paper-icon-button id="compare" icon="arrow-forward" on-tap="_handleActionCompare"></paper-icon-button>
+                    <paper-icon-button id="logout" icon="exit-to-app" on-tap="_handleActionLogout"></paper-icon-button>
                 </app-toolbar>
 
                 <div id="selected-athletes">
-                    <div id="first-athlete" show$="[[_athlete1Show]]">First Athlete Chosen: [[_athlete1.firstName]]</div>
-                    <div id="second-athlete" show$="[[_athlete2Show]]">Second Athlete Chosen: [[_athlete2.firstName]]</div>
+                    <div id="first-athlete">First Athlete Chosen: [[_athlete1.firstName]]</div>
+                    <div id="second-athlete">Second Athlete Chosen: [[_athlete2.firstName]]</div>
                 </div>
 
             </app-header>
@@ -98,7 +92,7 @@
 
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-compare-list-loading id="loading"></crew-team-manager-compare-list-loading>
-                <crew-team-manager-compare-list-results id="results" data="[[_data]]" small-cards$="[[wideLayout]]" on-crew-team-manager-compare-list-results-first-athlete="_handleAthlete1"
+                <crew-team-manager-compare-list-results id="results" data="[[_data]]" on-crew-team-manager-compare-list-results-first-athlete="_handleAthlete1"
                     on-crew-team-manager-compare-list-results-second-athlete="_handleAthlete2"></crew-team-manager-compare-list-results>
                 <crew-team-manager-compare-list-message id="message"></crew-team-manager-compare-list-message>
             </iron-pages>
@@ -148,13 +142,13 @@
                     },
 
                     _athlete1Show: {
-                        type: String,
-                        value: 'false'
+                        type: Boolean,
+                        value: false
                     },
 
                     _athlete2Show: {
-                        type: String,
-                        value: 'false'
+                        type: Boolean,
+                        value: false
                     },
 
                     teamId: String
@@ -198,10 +192,12 @@
 
             _handleAthlete1(e) {
                 this._athlete1 = e.detail.athlete;
+                this._athlete1Show;
             }
 
             _handleAthlete2(e) {
                 this._athlete2 = e.detail.athlete;
+                this._athlete2Show;
             }
 
             _handleActionLogout() {

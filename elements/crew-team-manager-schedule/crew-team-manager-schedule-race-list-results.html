@@ -57,7 +57,7 @@
 
         <iron-list id="list" items="[[data]]" as="item" selected-items="{{selectedItems}}" selection-enabled multi-selection>
             <template>
-                <div class$="[[_computedClass(selected)]]" on-click="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]" on-tap="_handleItemClick">
 
                     <crew-team-manager-avatar class="race-avatar" value="[[item.eventName]]"></crew-team-manager-avatar>
                     <div class="race-info">

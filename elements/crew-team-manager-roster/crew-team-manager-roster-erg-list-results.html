@@ -52,7 +52,7 @@
 
         <iron-list id="list" items="[[data]]" as="item" selected-item="{{selectedItem}}" selection-enabled>
             <template>
-                <div class$="[[_computedClass(selected)]]" on-click="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]" on-tap="_handleItemClick">
 
                     <crew-team-manager-avatar class="erg-avatar" value="[[item.number]] % 10"></crew-team-manager-avatar>
                     <div class="erg-info">

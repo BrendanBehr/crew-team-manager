@@ -106,10 +106,10 @@
 
                     <iron-list id="list" items="[[race]]" as="item">
                         <template>
-                            <div class="race" on-click="_handleItemClick">
+                            <div class="race" on-tap="_handleItemClick">
                                 <div class="race-info">
                                     <div class="race-info-name">
-                                        Event: [[item.eventName]], Race time: [[item.raceTime]]
+                                        [[item.eventName]] [[item.raceTime]]
                                     </div>
                                 </div>
                             </div>

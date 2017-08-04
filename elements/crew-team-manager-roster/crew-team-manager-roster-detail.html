@@ -103,10 +103,10 @@
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Details</div>
-                    <paper-icon-button id="edit" icon="create" on-click="_handleActionEdit"></paper-icon-button>
-                    <paper-icon-button id="delete" icon="delete" on-click="_handleActionDelete"></paper-icon-button>
+                    <paper-icon-button id="edit" icon="create" on-tap="_handleActionEdit"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" on-tap="_handleActionDelete"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
@@ -121,8 +121,8 @@
 
         <div id="fabs-layout">
             <div id="fabs">
-                <paper-fab id="erg" class="fab" icon="places:fitness-center" on-click="_handleActionAddErg"></paper-fab>
-                <paper-fab id="finance" class="fab" icon="editor:attach-money" on-click="_handleActionAddFinance"></paper-fab>
+                <paper-fab id="erg" class="fab" icon="places:fitness-center" on-tap="_handleActionAddErg"></paper-fab>
+                <paper-fab id="finance" class="fab" icon="editor:attach-money" on-tap="_handleActionAddFinance"></paper-fab>
                 <paper-fab id="add" class="fab" icon="icons:add"></paper-fab>
             </div>
         </div>
@@ -220,7 +220,13 @@
             }
 
             _handleActionDelete(e) {
+                this.$.firebase.path = 'athleteErgs/' + this.athlete;
                 this.$.firebase.destroy();
+                this.$.firebase.path = 'athleteFinances/' + this.athlete;
+                this.$.firebase.destroy();
+                this.$.firebase.path = 'athletes/' + this.athlete;
+                this.$.firebase.destroy();
+
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-delete', {
                     bubbles: true,
                     composed: true

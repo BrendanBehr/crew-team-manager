@@ -861,7 +861,7 @@ path /athleteErgs/{athleteId} is FanOut {
     }
 
     delete() {
-        hasAthleteErgDeleteAccess(athleteId)
+        hasAthleteDeleteAccess(athleteId)
     }
 
     validate() {getAthlete(athleteId).team == getAuthUser().team}

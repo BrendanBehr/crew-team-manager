@@ -16,16 +16,17 @@
 
             #list {
                 background-color: lightslategray;
-                /*@apply(--layout-vertical);*/
                 @apply(--layout-flex);
-                /*top: 0px;
-                bottom: 0px;
-                left: 0px;
-                right: 0px;*/
             }
 
             .regatta {
                 background-color: white;
+                @apply(--layout-horizontal);
+                border-bottom: solid 1px grey;
+            }
+
+            .regatta-selected {
+                background-color: #ddd;
                 @apply(--layout-horizontal);
                 border-bottom: solid 1px grey;
             }
@@ -47,14 +48,35 @@
             .regatta-info-location {
                 @apply(--paper-font-caption);
             }
+
+            .regatta-avatar[reveal],
+            .check-avatar {
+                display: none;
+            }
+
+            .regatta-avatar,
+            .check-avatar[reveal] {
+                display: inline-block;
+            }
+
+            .check-avatar[reveal] {
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                margin: 8px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background-color: #A3A3A3;
+            }
         </style>
 
-        <iron-list id="list" items="[[data]]" as="item">
+        <iron-list id="list" items="[[data]]" as="item" selected-items="{{deleteItems}}" selection-enabled multi-selection>
             <template>
-                <div class="regatta" on-click="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]">
 
-                    <crew-team-manager-avatar class="regatta-avatar" value="[[item.avatar]]"></crew-team-manager-avatar>
-                    <div class="regatta-info">
+                    <crew-team-manager-avatar class="regatta-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.avatar]]" on-tap="_handleActionDeleteMultiple"></crew-team-manager-avatar>
+                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
+                    <div class="regatta-info" on-tap="_handleItemClick">
                         <div class="regatta-info-name">
                             [[item.name]]
                         </div>
@@ -75,13 +97,63 @@
                 return 'crew-team-manager-schedule-list-results'
             }
 
+            static get observers() {
+                return [
+                    '_selectedChange(selected)'
+                ]
+            }
+
             static get properties() {
                 return {
                     data: {
                         type: Object,
+                    },
+
+                    deleteItems: {
+                        type: Object,
+                        value: {}
+                    },
+
+                    selected: Boolean
+                }
+            }
+
+            _computedClass(isSelected) {
+                let classes = 'regatta';
+                if (isSelected) {
+                    classes += '-selected';
+                }
+                return classes;
+            }
+
+            _isCheck(isSelected) {
+                let value = false;
+                if (isSelected) {
+                    value = true;
+                }
+
+                return value;
+            }
+
+            _selectedChange(selected) {
+                if (!selected) {
+                    while (this.deleteItems.length > 0) {
+                        this.$.list.deselectItem(this.deleteItems[0])
                     }
                 }
             }
+
+            _handleActionDeleteMultiple(e) {
+                this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleListResults.is +
+                    '-action-delete-multiple', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {
+                            regatta: e.model.item
+                        }
+                    }));
+            }
+
 
             _handleItemClick(e) {
                 this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleListResults.is + '-action-detail', {

@@ -15,10 +15,6 @@
                 @apply(--layout-horizontal);
             }
 
-             :host([small-cards]) .athlete-info-location {
-                display: none;
-            }
-
             #athletes-list-one {
                 @apply(--layout-flex);
                 border-right: solid 1px grey;
@@ -67,6 +63,8 @@
             }
 
             .selector-selected {
+                height: 32px;
+                width: 32px;
                 color: #311b92;
             }
         </style>
@@ -74,7 +72,7 @@
         <div id="athletes-list-one">
             <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-one" selected-item="{{selectedItemOne}}" selection-enabled>
                 <template>
-                    <div class="athlete" on-click="_handleItemClick1">
+                    <div class="athlete" on-tap="_handleItemClick1">
 
                         <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
                         <div class="athlete-info">
@@ -95,7 +93,7 @@
             <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-two" selected-item="{{selectedItemTwo}}" selection-enabled
                 on-selected-item-changed="_handleItemSelect">
                 <template>
-                    <div class="athlete" on-click="_handleItemClick2">
+                    <div class="athlete" on-tap="_handleItemClick2">
 
                         <crew-team-manager-avatar class="athlete-avatar" value="[[item.firstName]]"></crew-team-manager-avatar>
                         <div class="athlete-info">
@@ -134,10 +132,9 @@
                     selectedItemTwo: {
                         type: Object
                     },
+
                 }
             }
-
-
 
             _computedClass(isSelected) {
                 let classes = 'selector';

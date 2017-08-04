@@ -63,9 +63,9 @@
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="cancel" icon="close" on-click="_handleActionCancel"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" on-tap="_handleActionCancel"></paper-icon-button>
                     <div main-title id="title">Create</div>
-                    <paper-icon-button id="create" icon="check" on-click="_handleActionCreate"></paper-icon-button>
+                    <paper-icon-button id="create" icon="check" on-tap="_handleActionCreate"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
@@ -95,8 +95,8 @@
                         type: Object,
                         value: {
                             reason: '',
-                            incomes: 0,
-                            expenses: 0,
+                            incomes: null,
+                            expenses: null,
                             gross: 0,
                             created: 0,
                             updated: 0
@@ -121,8 +121,8 @@
             _resetCreate() {
                 this.create = {
                     reason: '',
-                    incomes: 0,
-                    expenses: 0,
+                    incomes: null,
+                    expenses: null,
                     gross: 0,
                     updated: 0,
                     created: 0

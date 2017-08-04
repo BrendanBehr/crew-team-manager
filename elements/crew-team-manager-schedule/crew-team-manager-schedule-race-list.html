@@ -76,9 +76,9 @@
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-click="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Select Races To Add</div>
-                    <paper-icon-button id="add" icon="check" on-click="_handleActionAdd"></paper-icon-button>
+                    <paper-icon-button id="add" icon="check" on-tap="_handleActionAdd"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
@@ -133,17 +133,18 @@
 
             _selectRace(e) {
                 for (let x = 0; x < this.selectedRace.length; x++) {
-                    if (this.selectedRace[x] == e.detail.athlete) {
+                    if (this.selectedRace[x] == e.detail.race) {
                         this.selectedRace.splice(x, x);
                         return;
                     }
                 }
 
-                this.selectedRace.push(e.detail.athlete)
+                this.selectedRace.push(e.detail.race)
             }
 
             _handleActionAdd() {
                 let path;
+                console.log(this.selectedRace)
                 this.$.firebase.saveValue('regattaRaces', this.regatta)
                     .then(() => {
                         for (let x = 0; x < this.selectedRace.length; x++) {
