@@ -169,13 +169,23 @@
             }
 
             _handleActionDelete(e) {
-                this.$.firebase.destroy();
-                this.$.firebase.path = 'boatRiggers/' + this._data.boat + '/' + this.rigger;
-                console.log(this.$.firebase.path)
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerDetail.is + '-action-delete', {
-                    bubbles: true,
-                    composed: true
-                }));
+                this.$.firebase.destroy()
+                    .then(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerDetail.is +
+                            '-action-delete', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    })
+                    .catch(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRiggerDetail.is +
+                            '-action-delete-fail', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    });
             }
         }
 

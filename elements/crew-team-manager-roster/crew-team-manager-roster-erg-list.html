@@ -150,12 +150,23 @@
                     .then(() => {
                         name = this.selectedErgs.number + ', ' + this.selectedErgs.model
                         path = 'athleteErgs/' + this.athlete + '/' + this.selectedErgs.$key;
-                        this.$.firebase.setStoredValue(path, name);
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is +
-                            '-action-add-ergs', {
-                                bubbles: true,
-                                composed: true
-                            }));
+                        this.$.firebase.setStoredValue(path, name)
+                            .then(() => {
+                                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is +
+                                    '-action-add-ergs', {
+                                        bubbles: true,
+                                        composed: true
+                                    }));
+                            })
+                            .catch(() => {
+
+                                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is +
+                                    '-action-fanout-fail', {
+                                        bubbles: true,
+                                        composed: true
+                                    }));
+                            });
+
 
                     });
             }

@@ -16,7 +16,7 @@
 <dom-module id="crew-team-manager-login">
     <template>
         <style>
-             :host {
+         :host {
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
                 background-color: #164410;
@@ -29,8 +29,6 @@
                 min-width: 280px;
             }
 
-
-
             #card {
                 @apply(--layout-vertical);
                 @apply(--layout-center);
@@ -38,6 +36,10 @@
                 min-height: 112px;
                 background-color: #e8f5e9;
                 padding: 24px;
+            }
+
+            #title {
+                @apply(--paper-font-title);
             }
 
             paper-button.custom:hover {
@@ -48,11 +50,13 @@
                 background-color: var(--paper-indigo-500);
                 color: white;
                 --paper-button-raised-keyboard-focus: {
-                    background-color: var(--paper-pink-a200);
                     color: white;
                 }
                 ;
             }
+
+            ;
+        }
         </style>
 
         <firebase-auth id="auth" user="user" app-name="laborsync-ctm"></firebase-auth>
@@ -64,6 +68,7 @@
 
         <div id="container">
             <paper-card id="card">
+                <div id="title">Crew Team Manager</div>
                 <paper-input id="username" label="username" value="{{_username}}"></paper-input>
                 <paper-input id="password" label="password" value="{{_password}}" type="password"></paper-input>
                 <paper-button id="login" on-tap="_handleLogin">Login</paper-button>
@@ -85,12 +90,12 @@
                 return {
                     _username: {
                         type: String,
-                        value: 'babehrensbb@gmail.com'
+                        value: ''
                     },
 
                     _password: {
                         type: String,
-                        value: 'BrendanRocks'
+                        value: ''
                     },
 
                     token: {

@@ -49,7 +49,8 @@
 
             <crew-team-manager-roster-detail id="detail" athlete="[[_athlete]]" page="loading" on-crew-team-manager-roster-detail-action-back="_handleActionBack"
                 on-crew-team-manager-roster-detail-action-edit="_handleActionEdit" gross="[[_gross]]" on-crew-team-manager-roster-detail-action-delete="_handleActionDelete"
-                on-crew-team-manager-roster-detail-action-add-erg="_handleActionAddErg" on-crew-team-manager-roster-detail-action-add-finance="_handleActionAddFinance">
+                on-crew-team-manager-roster-detail-action-add-erg="_handleActionAddErg" on-crew-team-manager-roster-detail-action-add-finance="_handleActionAddFinance"
+                on-crew-team-manager-roster-detail-action-delete-fail="_handleActionFail">
             </crew-team-manager-roster-detail>
 
             <crew-team-manager-roster-edit edit="[[_edit]]" id="edit" athlete="[[_athlete]]" on-crew-team-manager-roster-edit-action-back="_handleActionBackOnce"
@@ -61,11 +62,11 @@
             </crew-team-manager-roster-create>
 
             <crew-team-manager-roster-erg-list id="erg" team-id="[[teamId]]" athlete="[[_athlete]]" page="loading" on-crew-team-manager-roster-erg-list-action-back="_handleActionBackOnce"
-                on-crew-team-manager-roster-erg-list-action-add-ergs="_handleActionAddedErgs">
+                on-crew-team-manager-roster-erg-list-action-add-ergs="_handleActionAddedErgs" on-crew-team-manager-roster-erg-list-action-fanout-fail="_handleActionFail">
             </crew-team-manager-roster-erg-list>
 
             <crew-team-manager-roster-finance-create id="finance" team-id="[[teamId]]" athlete="[[_athlete]]" on-crew-team-manager-roster-finance-create-action-cancel="_handleActionCanceled"
-                on-crew-team-manager-roster-finance-create-action-created="_handleActionAddedFinance">
+                on-crew-team-manager-roster-finance-create-action-created="_handleActionAddedFinance" on-crew-team-manager-roster-finance-create-action-fanout-fail="_handleActionFail">
             </crew-team-manager-roster-finance-create>
         </iron-pages>
 
@@ -199,6 +200,13 @@
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
                 this.page = 'detail'
+            }
+
+            _handleActionFail() {
+                this.page = 'list'
+                this._toast = 'You do not have permision to do that';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
             }
         }
 

@@ -27,6 +27,11 @@ class Team extends Entity {
         options.values.state = options.values.state || faker.address.state();
         options.values.color = options.values.color || faker.commerce.color();
         options.values.logo = options.values.logo || faker.image.image();
+        let key = faker.random.alphaNumeric();
+        for (let x = 0; x < 6; x++) {
+            key = key + faker.random.alphaNumeric();
+        }
+        options.values.key = options.values.key || key.toUpperCase();
 
         super(options);
 

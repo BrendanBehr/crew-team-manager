@@ -221,16 +221,43 @@
 
             _handleActionDelete(e) {
                 this.$.firebase.path = 'athleteErgs/' + this.athlete;
-                this.$.firebase.destroy();
-                this.$.firebase.path = 'athleteFinances/' + this.athlete;
-                this.$.firebase.destroy();
-                this.$.firebase.path = 'athletes/' + this.athlete;
-                this.$.firebase.destroy();
+                this.$.firebase.destroy()
+                    .catch(() => {
 
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is + '-action-delete', {
-                    bubbles: true,
-                    composed: true
-                }));
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is +
+                            '-action-delete-fail', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    });
+                this.$.firebase.path = 'athleteFinances/' + this.athlete;
+                this.$.firebase.destroy()
+                    .catch(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is +
+                            '-action-delete-fail', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    });
+                this.$.firebase.path = 'athletes/' + this.athlete;
+                this.$.firebase.destroy()
+                    .then(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is +
+                            '-action-delete', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    })
+                    .catch(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRosterDetail.is +
+                            '-action-delete-fail', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    });
             }
 
             _handleActionAddErg() {

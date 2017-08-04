@@ -145,12 +145,26 @@
                             _key = _key + this.$.firebase.path[x];
                         }
                         const path = 'regattaPictures/' + this.regatta + '/' + _key;
-                        this.$.firebase.setStoredValue(path, true);
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerSchedulePictureCreate.is +
-                            '-action-created', {
-                                bubbles: true,
-                                composed: true
-                            }));
+                        this.$.firebase.setStoredValue(path, true)
+                            .then(() => {
+
+                                this.dispatchEvent(new CustomEvent(crewTeamManagerSchedulePictureCreate
+                                    .is +
+                                    '-action-created', {
+                                        bubbles: true,
+                                        composed: true
+                                    }));
+                            })
+                            .catch(() => {
+
+                                this.dispatchEvent(new CustomEvent(crewTeamManagerSchedulePictureCreate
+                                    .is +
+                                    '-action-fanout-fail', {
+                                        bubbles: true,
+                                        composed: true
+                                    }));
+                            });
+
                     });
 
 

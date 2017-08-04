@@ -53,7 +53,8 @@
             </crew-team-manager-oar-list>
 
             <crew-team-manager-oar-detail id="detail" oar="[[_oar]]" page="loading" on-crew-team-manager-oar-detail-action-back="_handleActionBack"
-                on-crew-team-manager-oar-detail-action-edit="_handleActionEdit" on-crew-team-manager-oar-detail-action-delete="_handleActionDelete">
+                on-crew-team-manager-oar-detail-action-edit="_handleActionEdit" on-crew-team-manager-oar-detail-action-delete="_handleActionDelete"
+                on-crew-team-manager-oar-detail-action-delete-fail="_handleActionFail">
             </crew-team-manager-oar-detail>
 
             <crew-team-manager-oar-edit edit="[[_edit]]" id="edit" oar="[[_oar]]" on-crew-team-manager-oar-edit-action-back="_handleActionBackOnce"
@@ -164,6 +165,13 @@
             _handleActionCancel(e) {
                 this.page = 'list';
                 this._toast = 'Cancelled Oar Create';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionFail() {
+                this.page = 'list'
+                this._toast = 'You do not have permision to do that';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

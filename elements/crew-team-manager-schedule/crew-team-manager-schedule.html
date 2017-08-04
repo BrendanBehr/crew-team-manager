@@ -52,7 +52,8 @@
 
             <crew-team-manager-schedule-detail id="detail" regatta="[[_regatta]]" on-crew-team-manager-schedule-detail-action-back="_handleActionBack"
                 on-crew-team-manager-schedule-detail-action-edit="_handleActionEdit" on-crew-team-manager-schedule-detail-action-delete="_handleActionDelete"
-                on-crew-team-manager-schedule-detail-action-add-race="_handleActionAddRace" on-crew-team-manager-schedule-detail-action-add-picture="_handleActionAddPicture">
+                on-crew-team-manager-schedule-detail-action-add-race="_handleActionAddRace" on-crew-team-manager-schedule-detail-action-delete-fail="_handleActionFail"
+                on-crew-team-manager-schedule-detail-action-add-picture="_handleActionAddPicture">
             </crew-team-manager-schedule-detail>
 
             <crew-team-manager-schedule-edit edit="[[_edit]]" id="edit" regatta="[[_regatta]]" on-crew-team-manager-schedule-edit-action-back="_handleActionBackOnce"
@@ -64,11 +65,11 @@
             </crew-team-manager-schedule-create>
 
             <crew-team-manager-schedule-race-list id="race" team-id="[[teamId]]" regatta="[[_regatta]]" page="loading" on-crew-team-manager-schedule-race-list-action-back="_handleActionBackOnce"
-                on-crew-team-manager-schedule-race-list-action-add-race="_handleActionAddedRaces">
+                on-crew-team-manager-schedule-race-list-action-add-race="_handleActionAddedRaces" on-crew-team-manager-schedule-race-list-action-fanout-fail="_handleActionFail">
             </crew-team-manager-schedule-race-list>
 
             <crew-team-manager-schedule-picture-create id="picture" regatta="[[_regatta]]" team-id="[[teamId]]" on-crew-team-manager-schedule-picture-create-action-cancel="_handleActionCanceled"
-                on-crew-team-manager-schedule-picture-create-action-created="_handleActionAddedPicture">
+                on-crew-team-manager-schedule-picture-create-action-created="_handleActionAddedPicture" on-crew-team-manager-schedule-picture-create-action-fanout-fail="_handleActionFail">
             </crew-team-manager-schedule-picture-create>
         </iron-pages>
 
@@ -199,6 +200,13 @@
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
                 this.page = 'detail'
+            }
+
+            _handleActionFail() {
+                this.page = 'list'
+                this._toast = 'You do not have permision to do that';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
             }
         }
 

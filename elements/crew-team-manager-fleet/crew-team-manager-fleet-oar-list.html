@@ -140,7 +140,7 @@
             _handleActionAdd() {
                 let path;
                 this.selected = false;
-                this.$.firebase.saveValue('boatOars', this.boat)
+                this.$.firebase.saveValue('boatRiggers', this.boat)
                     .then(() => {
                         for (let x = 0; x < this.selectedOars.length; x++) {
                             path = 'boatOars/' + this.boat + '/' + this.selectedOars[x]
@@ -153,6 +153,14 @@
                             }));
 
 
+                    })
+                    .catch(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is +
+                            '-action-fanout-fail', {
+                                bubbles: true,
+                                composed: true
+                            }));
                     });
             }
 

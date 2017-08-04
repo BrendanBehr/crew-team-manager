@@ -51,7 +51,8 @@
             </crew-team-manager-picture-list>
 
             <crew-team-manager-picture-detail id="detail" picture="[[picture]]" page="loading" on-crew-team-manager-picture-detail-action-back="_handleActionBack"
-                on-crew-team-manager-picture-detail-action-edit="_handleActionEdit" on-crew-team-manager-picture-detail-action-delete="_handleActionDelete">
+                on-crew-team-manager-picture-detail-action-edit="_handleActionEdit" on-crew-team-manager-picture-detail-action-delete="_handleActionDelete"
+                on-crew-team-manager-picture-detail-action-delete-fail="_handleActionFail">
             </crew-team-manager-picture-detail>
 
             <crew-team-manager-picture-edit edit="[[_edit]]" id="edit" picture="[[picture]]" on-crew-team-manager-picture-edit-action-back="_handleActionBackOnce"
@@ -162,6 +163,13 @@
             _handleActionCancel(e) {
                 this.page = 'list';
                 this._toast = 'Cancelled Picture Create';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionFail() {
+                this.page = 'list'
+                this._toast = 'You do not have permision to do that';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

@@ -51,7 +51,8 @@
             </crew-team-manager-rigger-list>
 
             <crew-team-manager-rigger-detail id="detail" rigger="[[_rigger]]" on-crew-team-manager-rigger-detail-action-back="_handleActionBack"
-                on-crew-team-manager-rigger-detail-action-edit="_handleActionEdit" on-crew-team-manager-rigger-detail-action-delete="_handleActionDelete">
+                on-crew-team-manager-rigger-detail-action-edit="_handleActionEdit" on-crew-team-manager-rigger-detail-action-delete="_handleActionDelete"
+                on-crew-team-manager-rigger-detail-action-delete-fail="_handleActionFail">
             </crew-team-manager-rigger-detail>
 
             <crew-team-manager-rigger-edit edit="[[_edit]]" id="edit" rigger="[[_rigger]]" on-crew-team-manager-rigger-edit-action-back="_handleActionBackOnce"
@@ -165,6 +166,13 @@
 
             _handleActionCreate(e) {
                 this.page = 'create';
+            }
+
+            _handleActionFail() {
+                this.page = 'list'
+                this._toast = 'You do not have permision to do that';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
             }
         }
 

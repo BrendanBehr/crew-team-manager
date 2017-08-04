@@ -2,7 +2,7 @@
   "rules": {
     "teams": {
       "$teamId": {
-        ".validate": "newData.hasChildren(['city', 'color', 'logo', 'state', 'streetAddress', 'teamName', 'updated']) && newData.child('updated').val() == now",
+        ".validate": "newData.hasChildren(['city', 'color', 'logo', 'state', 'streetAddress', 'teamName', 'updated', 'key']) && newData.child('updated').val() == now",
         "city": {
           ".validate": "newData.isString() && newData.val().length > 0"
         },
@@ -23,6 +23,9 @@
         },
         "updated": {
           ".validate": "newData.isNumber() && newData.val() == now"
+        },
+        "key": {
+          ".validate": "newData.isString() && newData.val().length > 0"
         },
         "$other": {
           ".validate": "false"

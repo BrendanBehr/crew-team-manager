@@ -154,11 +154,23 @@
             }
 
             _handleActionDelete(e) {
-                this.$.firebase.destroy();
-                this.dispatchEvent(new CustomEvent(crewTeamManagerRaceDetail.is + '-action-delete', {
-                    bubbles: true,
-                    composed: true
-                }));
+                this.$.firebase.destroy()
+                    .then(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRaceDetail.is +
+                            '-action-delete', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    })
+                    .catch(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerRaceDetail.is +
+                            '-action-delete-fail', {
+                                bubbles: true,
+                                composed: true
+                            }));
+                    });
             }
         }
 

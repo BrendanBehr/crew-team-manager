@@ -161,6 +161,7 @@
             }
 
             _handleItemClick(e) {
+                this.$.list.deselectItem(e.model.item);
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFinanceListResults.is + '-action-detail', {
                     bubbles: true,
                     composed: true,

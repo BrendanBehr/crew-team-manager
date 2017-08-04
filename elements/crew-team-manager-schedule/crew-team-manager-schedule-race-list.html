@@ -153,13 +153,25 @@
                     .then(() => {
                         for (let x = 0; x < this.selectedRace.length; x++) {
                             path = 'regattaRaces/' + this.regatta + '/' + this.selectedRace[x];
-                            this.$.firebase.setStoredValue(path, true);
+                            this.$.firebase.setStoredValue(path, true)
+                                .then(() => {
+                                    this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleRaceList.is +
+                                        '-action-add-race', {
+                                            bubbles: true,
+                                            composed: true,
+                                        }));
+                                })
+                                .catch(() => {
+
+                                    this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleRaceList
+                                        .is +
+                                        '-action-fanout-fail', {
+                                            bubbles: true,
+                                            composed: true
+                                        }));
+                                });
                         }
-                        this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleRaceList.is +
-                            '-action-add-race', {
-                                bubbles: true,
-                                composed: true,
-                            }));
+
 
 
                     });

@@ -51,7 +51,8 @@
             </crew-team-manager-race-list>
 
             <crew-team-manager-race-detail id="detail" race="[[_race]]" page="loading" on-crew-team-manager-race-detail-action-back="_handleActionBack"
-                on-crew-team-manager-race-detail-action-edit="_handleActionEdit" on-crew-team-manager-race-detail-action-delete="_handleActionDelete">
+                on-crew-team-manager-race-detail-action-edit="_handleActionEdit" on-crew-team-manager-race-detail-action-delete="_handleActionDelete"
+                on-crew-team-manager-race-detail-action-delete-fail="_handleActionFail">
             </crew-team-manager-race-detail>
 
             <crew-team-manager-race-edit edit="[[_edit]]" id="edit" race="[[_race]]" on-crew-team-manager-race-edit-action-back="_handleActionBackOnce"
@@ -162,6 +163,13 @@
             _handleActionCancel(e) {
                 this.page = 'list';
                 this._toast = 'Cancelled Race Create';
+                this.$.toast.fitInto = this.$.pages;
+                this.$.toast.open();
+            }
+
+            _handleActionFail() {
+                this.page = 'list'
+                this._toast = 'You do not have permision to do that';
                 this.$.toast.fitInto = this.$.pages;
                 this.$.toast.open();
             }

@@ -64,6 +64,7 @@ type Team {
     streetAddress: StringNotEmpty,
     teamName: StringNotEmpty,
     updated: CurrentTime,
+    key: StringNotEmpty
 
     validate() { this.updated == now }
 }

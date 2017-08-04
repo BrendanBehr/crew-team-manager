@@ -158,6 +158,14 @@
                                 bubbles: true,
                                 composed: true
                             }));
+                    })
+                    .catch(() => {
+
+                        this.dispatchEvent(new CustomEvent(crewTeamManagerFleetDetail.is +
+                            '-action-fanout-fail', {
+                                bubbles: true,
+                                composed: true
+                            }));
                     });
 
             }
