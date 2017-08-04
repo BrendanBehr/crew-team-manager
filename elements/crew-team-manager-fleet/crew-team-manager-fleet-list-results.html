@@ -81,7 +81,7 @@
 
                     <crew-team-manager-avatar class="boat-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.name]]" on-tap="_handleActionDeleteMultiple"></crew-team-manager-avatar>
                     <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                    <div class="boat-info"="_handleItemClick">
+                    <div class="boat-info" on-tap="_handleItemClick">
                         <div class="boat-info-name">
                             [[item.name]]
                         </div>

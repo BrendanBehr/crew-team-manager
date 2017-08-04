@@ -76,14 +76,14 @@
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back"="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Select Riggers To Add</div>
-                    <paper-icon-button id="add" icon="check"="_handleActionAdd"></paper-icon-button>
+                    <paper-icon-button id="add" icon="check" on-tap="_handleActionAdd"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-fleet-rigger-list-loading id="loading"></crew-team-manager-fleet-rigger-list-loading>
-                <crew-team-manager-fleet-rigger-list-results id="results" data="[[_data]]" on-crew-team-manager-fleet-rigger-list-results-action-select-riggers="_selectRiggers"></crew-team-manager-fleet-rigger-list-results>
+                <crew-team-manager-fleet-rigger-list-results id="results" data="[[_data]]" selected="[[selected]]" on-crew-team-manager-fleet-rigger-list-results-action-select-riggers="_selectRiggers"></crew-team-manager-fleet-rigger-list-results>
                 <crew-team-manager-fleet-rigger-list-message id="message"></crew-team-manager-fleet-rigger-list-message>
             </iron-pages>
 
@@ -123,6 +123,11 @@
                     selectedRiggers: {
                         type: Array,
                         value: []
+                    },
+
+                    selected: {
+                        type: Boolean,
+                        value: false
                     }
 
                 }
@@ -136,12 +141,13 @@
                         return;
                     }
                 }
+                this.selected = true;
                 this.selectedRiggers.push(e.detail.rigger)
             }
 
             _handleActionAdd() {
                 let path;
-
+                this.selected = false;
                 this.$.firebase.saveValue('boatRiggers', this.boat)
                     .then(() => {
                         for (let x = 0; x < this.selectedRiggers.length; x++) {
@@ -159,6 +165,7 @@
             }
 
             _handleActionBack() {
+                this.selected = false;
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRiggerList.is + '-action-back', {
                     bubbles: true,
                     composed: true,

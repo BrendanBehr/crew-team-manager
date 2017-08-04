@@ -83,7 +83,7 @@
 
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-roster-erg-list-loading id="loading"></crew-team-manager-roster-erg-list-loading>
-                <crew-team-manager-roster-erg-list-results id="results" data="[[_data]]" on-crew-team-manager-roster-erg-list-results-action-select-ergs="_selectErgs"></crew-team-manager-roster-erg-list-results>
+                <crew-team-manager-roster-erg-list-results id="results" data="[[_data]]" selected="[[selected]]" on-crew-team-manager-roster-erg-list-results-action-select-ergs="_selectErgs"></crew-team-manager-roster-erg-list-results>
                 <crew-team-manager-roster-erg-list-message id="message"></crew-team-manager-roster-erg-list-message>
             </iron-pages>
 
@@ -128,17 +128,24 @@
                     athlete: {
                         type: String,
                         value: ''
+                    },
+
+                    selected: {
+                        type: Boolean,
+                        value: false
                     }
                 }
             }
 
             _selectErgs(e) {
+                this.selected = true;
                 this.selectedErgs = e.detail.erg;
             }
 
             _handleActionAdd() {
                 let path;
                 let name;
+                this.selected = false;
                 this.$.firebase.saveValue('athleteErgs', this.athlete)
                     .then(() => {
                         name = this.selectedErgs.number + ', ' + this.selectedErgs.model
@@ -154,6 +161,7 @@
             }
 
             _handleActionBack() {
+                this.selected = false;
                 this.dispatchEvent(new CustomEvent(crewTeamManagerRosterErgList.is + '-action-back', {
                     bubbles: true,
                     composed: true,

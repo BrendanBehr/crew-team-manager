@@ -114,7 +114,7 @@
 
                     <iron-list id="oar-list" items="[[oar]]" as="item">
                         <template>
-                            <div class="oar"="_handleItemClick">
+                            <div class="oar" on-tap="_handleItemClick">
                                 <div class="oar-info">
                                     <div class="oar-info-name">
                                         [[item.name]]
@@ -131,7 +131,7 @@
 
                     <iron-list id="rigger-list" items="[[rigger]]" as="item">
                         <template>
-                            <div class="rigger"="_handleItemClick">
+                            <div class="rigger" on-tap="_handleItemClick">
                                 <div class="rigger-info">
                                     <div class="rigger-info-name">
                                         [[item.seat]] [[item.side]]

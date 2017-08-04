@@ -107,10 +107,10 @@
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back"="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Details</div>
-                    <paper-icon-button id="edit" icon="create"="_handleActionEdit"></paper-icon-button>
-                    <paper-icon-button id="delete" icon="delete"="_handleActionDelete"></paper-icon-button>
+                    <paper-icon-button id="edit" icon="create" on-tap="_handleActionEdit"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" on-tap="_handleActionDelete"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
@@ -125,9 +125,9 @@
 
         <div id="fabs-layout">
             <div id="fabs">
-                <paper-fab id="athlete" class="fab" icon="rowing"="_handleActionAddAthlete"></paper-fab>
-                <paper-fab id="rigger" class="fab" icon="build"="_handleActionAddRigger"></paper-fab>
-                <paper-fab id="oar" class="fab" icon="av:shuffle"="_handleActionAddOar"></paper-fab>
+                <paper-fab id="athlete" class="fab" icon="rowing" on-tap="_handleActionAddAthlete"></paper-fab>
+                <paper-fab id="rigger" class="fab" icon="build" on-tap="_handleActionAddRigger"></paper-fab>
+                <paper-fab id="oar" class="fab" icon="av:shuffle" on-tap="_handleActionAddOar"></paper-fab>
                 <paper-fab id="add" class="fab" icon="icons:add"></paper-fab>
             </div>
         </div>

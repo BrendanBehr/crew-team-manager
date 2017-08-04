@@ -72,14 +72,14 @@
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back"="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Select Athletes To Add</div>
-                    <paper-icon-button id="add" icon="check"="_handleActionAdd"></paper-icon-button>
+                    <paper-icon-button id="add" icon="check" on-tap="_handleActionAdd"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-fleet-roster-list-loading id="loading"></crew-team-manager-fleet-roster-list-loading>
-                <crew-team-manager-fleet-roster-list-results id="results" data="[[_data]]" on-crew-team-manager-fleet-roster-list-results-action-select-athletes="_selectAthletes"></crew-team-manager-fleet-roster-list-results>
+                <crew-team-manager-fleet-roster-list-results id="results" data="[[_data]]" selected="[[selected]]" on-crew-team-manager-fleet-roster-list-results-action-select-athletes="_selectAthletes"></crew-team-manager-fleet-roster-list-results>
                 <crew-team-manager-fleet-roster-list-message id="message"></crew-team-manager-fleet-roster-list-message>
             </iron-pages>
 
@@ -122,6 +122,11 @@
                     boat: {
                         type: String,
                         value: ''
+                    },
+
+                    selected: {
+                        type: Boolean,
+                        value: false
                     }
                 }
             }
@@ -134,13 +139,13 @@
                         return;
                     }
                 }
-
+                this.selected = true;
                 this.selectedAthletes.push(e.detail.athlete)
             }
 
             _handleActionAdd() {
                 let path;
-
+                this.selected = false;
                 this.$.firebase.saveValue('boatAthletes', this.boat)
                     .then(() => {
                         for (let x = 0; x < this.selectedAthletes.length; x++) {
@@ -158,6 +163,7 @@
             }
 
             _handleActionBack() {
+                this.selected = false;
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRosterList.is + '-action-back', {
                     bubbles: true,
                     composed: true,

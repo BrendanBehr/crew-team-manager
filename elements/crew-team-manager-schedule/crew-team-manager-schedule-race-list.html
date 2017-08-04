@@ -83,7 +83,7 @@
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-schedule-race-list-loading id="loading"></crew-team-manager-schedule-race-list-loading>
-                <crew-team-manager-schedule-race-list-results id="results" data="[[_data]]" on-crew-team-manager-schedule-race-list-results-action-select-races="_selectRace"></crew-team-manager-schedule-race-list-results>
+                <crew-team-manager-schedule-race-list-results id="results" data="[[_data]]" selected="[[selected]]" on-crew-team-manager-schedule-race-list-results-action-select-races="_selectRace"></crew-team-manager-schedule-race-list-results>
                 <crew-team-manager-schedule-race-list-message id="message"></crew-team-manager-schedule-race-list-message>
             </iron-pages>
 
@@ -127,7 +127,10 @@
 
                     regatta: String,
 
-
+                    selected: {
+                        type: Boolean,
+                        value: false
+                    }
                 }
             }
 
@@ -138,13 +141,14 @@
                         return;
                     }
                 }
+                this.selected = true;
 
                 this.selectedRace.push(e.detail.race)
             }
 
             _handleActionAdd() {
                 let path;
-                console.log(this.selectedRace)
+                this.selected = false;
                 this.$.firebase.saveValue('regattaRaces', this.regatta)
                     .then(() => {
                         for (let x = 0; x < this.selectedRace.length; x++) {
@@ -162,6 +166,7 @@
             }
 
             _handleActionBack() {
+                this.selected = false;
                 this.dispatchEvent(new CustomEvent(crewTeamManagerScheduleRaceList.is + '-action-back', {
                     bubbles: true,
                     composed: true,

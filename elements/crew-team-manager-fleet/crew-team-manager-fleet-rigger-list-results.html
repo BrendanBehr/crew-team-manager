@@ -53,14 +53,35 @@
             .rigger-info-helpers {
                 @apply(--paper-font-caption);
             }
+
+            .rigger-avatar[reveal],
+            .check-avatar {
+                display: none;
+            }
+
+            .rigger-avatar,
+            .check-avatar[reveal] {
+                display: inline-block;
+            }
+
+            .check-avatar[reveal] {
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                margin: 8px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background-color: #A3A3A3;
+            }
         </style>
 
 
-        <iron-list id="list" items="[[data]]" as="item" selected-items="selectedItems" selection-enabled multi-selection>
+        <iron-list id="list" items="[[data]]" as="item" selected-items="{{selectedItems}}" selection-enabled multi-selection>
             <template>
-                <div class$="[[_computedClass(selected)]]"="_handleItemClick">
+                <div class$="[[_computedClass(selected)]]" on-tap="_handleItemClick">
 
-                    <crew-team-manager-avatar class="rigger-avatar" value="[[item.style]]"></crew-team-manager-avatar>
+                    <crew-team-manager-avatar class="rigger-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.style]]"></crew-team-manager-avatar>
+                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
                     <div class="rigger-info">
                         <div class="rigger-info-name">
                             [[item.style]]
@@ -84,6 +105,12 @@
                 return 'crew-team-manager-fleet-rigger-list-results'
             }
 
+            static get observers() {
+                return [
+                    '_selectedChange(selected)'
+                ]
+            }
+
             static get properties() {
                 return {
                     data: {
@@ -93,7 +120,9 @@
                     selectedItems: {
                         type: Object,
                         value: {}
-                    }
+                    },
+
+                    selected: Boolean
 
                 }
             }
@@ -106,8 +135,24 @@
                 return classes;
             }
 
+            _isCheck(isSelected) {
+                let value = false;
+                if (isSelected) {
+                    value = true;
+                }
+
+                return value;
+            }
+
+            _selectedChange(selected) {
+                if (!selected) {
+                    while (this.selectedItems.length > 0) {
+                        this.$.list.deselectItem(this.selectedItems[0]);
+                    }
+                }
+            }
+
             _handleItemClick(e) {
-                this.selectedItems = {};
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetRiggerListResults.is +
                     '-action-select-riggers', {
                         bubbles: true,

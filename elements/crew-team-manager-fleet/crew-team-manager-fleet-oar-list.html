@@ -70,14 +70,14 @@
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back"="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
                     <div main-title id="title">Select Oars To Add</div>
-                    <paper-icon-button id="add" icon="check"="_handleActionAdd"></paper-icon-button>
+                    <paper-icon-button id="add" icon="check" on-tap="_handleActionAdd"></paper-icon-button>
                 </app-toolbar>
             </app-header>
             <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
                 <crew-team-manager-fleet-oar-list-loading id="loading"></crew-team-manager-fleet-oar-list-loading>
-                <crew-team-manager-fleet-oar-list-results id="results" data="[[_data]]" on-crew-team-manager-fleet-oar-list-results-action-select-oar="_selectOars"></crew-team-manager-fleet-oar-list-results>
+                <crew-team-manager-fleet-oar-list-results id="results" data="[[_data]]" selected="[[selected]]" on-crew-team-manager-fleet-oar-list-results-action-select-oar="_selectOars"></crew-team-manager-fleet-oar-list-results>
                 <crew-team-manager-fleet-oar-list-message id="message"></crew-team-manager-fleet-oar-list-message>
             </iron-pages>
 
@@ -116,6 +116,11 @@
                     selectedOars: {
                         type: Array,
                         value: []
+                    },
+
+                    selected: {
+                        type: Boolean,
+                        value: false
                     }
 
                 }
@@ -128,12 +133,13 @@
                         return;
                     }
                 }
-
+                this.selected = true;
                 this.selectedOars.push(e.detail.oar)
             }
 
             _handleActionAdd() {
                 let path;
+                this.selected = false;
                 this.$.firebase.saveValue('boatOars', this.boat)
                     .then(() => {
                         for (let x = 0; x < this.selectedOars.length; x++) {
@@ -151,6 +157,7 @@
             }
 
             _handleActionBack() {
+                this.selected = false;
                 this.dispatchEvent(new CustomEvent(crewTeamManagerFleetOarList.is + '-action-back', {
                     bubbles: true,
                     composed: true,
