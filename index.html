@@ -2,16 +2,13 @@
 <html>
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
 
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
 
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-
-    <link rel="import" href="elements/crew-team-manager-app/crew-team-manager-app.html">
-    <link rel="import" href="bower_components/polymer/polymer-element.html">
+    <script type="module" src="./index.js"></script>
+    <script type="module" src="./elements/ctm-app/ctm-app.js"></script>
 
     <style>
         html,
@@ -33,9 +30,7 @@
 </head>
 
 <body>
-    <crew-team-manager-app id="app"></crew-team-manager-app>
-
-
+    <ctm-app id="app"></ctm-app>
 </body>
 
 </html>

@@ -3555,7 +3555,7 @@ describe('Auths', function () {
 
                 it('should write String, valid city', function (done) {
 
-                    athlete.city = faker.address.city();
+                    athlete.city = faker.location.city();
                     assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -3569,21 +3569,21 @@ describe('Auths', function () {
 
                 it('should write String to firstName', function (done) {
 
-                    athlete.firstName = faker.name.firstName();
+                    athlete.firstName = faker.person.firstName();
                     assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should write String to lastName', function (done) {
 
-                    athlete.lastName = faker.name.lastName();
+                    athlete.lastName = faker.person.lastName();
                     assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should write Number to fundRaising', function (done) {
 
-                    athlete.fundRaising = faker.random.number() / 100;
+                    athlete.fundRaising = faker.number.int() / 100;
                     assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -3618,21 +3618,21 @@ describe('Auths', function () {
 
                 it('should write String to state', function (done) {
 
-                    athlete.state = faker.address.state();
+                    athlete.state = faker.location.state();
                     assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should write String to streetAddress', function (done) {
 
-                    athlete.streetAddress = faker.address.streetAddress();
+                    athlete.streetAddress = faker.location.streetAddress();
                     assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should write Number to weight', function (done) {
 
-                    athlete.weight = faker.random.number() / 1000;
+                    athlete.weight = faker.number.int() / 1000;
                     assert.canSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -3894,7 +3894,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid city', function (done) {
 
-                    athlete.city = faker.address.city();
+                    athlete.city = faker.location.city();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -3908,21 +3908,21 @@ describe('Auths', function () {
 
                 it('should not write String to firstName', function (done) {
 
-                    athlete.firstName = faker.name.firstName();
+                    athlete.firstName = faker.person.firstName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should not write String to lastName', function (done) {
 
-                    athlete.lastName = faker.name.lastName();
+                    athlete.lastName = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should not write Number to fundRaising', function (done) {
 
-                    athlete.fundRaising = faker.random.number() / 100;
+                    athlete.fundRaising = faker.number.int() / 100;
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -3957,21 +3957,21 @@ describe('Auths', function () {
 
                 it('should not write String to state', function (done) {
 
-                    athlete.state = faker.address.state();
+                    athlete.state = faker.location.state();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should not write String to streetAddress', function (done) {
 
-                    athlete.streetAddress = faker.address.streetAddress();
+                    athlete.streetAddress = faker.location.streetAddress();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should not write Number to weight', function (done) {
 
-                    athlete.weight = faker.random.number() / 1000;
+                    athlete.weight = faker.number.int() / 1000;
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -4151,7 +4151,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid city', function (done) {
 
-                    athlete.city = faker.address.city();
+                    athlete.city = faker.location.city();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -4165,21 +4165,21 @@ describe('Auths', function () {
 
                 it('should not write String to firstName', function (done) {
 
-                    athlete.firstName = faker.name.firstName();
+                    athlete.firstName = faker.person.firstName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should not write String to lastName', function (done) {
 
-                    athlete.lastName = faker.name.lastName();
+                    athlete.lastName = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should not write Number to fundRaising', function (done) {
 
-                    athlete.fundRaising = faker.random.number() / 100;
+                    athlete.fundRaising = faker.number.int() / 100;
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -4214,21 +4214,21 @@ describe('Auths', function () {
 
                 it('should not write String to state', function (done) {
 
-                    athlete.state = faker.address.state();
+                    athlete.state = faker.location.state();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should not write String to streetAddress', function (done) {
 
-                    athlete.streetAddress = faker.address.streetAddress();
+                    athlete.streetAddress = faker.location.streetAddress();
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
 
                 it('should not write Number to weight', function (done) {
 
-                    athlete.weight = faker.random.number() / 1000;
+                    athlete.weight = faker.number.int() / 1000;
                     assert.cannotSet(firebaseAdmin.app(appName), path, athlete, done);
 
                 });
@@ -4718,7 +4718,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid name', function (done) {
 
-                    boat.name = faker.name.lastName();
+                    boat.name = faker.person.lastName();
                     assert.canSet(firebaseAdmin.app(appName), path, boat, done);
 
                 });
@@ -4929,7 +4929,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid name', function (done) {
 
-                    boat.name = faker.name.lastName();
+                    boat.name = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, boat, done);
 
                 });
@@ -5796,7 +5796,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid location', function (done) {
 
-                    erg.location = faker.name.lastName();
+                    erg.location = faker.person.lastName();
                     assert.canSet(firebaseAdmin.app(appName), path, erg, done);
 
                 });
@@ -5993,7 +5993,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid location', function (done) {
 
-                    erg.location = faker.name.lastName();
+                    erg.location = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, erg, done);
 
                 });
@@ -6382,7 +6382,7 @@ describe('Auths', function () {
 
                 it('should write Number to valid expenses', function (done) {
 
-                    finance.expenses = faker.random.number();
+                    finance.expenses = faker.number.int();
                     assert.canSet(firebaseAdmin.app(appName), path, finance, done);
 
                 });
@@ -6396,7 +6396,7 @@ describe('Auths', function () {
 
                 it('should write Number to valid gross', function (done) {
 
-                    finance.gross = faker.random.number();
+                    finance.gross = faker.number.int();
                     assert.canSet(firebaseAdmin.app(appName), path, finance, done);
 
                 });
@@ -6410,7 +6410,7 @@ describe('Auths', function () {
 
                 it('should write Number to incomes', function (done) {
 
-                    finance.incomes = faker.random.number();
+                    finance.incomes = faker.number.int();
                     assert.canSet(firebaseAdmin.app(appName), path, finance, done);
 
                 });
@@ -6567,7 +6567,7 @@ describe('Auths', function () {
 
                 it('should not write Number to valid expenses', function (done) {
 
-                    finance.expenses = faker.random.number();
+                    finance.expenses = faker.number.int();
                     assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
                 });
@@ -6581,7 +6581,7 @@ describe('Auths', function () {
 
                 it('should not write Number to valid gross', function (done) {
 
-                    finance.gross = faker.random.number();
+                    finance.gross = faker.number.int();
                     assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
                 });
@@ -6595,7 +6595,7 @@ describe('Auths', function () {
 
                 it('should not write Number to incomes', function (done) {
 
-                    finance.incomes = faker.random.number();
+                    finance.incomes = faker.number.int();
                     assert.cannotSet(firebaseAdmin.app(appName), path, finance, done);
 
                 });
@@ -6928,7 +6928,7 @@ describe('Auths', function () {
 
                 it('should be able to change name', function (done) {
 
-                    oar.name = faker.name.lastName();
+                    oar.name = faker.person.lastName();
                     assert.canSet(firebaseAdmin.app(appName), path, oar, done);
 
                 });
@@ -6942,7 +6942,7 @@ describe('Auths', function () {
 
                 it('should write Number to length', function (done) {
 
-                    oar.length = faker.random.number();
+                    oar.length = faker.number.int();
                     assert.canSet(firebaseAdmin.app(appName), path, oar, done);
 
                 });
@@ -7126,7 +7126,7 @@ describe('Auths', function () {
 
                 it('should not be able to change name', function (done) {
 
-                    oar.name = faker.name.lastName();
+                    oar.name = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
                 });
@@ -7140,7 +7140,7 @@ describe('Auths', function () {
 
                 it('should not write Number to length', function (done) {
 
-                    oar.length = faker.random.number();
+                    oar.length = faker.number.int();
                     assert.cannotSet(firebaseAdmin.app(appName), path, oar, done);
 
                 });
@@ -8593,7 +8593,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid city', function (done) {
 
-                    regatta.city = faker.address.city();
+                    regatta.city = faker.location.city();
                     assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
                 });
@@ -8607,7 +8607,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid cost', function (done) {
 
-                    regatta.cost = faker.random.number();
+                    regatta.cost = faker.number.int();
                     assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
                 });
@@ -8662,7 +8662,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid state', function (done) {
 
-                    regatta.state = faker.address.state();
+                    regatta.state = faker.location.state();
                     assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
                 });
@@ -8676,7 +8676,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid streetAddress', function (done) {
 
-                    regatta.streetAddress = faker.address.streetAddress();
+                    regatta.streetAddress = faker.location.streetAddress();
                     assert.canSet(firebaseAdmin.app(appName), path, regatta, done);
 
                 });
@@ -8819,7 +8819,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid city', function (done) {
 
-                    regatta.city = faker.address.city();
+                    regatta.city = faker.location.city();
                     assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
                 });
@@ -8833,7 +8833,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid cost', function (done) {
 
-                    regatta.cost = faker.random.number();
+                    regatta.cost = faker.number.int();
                     assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
                 });
@@ -8888,7 +8888,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid state', function (done) {
 
-                    regatta.state = faker.address.state();
+                    regatta.state = faker.location.state();
                     assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
                 });
@@ -8902,7 +8902,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid streetAddress', function (done) {
 
-                    regatta.streetAddress = faker.address.streetAddress();
+                    regatta.streetAddress = faker.location.streetAddress();
                     assert.cannotSet(firebaseAdmin.app(appName), path, regatta, done);
 
                 });
@@ -9842,7 +9842,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid firstName', function (done) {
 
-                    user.firstName = faker.name.firstName();
+                    user.firstName = faker.person.firstName();
                     assert.canSet(firebaseAdmin.app(appName), path, user, done);
 
                 });
@@ -9856,7 +9856,7 @@ describe('Auths', function () {
 
                 it('should be able to change lastName', function (done) {
 
-                    user.lastName = faker.name.lastName();
+                    user.lastName = faker.person.lastName();
                     assert.canSet(firebaseAdmin.app(appName), path, user, done);
 
                 });
@@ -10043,7 +10043,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid firstName', function (done) {
 
-                    user.firstName = faker.name.firstName();
+                    user.firstName = faker.person.firstName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, user, done);
 
                 });
@@ -10057,7 +10057,7 @@ describe('Auths', function () {
 
                 it('should not be able to change lastName', function (done) {
 
-                    user.lastName = faker.name.lastName();
+                    user.lastName = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, user, done);
 
                 });
@@ -10254,7 +10254,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid firstName', function (done) {
 
-                    user.firstName = faker.name.firstName();
+                    user.firstName = faker.person.firstName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, user, done);
 
                 });
@@ -10268,7 +10268,7 @@ describe('Auths', function () {
 
                 it('should not be able to change lastName', function (done) {
 
-                    user.lastName = faker.name.lastName();
+                    user.lastName = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, user, done);
 
                 });
@@ -10565,7 +10565,7 @@ describe('Auths', function () {
 
                 it('should write a different hash', function (done) {
 
-                    credential.hash = faker.name.firstName();
+                    credential.hash = faker.person.firstName();
                     assert.canSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -10579,7 +10579,7 @@ describe('Auths', function () {
 
                 it('should be able to change salt', function (done) {
 
-                    credential.salt = faker.name.lastName();
+                    credential.salt = faker.person.lastName();
                     assert.canSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -10713,7 +10713,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid hash', function (done) {
 
-                    credential.hash = faker.name.firstName();
+                    credential.hash = faker.person.firstName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -10727,7 +10727,7 @@ describe('Auths', function () {
 
                 it('should not be able to change salt', function (done) {
 
-                    credential.salt = faker.name.lastName();
+                    credential.salt = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -10871,7 +10871,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid hash', function (done) {
 
-                    credential.hash = faker.name.firstName();
+                    credential.hash = faker.person.firstName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -10885,7 +10885,7 @@ describe('Auths', function () {
 
                 it('should not be able to change salt', function (done) {
 
-                    credential.salt = faker.name.lastName();
+                    credential.salt = faker.person.lastName();
                     assert.cannotSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -11109,7 +11109,7 @@ describe('Auths', function () {
 
                 it('should write a different hash', function (done) {
 
-                    credential.hash = faker.name.firstName();
+                    credential.hash = faker.person.firstName();
                     assert.canSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -11123,7 +11123,7 @@ describe('Auths', function () {
 
                 it('should be able to change salt', function (done) {
 
-                    credential.salt = faker.name.lastName();
+                    credential.salt = faker.person.lastName();
                     assert.canSet(firebaseAdmin.app(appName), path, credential, done);
 
                 });
@@ -11249,7 +11249,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid city', function (done) {
 
-                    team.city = faker.address.city();
+                    team.city = faker.location.city();
                     assert.canSet(firebaseAdmin.app(appName), path, team, done);
 
                 });
@@ -11304,7 +11304,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid state', function (done) {
 
-                    team.state = faker.address.state();
+                    team.state = faker.location.state();
                     assert.canSet(firebaseAdmin.app(appName), path, team, done);
 
                 });
@@ -11318,7 +11318,7 @@ describe('Auths', function () {
 
                 it('should write a different, valid streetAddress', function (done) {
 
-                    team.streetAddress = faker.address.streetAddress();
+                    team.streetAddress = faker.location.streetAddress();
                     assert.canSet(firebaseAdmin.app(appName), path, team, done);
 
                 });
@@ -11464,7 +11464,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid city', function (done) {
 
-                    team.city = faker.address.city();
+                    team.city = faker.location.city();
                     assert.cannotSet(firebaseAdmin.app(appName), path, team, done);
 
                 });
@@ -11519,7 +11519,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid state', function (done) {
 
-                    team.state = faker.address.state();
+                    team.state = faker.location.state();
                     assert.cannotSet(firebaseAdmin.app(appName), path, team, done);
 
                 });
@@ -11533,7 +11533,7 @@ describe('Auths', function () {
 
                 it('should not write a different, valid streetAddress', function (done) {
 
-                    team.streetAddress = faker.address.streetAddress();
+                    team.streetAddress = faker.location.streetAddress();
                     assert.cannotSet(firebaseAdmin.app(appName), path, team, done);
 
                 });

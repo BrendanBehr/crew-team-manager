@@ -1,19 +1,19 @@
 'use strict';
 
-const faker = require('faker');
-const Entity = require('../entity');
-const Athlete = require('../athlete');
-const Boat = require('../boat');
-const Erg = require('../erg');
-const Finance = require('../finance');
-const Oar = require('../oar');
-const Race = require('../race');
-const Regatta = require('../regatta');
-const User = require('../user');
-const Picture = require('../picture');
-const Rigger = require('../rigger');
+import { faker } from '@faker-js/faker';
+import Entity from '../entity';
+import Athlete from '../athlete';
+import Boat from '../boat';
+import Erg from '../erg';
+import Finance from '../finance';
+import Oar from '../oar';
+import Race from '../race';
+import Regatta from '../regatta';
+import User from '../user';
+import Picture from '../picture';
+import Rigger from '../rigger';
 
-class Team extends Entity {
+export default class Team extends Entity {
 
     constructor(options) {
 
@@ -21,17 +21,13 @@ class Team extends Entity {
         options.plural = 'teams';
 
         options.values = options.values || {};
-        options.values.teamName = options.values.teamName || faker.name.firstName();
-        options.values.streetAddress = options.values.streetAddress || faker.address.streetAddress();
-        options.values.city = options.values.city || faker.address.city();
-        options.values.state = options.values.state || faker.address.state();
-        options.values.color = options.values.color || faker.commerce.color();
-        options.values.logo = options.values.logo || faker.image.image();
-        let key = faker.random.alphaNumeric();
-        for (let x = 0; x < 6; x++) {
-            key = key + faker.random.alphaNumeric();
-        }
-        options.values.key = options.values.key || key.toUpperCase();
+        options.values.teamName = options.values.teamName || faker.person.firstName();
+        options.values.streetAddress = options.values.streetAddress || faker.location.streetAddress();
+        options.values.city = options.values.city || faker.location.city();
+        options.values.state = options.values.state || faker.location.state();
+        options.values.color = options.values.color || faker.color.cmyk();
+        options.values.logo = options.values.logo || faker.image.avatar();
+        options.values.key = options.values.key || faker.string.alphanumeric(6);
 
         super(options);
 
@@ -409,5 +405,3 @@ class Team extends Entity {
         return this._picture;
     }
 }
-
-module.exports = Team;

@@ -1,34 +1,26 @@
 'use strict';
 
-//Loading in faker and Entity because they will be needed
-const faker = require('faker');
-const Entity = require('../entity');
+import { faker } from '@faker-js/faker';
+import Entity from '../entity/index.js';
 
-class Regatta extends Entity {
+export default class Regatta extends Entity {
 
     constructor(options) {
-        //If options exists, set options equal to that, if not
-        //Set it equalk to an empty object
         options = options || {};
 
-        //Sets the plural to regattas
         options.plural = 'regattas';
 
-        //If values exists, set options.values equal to that, if not
-        //Set it equalk to an empty object
         options.values = options.values || {};
 
-        //For each specific value, if it exists, set the options.values.Value to it
-        //If not, set it to some random value or some default value
-        options.values.name = options.values.name || 'Head of the ' + faker.random.word();
-        options.values.city = options.values.city || faker.address.city();
-        options.values.cost = options.values.cost || faker.random.number() / 1000;
-        options.values.state = options.values.state || faker.address.state();
-        options.values.locationImage = options.values.locationImage || faker.image.image();
-        options.values.streetAddress = options.values.streetAddress || faker.address.streetAddress();
+        options.values.name = options.values.name || 'Head of the ' + faker.word.sample();
+        options.values.city = options.values.city || faker.location.city();
+        options.values.cost = options.values.cost || faker.number.int() / 1000;
+        options.values.state = options.values.state || faker.location.state();
+        options.values.locationImage = options.values.locationImage || faker.image.url();
+        options.values.streetAddress = options.values.streetAddress || faker.location.streetAddress();
         options.values.head = options.values.head || 'yes';
-        options.values.updated = options.values.updated || faker.random.number();
-        options.values.created = options.values.created || faker.random.number();
+        options.values.updated = options.values.updated || faker.number.int();
+        options.values.created = options.values.created || faker.number.int();
 
         super(options);
         this._races = [];
@@ -113,5 +105,3 @@ class Regatta extends Entity {
         return this._pictures;
     }
 }
-
-module.exports = Regatta;

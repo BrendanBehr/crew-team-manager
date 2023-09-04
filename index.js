@@ -1,7 +1,21 @@
 'use strict';
 
-const crypto = require('crypto');
-const Generator = require('./src/generator');
+import { initializeApp } from 'firebase/app';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+//import { getFireStone } from 'firebase/frestone';
+
+import Generator from './src/generator';
+
+import appJson from '../../ctm-firebase-app.json' assert { type: 'json' };
+const firebaseApp = initializeApp (appJson);
+
+const auth = getAuth(firebaseApp);
+//const db = getfireStone(firebaseApp);
+
+//Auth state
+onAuthStateChanged(auth, user => {
+
+});
 
 const generator = new Generator();
 generator.createTeams(2);
@@ -120,6 +134,6 @@ for (let x = 0; x < riggers.length; x++) {
     team1Boat1.addRigger(riggers[x]);
 
 }
-console.log('done');
+
 //This writes the data to the database
 generator.writeData();

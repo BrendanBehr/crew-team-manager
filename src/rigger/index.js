@@ -1,9 +1,9 @@
 'use strict';
 
-const faker = require('faker');
-const Entity = require('../entity');
+import { faker } from '@faker-js/faker';
+import Entity from '../entity';
 
-class Rigger extends Entity {
+export default class Rigger extends Entity {
 
     constructor(options) {
 
@@ -13,9 +13,9 @@ class Rigger extends Entity {
         options.values = options.values || {};
         options.values.style = options.values.style || 'Sweep';
         options.values.type = options.values.type || 'European';
-        options.values.seat = options.values.seat || Math.floor(faker.random.number() / 10000);
-        options.values.updated = options.values.updated || faker.random.number();
-        options.values.created = options.values.created || faker.random.number();
+        options.values.seat = options.values.seat || Math.floor(faker.number.int() / 10000);
+        options.values.updated = options.values.updated || faker.number.int();
+        options.values.created = options.values.created || faker.number.int();
 
         if (options.values.seat % 2 === 0) {
             options.values.side = options.values.side || 'Port';
@@ -35,9 +35,5 @@ class Rigger extends Entity {
         super(options);
 
         this.getGenerator().getAthletes().push(this);
-
     }
-
 }
-
-module.exports = Rigger;
