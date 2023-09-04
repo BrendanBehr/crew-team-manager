@@ -1,11 +1,13 @@
 'use strict';
 
-const faker = require('faker');
-const Entity = require('../entity');
-const Credential = require('../credential');
-const Email = require('../email');
-const Auth = require('../auth');
-class User extends Entity {
+import { faker } from '@faker-js/faker';
+import Entity from '../entity/index.js';
+
+import Credential from '../credential/index.js';
+import Email from '../email/index.js';
+import Auth from '../auth/index.js';
+
+export default class User extends Entity {
 
     constructor(options) {
 
@@ -13,15 +15,15 @@ class User extends Entity {
         options.plural = 'users';
 
         options.values = options.values || {};
-        options.values.userName = options.values.userName || faker.random.word();
-        options.values.firstName = options.values.firstName || faker.name.firstName();
-        options.values.lastName = options.values.lastName || faker.name.lastName();
+        options.values.userName = options.values.userName || faker.word.conjunction();
+        options.values.firstName = options.values.firstName || faker.person.firstName();
+        options.values.lastName = options.values.lastName || faker.person.lastName();
         options.values.credentials = options.values.credentials || faker.lorem.slug();
         options.values.status = options.values.status || 'active';
         options.values.permisions = options.values.permisions || 'basic';
         options.values.email = options.values.email || faker.internet.email();
-        options.values.updated = options.values.updated || faker.random.number();
-        options.values.created = options.values.created || faker.random.number();
+        options.values.updated = options.values.updated || faker.number.int();
+        options.values.created = options.values.created || faker.number.int();
 
 
         super(options);
@@ -134,5 +136,3 @@ class User extends Entity {
         return this._email;
     }
 }
-
-module.exports = User;

@@ -1,10 +1,10 @@
 'use strict';
 
-const Team = require('../team');
-const firebaseAdmin = require('firebase-admin');
-const serviceAccount = require('../../crew-team-manager-service-account.json');
+import Team from '../team';
+import { getDatabase, ref, set } from "firebase/database";
+import serviceAccount from '../../ctm-service-account.json' assert { type: 'json' };
 
-class Generator {
+export default class Generator {
 
     constructor() {
 
@@ -66,34 +66,6 @@ class Generator {
         return this._data;
     }
 
-    getFirebaseAdmin() {
-
-        if (!this._firebaseAdmin) {
-
-            firebaseAdmin.initializeApp({
-                credential: firebaseAdmin.credential.cert(serviceAccount),
-                databaseURL: 'https://laborsync-ctm.firebaseio.com'
-            });
-
-            this._firebaseAdmin = firebaseAdmin;
-
-        }
-
-        return this._firebaseAdmin;
-    }
-
-    getDatabase() {
-
-        if (!this._database) {
-            this._database = this.getFirebaseAdmin().database();
-        }
-
-        return this._database;
-
-    }
-
-
-
     createTeam(values) {
         return new Team({
             generator: this,
@@ -111,29 +83,12 @@ class Generator {
         return teams;
     }
 
-    writeData() {
-        this.getDatabase().ref().set(this.getData())
-            .then(() => {
-
-                this.getFirebaseAdmin().app().delete().then(() => {
-                    this._firebaseAdmin = null;
-                    this._database = null;
-                });
-
-            })
-            .catch((err) => {
-
-                console.log(err.message);
-                this.getFirebaseAdmin().app().delete().then(() => {
-                    this._firebaseAdmin = null;
-                    this._database = null;
-                });
-
-            });
-
+    getDatabase() {
+        return getDatabase()
     }
 
+    writeData() {
+        const db = this.getDatabase();
+        set(ref(db, '/'), this.getData());
+    }
 }
-
-
-module.exports = Generator;

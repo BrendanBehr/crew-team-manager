@@ -1,8 +1,9 @@
 'use strict';
 
-const faker = require('faker');
-const Entity = require('../entity');
-class Auth extends Entity {
+import { faker } from '@faker-js/faker';
+import Entity from '../entity';
+
+export default class Auth extends Entity {
 
     constructor(options) {
 
@@ -10,8 +11,8 @@ class Auth extends Entity {
         options.plural = 'auths';
 
         options.values = options.values || {};
-        options.values.created = options.values.created || faker.random.number();
-        options.values.updated = options.values.updated || faker.random.number();
+        options.values.created = options.values.created || faker.number.int();
+        options.values.updated = options.values.updated || faker.number.int();
         options.values.ip = options.values.ip || faker.internet.ip();
         options.values.browser = options.values.browser || faker.lorem.words();
         options.values.status = options.values.status || 'active';
@@ -25,5 +26,3 @@ class Auth extends Entity {
 
     }
 }
-
-module.exports = Auth;

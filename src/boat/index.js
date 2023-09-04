@@ -1,9 +1,9 @@
 'use strict';
 
-const faker = require('faker');
-const Entity = require('../entity');
+import { faker } from '@faker-js/faker';
+import Entity from '../entity/index.js';
 
-class Boat extends Entity {
+export default class Boat extends Entity {
 
     constructor(options) {
 
@@ -11,13 +11,13 @@ class Boat extends Entity {
         options.plural = 'boats';
 
         options.values = options.values || {};
-        options.values.name = options.values.name || faker.name.firstName() + ' ' + faker.name.lastName();
+        options.values.name = options.values.name || faker.person.firstName() + ' ' + faker.person.lastName();
         options.values.rigging = options.values.rigging || 'port';
         options.values.size = options.values.size || 8;
         options.values.type = options.values.type || 'sweep';
         options.values.manufacturer = options.values.manufacturer || 'vespoli';
-        options.values.updated = options.values.updated || faker.random.number();
-        options.values.created = options.values.created || faker.random.number();
+        options.values.updated = options.values.updated || faker.number.int();
+        options.values.created = options.values.created || faker.number.int();
 
 
         super(options);
@@ -143,13 +143,9 @@ class Boat extends Entity {
                 return element != rigger;
             });
         }
-
     }
 
     getRiggers() {
         return this._riggers;
     }
-
 }
-
-module.exports = Boat;

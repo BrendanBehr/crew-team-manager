@@ -1,8 +1,10 @@
 'use strict';
 
-const pluralize = require('pluralize');
+import * as Pluralize from '@capaj/pluralize';
+import { getDatabase, ref, set } from "firebase/database";
+const pluralize = Pluralize.pluralize;
 
-class Entity {
+export default class Entity {
 
     constructor(options) {
 
@@ -13,7 +15,7 @@ class Entity {
         this._singular = this.getOptions().singular || pluralize.singular(this.getPlural());
 
         this._pathRoot = this.getPlural();
-        this._pathKey = this.getGenerator().getDatabase().ref(this.getPathRoot()).push().key;
+        this._pathKey = ref(getDatabase(), this.getPathRoot()).key;
         this._path = this.getPathRoot() + '/' + this.getPathKey();
 
         const values = options.values || {};
@@ -32,6 +34,9 @@ class Entity {
     }
 
     getPathRoot() {
+        if (this._pathRoot == "" || this._pathRoot == null) {
+            this._pathRoot = this.getPlural();
+        }
         return this._pathRoot;
     }
 
@@ -103,5 +108,3 @@ class Entity {
 
     }
 }
-
-module.exports = Entity;

@@ -1,10 +1,14 @@
 'use strict';
 
-const faker = require('faker');
-const Entity = require('../entity');
-const crypto = require('crypto');
+import { faker } from '@faker-js/faker';
+import Entity from '../entity/index.js';
 
-class Credential extends Entity {
+// import * as CryptoJS from 'crypto-es';
+import { WordArray } from 'crypto-es/lib/core.js';
+import { SHA256 } from 'crypto-es/lib/sha256.js';
+import { Hex } from 'crypto-es/lib/core.js';
+
+export default class Credential extends Entity {
 
     constructor(options) {
 
@@ -15,8 +19,8 @@ class Credential extends Entity {
         options.values = options.values || {};
         options.values.hash = options.values.hash || faker.internet.password();
         options.values.salt = options.values.salt || faker.internet.password();
-        options.values.updated = options.values.updated || faker.random.number();
-        options.values.created = options.values.created || faker.random.number();
+        options.values.updated = options.values.updated || faker.number.int();
+        options.values.created = options.values.created || faker.number.int();
 
         super(options);
 
@@ -32,13 +36,12 @@ class Credential extends Entity {
 
         this._password = password;
 
-        let salt = crypto.randomBytes(256).toString('hex');
+        let salt = WordArray.random(128 / 8);
 
-        let hash = crypto.createHash('sha256');
-        hash.update(password + salt);
+        let hash = SHA256(password + salt);
 
         this.updateValues({
-            hash: hash.digest('hex'),
+            hash: hash.toString(Hex),
             salt: salt,
             credential: password
 
@@ -60,9 +63,5 @@ class Credential extends Entity {
         this.updateValues({
             user: user.getPathKey()
         });
-
     }
-
 }
-
-module.exports = Credential;

@@ -1,10 +1,9 @@
 'use strict';
 
-const faker = require('faker');
-const Entity = require('../entity');
-const User = require('../athlete');
+import { faker } from '@faker-js/faker';
+import User from '../user';
 
-class Athlete extends Entity {
+export default class Athlete extends User {
 
     constructor(options) {
 
@@ -12,23 +11,23 @@ class Athlete extends Entity {
         options.plural = 'athletes';
 
         options.values = options.values || {};
-        options.values.firstName = options.values.firstName || faker.name.firstName();
-        options.values.lastName = options.values.lastName || faker.name.lastName();
-        options.values.streetAddress = options.values.streetAddress || faker.address.streetAddress();
-        options.values.city = options.values.city || faker.address.city();
-        options.values.state = options.values.state || faker.address.state();
-        options.values.phone = options.values.phone || faker.phone.phoneNumber();
-        options.values.weight = options.values.weight || faker.random.number() / 1000 + 100;
-        options.values.height = options.values.height || faker.random.number() / 10000 + '\'' + Math.floor(faker.random.number() / 1000);
-        options.values.ergScore = options.values.ergScore || Math.floor(faker.random.number() / 10000) + ':' + Math.floor(faker.random.number() / 1000);
+        options.values.firstName = options.values.firstName || faker.person.firstName();
+        options.values.lastName = options.values.lastName || faker.person.lastName();
+        options.values.streetAddress = options.values.streetAddress || faker.location.streetAddress();
+        options.values.city = options.values.city || faker.location.city();
+        options.values.state = options.values.state || faker.location.state();
+        options.values.phone = options.values.phone || faker.phone.number();
+        options.values.weight = options.values.weight || faker.number.int() / 1000 + 100;
+        options.values.height = options.values.height || faker.number.int() / 10000 + '\'' + Math.floor(faker.number.int() / 1000);
+        options.values.ergScore = options.values.ergScore || Math.floor(faker.number.int() / 10000) + ':' + Math.floor(faker.number.int() / 1000);
         options.values.side = options.values.side || 'port';
         options.values.year = options.values.year || 'freshman';
         options.values.gender = options.values.gender || 'M/F';
-        options.values.fundRaising = options.values.fundRaising || faker.random.number() / 100;
+        options.values.fundRaising = options.values.fundRaising || faker.number.int() / 100;
         options.values.driver = options.values.driver || 'no';
         options.values.email = options.values.email || faker.internet.email();
-        options.values.updated = options.values.updated || faker.random.number();
-        options.values.created = options.values.created || faker.random.number();
+        options.values.updated = options.values.updated || faker.number.int();
+        options.values.created = options.values.created || faker.number.int();
         options.values.credential = options.values.credential || 'NA';
 
         super(options);
@@ -190,5 +189,3 @@ class Athlete extends Entity {
         return this._emails;
     }
 }
-
-module.exports = Athlete;

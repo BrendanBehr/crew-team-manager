@@ -4,18 +4,39 @@
   "description": "An app to manage a rowing team",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "wds --node-resolve --open --watch"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@polymer/app-layout": "^3.1.0",
+    "@polymer/iron-ajax": "^3.0.1",
+    "@polymer/iron-icons": "^3.0.1",
+    "@polymer/iron-list": "^3.1.0",
+    "@polymer/iron-pages": "^3.0.1",
+    "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-card": "^3.0.1",
+    "@polymer/paper-fab": "^3.0.1",
+    "@polymer/paper-icon-button": "^3.0.2",
+    "@polymer/paper-input": "^3.2.1",
+    "@polymer/paper-spinner": "^3.0.2",
+    "@polymer/paper-toast": "^3.0.1",
+    "@polymer/polymer": "^3.5.1",
+    "@webcomponents/webcomponentsjs": "^2.8.0",
     "assert": "^1.4.1",
     "bluebird": "^3.5.0",
-    "bower": "^1.8.14",
-    "eslint": "^3.19.0",
-    "faker": "^4.1.0",
-    "firebase-admin": "^5.0.0",
-    "firebase-functions": "^0.5.7",
-    "pluralize": "^5.0.0"
+    "crypto-es": "^2.0.4",
+    "eslint": "^8.47.0",
+    "firebase": "^10.2.0",
+    "lit": "^2.8.0",
+    "lit-element-lazy": "^1.0.1",
+    "pluralize": "^8.0.0"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@capaj/pluralize": "^1.0.4",
+    "@faker-js/faker": "^8.0.2",
+    "@web/dev-server": "^0.3.0"
   }
 }
