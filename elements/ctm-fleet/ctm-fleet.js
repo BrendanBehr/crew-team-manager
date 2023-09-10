@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -9,16 +9,16 @@ import '@polymer/paper-toast/paper-toast';
 import '@polymer/paper-styles/typography';
 
 
-import 'lazy-import" group="list" href="ctm-fleet-list';
-import 'lazy-import" group="detail" href="ctm-fleet-detail';
-import 'lazy-import" group="edit" href="ctm-fleet-edit';
-import 'lazy-import" group="create" href="ctm-fleet-create';
-import 'lazy-import" group="athlete" href="ctm-fleet-roster-list';
-import 'lazy-import" group="oar" href="ctm-fleet-oar-list';
-import 'lazy-import" group="rigger" href="ctm-fleet-rigger-list';
+import './ctm-fleet-list';
+import './ctm-fleet-detail';
+import './ctm-fleet-edit';
+import './ctm-fleet-create';
+import './ctm-fleet-roster-list';
+import './ctm-fleet-oar-list';
+import './ctm-fleet-rigger-list';
 
 export class CtmFleet extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -50,34 +50,34 @@ export class CtmFleet extends LitElement {
 
     render() {
         return html`
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-            <ctm-fleet-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-ctm-fleet-list-results-action-detail="_handleActionDetail"
-                on-ctm-fleet-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+            <ctm-fleet-list id="list" menu-hidden="${this.wideLayout}" page="loading" on-ctm-fleet-list-results-action-detail="_handleActionDetail"
+                on-ctm-fleet-list-action-create="_handleActionCreate" team-id="${this.teamId}">
             </ctm-fleet-list>
 
-            <ctm-fleet-detail id="detail" boat="[[_boat]]" page="loading" on-ctm-fleet-detail-action-back="_handleActionBack"
+            <ctm-fleet-detail id="detail" boat="${this._boat}" page="loading" on-ctm-fleet-detail-action-back="_handleActionBack"
                 on-ctm-fleet-detail-action-edit="_handleActionEdit" on-ctm-fleet-detail-action-delete="_handleActionDelete"
                 on-ctm-fleet-detail-action-add-rigger="_handleActionAddRigger" on-ctm-fleet-detail-action-add-athlete="_handleActionAddAthlete"
-                on-ctm-fleet-detail-action-add-oar="_handleActionAddOar" team-id="[[teamId]]" on-ctm-fleet-detail-action-delete-fail="_handleActionFail">
+                on-ctm-fleet-detail-action-add-oar="_handleActionAddOar" team-id="${this.teamId}" on-ctm-fleet-detail-action-delete-fail="_handleActionFail">
             </ctm-fleet-detail>
 
-            <ctm-fleet-edit edit="[[_edit]]" id="edit" boat="[[_boat]]" on-ctm-fleet-edit-action-back="_handleActionBackOnce"
+            <ctm-fleet-edit edit="${this._edit}" id="edit" boat="${this._boat}" on-ctm-fleet-edit-action-back="_handleActionBackOnce"
                 on-ctm-fleet-edit-action-saved="_handleActionSaved">
             </ctm-fleet-edit>
 
-            <ctm-fleet-create id="create" team-id="[[teamId]]" on-ctm-fleet-create-action-cancel="_handleActionCancel"
+            <ctm-fleet-create id="create" team-id="${this.teamId}" on-ctm-fleet-create-action-cancel="_handleActionCancel"
                 on-ctm-fleet-create-action-created="_handleActionCreated">
             </ctm-fleet-create>
 
-            <ctm-fleet-roster-list id="athlete" team-id="[[teamId]]" boat="[[_boat]]" page="loading" on-ctm-fleet-roster-list-action-back="_handleActionBackOnce"
+            <ctm-fleet-roster-list id="athlete" team-id="${this.teamId}" boat="${this._boat}" page="loading" on-ctm-fleet-roster-list-action-back="_handleActionBackOnce"
                 on-ctm-fleet-roster-list-action-add-athletes="_handleActionAddedAthletes" on-ctm-fleet-detail-action-fanout-fail="_handleActionFail"></ctm-fleet-roster-list>
-            <ctm-fleet-oar-list id="oar" team-id="[[teamId]]" boat="[[_boat]]" page="loading" on-ctm-fleet-oar-list-action-back="_handleActionBackOnce"
+            <ctm-fleet-oar-list id="oar" team-id="${this.teamId}" boat="${this._boat}" page="loading" on-ctm-fleet-oar-list-action-back="_handleActionBackOnce"
                 on-ctm-fleet-oar-list-action-add-oars="_handleActionAddedOars" on-ctm-fleet-detail-action-fanout-fail="_handleActionFail"></ctm-fleet-oar-list>
-            <ctm-fleet-rigger-list id="rigger" team-id="[[teamId]]" boat="[[_boat]]" page="loading" on-ctm-fleet-rigger-list-action-back="_handleActionBackOnce"
+            <ctm-fleet-rigger-list id="rigger" team-id="${this.teamId}" boat="${this._boat}" page="loading" on-ctm-fleet-rigger-list-action-back="_handleActionBackOnce"
                 on-ctm-fleet-rigger-list-action-add-riggers="_handleActionAddedRiggers" on-ctm-fleet-detail-action-fanout-fail="_handleActionFail"></ctm-fleet-rigger-list>
         </iron-pages>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -86,7 +86,7 @@ export class CtmFleet extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

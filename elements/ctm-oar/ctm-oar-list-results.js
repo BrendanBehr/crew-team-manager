@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmOarListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -75,32 +76,36 @@ export class CtmOarListResults extends LitElement {
 
     render() {
         return html`
-        <iron-list id="list" items="[[data]]" as="item" selected-items="{{deleteItems}}" selection-enabled multi-selection>
-            <template>
-                <div class$="[[_computedClass(selected)]]">
-
-                    <ctm-avatar class="oar-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.name]]" on-tap="_handleActionDeleteMultiple"></ctm-avatar>
-                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                    <div class="oar-info" on-tap="_handleItemClick">
-                        <div class="oar-info-name">
-                            [[item.name]]
-                        </div>
-                        <div class="oar-info-helper">
-                            [[item.color]] [[item.shape]]
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </iron-list>`;
+            <lit-virtualizer
+                .items : ${this.data}
+                .renderItem : ${(item) => {
+                    return html`
+                        <div class="${this._computedClass(this.selected)}">
+        
+                            <ctm-avatar class="oar-avatar" reveal="${this._isCheck(this.selected)}" value="${this.item.name}" @click="${this._handleActionDeleteMultiple}"></ctm-avatar>
+                            <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                            <div class="oar-info" @click="${this._handleItemClick}">
+                                <div class="oar-info-name">
+                                    ${this.item.name}
+                                </div>
+                                <div class="oar-info-helper">
+                                    ${this.item.color} ${this.item.shape}
+                                </div>
+                            </div>
+                        </div>`
+                    }
+                }
+                .layout : ${grid()}
+            ></lit-virtualizer>`;
     }
 
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

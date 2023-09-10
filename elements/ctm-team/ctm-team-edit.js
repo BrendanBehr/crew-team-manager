@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 
 import '@polymer/iron-icons';
@@ -14,7 +14,7 @@ import '@polymer/paper-icon-button';
 import '@polymer/paper-spinner/paper-spinner';
 
 export class CtmTeamDetailEdit extends LitElement {
-    static styles = `
+    static styles = css`
     :host {
        background-color: lightslategray;
        @apply(--layout-horizontal);
@@ -63,20 +63,20 @@ export class CtmTeamDetailEdit extends LitElement {
 
         <app-header reveals>
             <app-toolbar id="toolbar">
-                <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                 <div main-title id="title">Edit</div>
-                <paper-icon-button id="save" icon="check" on-tap="_handleActionSave"></paper-icon-button>
+                <paper-icon-button id="save" icon="check" @click="${this._handleActionSave}"></paper-icon-button>
             </app-toolbar>
         </app-header>
 
         <div id="editor">
             <form is="iron-form" id="form" method="post" action="/form/handler">
-                <paper-input id="team-name" label="team name" value="{{edit.teamName}}"></paper-input>
-                <paper-input id="street-address" label="street address" value="{{edit.streetAddress}}"></paper-input>
-                <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
-                <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
-                <paper-input id="location-image" label="location image" value="{{edit.locationImage}}"></paper-input>
-                <paper-input id="color" label="color" value="{{edit.color}}"></paper-input>
+                <paper-input id="team-name" label="team name" value="${this.edit.teamName}"></paper-input>
+                <paper-input id="street-address" label="street address" value="${this.edit.streetAddress}"></paper-input>
+                <paper-input id="city" label="city" value="${this.edit.city}"></paper-input>
+                <paper-input id="state" label="state" value="${this.edit.state}"></paper-input>
+                <paper-input id="location-image" label="location image" value="${this.edit.locationImage}"></paper-input>
+                <paper-input id="color" label="color" value="${this.edit.color}"></paper-input>
             </form>
         </div>
     `;
@@ -105,7 +105,7 @@ export class CtmTeamDetailEdit extends LitElement {
     }
 
     _handleActionBack(e) {
-        this.dispatchEvent(new CustomEvent(CTMTeamEdit.is + '-action-back', {
+        this.dispatchEvent(new CustomEvent(CtmTeamEdit.is + '-action-back', {
             bubbles: true,
             composed: true
         }));
@@ -115,7 +115,7 @@ export class CtmTeamDetailEdit extends LitElement {
         this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
         this.$.firebase.saveValue('teams', this.team)
             .then(() => {
-                this.dispatchEvent(new CustomEvent(CTMTeamEdit.is + '-action-saved', {
+                this.dispatchEvent(new CustomEvent(CtmTeamEdit.is + '-action-saved', {
                     bubbles: true,
                     composed: true
                 }));

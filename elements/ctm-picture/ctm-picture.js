@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -16,7 +16,7 @@ import './ctm-picture-edit';
 import './ctm-picture-create';
 
 export class CtmPicture extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -51,26 +51,26 @@ export class CtmPicture extends LitElement {
 
     render() {
         return html`
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-            <ctm-picture-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-ctm-picture-list-results-action-detail="_handleActionDetail"
-                on-ctm-picture-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+            <ctm-picture-list id="list" menu-hidden="${this.wideLayout}" page="loading" on-ctm-picture-list-results-action-detail="_handleActionDetail"
+                on-ctm-picture-list-action-create="_handleActionCreate" team-id="${this.teamId}">
             </ctm-picture-list>
 
-            <ctm-picture-detail id="detail" picture="[[picture]]" page="loading" on-ctm-picture-detail-action-back="_handleActionBack"
+            <ctm-picture-detail id="detail" picture="${this.picture}" page="loading" on-ctm-picture-detail-action-back="_handleActionBack"
                 on-ctm-picture-detail-action-edit="_handleActionEdit" on-ctm-picture-detail-action-delete="_handleActionDelete"
                 on-ctm-picture-detail-action-delete-fail="_handleActionFail">
             </ctm-picture-detail>
 
-            <ctm-picture-edit edit="[[_edit]]" id="edit" picture="[[picture]]" on-ctm-picture-edit-action-back="_handleActionBackOnce"
+            <ctm-picture-edit edit="${this._edit}" id="edit" picture="${this.picture}" on-ctm-picture-edit-action-back="_handleActionBackOnce"
                 on-ctm-picture-edit-action-saved="_handleActionSaved">
             </ctm-picture-edit>
 
-            <ctm-picture-create id="create" team-id="[[teamId]]" on-ctm-picture-create-action-cancel="_handleActionCancel"
+            <ctm-picture-create id="create" team-id="${this.teamId}" on-ctm-picture-create-action-cancel="_handleActionCancel"
                 on-ctm-picture-create-action-created="_handleActionCreated">
             </ctm-picture-create>
         </iron-pages>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -79,7 +79,7 @@ export class CtmPicture extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String
@@ -172,4 +172,4 @@ export class CtmPicture extends LitElement {
     }
 }
 
-customElements.define(CTMPicture.is, CTMPicture);
+customElements.define('ctm-picture', CtmPicture);

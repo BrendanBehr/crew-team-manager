@@ -1,8 +1,8 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 
 export class CtmErgDetailMessage extends LitElement {
-    static styles = `
+    static styles = css`
              :host {
                 background-color: white;
                 @apply(--layout-horizontal);

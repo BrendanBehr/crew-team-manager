@@ -1,9 +1,9 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/paper-spinner/paper-spinner-lite';
 
 export class CtmPictureListLoading extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -27,7 +27,7 @@ export class CtmPictureListLoading extends LitElement {
 
     render() {
         return html`
-            <div id="layout" on-tap="_handleClick">
+            <div id="layout" @click="${this._handleClick}">
                 <paper-spinner-lite active id="spinner"></paper-spinner-lite>
             </div>`;
     }
@@ -36,7 +36,7 @@ export class CtmPictureListLoading extends LitElement {
         return 
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

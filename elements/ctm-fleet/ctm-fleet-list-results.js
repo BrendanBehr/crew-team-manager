@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmFleetListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -76,45 +77,62 @@ export class CtmFleetListResults extends LitElement {
         
     constructor() {
         super();
+
+        this.item = {
+            name: '',
+            size: 0,
+            rigging: '',
+            type: '',
+            manufacturer: '',
+            updated: 0,
+            created: 0
+        }
     }
 
     render() {
         return html`
-            <iron-list id="list" items="[[data]]" as="item" selected-items="{{deleteItems}}" selection-enabled multi-selection>
-                <template>
-                    <div class$="[[_computedClass(selected)]]">
-
-                        <ctm-avatar class="boat-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.name]]" on-tap="_handleActionDeleteMultiple"></ctm-avatar>
-                        <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                        <div class="boat-info" on-tap="_handleItemClick">
+        <lit-virtualizer
+            .items : ${this.data}
+            .renderItem : ${(item) => {
+                return html`
+                    <div class="${this._computedClass(this.selected)}">
+                        <ctm-avatar class="boat-avatar" reveal="${this._isCheck(this.selected)}" value="${this.item.name}" @click="${this._handleActionDeleteMultiple}"></ctm-avatar>
+                        <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                        <div class="boat-info" @click="${this._handleItemClick}">
                             <div class="boat-info-name">
-                                [[item.name]]
+                                ${this.item.name}
                             </div>
 
                             <div class="boat-info-details">
-                                [[item.size]] [[item.type]] [[item.rigging]]
+                                ${this.item.size} ${this.item.type} ${this.item.rigging}
                             </div>
                         </div>
-                    </div>
-                </template>
-            </iron-list>`;
+                    </div>`
+                }
+            }
+            .layout : ${grid()}
+            id="list"
+        ></lit-virtualizer>`;
     }
 
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,
             },
 
             deleteItems: {
-                type: Object,
-                value: {}
+                type: Object
+            },
+
+            item : {
+                type : Object
             },
 
             selected: Boolean

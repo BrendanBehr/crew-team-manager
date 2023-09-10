@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -20,7 +20,7 @@ import './ctm-schedule-race-list-results';
 import './ctm-schedule-race-list-message';
 
 export class CtmScheduleRaceList extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -76,14 +76,14 @@ export class CtmScheduleRaceList extends LitElement {
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Select Races To Add</div>
-                    <paper-icon-button id="add" icon="check" on-tap="_handleActionAdd"></paper-icon-button>
+                    <paper-icon-button id="add" icon="check" @click="${this._handleActionAdd}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-schedule-race-list-loading id="loading"></ctm-schedule-race-list-loading>
-                <ctm-schedule-race-list-results id="results" data="[[_data]]" selected="[[selected]]" on-ctm-schedule-race-list-results-action-select-races="_selectRace"></ctm-schedule-race-list-results>
+                <ctm-schedule-race-list-results id="results" data="${this._data}" selected="${this.selected}" on-ctm-schedule-race-list-results-action-select-races="_selectRace"></ctm-schedule-race-list-results>
                 <ctm-schedule-race-list-message id="message"></ctm-schedule-race-list-message>
             </iron-pages>
 
@@ -97,7 +97,7 @@ export class CtmScheduleRaceList extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String
@@ -195,4 +195,4 @@ export class CtmScheduleRaceList extends LitElement {
     }
 }
 
-customElements.define('ctm-schedule-race-list', CTMScheduleRaceList);
+customElements.define('ctm-schedule-race-list', CtmScheduleRaceList);

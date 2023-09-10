@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -16,37 +16,37 @@ import './ctm-compare-detail-loading';
 import './ctm-compare-detail-results';
 import './ctm-compare-detail-message';
 
-export class CTMCompareDetail extends LitElement {
-    static styles = `
+export class CtmCompareDetail extends LitElement {
+    static styles = css`
         :host {
-        background-color: lightslategray;
-        @apply(--layout-horizontal);
-        @apply(--paper-font-common-base);
-    }
+            background-color: lightslategray;
+            @apply(--layout-horizontal);
+            @apply(--paper-font-common-base);
+        }
 
-        :host([menu-hidden]) #menu {
-        display: none;
-    }
+            :host([menu-hidden]) #menu {
+            display: none;
+        }
 
-    #pages {
-        @apply(--layout-vertical);
-        @apply(--layout-flex);
-    }
+        #pages {
+            @apply(--layout-vertical);
+            @apply(--layout-flex);
+        }
 
-    #layout {
-        @apply(--layout-flex);
-    }
+        #layout {
+            @apply(--layout-flex);
+        }
 
-    #results,
-    #loading,
-    #message {
-        @apply(--layout-flex);
-    }
+        #results,
+        #loading,
+        #message {
+            @apply(--layout-flex);
+        }
 
-    #toolbar {
-        background-color: #164410;
-        color: #fff;
-    }
+        #toolbar {
+            background-color: #164410;
+            color: #fff;
+        }
     `;
 
     constructor() {
@@ -55,25 +55,18 @@ export class CTMCompareDetail extends LitElement {
 
     render() {
     return html`
-        <firebase-document id="firebase" app-name="laborsync-ctm" path="/athletes/{{athleteOne}}" data="{{_dataAthleteOne}}">
-        </firebase-document>
-        <firebase-document id="firebase" app-name="laborsync-ctm" path="/athletes/{{athleteTwo}}" data="{{_dataAthleteTwo}}">
-        </firebase-document>
-        <firebase-document id="firebase-team" app-name="laborsync-ctm" path="/teams/{{_dataAthleteOne.team}}" data="{{_team}}">
-        </firebase-document>
-
 
         <app-header-layout id="layout">
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Details</div>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-compare-detail-loading id="loading"></ctm-compare-detail-loading>
-                <ctm-compare-detail-results id="results" data-one="{{_dataAthleteOne}}" data-two="{{_dataAthleteTwo}}" team="{{_team}}"></ctm-compare-detail-results>
+                <ctm-compare-detail-results id="results" data-one="${this._dataAthleteOne}" data-two="${this._dataAthleteTwo}" team="${this._team}"></ctm-compare-detail-results>
                 <ctm-compare-detail-message id="message"></ctm-compare-detail-message>
             </iron-pages>
 
@@ -91,7 +84,7 @@ export class CTMCompareDetail extends LitElement {
 
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String
@@ -155,4 +148,4 @@ export class CTMCompareDetail extends LitElement {
     }
 }
 
- customElements.define('ctm-compare-detail', CTMCompareDetail);
+ customElements.define('ctm-compare-detail', CtmCompareDetail);

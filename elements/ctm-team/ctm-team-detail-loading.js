@@ -1,8 +1,8 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 import '@polymer/paper-spinner/paper-spinner';
 
 export class CtmTeamDetailLoading extends LitElement {
-    static styles = `
+    static styles = css`
     :host {
            background-color: white;
            @apply(--layout-horizontal);

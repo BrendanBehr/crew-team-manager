@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -19,7 +19,7 @@ import './ctm-finance-detail-results';
 import './ctm-finance-detail-message';
 
 export class CtmFinanceDetail extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -68,15 +68,15 @@ export class CtmFinanceDetail extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Details</div>
-                    <paper-icon-button id="edit" icon="create" on-tap="_handleActionEdit"></paper-icon-button>
-                    <paper-icon-button id="delete" icon="delete" on-tap="_handleActionDelete"></paper-icon-button>
+                    <paper-icon-button id="edit" icon="create" @click="${this._handleActionEdit}"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" @click="${this._handleActionDelete}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-finance-detail-loading id="loading"></ctm-finance-detail-loading>
-                <ctm-finance-detail-results id="results" data="{{_data}}" team="{{_team}}"></ctm-finance-detail-results>
+                <ctm-finance-detail-results id="results" data="${this._data}" team="${this._team}"></ctm-finance-detail-results>
                 <ctm-finance-detail-message id="message"></ctm-finance-detail-message>
             </iron-pages>
 
@@ -92,7 +92,7 @@ export class CtmFinanceDetail extends LitElement {
 
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

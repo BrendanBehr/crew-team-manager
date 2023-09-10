@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -20,7 +20,7 @@ import './ctm-roster-erg-list-results';
 import './ctm-roster-erg-list-message';
 
 export class CtmRosterErgList extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -76,15 +76,15 @@ export class CtmRosterErgList extends LitElement {
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Select Ergs To Add</div>
-                    <paper-icon-button id="add" icon="check" on-tap="_handleActionAdd"></paper-icon-button>
+                    <paper-icon-button id="add" icon="check" @click="${this._handleActionAdd}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-roster-erg-list-loading id="loading"></ctm-roster-erg-list-loading>
-                <ctm-roster-erg-list-results id="results" data="[[_data]]" selected="[[selected]]" on-ctm-roster-erg-list-results-action-select-ergs="_selectErgs"></ctm-roster-erg-list-results>
+                <ctm-roster-erg-list-results id="results" data="${this._data}" selected="${this.selected}" on-ctm-roster-erg-list-results-action-select-ergs="_selectErgs"></ctm-roster-erg-list-results>
                 <ctm-roster-erg-list-message id="message"></ctm-roster-erg-list-message>
             </iron-pages>
 
@@ -99,7 +99,7 @@ export class CtmRosterErgList extends LitElement {
     }
 
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String,

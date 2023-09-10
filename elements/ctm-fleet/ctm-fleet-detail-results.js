@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-card/paper-card';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmFleetDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -66,6 +67,20 @@ export class CtmFleetDetailResults extends LitElement {
         
     constructor() {
         super();
+
+        this.data = {
+            name: '',
+            size: 0,
+            rigging: '',
+            type: '',
+            manufacturer: '',
+            updated: 0,
+            created: 0
+        };
+
+        this.team = {
+            teamName : ''
+        };
     }
 
     render() {
@@ -73,28 +88,28 @@ export class CtmFleetDetailResults extends LitElement {
         <div id="content">
 
             <paper-card id="boat">
-                <ctm-avatar id="boat-avatar" value="[[data.name]]" large></ctm-avatar>
+                <ctm-avatar id="boat-avatar" value="${this.data.name}" large></ctm-avatar>
                 <div id="boat-name">
-                    [[data.name]]
+                    ${this.data.name}
                 </div>
                 <div id="boat-info">
                     <div id="subhead">
                         Basic inforomation:
                     </div>
                     <div id="size">
-                        Size: [[data.size]]
+                        Size: ${this.data.size}
                     </div>
                     <div id="rigging">
-                        Rigging: [[data.rigging]]
+                        Rigging: ${this.data.rigging}
                     </div>
                     <div id="type">
-                        Type: [[data.type]]
+                        Type: ${this.data.type}
                     </div>
                     <div id="manufacturer">
-                        Manufacturer: [[data.manufacturer]]
+                        Manufacturer: ${this.data.manufacturer}
                     </div>
                     <div id="team">
-                        Team: [[team.teamName]]
+                        Team: ${this.team.teamName}
                     </div>
                 </div>
                 <div id="boat-athletes">
@@ -102,55 +117,70 @@ export class CtmFleetDetailResults extends LitElement {
                         Athletes:
                     </div>
 
-                    <iron-list id="athlete-list" items="[[athlete]]" as="item">
-                        <template>
-                            <div class="athlete-info">
-                                <div class="athlete-info-name">
-                                    [[item.firstName]] [[item.lastName]]
-                                </div>
-                            </div>
-                        </template>
-                    </iron-list>
+                    <lit-virtualizer
+                        .items : ${this.athletes}
+                        .renderItem : ${(item) => {
+                            return html`
+                                <div class="athlete-info">
+                                    <div class="athlete-info-name">
+                                        ${this.item.firstName} ${this.item.lastName}
+                                    </div>
+                                </div>`
+                            }
+                        }
+                        .layout : ${grid()}
+                        id="athlete-list
+                    ></lit-virtualizer>
                 </div>
                 <div id="boat-oars">
                     <div id="subhead">
                         Oars:
                     </div>
 
-                    <iron-list id="oar-list" items="[[oar]]" as="item">
-                        <template>
-                            <div class="oar" on-tap="_handleItemClick">
-                                <div class="oar-info">
-                                    <div class="oar-info-name">
-                                        [[item.name]]
+                    <lit-virtualizer
+                        .items : ${this.oars}
+                        .renderItem : ${(item) => {
+                            return html`
+                                <div class="rigger" @click="${() => this._handleItemClick(item)}">
+                                    <div class="oar-info">
+                                        <div class="oar-info-name">
+                                            ${this.item.name}
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </template>
-                    </iron-list>
+                                </div>`
+                            }
+                        }
+                        .layout : ${grid()}
+                        id="oar-list
+                    ></lit-virtualizer>
                 </div>
                 <div id="boat-riggers">
                     <div id="subhead">
                         Riggers:
                     </div>
 
-                    <iron-list id="rigger-list" items="[[rigger]]" as="item">
-                        <template>
-                            <div class="rigger" on-tap="_handleItemClick">
+                    <lit-virtualizer
+                        .items : ${this.riggers}
+                        .renderItem : ${(item) => {
+                            return html`
+                            <div class="rigger" @click="${() => this._handleItemClick(item)}">
                                 <div class="rigger-info">
                                     <div class="rigger-info-name">
-                                        [[item.seat]] [[item.side]]
+                                        ${item.seat} ${item.side}
                                     </div>
                                 </div>
-                            </div>
-                        </template>
-                    </iron-list>
+                            </div>`
+                            }
+                        }
+                        .layout : ${grid()}
+                        id="rigger-list
+                    ></lit-virtualizer>
                 </div>
             </paper-card>
         </div>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,
@@ -160,15 +190,15 @@ export class CtmFleetDetailResults extends LitElement {
                 type: Object
             },
 
-            athlete: {
+            athletes: {
                 type: Object
             },
 
-            oar: {
+            oars: {
                 type: Object
             },
 
-            rigger: {
+            riggers: {
                 type: Object
             }
         }

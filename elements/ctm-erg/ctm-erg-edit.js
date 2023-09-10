@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmErgEdit extends LitElement {
-    static styles = `
+    static styles = css`
              :host {
                 background-color: lightslategray;
                 @apply(--layout-horizontal);
@@ -56,6 +57,16 @@ export class CtmErgEdit extends LitElement {
         
     constructor() {
         super();
+
+        this.edit = {
+            number: 0,
+            location: '',
+            model: '',
+            screenType: '',
+            condition: '',
+            created: 0,
+            updated: 0
+        };
     }
 
     render() {
@@ -65,29 +76,29 @@ export class CtmErgEdit extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Edit</div>
-                    <paper-icon-button id="save" icon="check" on-tap="_handleActionSave"></paper-icon-button>
+                    <paper-icon-button id="save" icon="check" @click="${this._handleActionSave}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="editor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="number" label="number" value="{{edit.number}}"></paper-input>
-                    <paper-dropdown-menu label="location" value="{{edit.model}}">
+                    <paper-input id="number" label="number" value="${this.edit.number}"></paper-input>
+                    <paper-dropdown-menu label="location" value="${this.edit.model}">
                         <paper-listbox slot="dropdown-content" id="location">
                             <paper-item>Home</paper-item>
                             <paper-item>Away</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="model" value="{{edit.model}}">
+                    <paper-dropdown-menu label="model" value="${this.edit.model}">
                         <paper-listbox slot="dropdown-content" id="model">
                             <paper-item>Model C</paper-item>
                             <paper-item>Model D</paper-item>
                             <paper-item>More E</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="screen-type" value="{{edit.screenType}}">
+                    <paper-dropdown-menu label="screen-type" value="${this.edit.screenType}">
                         <paper-listbox slot="dropdown-content" id="screen-type">
                             <paper-item>PM5</paper-item>
                             <paper-item>PM4</paper-item>
@@ -96,7 +107,7 @@ export class CtmErgEdit extends LitElement {
                             <paper-item>PM1</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="condition" value="{{edit.condition}}">
+                    <paper-dropdown-menu label="condition" value="${this.edit.condition}">
                         <paper-listbox slot="dropdown-content" id="condition">
                             <paper-item>Very Bad</paper-item>
                             <paper-item>Bad</paper-item>
@@ -114,7 +125,7 @@ export class CtmErgEdit extends LitElement {
         `;
     }
 
-    static get properties() {
+    static properties() {
         return {
             edit: {
                 type: Object
@@ -139,7 +150,7 @@ export class CtmErgEdit extends LitElement {
     }
 
     _handleActionSave(e) {
-        this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.edit.updated = Timestamp.now();
         this.edit.number = parseInt(this.edit.number);
         this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
         this.$.firebase.saveValue('ergs', this.erg)

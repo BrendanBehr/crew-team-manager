@@ -1,14 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import '@lit-labs/virtualizer';
 
 import '@polymer/paper-card/paper-card';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmFinanceDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -52,6 +52,19 @@ export class CtmFinanceDetailResults extends LitElement {
         
     constructor() {
         super();
+
+        this.data = {
+            reason: '',
+            incomes: 0,
+            expenses: 0,
+            gross: 0,
+            created: 0,
+            updated: 0
+        };
+
+        this.team = {
+            teamName : ''
+        };
     }
 
     render() {
@@ -60,25 +73,25 @@ export class CtmFinanceDetailResults extends LitElement {
         <div id="content';
 
             <paper-card id="finance';
-                <ctm-avatar id="finance-avatar" value="[[data.reason]]" large></ctm-avatar>
+                <ctm-avatar id="finance-avatar" value="${this.data.reason}" large></ctm-avatar>
                 <div id="finance-reason';
-                    [[data.reason]]
+                    ${this.data.reason}
                 </div>
                 <div id="finance-gross';
                     <div id="subhead';
                         Summary:
                     </div>
                     <div id="team';
-                        Team: [[team.teamName]]
+                        Team: ${this.team.teamName}
                     </div>
                     <div id="incomes';
-                        Incomes: $[[data.incomes]]
+                        Incomes: $${this.data.incomes}
                     </div>
                     <div id="expenses';
-                        Expenses: $[[data.expenses]]
+                        Expenses: $${this.data.expenses}
                     </div>
                     <div id="gross';
-                        Gross: $[[data.gross]]
+                        Gross: $${this.data.gross}
                     </div>
                 </div>
 
@@ -86,7 +99,7 @@ export class CtmFinanceDetailResults extends LitElement {
         </div>`;
     }
     
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

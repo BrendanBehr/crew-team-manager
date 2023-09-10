@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmPictureEdit extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +57,13 @@ export class CtmPictureEdit extends LitElement {
         
     constructor() {
         super();
+
+        this.edit = {
+            caption: '',
+            url: '',
+            created: 0,
+            updated: 0
+        };
     }
 
     render() {
@@ -64,23 +72,23 @@ export class CtmPictureEdit extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Edit</div>
-                    <paper-icon-button id="save" icon="check" on-tap="_handleActionSave"></paper-icon-button>
+                    <paper-icon-button id="save" icon="check" @click="${this._handleActionSave}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="editor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="caption" label="caption" value="{{edit.caption}}"></paper-input>
-                    <paper-input id="url" label="url" value="{{edit.url}}"></paper-input>
+                    <paper-input id="caption" label="caption" value="${this.edit.caption}"></paper-input>
+                    <paper-input id="url" label="url" value="${this.edit.url}"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             edit: {
                 type: Object
@@ -105,7 +113,7 @@ export class CtmPictureEdit extends LitElement {
     }
 
     _handleActionSave(e) {
-        this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.edit.updated = Timestamp.now();
         this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
         this.$.firebase.saveValue('pictures', this.picture)
             .then(() => {

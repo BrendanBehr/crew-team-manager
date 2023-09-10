@@ -1,9 +1,9 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/paper-spinner/paper-spinner-lite';
 
 export class CtmFleetDetailLoading extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -32,7 +32,7 @@ export class CtmFleetDetailLoading extends LitElement {
         </div>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

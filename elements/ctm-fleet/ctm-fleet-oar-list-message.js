@@ -1,7 +1,7 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-export class CtmFleetOarListResults extends LitElement {
-    static styles = `
+export class CtmFleetOarListMessage extends LitElement {
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -33,4 +33,4 @@ export class CtmFleetOarListResults extends LitElement {
     }
 }
         
-customElements.define('ctm-fleet-oar-list-message', CTMFleetOarListMessage);
+customElements.define('ctm-fleet-oar-list-message', CtmFleetOarListMessage);

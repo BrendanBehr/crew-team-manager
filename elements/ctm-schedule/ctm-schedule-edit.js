@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmScheduleEdit extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +57,18 @@ export class CtmScheduleEdit extends LitElement {
         
     constructor() {
         super();
+        
+        this.edit = {
+            name: '',
+            streetAddress: '',
+            city: '',
+            state: '',
+            head: '',
+            locationImage: '',
+            cost: 0,
+            created: 0,
+            updated: 0
+        };
     }
 
     render() {
@@ -64,33 +77,33 @@ export class CtmScheduleEdit extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Edit</div>
-                    <paper-icon-button id="save" icon="check" on-tap="_handleActionSave"></paper-icon-button>
+                    <paper-icon-button id="save" icon="check" @click="${this._handleActionSave}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="editor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="name" label="name" value="{{edit.name}}"></paper-input>
-                    <paper-input id="street-address" label="street address" value="{{edit.streetAddress}}"></paper-input>
-                    <paper-input id="city" label="city" value="{{edit.city}}"></paper-input>
-                    <paper-input id="state" label="state" value="{{edit.state}}"></paper-input>
-                    <paper-dropdown-menu label="Is head race" value="{{edit.head}}">
+                    <paper-input id="name" label="name" value="${this.edit.name}"></paper-input>
+                    <paper-input id="street-address" label="street address" value="${this.edit.streetAddress}"></paper-input>
+                    <paper-input id="city" label="city" value="${this.edit.city}"></paper-input>
+                    <paper-input id="state" label="state" value="${this.edit.state}"></paper-input>
+                    <paper-dropdown-menu label="Is head race" value="${this.edit.head}">
                         <paper-listbox slot="dropdown-content" id="head">
                             <paper-item>Yes</paper-item>
                             <paper-item>No</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="location-image" label="location image" value="{{edit.locationImage}}"></paper-input>
-                    <paper-input id="cost" label="cost" value="{{edit.cost}}"></paper-input>
+                    <paper-input id="location-image" label="location image" value="${this.edit.locationImage}"></paper-input>
+                    <paper-input id="cost" label="cost" value="${this.edit.cost}"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             edit: {
                 type: Object
@@ -115,7 +128,7 @@ export class CtmScheduleEdit extends LitElement {
     }
 
     _handleActionSave(e) {
-        this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.edit.updated = Timestamp.now();
         this.edit.cost = parseInt(this.edit.cost);
         this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
         this.$.firebase.saveValue('regattas', this.regatta)

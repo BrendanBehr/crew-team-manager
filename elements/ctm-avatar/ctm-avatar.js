@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 export class CtmAvatar extends LitElement {
 
@@ -8,7 +8,7 @@ export class CtmAvatar extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             value: {
                 type: String
@@ -20,7 +20,7 @@ export class CtmAvatar extends LitElement {
         }
     }
 
-    static styles = `
+    static styles = css`
     
     :host {
         @apply(--layout-horizontal);
@@ -173,7 +173,7 @@ export class CtmAvatar extends LitElement {
 
   render() {
     return html`
-    <div id="avatar" character$="'${this.character}">
+    <div id="avatar" character="'${this.character}">
         <div id="character">
             '${this.character}
         </div>

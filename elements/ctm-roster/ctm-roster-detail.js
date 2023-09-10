@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -20,7 +21,7 @@ import './ctm-roster-detail-results';
 import './ctm-roster-detail-message';
 
 export class CtmRosterDetail extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -100,26 +101,26 @@ export class CtmRosterDetail extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Details</div>
-                    <paper-icon-button id="edit" icon="create" on-tap="_handleActionEdit"></paper-icon-button>
-                    <paper-icon-button id="delete" icon="delete" on-tap="_handleActionDelete"></paper-icon-button>
+                    <paper-icon-button id="edit" icon="create" @click="${this._handleActionEdit}"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" @click="${this._handleActionDelete}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-roster-detail-loading id="loading"></ctm-roster-detail-loading>
-                <ctm-roster-detail-results id="results" data="{{_data}}" team="{{_team}}" erg="[[_ergs]]"></ctm-roster-detail-results>
+                <ctm-roster-detail-results id="results" data="${this._data}" team="${this._team}" erg="${this._ergs}"></ctm-roster-detail-results>
                 <ctm-roster-detail-message id="message"></ctm-roster-detail-message>
             </iron-pages>
 
-            <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
+            <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>
 
         </app-header-layout>
 
         <div id="fabs-layout">
             <div id="fabs">
-                <paper-fab id="erg" class="fab" icon="places:fitness-center" on-tap="_handleActionAddErg"></paper-fab>
-                <paper-fab id="finance" class="fab" icon="editor:attach-money" on-tap="_handleActionAddFinance"></paper-fab>
+                <paper-fab id="erg" class="fab" icon="places:fitness-center" @click="${this._handleActionAddErg}"></paper-fab>
+                <paper-fab id="finance" class="fab" icon="editor:attach-money" @click="${this._handleActionAddFinance}"></paper-fab>
                 <paper-fab id="add" class="fab" icon="icons:add"></paper-fab>
             </div>
         </div>`;
@@ -134,7 +135,7 @@ export class CtmRosterDetail extends LitElement {
 
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String
@@ -262,7 +263,7 @@ export class CtmRosterDetail extends LitElement {
         if (gross != 0) {
 
 
-            this._data.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+            this._data.updated = Timestamp.now();
             this._data.fundRaising = gross + this._data.fundRaising;
             this.$.firebase.data = JSON.parse(JSON.stringify(this._data));
             this.$.firebase.saveValue('athletes', this.athlete)

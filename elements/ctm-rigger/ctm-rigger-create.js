@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmRiggerCreate extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +57,15 @@ export class CtmRiggerCreate extends LitElement {
         
     constructor() {
         super();
+
+        this.create = {
+            side: '',
+            style: '',
+            type: '',
+            seat: 0,
+            created: 0,
+            updated: 0
+        };
     }
 
     render() {
@@ -64,34 +74,34 @@ export class CtmRiggerCreate extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="cancel" icon="close" on-tap="_handleActionCancel"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" @click="${this._handleActionCancel}"></paper-icon-button>
                     <div main-title id="title">Create</div>
-                    <paper-icon-button id="create" icon="check" on-tap="_handleActionCreate"></paper-icon-button>
+                    <paper-icon-button id="create" icon="check" @click="${this._handleActionCreate}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-dropdown-menu label="side" value="{{create.side}}">
+                    <paper-dropdown-menu label="side" value="${this.create.side}">
                         <paper-listbox slot="dropdown-content" id="side">
                             <paper-item>Port</paper-item>
                             <paper-item>Starboard</paper-item>
                             <paper-item>Both</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="style" value="{{create.style}}">
+                    <paper-dropdown-menu label="style" value="${this.create.style}">
                         <paper-listbox slot="dropdown-content" id="style">
                             <paper-item>Sweep</paper-item>
                             <paper-item>Scull</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="type" value="{{create.type}}">
+                    <paper-dropdown-menu label="type" value="${this.create.type}">
                         <paper-listbox slot="dropdown-content" id="type">
                             <paper-item>Wing</paper-item>
                             <paper-item>European</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="seat" value="{{create.seat}}">
+                    <paper-dropdown-menu label="seat" value="${this.create.seat}">
                         <paper-listbox slot="dropdown-content" id="seat">
                             <paper-item>1</paper-item>
                             <paper-item>2</paper-item>
@@ -109,18 +119,10 @@ export class CtmRiggerCreate extends LitElement {
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             create: {
-                type: Object,
-                value: {
-                    side: '',
-                    style: '',
-                    type: '',
-                    seat: 0,
-                    created: 0,
-                    updated: 0
-                }
+                type: Object
             },
 
             teamId: String,
@@ -156,8 +158,8 @@ export class CtmRiggerCreate extends LitElement {
     }
 
     _handleActionCreate(e) {
-        this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
-        this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.create.updated = Timestamp.now();
+        this.create.created = Timestamp.now();
         this.create.team = this.teamId;
         this.create.seat = parseInt(this.create.seat);
         this.$.firebase.saveValue('riggers')

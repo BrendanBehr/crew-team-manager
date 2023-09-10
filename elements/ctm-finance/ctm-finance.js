@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -16,7 +16,7 @@ import './ctm-finance-edit';
 import './ctm-finance-create';
 
 export class CtmFinance extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -52,26 +52,26 @@ export class CtmFinance extends LitElement {
     render() {
         return html`
 
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-            <ctm-finance-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-ctm-finance-list-results-action-detail="_handleActionDetail"
-                on-ctm-finance-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+            <ctm-finance-list id="list" menu-hidden="${this.wideLayout}" page="loading" on-ctm-finance-list-results-action-detail="_handleActionDetail"
+                on-ctm-finance-list-action-create="_handleActionCreate" team-id="${this.teamId}">
             </ctm-finance-list>
 
-            <ctm-finance-detail id="detail" finance="[[_finance]]" page="loading" on-ctm-finance-detail-action-back="_handleActionBack"
+            <ctm-finance-detail id="detail" finance="${this._finance}" page="loading" on-ctm-finance-detail-action-back="_handleActionBack"
                 on-ctm-finance-detail-action-edit="_handleActionEdit" on-ctm-finance-detail-action-delete="_handleActionDelete"
                 on-ctm-finance-detail-action-delete-fail="_handleActionFail">
             </ctm-finance-detail>
 
-            <ctm-finance-edit edit="[[_edit]]" id="edit" finance="[[_finance]]" on-ctm-finance-edit-action-back="_handleActionBackOnce"
+            <ctm-finance-edit edit="${this._edit}" id="edit" finance="${this._finance}" on-ctm-finance-edit-action-back="_handleActionBackOnce"
                 on-ctm-finance-edit-action-saved="_handleActionSaved">
             </ctm-finance-edit>
 
-            <ctm-finance-create id="create" team-id="[[teamId]]" on-ctm-finance-create-action-cancel="_handleActionCanceled"
+            <ctm-finance-create id="create" team-id="${this.teamId}" on-ctm-finance-create-action-cancel="_handleActionCanceled"
                 on-ctm-finance-create-action-created="_handleActionCreated">
             </ctm-finance-create>
         </iron-pages>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>
         `;
     }
 
@@ -81,7 +81,7 @@ export class CtmFinance extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

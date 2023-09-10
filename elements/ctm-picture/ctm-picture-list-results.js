@@ -1,6 +1,8 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
+
 import '@polymer/iron-image/iron-image';
 
 import '@polymer/paper-styles/typography';
@@ -8,7 +10,7 @@ import '@polymer/paper-styles/typography';
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmPictureListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -78,35 +80,38 @@ export class CtmPictureListResults extends LitElement {
 
     render() {
         return html`
-        <iron-list id="list" items="[[data]]" as="item" grid selected-items="{{deleteItems}}" selection-enabled multi-selection>
-            <template>
-                <div class$="[[_computedClass(selected)]]">
-
-                    <ctm-avatar class="picture-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.caption]]" on-tap="_handleActionDeleteMultiple"></ctm-avatar>
-                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                    <div class="picture-info" on-tap="_handleItemClick">
-                        <div class="picture-info-caption">
-                            [[item.caption]]
-                        </div>
-                        <div class="picture-info-location">
-                            <iron-image src="[[item.url]]" style="width:200px; height:200px;" sizing="contain"></iron-image>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </iron-list>`;
+        <lit-virtualizer
+            .items : ${this.data}
+            .renderItem : ${(item) => {
+                   return html`
+                        <div class="${this._computedClass(this.selected)}">
+                            <ctm-avatar class="picture-avatar" reveal="${this._isCheck(this.selected)}" value="${item.caption}" @click="${this._handleActionDeleteMultiple}"></ctm-avatar>
+                            <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                            <div class="picture-info" @click="${this._handleItemClick}">
+                                <div class="picture-info-caption">
+                                    ${item.caption}
+                                </div>
+                                <div class="picture-info-location">
+                                    <iron-image src="${item.url}" style="width:200px; height:200px;" sizing="contain"></iron-image>
+                                </div>
+                            </div>
+                        </div>`
+                }
+            }
+            .layout : ${grid()}
+        ></lit-virtualizer>`;
     }
 
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
-                type: Object,
+                type: Array,
             },
 
             deleteItems: {
@@ -114,8 +119,9 @@ export class CtmPictureListResults extends LitElement {
                 value: {}
             },
 
-            selected: Boolean
-
+            selected: {
+                type : Boolean
+            }
         }
     }
 

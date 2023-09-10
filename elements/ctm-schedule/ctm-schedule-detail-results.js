@@ -1,6 +1,7 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 import '@polymer/iron-image/iron-image';
 
 import '@polymer/paper-card/paper-card';
@@ -8,7 +9,7 @@ import '@polymer/paper-card/paper-card';
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmScheduleDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -67,6 +68,18 @@ export class CtmScheduleDetailResults extends LitElement {
         
     constructor() {
         super();
+        
+        this.data = {
+            name: '',
+            streetAddress: '',
+            city: '',
+            state: '',
+            head: '',
+            locationImage: '',
+            cost: 0,
+            created: 0,
+            updated: 0
+        };
     }
 
     render() {
@@ -74,25 +87,25 @@ export class CtmScheduleDetailResults extends LitElement {
         <div id="content">
 
             <paper-card id="regatta">
-                <ctm-avatar id="regatta-avatar" value="[[_name]]" large></ctm-avatar>
+                <ctm-avatar id="regatta-avatar" value="${this._name}" large></ctm-avatar>
                 <div id="regatta-name">
-                    [[data.name]]
+                    ${this.data.name}
                 </div>
                 <div id="regatta-basic">
                     <div id="subhead">
                         Location:
                     </div>
                     <div id="location">
-                        [[data.streetAddress]], [[data.city]], [[data.state]]
+                        ${this.data.streetAddress}, ${this.data.city}, ${this.data.state}
                     </div>
                     <div id="head">
-                        Is head race: [[data.head]]
+                        Is head race: ${this.data.head}
                     </div>
                 </div>
 
                 <div id="regatta-image">
                     <div id="image">
-                        <iron-image src="[[data.locationImage]]"></iron-image>
+                        <iron-image src="${this.data.locationImage}"></iron-image>
                     </div>
                 </div>
                 <div id="regatta-cost">
@@ -100,7 +113,7 @@ export class CtmScheduleDetailResults extends LitElement {
                         Financial:
                     </div>
                     <div id="funds">
-                        Cost: $[[data.cost]]
+                        Cost: $${this.data.cost}
                     </div>
                 </div>
 
@@ -109,17 +122,21 @@ export class CtmScheduleDetailResults extends LitElement {
                         ScheduleRaces:
                     </div>
 
-                    <iron-list id="list" items="[[race]]" as="item">
-                        <template>
-                            <div class="race" on-tap="_handleItemClick">
-                                <div class="race-info">
-                                    <div class="race-info-name">
-                                        [[item.eventName]] [[item.raceTime]]
+                    <lit-virtualizer
+                        .items : ${this.data}
+                        .renderItem : ${(item) => {
+                            return html`
+                                <div class="race" @click="${this._handleItemClick}">
+                                    <div class="race-info">
+                                        <div class="race-info-name">
+                                            ${this.item.eventName} ${this.item.raceTime}
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </template>
-                    </iron-list>
+                                </div>`
+                            }
+                        }
+                        .layout : ${grid()}
+                    ></lit-virtualizer>
                 </div>
 
             </paper-card>
@@ -132,7 +149,7 @@ export class CtmScheduleDetailResults extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

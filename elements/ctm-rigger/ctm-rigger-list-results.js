@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmRiggerListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -71,38 +72,53 @@ export class CtmRiggerListResults extends LitElement {
             
     constructor() {
         super();
+
+        this.item = {
+            side : '',
+            style : '',
+            type : '',
+            seat : ''
+        };
     }
 
     render() {
         return html`
-        <iron-list id="list" items="[[data]]" as="item" selected-items="{{deleteItems}}" selection-enabled multi-selection>
-            <template>
-                <div class$="[[_computedClass(selected)]]">
+            <lit-virtualizer
+                .items : ${this.data}
+                .renderItem : ${(item) => {
+                        return html`
+                            <div class="${this._computedClass(this.selected)}">
 
-                    <ctm-avatar class="rigger-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.style]]" on-tap="_handleActionDeleteMultiple"></ctm-avatar>
-                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                    <div class="rigger-info" on-tap="_handleItemClick">
-                        <div class="rigger-info-name">
-                            [[item.style]]
-                        </div>
-                        <div class="rigger-info-helpers">
-                            [[item.side]] [[item.seat]]
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </iron-list>`;
+                                <ctm-avatar class="rigger-avatar" reveal="${this._isCheck(this.selected)}" value="${this.item.style}" @click="${this._handleActionDeleteMultiple}"></ctm-avatar>
+                                <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                                <div class="rigger-info" @click="${this._handleItemClick}">
+                                    <div class="rigger-info-name">
+                                        ${this.item.style}
+                                    </div>
+                                    <div class="rigger-info-helpers">
+                                        ${this.item.side} ${this.item.seat}
+                                    </div>
+                                </div>
+                            </div>`
+                    }
+                }
+                .layout : ${grid()}
+            </lit-virtualizer>`;
     }
 
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
+                type: Object,
+            },
+
+            item: {
                 type: Object,
             },
 

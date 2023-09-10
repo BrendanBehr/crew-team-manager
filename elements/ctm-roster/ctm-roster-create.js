@@ -1,4 +1,6 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
+import { getDatabase, ref, set, push, child } from "firebase/database";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -12,10 +14,8 @@ import '@polymer/paper-item/paper-item';
 import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 
-
-
 export class CtmRosterCreate extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +56,27 @@ export class CtmRosterCreate extends LitElement {
         
     constructor() {
         super();
+
+        this.create = {
+            city: '',
+            driver: '',
+            ergScore: '',
+            firstName: '',
+            fundRaising: 0,
+            gender: '',
+            height: '',
+            lastName: '',
+            phone: '',
+            side: '',
+            state: '',
+            streetAddress: '',
+            weight: 0,
+            year: '',
+            email: '',
+            credential: 'NA',
+            updated: 0,
+            created: 0
+        };
     }
 
     render() {
@@ -64,17 +85,17 @@ export class CtmRosterCreate extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="cancel" icon="close" on-tap="_handleActionCancel"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" @click="${this._handleActionCancel}"></paper-icon-button>
                     <div main-title id="title">Create</div>
-                    <paper-icon-button id="create" icon="check" on-tap="_handleActionCreated"></paper-icon-button>
+                    <paper-icon-button id="create" icon="check" @click="${this._handleActionCreated}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="first-name" label="first name" value="{{create.firstName}}"></paper-input>
-                    <paper-input id="last-name" label="last name" value="{{create.lastName}}"></paper-input>
-                    <paper-dropdown-menu label="Year" value="{{create.year}}">
+                    <paper-input id="first-name" label="first name" value="${this.create.firstName}"></paper-input>
+                    <paper-input id="last-name" label="last name" value="${this.create.lastName}"></paper-input>
+                    <paper-dropdown-menu label="Year" value="${this.create.year}">
                         <paper-listbox slot="dropdown-content" id="year">
                             <paper-item>Freshman</paper-item>
                             <paper-item>Sophomore</paper-item>
@@ -82,65 +103,45 @@ export class CtmRosterCreate extends LitElement {
                             <paper-item>Senior</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="street-address" label="street address" value="{{create.streetAddress}}"></paper-input>
-                    <paper-input id="city" label="city" value="{{create.city}}"></paper-input>
-                    <paper-input id="state" label="state" value="{{create.state}}"></paper-input>
-                    <paper-input id="phone" label="phone number" value="{{create.phone}}"></paper-input>
-                    <paper-input id="email" label="email" value="{{create.email}}"></paper-input>
-                    <paper-dropdown-menu label="Can drive" value="{{create.driver}}">
+                    <paper-input id="street-address" label="street address" value="${this.create.streetAddress}"></paper-input>
+                    <paper-input id="city" label="city" value="${this.create.city}"></paper-input>
+                    <paper-input id="state" label="state" value="${this.create.state}"></paper-input>
+                    <paper-input id="phone" label="phone number" value="${this.create.phone}"></paper-input>
+                    <paper-input id="email" label="email" value="${this.create.email}"></paper-input>
+                    <paper-dropdown-menu label="Can drive" value="${this.create.driver}">
                         <paper-listbox slot="dropdown-content" id="driver">
                             <paper-item>Yes</paper-item>
                             <paper-item>No</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="height" label="height" value="{{create.height}}"></paper-input>
-                    <paper-input id="weight" label="weight" value="{{create.weight}}"></paper-input>
-                    <paper-dropdown-menu label="Gender" value="{{create.gender}}">
+                    <paper-input id="height" label="height" value="${this.create.height}"></paper-input>
+                    <paper-input id="weight" label="weight" value="${this.create.weight}"></paper-input>
+                    <paper-dropdown-menu label="Gender" value="${this.create.gender}">
                         <paper-listbox slot="dropdown-content" id="gender">
                             <paper-item>Male</paper-item>
                             <paper-item>Female</paper-item>
                             <paper-item>Other</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="erg-score" label="2k time" value="{{create.ergScore}}"></paper-input>
-                    <paper-dropdown-menu label="Side" value="{{create.side}}">
+                    <paper-input id="erg-score" label="2k time" value="${this.create.ergScore}"></paper-input>
+                    <paper-dropdown-menu label="Side" value="${this.create.side}">
                         <paper-listbox slot="dropdown-content" id="side">
                             <paper-item>Port</paper-item>
                             <paper-item>Starboard</paper-item>
                             <paper-item>Scull</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="fundraising" label="fundraising" value="{{create.fundRaising}}"></paper-input>
+                    <paper-input id="fundraising" label="fundraising" value="${this.create.fundRaising}"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             create: {
-                type: Object,
-                value: {
-                    city: '',
-                    driver: '',
-                    ergScore: '',
-                    firstName: '',
-                    fundRaising: 0,
-                    gender: '',
-                    height: '',
-                    lastName: '',
-                    phone: '',
-                    side: '',
-                    state: '',
-                    streetAddress: '',
-                    weight: 0,
-                    year: '',
-                    email: '',
-                    credential: 'NA',
-                    created: 0,
-                    updated: 0
-                }
+                type: Object
             },
 
             teamId: String,
@@ -176,7 +177,6 @@ export class CtmRosterCreate extends LitElement {
             credential: 'NA',
             updated: 0,
             created: 0
-
         }
     }
 
@@ -190,8 +190,8 @@ export class CtmRosterCreate extends LitElement {
 
     _handleActionCreated(e) {
 
-        this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
-        this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.create.updated = Timestamp.now();
+        this.create.created = Timestamp.now();
         this.create.team = this.teamId;
         this.create.fundRaising = parseInt(this.create.fundRaising);
         this.create.weight = parseInt(this.create.weight);
@@ -200,22 +200,16 @@ export class CtmRosterCreate extends LitElement {
             this.create.email = 'NA';
         }
 
-        this.$.firebase.saveValue('athletes')
-            .then(() => {
-                this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
-                this._resetCreate();
-                let _key = '';
-                for (let x = 10; x < this.$.firebase.path.length; x++) {
-                    _key = _key + this.$.firebase.path[x];
-                }
-                this.dispatchEvent(new CustomEvent('ctm-roster-create-action-created', {
-                        detail: {
-                            athlete: _key
-                        },
-                        bubbles: true,
-                        composed: true
-                    }));
-            });
+
+        let firebase = getDatabase();
+        let athleteRef = push(child(ref(firebase, 'athletes')), this.create);
+        this.dispatchEvent(new CustomEvent('ctm-roster-create-action-created', {
+                detail: {
+                    athlete: athleteRef.key
+                },
+                bubbles: true,
+                composed: true
+            }));
     }
 
     _selectedChanged(newValue) {

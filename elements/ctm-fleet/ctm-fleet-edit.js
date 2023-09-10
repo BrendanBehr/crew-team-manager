@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmFleetEdit extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +57,16 @@ export class CtmFleetEdit extends LitElement {
         
     constructor() {
         super();
+
+        this.edit = {
+            name: '',
+            size: 0,
+            rigging: '',
+            type: '',
+            manufacturer: '',
+            updated: 0,
+            created: 0
+        }
     }
 
     render() {
@@ -64,16 +75,16 @@ export class CtmFleetEdit extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Edit</div>
-                    <paper-icon-button id="save" icon="check" on-tap="_handleActionSave"></paper-icon-button>
+                    <paper-icon-button id="save" icon="check" @click="${this._handleActionSave}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="editor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="name" label="name" value="{{edit.name}}"></paper-input>
-                    <paper-dropdown-menu label="size" value="{{edit.size}}">
+                    <paper-input id="name" label="name" value="${this.edit.name}"></paper-input>
+                    <paper-dropdown-menu label="size" value="${this.edit.size}">
                         <paper-listbox slot="dropdown-content" id="size">
                             <paper-item>1</paper-item>
                             <paper-item>2</paper-item>
@@ -81,27 +92,27 @@ export class CtmFleetEdit extends LitElement {
                             <paper-item>8</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="rigging" value="{{edit.rigging}}">
+                    <paper-dropdown-menu label="rigging" value="${this.edit.rigging}">
                         <paper-listbox slot="dropdown-content" id="rigging">
                             <paper-item>Port</paper-item>
                             <paper-item>Starboard</paper-item>
                             <paper-item>Scull</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="type" value="{{edit.type}}">
+                    <paper-dropdown-menu label="type" value="${this.edit.type}">
                         <paper-listbox slot="dropdown-content" id="type">
                             <paper-item>Sweep</paper-item>
                             <paper-item>Sculling</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="manufacturer" label="manufacturer" value="{{edit.manufacturer}}"></paper-input>
+                    <paper-input id="manufacturer" label="manufacturer" value="${this.edit.manufacturer}"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             edit: {
                 type: Object
@@ -126,7 +137,7 @@ export class CtmFleetEdit extends LitElement {
     }
 
     _handleActionSave(e) {
-        this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.edit.updated = Timestamp.now();
         this.edit.size = parseInt(this.edit.size);
         this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
         this.$.firebase.saveValue('boats', this.boat)

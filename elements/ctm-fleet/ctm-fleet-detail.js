@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -20,7 +20,7 @@ import './ctm-fleet-detail-results';
 import './ctm-fleet-detail-message';
 
 export class CtmFleetDetail extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -96,16 +96,16 @@ export class CtmFleetDetail extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Details</div>
-                    <paper-icon-button id="edit" icon="create" on-tap="_handleActionEdit"></paper-icon-button>
-                    <paper-icon-button id="delete" icon="delete" on-tap="_handleActionDelete"></paper-icon-button>
+                    <paper-icon-button id="edit" icon="create" @click="${this._handleActionEdit}"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" @click="${this._handleActionDelete}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-fleet-detail-loading id="loading"></ctm-fleet-detail-loading>
-                <ctm-fleet-detail-results id="results" data="{{_data}}" team={{_team}} athlete="[[_athletes]]" oar="[[_oars]]"
-                    rigger="[[_riggers]]"></ctm-fleet-detail-results>
+                <ctm-fleet-detail-results id="results" data="${this._data}" team={this._team} athlete="${this._athletes}" oar="${this._oars}"
+                    rigger="${this._riggers}"></ctm-fleet-detail-results>
                 <ctm-fleet-detail-message id="message"></ctm-fleet-detail-message>
             </iron-pages>
 
@@ -114,9 +114,9 @@ export class CtmFleetDetail extends LitElement {
 
         <div id="fabs-layout">
             <div id="fabs">
-                <paper-fab id="athlete" class="fab" icon="rowing" on-tap="_handleActionAddAthlete"></paper-fab>
-                <paper-fab id="rigger" class="fab" icon="build" on-tap="_handleActionAddRigger"></paper-fab>
-                <paper-fab id="oar" class="fab" icon="av:shuffle" on-tap="_handleActionAddOar"></paper-fab>
+                <paper-fab id="athlete" class="fab" icon="rowing" @click="${this._handleActionAddAthlete}"></paper-fab>
+                <paper-fab id="rigger" class="fab" icon="build" @click="${this._handleActionAddRigger}"></paper-fab>
+                <paper-fab id="oar" class="fab" icon="av:shuffle" @click="${this._handleActionAddOar}"></paper-fab>
                 <paper-fab id="add" class="fab" icon="icons:add"></paper-fab>
             </div>
         </div>`;
@@ -129,7 +129,7 @@ export class CtmFleetDetail extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String
@@ -274,4 +274,4 @@ export class CtmFleetDetail extends LitElement {
     }
 }
 
-customElements.define('ctm-fleet-detail', CTMFleetDetail);
+customElements.define('ctm-fleet-detail', CtmFleetDetail);

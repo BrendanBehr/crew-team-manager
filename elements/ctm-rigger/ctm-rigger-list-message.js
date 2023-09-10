@@ -1,7 +1,7 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 export class CtmRiggerListMessage extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -33,4 +33,4 @@ export class CtmRiggerListMessage extends LitElement {
     }
 }
 
-customElements.define('ctm-rigger-list-message', CymRiggerListMessage);
+customElements.define('ctm-rigger-list-message', CtmRiggerListMessage);

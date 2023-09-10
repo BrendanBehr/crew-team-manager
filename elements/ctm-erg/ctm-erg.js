@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -11,7 +11,7 @@ import '@polymer/paper-styles/typography';
 
 
 export class CtmErg extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -46,26 +46,26 @@ export class CtmErg extends LitElement {
 
     render() {
         return html`
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-            <ctm-erg-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-ctm-erg-list-results-action-detail="_handleActionDetail"
-                on-ctm-erg-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+            <ctm-erg-list id="list" menu-hidden="${this.wideLayout}" page="loading" on-ctm-erg-list-results-action-detail="_handleActionDetail"
+                on-ctm-erg-list-action-create="_handleActionCreate" team-id="${this.teamId}">
             </ctm-erg-list>
 
-            <ctm-erg-detail id="detail" erg="[[_erg]]" page="loading" on-ctm-erg-detail-action-back="_handleActionBack"
+            <ctm-erg-detail id="detail" erg="${this._erg}" page="loading" on-ctm-erg-detail-action-back="_handleActionBack"
                 on-ctm-erg-detail-action-edit="_handleActionEdit" on-ctm-erg-detail-action-delete="_handleActionDelete"
                 on-ctm-erg-detail-action-delete-fail="_handleActionFail">
             </ctm-erg-detail>
 
-            <ctm-erg-edit edit="[[_edit]]" id="edit" erg="[[_erg]]" on-ctm-erg-edit-action-back="_handleActionBackOnce"
+            <ctm-erg-edit edit="${this._edit}" id="edit" erg="${this._erg}" on-ctm-erg-edit-action-back="_handleActionBackOnce"
                 on-ctm-erg-edit-action-saved="_handleActionSaved">
             </ctm-erg-edit>
 
-            <ctm-erg-create id="create" team-id="[[teamId]]" on-ctm-erg-create-action-cancel="_handleActionCancel"
+            <ctm-erg-create id="create" team-id="${this.teamId}" on-ctm-erg-create-action-cancel="_handleActionCancel"
                 on-ctm-erg-create-action-created="_handleActionCreated">
             </ctm-erg-create>
         </iron-pages>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -74,7 +74,7 @@ export class CtmErg extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String
