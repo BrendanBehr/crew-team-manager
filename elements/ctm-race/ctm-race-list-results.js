@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmRaceListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -71,38 +72,54 @@ export class CtmRaceListResults extends LitElement {
         
     constructor() {
         super();
+
+        this.item = {
+            eventName : '',
+            raceTime : '',
+            suggestedLaunchTime : '',
+            bowNumber : ''
+        }
     }
 
     render() {
         return html`
-        <iron-list id="list" items="[[data]]" as="item" selected-items="{{deleteItems}}" selection-enabled multi-selection>
-            <template>
-                <div class$="[[_computedClass(selected)]]">
+        <lit-virtualizer
+            .items : ${this.data}
+            .renderItem : ${(item) => {
+                return html`
+                <div class="${this._computedClass(this.selected)}">
 
-                    <ctm-avatar class="race-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.eventName]]" on-tap="_handleActionDeleteMultiple"></ctm-avatar>
-                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                    <div class="race-info" on-tap="_handleItemClick">
+                    <ctm-avatar class="race-avatar" reveal="${this._isCheck(this.selected)}" value="${this.item.eventName}" @click="${this._handleActionDeleteMultiple}"></ctm-avatar>
+                    <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                    <div class="race-info" @click="${this._handleItemClick}">
                         <div class="race-info-eventName">
-                            [[item.eventName]]
+                            ${this.item.eventName}
                         </div>
                         <div class="race-info-time">
-                            Race Time: [[item.raceTime]]
+                            Race Time: ${this.item.raceTime}
                         </div>
                     </div>
-                </div>
-            </template>
-        </iron-list>`;
+                </div>`
+                }
+            }
+            .layout : ${grid()} 
+            id="list" 
+        ></lit-virtualizer>`;
     }
 
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
+                type: Object,
+            },
+
+            item: {
                 type: Object,
             },
 

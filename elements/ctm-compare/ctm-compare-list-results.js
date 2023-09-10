@@ -1,14 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar.js';
 
-export class CTMCompareListResults extends LitElement {
-    static styles = `
+export class CtmCompareListResults extends LitElement {
+    static styles = css`
     :host {
         background-color: white;
         @apply(--layout-horizontal);
@@ -80,48 +80,48 @@ export class CTMCompareListResults extends LitElement {
     render() {
         return html`
         <div id="athletes-list-one">
-            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-one" selected-item="{{selectedItemOne}}" selection-enabled>
+            <lit-virtualizer id="list" items="${this.data}" as="item" scroll-target="athletes-list-one" selected-item="${this.selectedItemOne}" selection-enabled>
                 <template>
-                    <div class$="[[_computedSelected(selected)]]" on-tap="_handleItemClick1">
+                    <div class="${this._computedSelected(this.selected)}" @click="${this._handleItemClick1}">
 
-                        <ctm-avatar class="athlete-avatar" value="[[item.firstName]]"></ctm-avatar>
+                        <ctm-avatar class="athlete-avatar" value="${this.item.firstName}"></ctm-avatar>
                         <div class="athlete-info">
                             <div class="athlete-info-name">
-                                [[item.firstName]] [[item.lastName]]
+                                ${this.item.firstName} ${this.item.lastName}
                             </div>
                             <div class="athlete-info-location">
-                                [[item.streetAddress]] [[item.city]] [[item.state]]
+                                ${this.item.streetAddress} ${this.item.city} ${this.item.state}
                             </div>
                         </div>
-                        <iron-icon class$="[[_computedClass(selected)]]" icon="rowing"></iron-icon>
+                        <iron-icon class="${this._computedClass(this.selected)}" icon="rowing"></iron-icon>
                     </div>
                 </template>
-            </iron-list>
+            </lit-virtualizer>
         </div>
 
         <div id="athletes-list-two">
-            <iron-list id="list" items="[[data]]" as="item" scroll-target="athletes-list-two" selected-item="{{selectedItemTwo}}" selection-enabled>
+            <lit-virtualizer id="list" items="${this.data}" as="item" scroll-target="athletes-list-two" selected-item="${this.selectedItemTwo}" selection-enabled>
                 <template>
-                    <div class$="[[_computedSelected(selected)]]" on-tap="_handleItemClick2">
+                    <div class="${this._computedSelected(this.selected)}" @click="${this._handleItemClick2}">
 
-                        <ctm-avatar class="athlete-avatar" value="[[item.firstName]]"></ctm-avatar>
+                        <ctm-avatar class="athlete-avatar" value="${this.item.firstName}"></ctm-avatar>
                         <div class="athlete-info">
                             <div class="athlete-info-name">
-                                [[item.firstName]] [[item.lastName]]
+                                ${this.item.firstName} ${this.item.lastName}
                             </div>
                             <div class="athlete-info-location">
-                                [[item.streetAddress]] [[item.city]] [[item.state]]
+                                ${this.item.streetAddress} ${this.item.city} ${this.item.state}
                             </div>
                         </div>
-                        <iron-icon class$="[[_computedClass(selected)]]" icon="rowing"></iron-icon>
+                        <iron-icon class="${this._computedClass(this.selected)}" icon="rowing"></iron-icon>
                     </div>
                 </template>
-            </iron-list>
+            </lit-virtualizer>
         </div>
         `;
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,
@@ -179,4 +179,4 @@ export class CTMCompareListResults extends LitElement {
     }
 }
 
-customElements.define('ctm-compare-list-result', CTMCompareListResults);
+customElements.define('ctm-compare-list-result', CtmCompareListResults);

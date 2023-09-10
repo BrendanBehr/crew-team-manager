@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -20,7 +20,7 @@ import './ctm-fleet-rigger-list-results';
 import './ctm-fleet-rigger-list-message';
 
 export class CtmFleetRiggerList extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -75,16 +75,16 @@ export class CtmFleetRiggerList extends LitElement {
         <app-header-layout id="layout" has-scrolling-region fullbleed>
 
             <app-header slot="header" reveals>
-                <app-toolbar id="toolbar';
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack';</paper-icon-button>
-                    <div main-title id="title';Select Riggers To Add</div>
-                    <paper-icon-button id="add" icon="check" on-tap="_handleActionAdd';</paper-icon-button>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
+                    <div main-title id="title">Select Riggers To Add</div>
+                    <paper-icon-button id="add" icon="check" @click="${this._handleActionAdd}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]';
-                <ctm-fleet-rigger-list-loading id="loading';</ctm-fleet-rigger-list-loading>
-                <ctm-fleet-rigger-list-results id="results" data="[[_data]]" selected="[[selected]]" on-ctm-fleet-rigger-list-results-action-select-riggers="_selectRiggers';</ctm-fleet-rigger-list-results>
-                <ctm-fleet-rigger-list-message id="message';</ctm-fleet-rigger-list-message>
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+                <ctm-fleet-rigger-list-loading id="loading"></ctm-fleet-rigger-list-loading>
+                <ctm-fleet-rigger-list-results id="results" data="${this._data}" selected="${this.selected}" on-ctm-fleet-rigger-list-results-action-select-riggers="_selectRiggers"></ctm-fleet-rigger-list-results>
+                <ctm-fleet-rigger-list-message id="message"></ctm-fleet-rigger-list-message>
             </iron-pages>
 
         </app-header-layout>`;
@@ -98,7 +98,7 @@ export class CtmFleetRiggerList extends LitElement {
     }
 
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

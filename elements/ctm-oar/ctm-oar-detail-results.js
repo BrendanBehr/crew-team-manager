@@ -1,14 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import '@lit-labs/virtualizer';
 
 import '@polymer/paper-card/paper-card';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmOarDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -62,6 +62,21 @@ export class CtmOarDetailResults extends LitElement {
         
     constructor() {
         super();
+
+        this.data = {
+            name: '',
+            color: '',
+            shape: '',
+            handleGrip: '',
+            length: '',
+            team: '',
+            updated: 0,
+            created: 0
+        };
+
+        this.team = {
+            teamName : ''
+        };
     }
 
     render() {
@@ -70,28 +85,28 @@ export class CtmOarDetailResults extends LitElement {
         <div id="content">
 
             <paper-card id="oar">
-                <ctm-avatar id="oar-avatar" value="[[data.name]]" large></ctm-avatar>
+                <ctm-avatar id="oar-avatar" value="${this.data.name}" large></ctm-avatar>
                 <div id="oar-name">
-                    [[data.name]]
+                    ${this.data.name}
                 </div>
                 <div id="oar-location">
                     <div id="subhead">
                         Details:
                     </div>
                     <div id="team">
-                        Team: [[team.teamName]]
+                        Team: ${this.team.teamName}
                     </div>
                     <div id="color">
-                        Color: [[data.color]]
+                        Color: ${this.data.color}
                     </div>
                     <div id="shape">
-                        Shape: [[data.shape]]
+                        Shape: ${this.data.shape}
                     </div>
                     <div id="handle-grip">
-                        Handle Grip: [[data.handleGrip]]
+                        Handle Grip: ${this.data.handleGrip}
                     </div>
                     <div id="length">
-                        Length: [[data.length]]cm
+                        Length: ${this.data.length}cm
                     </div>
                 </div>
 
@@ -99,7 +114,7 @@ export class CtmOarDetailResults extends LitElement {
         </div>`;
     }
     
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

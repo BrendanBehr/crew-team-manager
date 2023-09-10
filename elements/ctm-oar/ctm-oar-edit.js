@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmOarEdit extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,26 +57,37 @@ export class CtmOarEdit extends LitElement {
         
     constructor() {
         super();
+
+        this.edit = {
+            name: '',
+            color: '',
+            shape: '',
+            handleGrip: '',
+            length: '',
+            team: '',
+            updated: 0,
+            created: 0
+        };
     }
 
     render() {
         return html`
-        <app-header-layout id="layout';
+        <app-header-layout id="layout">
 
             <app-header reveals>
-                <app-toolbar id="toolbar';
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack';</paper-icon-button>
-                    <div main-title id="title';Edit</div>
-                    <paper-icon-button id="save" icon="check" on-tap="_handleActionSave';</paper-icon-button>
+                <app-toolbar id="toolbar">
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
+                    <div main-title id="title">Edit</div>
+                    <paper-icon-button id="save" icon="check" @click="${this._handleActionSave}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
-            <div id="editor';
-                <form is="iron-form" id="form" method="post" action="/form/handler';
-                    <paper-input id="name" label="name" value="{{edit.name}}';</paper-input>
-                    <paper-input id="color" label="color" value="{{edit.color}}';</paper-input>
-                    <paper-dropdown-menu label="shape" value="{{edit.shape}}';
-                        <paper-listbox slot="dropdown-content" id="shape';
+            <div id="editor">
+                <form is="iron-form" id="form" method="post" action="/form/handler">
+                    <paper-input id="name" label="name" value="${this.edit.name}"></paper-input>
+                    <paper-input id="color" label="color" value="${this.edit.color}"></paper-input>
+                    <paper-dropdown-menu label="shape" value="${this.edit.shape}">
+                        <paper-listbox slot="dropdown-content" id="shape">
                             <paper-item>Fat2</paper-item>
                             <paper-item>Smoothie2 Vortex Edge</paper-item>
                             <paper-item>Smoothie2 Plain Edge</paper-item>
@@ -83,21 +95,21 @@ export class CtmOarEdit extends LitElement {
                             <paper-item>Apex Blade</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="handle-grip" value="{{edit.handleGrip}}';
-                        <paper-listbox slot="dropdown-content" id="handle-grip';
+                    <paper-dropdown-menu label="handle-grip" value="${this.edit.handleGrip}">
+                        <paper-listbox slot="dropdown-content" id="handle-grip">
                             <paper-item>Rubber</paper-item>
                             <paper-item>Wood</paper-item>
                             <paper-item>Foam</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="length" label="length" value="{{edit.length}}" type="number';</paper-input>
+                    <paper-input id="length" label="length" value="${this.edit.length}" type="number"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             edit: {
                 type: Object
@@ -122,7 +134,7 @@ export class CtmOarEdit extends LitElement {
     }
 
     _handleActionSave(e) {
-        this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.edit.updated = Timestamp.now();
         this.edit.length = parseInt(this.edit.length);
         this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
         this.$.firebase.saveValue('oars', this.oar)

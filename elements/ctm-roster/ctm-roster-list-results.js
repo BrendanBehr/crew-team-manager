@@ -1,14 +1,15 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 import '@polymer/polymer/lib/mixins/gesture-event-listeners';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmRosterListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -72,39 +73,64 @@ export class CtmRosterListResults extends LitElement {
         
     constructor() {
         super();
+
+        this.item = {
+            firstName : 'Sample',
+            lastName : 'Name',
+            year : 'Fresh',
+            streetAddress : '123 Name Rd',
+            city : 'City',
+            state : 'State',
+            phone : '1234567890',
+            height : '5\'10',
+            weight : '160',
+            gender : 'M',
+            ergScore : '6:30',
+            side : 'Scull',
+            fundRaising : '$0'
+        };
     }
 
     render() {
         return html`
-            <iron-list id="list" items="[[data]]" as="item" selected-items="{{deleteItems}}" selection-enabled multi-selection>
-                <template>
-                    <div class$="[[_computedClass(selected)]]">
-
-                        <ctm-avatar class="athlete-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.firstName]]" on-tap="_handleActionDeleteMultiple"></ctm-avatar>
-                        <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                        <div class="athlete-info" on-tap="_handleItemClick">
+        <lit-virtualizer
+            .items : ${this.data}
+            .renderItem : ${(item) => {
+                return html`
+                    <div class="${this._computedClass(this.selected)}">
+                        <ctm-avatar class="athlete-avatar" reveal="${this._isCheck(this.selected)}" value="${this.item.firstName}" @click="${this._handleActionDeleteMultiple}"></ctm-avatar>
+                        <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                        <div class="athlete-info" @click="${this._handleItemClick}">
                             <div class="athlete-info-name">
-                                [[item.firstName]] [[item.lastName]]
+                                ${this.item.firstName} ${this.item.lastName}
                             </div>
                             <div class="athlete-info-location">
-                                [[item.streetAddress]] [[item.city]] [[item.state]]
+                                ${this.item.streetAddress} ${this.item.city} ${this.item.state}
                             </div>
                         </div>
                     </div>
-                </template>
-            </iron-list>`;
+                </template>`
+                }
+            }
+            .layout : ${grid()}
+            id="list"
+        ></lit-virtualizer>`;
     }
 
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,
+            },
+
+            item : {
+                type : Object
             },
 
             deleteItems: {

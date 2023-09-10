@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -16,7 +16,7 @@ import './ctm-oar-edit';
 import './ctm-oar-create';
 
 export class CtmOar extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -51,26 +51,26 @@ export class CtmOar extends LitElement {
 
     render() {
         return html`
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-            <ctm-oar-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-ctm-oar-list-results-action-detail="_handleActionDetail"
-                on-ctm-oar-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+            <ctm-oar-list id="list" menu-hidden="${this.wideLayout}" page="loading" on-ctm-oar-list-results-action-detail="_handleActionDetail"
+                on-ctm-oar-list-action-create="_handleActionCreate" team-id="${this.teamId}">
             </ctm-oar-list>
 
-            <ctm-oar-detail id="detail" oar="[[_oar]]" page="loading" on-ctm-oar-detail-action-back="_handleActionBack"
+            <ctm-oar-detail id="detail" oar="${this._oar}" page="loading" on-ctm-oar-detail-action-back="_handleActionBack"
                 on-ctm-oar-detail-action-edit="_handleActionEdit" on-ctm-oar-detail-action-delete="_handleActionDelete"
                 on-ctm-oar-detail-action-delete-fail="_handleActionFail">
             </ctm-oar-detail>
 
-            <ctm-oar-edit edit="[[_edit]]" id="edit" oar="[[_oar]]" on-ctm-oar-edit-action-back="_handleActionBackOnce"
+            <ctm-oar-edit edit="${this._edit}" id="edit" oar="${this._oar}" on-ctm-oar-edit-action-back="_handleActionBackOnce"
                 on-ctm-oar-edit-action-saved="_handleActionSaved">
             </ctm-oar-edit>
 
-            <ctm-oar-create id="create" team-id="[[teamId]]" on-ctm-oar-create-action-cancel="_handleActionCancel"
-                team-id="[[teamId]]" on-ctm-oar-create-action-created="_handleActionCreated">
+            <ctm-oar-create id="create" team-id="${this.teamId}" on-ctm-oar-create-action-cancel="_handleActionCancel"
+                team-id="${this.teamId}" on-ctm-oar-create-action-created="_handleActionCreated">
             </ctm-oar-create>
         </iron-pages>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -79,7 +79,7 @@ export class CtmOar extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

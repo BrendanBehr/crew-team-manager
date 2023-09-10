@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmOarCreate extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +57,8 @@ export class CtmOarCreate extends LitElement {
         
     constructor() {
         super();
+
+        this._resetCreate();
     }
 
     render() {
@@ -64,17 +67,17 @@ export class CtmOarCreate extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="cancel" icon="close" on-tap="_handleActionCancel"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" @click="${this._handleActionCancel}"></paper-icon-button>
                     <div main-title id="title">Create</div>
-                    <paper-icon-button id="create" icon="check" on-tap="_handleActionCreate"></paper-icon-button>
+                    <paper-icon-button id="create" icon="check" @click="${this._handleActionCreate}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="name" label="name" value="{{create.name}}"></paper-input>
-                    <paper-input id="color" label="color" value="{{create.color}}"></paper-input>
-                    <paper-dropdown-menu label="shape" value="{{create.shape}}">
+                    <paper-input id="name" label="name" value="${this.create.name}"></paper-input>
+                    <paper-input id="color" label="color" value="${this.create.color}"></paper-input>
+                    <paper-dropdown-menu label="shape" value="${this.create.shape}">
                         <paper-listbox slot="dropdown-content" id="shape">
                             <paper-item>Fat2</paper-item>
                             <paper-item>Smoothie2 Vortex Edge</paper-item>
@@ -83,34 +86,24 @@ export class CtmOarCreate extends LitElement {
                             <paper-item>Apex Blade</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="handle-grip" value="{{create.handleGrip}}">
+                    <paper-dropdown-menu label="handle-grip" value="${this.create.handleGrip}">
                         <paper-listbox slot="dropdown-content" id="handle-grip">
                             <paper-item>Rubber</paper-item>
                             <paper-item>Wood</paper-item>
                             <paper-item>Foam</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="length" label="length" value="{{create.length}}"></paper-input>
+                    <paper-input id="length" label="length" value="${this.create.length}"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             create: {
-                type: Object,
-                value: {
-                    name: '',
-                    color: '',
-                    shape: '',
-                    handleGrip: '',
-                    length: '',
-                    team: '',
-                    updated: 0,
-                    created: 0
-                }
+                type: Object
             },
 
             oar: {
@@ -148,8 +141,8 @@ export class CtmOarCreate extends LitElement {
     }
 
     _handleActionCreate(e) {
-        this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
-        this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.create.updated = Timestamp.now();
+        this.create.created = Timestamp.now();
         this.create.team = this.teamId;
         this.create.length = parseInt(this.create.length);
         this.$.firebase.saveValue('oars')

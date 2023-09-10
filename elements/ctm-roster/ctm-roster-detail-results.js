@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-card/paper-card';
 
 import  '../ctm-avatar/ctm-avatar';
 
 export class CtmRosterDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -70,6 +71,36 @@ export class CtmRosterDetailResults extends LitElement {
         
     constructor() {
         super();
+
+        this.data = {
+            firstName : 'Sample',
+            lastName : 'Name',
+            year : 'Fresh',
+            streetAddress : '123 Name Rd',
+            city : 'City',
+            state : 'State',
+            phone : '1234567890',
+            height : '5\'10',
+            weight : '160',
+            gender : 'M',
+            ergScore : '6:30',
+            side : 'Scull',
+            fundRaising : '$0'
+        };
+
+        this.team = {
+            teamName : ''
+        };
+
+        this.item = {
+            number: 0,
+            location: '',
+            model: '',
+            screenType: '',
+            condition: '',
+            updated: 0,
+            created: 0
+        };
     }
 
     render() {
@@ -77,20 +108,20 @@ export class CtmRosterDetailResults extends LitElement {
         <div id="content">
 
             <paper-card id="athlete">
-                <ctm-avatar id="athlete-avatar" value="[[data.firstName]]" large></ctm-avatar>
+                <ctm-avatar id="athlete-avatar" value="${this.data.firstName}" large></ctm-avatar>
                 <div id="athlete-name">
-                    [[data.firstName]] [[data.lastName]]
-                    <div id="athlete-year">([[data.year]]) </div>
+                    ${this.data.firstName} ${this.data.lastName}
+                    <div id="athlete-year">(${this.data.year}) </div>
                 </div>
                 <div id="athlete-contact">
                     <div id="subhead">
                         Contact information:
                     </div>
                     <div id="location">
-                        [[data.streetAddress]]. [[data.city]]. [[data.state]]
+                        ${this.data.streetAddress}. ${this.data.city}. ${this.data.state}
                     </div>
                     <div id="phone">
-                        Phone number: [[data.phone]]
+                        Phone number: ${this.data.phone}
                     </div>
                 </div>
                 <div id="athlete-basic">
@@ -98,20 +129,20 @@ export class CtmRosterDetailResults extends LitElement {
                         Basic inforomation:
                     </div>
                     <div id="team">
-                        Team: [[team.teamName]]
+                        Team: ${this.team.teamName}
                     </div>
                     <div id="height">
-                        Height: [[data.height]]
+                        Height: ${this.data.height}
                     </div>
                     <div id="weight">
-                        Weight: [[data.weight]]
+                        Weight: ${this.data.weight}
                     </div>
                     <div id="gender">
-                        Gender: [[data.gender]]
+                        Gender: ${this.data.gender}
                     </div>
 
                     <div id="driver">
-                        Can drive? [[data.driver]]
+                        Can drive? ${this.data.driver}
                     </div>
                 </div>
                 <div id="athlete-row">
@@ -119,13 +150,13 @@ export class CtmRosterDetailResults extends LitElement {
                         Stats:
                     </div>
                     <div id="2k">
-                        2k time: [[data.ergScore]]
+                        2k time: ${this.data.ergScore}
                     </div>
                     <div id="side">
-                        Rowing Side: [[data.side]]
+                        Rowing Side: ${this.data.side}
                     </div>
                     <div id="funds">
-                        Fundraising: [[data.fundRaising]]
+                        Fundraising: ${this.data.fundRaising}
                     </div>
                 </div>
 
@@ -134,17 +165,22 @@ export class CtmRosterDetailResults extends LitElement {
                         Ergs taken out:
                     </div>
 
-                    <iron-list id="list" items="[[erg]]" as="item">
-                        <template>
-                            <div class="erg" on-tap="_handleItemClick">
-                                <div class="erg-info">
-                                    <div class="erg-info-name">
-                                        [[item.number]] [[item.model]]
+                    <lit-virtualizer
+                        .items : ${this.erg}
+                        .renderItem : ${(item) => {
+                            return html`
+                                <div class="erg" @click="${this._handleItemClick}">
+                                    <div class="erg-info">
+                                        <div class="erg-info-name">
+                                            ${this.item.number} ${this.item.model}
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </template>
-                    </iron-list>
+                                </div>`
+                            }
+                        }
+                        .layout : ${grid()}
+                        id="erg"
+                    ></lit-virtualizer>
                 </div>
             </paper-card>
         </div>`;
@@ -156,7 +192,7 @@ export class CtmRosterDetailResults extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,
@@ -168,6 +204,10 @@ export class CtmRosterDetailResults extends LitElement {
 
             erg: {
                 type: Object
+            },
+
+            item : {
+                type : Object
             }
         }
     }

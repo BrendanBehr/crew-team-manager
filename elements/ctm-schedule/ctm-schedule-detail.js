@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -19,7 +19,7 @@ import './ctm-schedule-detail-results';
 import './ctm-schedule-detail-message';
 
 export class CtmScheduleDetail extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -91,15 +91,15 @@ export class CtmScheduleDetail extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Details</div>
-                    <paper-icon-button id="edit" icon="create" on-tap="_handleActionEdit"></paper-icon-button>
-                    <paper-icon-button id="delete" icon="delete" on-tap="_handleActionDelete"></paper-icon-button>
+                    <paper-icon-button id="edit" icon="create" @click="${this._handleActionEdit}"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" @click="${this._handleActionDelete}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-schedule-detail-loading id="loading"></ctm-schedule-detail-loading>
-                <ctm-schedule-detail-results id="results" data="{{_data}}" race="[[_races]]"></ctm-schedule-detail-results>
+                <ctm-schedule-detail-results id="results" data="${this._data}" race="${this._races}"></ctm-schedule-detail-results>
                 <ctm-schedule-detail-message id="message"></ctm-schedule-detail-message>
             </iron-pages>
 
@@ -108,8 +108,8 @@ export class CtmScheduleDetail extends LitElement {
 
         <div id="fabs-layout">
             <div id="fabs">
-                <paper-fab id="race" class="fab" icon="gavel" on-tap="_handleActionAddRace"></paper-fab>
-                <paper-fab id="picture" class="fab" icon="image:camera-roll" on-tap="_handleActionAddPicture"></paper-fab>
+                <paper-fab id="race" class="fab" icon="gavel" @click="${this._handleActionAddRace}"></paper-fab>
+                <paper-fab id="picture" class="fab" icon="image:camera-roll" @click="${this._handleActionAddPicture}"></paper-fab>
                 <paper-fab id="add" class="fab" icon="icons:add"></paper-fab>
             </div>
         </div>`;
@@ -123,7 +123,7 @@ export class CtmScheduleDetail extends LitElement {
 
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

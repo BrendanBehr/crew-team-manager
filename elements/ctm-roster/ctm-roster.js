@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -8,8 +8,6 @@ import '@polymer/paper-spinner/paper-spinner-lite';
 import '@polymer/paper-toast/paper-toast';
 import '@polymer/paper-styles/typography';
 
-
-
 import './ctm-roster-list';
 import './ctm-roster-detail';
 import './ctm-roster-edit';
@@ -18,7 +16,7 @@ import './ctm-roster-erg-list';
 import './ctm-roster-finance-create';
 
 export class CtmRoster extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -48,35 +46,35 @@ export class CtmRoster extends LitElement {
 
     render() {
         return html`
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]" page="loading" selected-attribute="selected">
-            <ctm-roster-list id="list" menu-hidden$="[[wideLayout]]" on-ctm-roster-list-results-action-detail="_handleActionDetail"
-                on-ctm-roster-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}" page="loading" selected-attribute="selected">
+            <ctm-roster-list id="list" menu-hidden="${this.wideLayout}" on-ctm-roster-list-results-action-detail="_handleActionDetail"
+                on-ctm-roster-list-action-create="_handleActionCreate" team-id="${this.teamId}">
             </ctm-roster-list>
 
-            <ctm-roster-detail id="detail" athlete="[[_athlete]]" page="loading" on-ctm-roster-detail-action-back="_handleActionBack"
-                on-ctm-roster-detail-action-edit="_handleActionEdit" gross="[[_gross]]" on-ctm-roster-detail-action-delete="_handleActionDelete"
+            <ctm-roster-detail id="detail" athlete="${this._athlete}" page="loading" on-ctm-roster-detail-action-back="_handleActionBack"
+                on-ctm-roster-detail-action-edit="_handleActionEdit" gross="${this._gross}" on-ctm-roster-detail-action-delete="_handleActionDelete"
                 on-ctm-roster-detail-action-add-erg="_handleActionAddErg" on-ctm-roster-detail-action-add-finance="_handleActionAddFinance"
                 on-ctm-roster-detail-action-delete-fail="_handleActionFail">
             </ctm-roster-detail>
 
-            <ctm-roster-edit edit="[[_edit]]" id="edit" athlete="[[_athlete]]" on-ctm-roster-edit-action-back="_handleActionBackOnce"
+            <ctm-roster-edit edit="${this._edit}" id="edit" athlete="${this._athlete}" on-ctm-roster-edit-action-back="_handleActionBackOnce"
                 on-ctm-roster-edit-action-saved="_handleActionSaved">
             </ctm-roster-edit>
 
-            <ctm-roster-create id="create" team-id="[[teamId]]" on-ctm-roster-create-action-cancel="_handleActionCancel"
+            <ctm-roster-create id="create" team-id="${this.teamId}" on-ctm-roster-create-action-cancel="_handleActionCancel"
                 on-ctm-roster-create-action-created="_handleActionCreated">
             </ctm-roster-create>
 
-            <ctm-roster-erg-list id="erg" team-id="[[teamId]]" athlete="[[_athlete]]" page="loading" on-ctm-roster-erg-list-action-back="_handleActionBackOnce"
+            <ctm-roster-erg-list id="erg" team-id="${this.teamId}" athlete="${this._athlete}" page="loading" on-ctm-roster-erg-list-action-back="_handleActionBackOnce"
                 on-ctm-roster-erg-list-action-add-ergs="_handleActionAddedErgs" on-ctm-roster-erg-list-action-fanout-fail="_handleActionFail">
             </ctm-roster-erg-list>
 
-            <ctm-roster-finance-create id="finance" team-id="[[teamId]]" athlete="[[_athlete]]" on-ctm-roster-finance-create-action-cancel="_handleActionCanceled"
+            <ctm-roster-finance-create id="finance" team-id="${this.teamId}" athlete="${this._athlete}" on-ctm-roster-finance-create-action-cancel="_handleActionCanceled"
                 on-ctm-roster-finance-create-action-created="_handleActionAddedFinance" on-ctm-roster-finance-create-action-fanout-fail="_handleActionFail">
             </ctm-roster-finance-create>
         </iron-pages>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -85,7 +83,7 @@ export class CtmRoster extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

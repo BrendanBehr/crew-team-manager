@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icons/iron-icons.js';
@@ -10,7 +10,7 @@ import '@polymer/paper-toast';
 import '@polymer/paper-styles/paper-styles';
 
 export class CtmTeam extends LitElement {
-    static styles = `
+    static styles = css`
     :host {
         background-color: lightslategray;
         @apply(--layout-horizontal);
@@ -43,7 +43,7 @@ export class CtmTeam extends LitElement {
     return html`
     <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
 
-            <ctm-team-detail menu-hidden$="${this.wideLayout}" id="detail" team="${this.teamId}" @ctm-team-detail-action-edit="${this._handleActionEdit}">
+            <ctm-team-detail menu-hidden="${this.wideLayout}" id="detail" team="${this.teamId}" @ctm-team-detail-action-edit="${this._handleActionEdit}">
             </ctm-team-detail>
 
             <ctm-team-edit edit="${this._edit}" id="edit" team="${this.teamId}" @ctm-team-edit-action-back="${this._handleActionBackOnce}"

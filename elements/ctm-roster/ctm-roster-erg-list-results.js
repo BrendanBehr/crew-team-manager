@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmRosterErgListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -71,39 +72,57 @@ export class CtmRosterErgListResults extends LitElement {
         
     constructor() {
         super();
+
+        this.item = {
+            number: 0,
+            location: '',
+            model: '',
+            screenType: '',
+            condition: '',
+            updated: 0,
+            created: 0
+        };
     }
 
     render() {
         return html`
-        <iron-list id="list" items="[[data]]" as="item" selected-item="{{selectedItem}}" selection-enabled>
-            <template>
-                <div class$="[[_computedClass(selected)]]" on-tap="_handleItemClick">
-
-                    <ctm-avatar class="erg-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.number]] % 10"></ctm-avatar>
-                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                    <div class="erg-info">
-                        <div class="erg-info-number">
-                            Number: [[item.number]]
+        <lit-virtualizer
+            .items : ${this.data}
+            .renderItem : ${(item) => {
+                return html`
+                    <div class="${this._computedClass(this.selected)}" @click="${this._handleItemClick}">
+                        <ctm-avatar class="erg-avatar" reveal="${this._isCheck(this.selected)}" value="${this.item.number} % 10"></ctm-avatar>
+                        <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                        <div class="erg-info">
+                            <div class="erg-info-number">
+                                Number: ${this.item.number}
+                            </div>
+                            <div class="erg-info-model">
+                                Model: ${this.item.model}
+                            </div>
                         </div>
-                        <div class="erg-info-model">
-                            Model: [[item.model]]
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </iron-list>`;
+                    </div>`
+                }
+            }
+            .layout : ${grid()}
+            id="list"
+        ></lit-virtualizer>`;
     }
 
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,
+            },
+
+            item : {
+                type : Object
             },
 
             _name: {

@@ -1,14 +1,13 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
 
 import '@polymer/paper-card/paper-card';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmPictureDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -34,6 +33,10 @@ export class CtmPictureDetailResults extends LitElement {
         
     constructor() {
         super();
+
+        this.data = { 
+            url :''
+        };
     }
 
     render() {
@@ -43,14 +46,14 @@ export class CtmPictureDetailResults extends LitElement {
                 <paper-card id="picture">
                     <div id="picture-image">
                         <div id="image">
-                            <iron-image src="[[data.url]]"></iron-image>
+                            <iron-image src="${this.data.url}"></iron-image>
                         </div>
                     </div>
                 </paper-card>
             </div>`;
     }
     
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

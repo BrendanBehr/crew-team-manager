@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmFleetRiggerListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -75,32 +76,36 @@ export class CtmFleetRiggerListResults extends LitElement {
 
     render() {
         return html`
-        <iron-list id="list" items="[[data]]" as="item" selected-items="{{selectedItems}}" selection-enabled multi-selection>
-            <template>
-                <div class$="[[_computedClass(selected)]]" on-tap="_handleItemClick">
+        <lit-virtualizer
+            .items : ${this.data}
+            .renderItem : ${(item) => {
+                return html`
+                    <div class="${this._computedClass(this.selected)}" @click="${this._handleItemClick}">
 
-                    <ctm-avatar class="rigger-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.style]]"></ctm-avatar>
-                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                    <div class="rigger-info">
-                        <div class="rigger-info-name">
-                            [[item.style]]
+                        <ctm-avatar class="rigger-avatar" reveal="${this._isCheck(this.selected)}" value="${this.item.style}"></ctm-avatar>
+                        <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                        <div class="rigger-info">
+                            <div class="rigger-info-name">
+                                ${this.item.style}
+                            </div>
+                            <div class="rigger-info-helpers">
+                                ${this.item.side} ${this.item.seat}
+                            </div>
                         </div>
-                        <div class="rigger-info-helpers">
-                            [[item.side]] [[item.seat]]
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </iron-list>`;
+                    </div>`
+                }
+            }
+            .layout : ${grid()}
+        ></lit-virtualizer>`;
     }
             
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

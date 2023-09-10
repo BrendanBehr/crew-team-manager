@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -20,7 +20,7 @@ import './ctm-schedule-list-results';
 import './ctm-schedule-list-message';
 
 export class CtmScheduleList extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -86,24 +86,24 @@ export class CtmScheduleList extends LitElement {
 
             <app-header slot="header" reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="menu" icon="menu" on-tap="_handleActionMenu"></paper-icon-button>
-                    <paper-icon-button id="back" icon="arrow-back" reveal$="[[reveal]]" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="menu" icon="menu" @click="${this._handleActionMenu}"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" reveal="${this.reveal}" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Regattas</div>
-                    <paper-icon-button id="delete" icon="delete" reveal$="[[reveal]]" on-tap="_handleActionDeleteItems"></paper-icon-button>
-                    <paper-icon-button id="logout" icon="exit-to-app" on-tap="_handleActionLogout"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" reveal="${this.reveal}" @click="${this._handleActionDeleteItems}"></paper-icon-button>
+                    <paper-icon-button id="logout" icon="exit-to-app" @click="${this._handleActionLogout}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-schedule-list-loading id="loading"></ctm-schedule-list-loading>
-                <ctm-schedule-list-results id="results" data="[[_data]]" selected="[[selected]]" on-ctm-schedule-list-results-action-delete-multiple="_prepareDelete"></ctm-schedule-list-results>
+                <ctm-schedule-list-results id="results" data="${this._data}" selected="${this.selected}" on-ctm-schedule-list-results-action-delete-multiple="_prepareDelete"></ctm-schedule-list-results>
                 <ctm-schedule-list-message id="message"></ctm-schedule-list-message>
             </iron-pages>
 
-            <paper-fab id="fab" icon="add" on-tap="_handleActionCreate"></paper-fab>
+            <paper-fab id="fab" icon="add" @click="${this._handleActionCreate}"></paper-fab>
 
         </app-header-layout>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -114,7 +114,7 @@ export class CtmScheduleList extends LitElement {
     }
 
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

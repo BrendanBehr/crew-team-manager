@@ -1,14 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import '@lit-labs/virtualizer';
 
 import '@polymer/paper-card/paper-card';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmRaceDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -52,6 +52,13 @@ export class CtmRaceDetailResults extends LitElement {
         
     constructor() {
         super();
+
+        this.data = {
+            eventName : '',
+            raceTime : '',
+            suggestedLaunchTime : '',
+            bowNumber : ''
+        }
     }
 
     render() {
@@ -59,22 +66,22 @@ export class CtmRaceDetailResults extends LitElement {
             <div id="content">
 
                 <paper-card id="race">
-                    <ctm-avatar id="race-avatar" value="[[data.eventName]]" large></ctm-avatar>
+                    <ctm-avatar id="race-avatar" value="${this.data.eventName}" large></ctm-avatar>
                     <div id="race-name">
-                        [[data.eventName]]
+                        ${this.data.eventName}
                     </div>
                     <div id="race-details">
                         <div id="subhead">
                             Details:
                         </div>
                         <div id="race-time">
-                            Race Time: [[data.raceTime]]
+                            Race Time: ${this.data.raceTime}
                         </div>
                         <div id="launch-time">
-                            Suggested Launch Time: [[data.suggestedLaunchTime]]
+                            Suggested Launch Time: ${this.data.suggestedLaunchTime}
                         </div>
                         <div id="bow-number">
-                            Bow Number: [[data.bowNumber]]
+                            Bow Number: ${this.data.bowNumber}
                         </div>
                     </div>
 
@@ -82,7 +89,7 @@ export class CtmRaceDetailResults extends LitElement {
             </div>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

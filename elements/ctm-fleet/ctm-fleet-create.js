@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmFleetCreate extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +57,16 @@ export class CtmFleetCreate extends LitElement {
         
     constructor() {
         super();
+
+        this.create = {
+            name: '',
+            size: 0,
+            rigging: '',
+            type: '',
+            manufacturer: '',
+            created: 0,
+            updated: 0
+        };
     }
 
     render() {
@@ -64,16 +75,16 @@ export class CtmFleetCreate extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="cancel" icon="close" on-tap="_handleActionCancel"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" @click="${this._handleActionCancel}"></paper-icon-button>
                     <div main-title id="title">Create</div>
-                    <paper-icon-button id="create" icon="check" on-tap="_handleActionCreate"></paper-icon-button>
+                    <paper-icon-button id="create" icon="check" @click="${this._handleActionCreate}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="name" label="name" value="{{create.name}}"></paper-input>
-                    <paper-dropdown-menu label="size" value="{{create.size}}">
+                    <paper-input id="name" label="name" value="${this.create.name}"></paper-input>
+                    <paper-dropdown-menu label="size" value="${this.create.size}">
                         <paper-listbox slot="dropdown-content" id="size">
                             <paper-item>1</paper-item>
                             <paper-item>2</paper-item>
@@ -81,39 +92,30 @@ export class CtmFleetCreate extends LitElement {
                             <paper-item>8</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="rigging" value="{{create.rigging}}">
+                    <paper-dropdown-menu label="rigging" value="${this.create.rigging}">
                         <paper-listbox slot="dropdown-content" id="rigging">
                             <paper-item>Port</paper-item>
                             <paper-item>Starboard</paper-item>
                             <paper-item>Scull</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-dropdown-menu label="type" value="{{create.type}}">
+                    <paper-dropdown-menu label="type" value="${this.create.type}">
                         <paper-listbox slot="dropdown-content" id="type">
                             <paper-item>Sweep</paper-item>
                             <paper-item>Sculling</paper-item>
                         </paper-listbox>
                     </paper-dropdown-menu>
-                    <paper-input id="manufacturer" label="manufacturer" value="{{create.manufacturer}}"></paper-input>
+                    <paper-input id="manufacturer" label="manufacturer" value="${this.create.manufacturer}"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             create: {
-                type: Object,
-                value: {
-                    name: '',
-                    size: 0,
-                    rigging: '',
-                    type: '',
-                    manufacturer: '',
-                    created: 0,
-                    updated: 0
-                }
+                type: Object
             },
 
             teamId: String,
@@ -150,8 +152,8 @@ export class CtmFleetCreate extends LitElement {
     }
 
     _handleActionCreate(e) {
-        this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
-        this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.create.updated = Timestamp.now();
+        this.create.created = Timestamp.now();
         this.create.team = this.teamId;
         this.create.size = parseInt(this.create.size);
         this.$.firebase.saveValue('boats')

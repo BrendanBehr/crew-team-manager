@@ -1,14 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import '@lit-labs/virtualizer';
 
 import '@polymer/paper-card/paper-card';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmErgDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -65,33 +65,33 @@ export class CtmErgDetailResults extends LitElement {
         <div id="content">
 
             <paper-card id="erg">
-                <ctm-avatar id="erg-avatar" class="erg-avatar" value="[[data.number]] % 10" large></ctm-avatar>
+                <ctm-avatar id="erg-avatar" class="erg-avatar" value="${this.data.number} % 10" large></ctm-avatar>
                 <div id="erg-number">
-                    [[data.number]]
+                    ${this.data.number}
                 </div>
                 <div id="erg-location">
                     <div id="subhead">
                         Location:
                     </div>
                     <div id="location">
-                        [[data.location]]
+                        ${this.data.location}
                     </div>
                 </div>
                 <div id="erg-details">
                     <div id="team">
-                        Team: [[team.teamName]]
+                        Team: ${this.team.teamName}
                     </div>
                     <div id="subhead">
                         Details:
                     </div>
                     <div id="model">
-                        Model: [[data.model]]
+                        Model: ${this.data.model}
                     </div>
                     <div id="screen-type">
-                        Screen Type: [[data.screenType]]
+                        Screen Type: ${this.data.screenType}
                     </div>
                     <div id="condition">
-                        Condition: [[data.condition]]
+                        Condition: ${this.data.condition}
                     </div>
                 </div>
 
@@ -99,7 +99,7 @@ export class CtmErgDetailResults extends LitElement {
         </div>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

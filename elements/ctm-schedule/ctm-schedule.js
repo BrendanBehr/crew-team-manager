@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -18,7 +18,7 @@ import './ctm-schedule-race-list';
 import './ctm-schedule-picture-create';
 
 export class CtmSchedule extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -50,35 +50,35 @@ export class CtmSchedule extends LitElement {
 
     render() {
         return html`
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-            <ctm-schedule-list id="list" menu-hidden$="[[wideLayout]]" on-ctm-schedule-list-results-action-detail="_handleActionDetail"
-                on-ctm-schedule-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+            <ctm-schedule-list id="list" menu-hidden="${this.wideLayout}" on-ctm-schedule-list-results-action-detail="_handleActionDetail"
+                on-ctm-schedule-list-action-create="_handleActionCreate" team-id="${this.teamId}">
             </ctm-schedule-list>
 
-            <ctm-schedule-detail id="detail" regatta="[[_regatta]]" on-ctm-schedule-detail-action-back="_handleActionBack"
+            <ctm-schedule-detail id="detail" regatta="${this._regatta}" on-ctm-schedule-detail-action-back="_handleActionBack"
                 on-ctm-schedule-detail-action-edit="_handleActionEdit" on-ctm-schedule-detail-action-delete="_handleActionDelete"
                 on-ctm-schedule-detail-action-add-race="_handleActionAddRace" on-ctm-schedule-detail-action-delete-fail="_handleActionFail"
                 on-ctm-schedule-detail-action-add-picture="_handleActionAddPicture">
             </ctm-schedule-detail>
 
-            <ctm-schedule-edit edit="[[_edit]]" id="edit" regatta="[[_regatta]]" on-ctm-schedule-edit-action-back="_handleActionBackOnce"
+            <ctm-schedule-edit edit="${this._edit}" id="edit" regatta="${this._regatta}" on-ctm-schedule-edit-action-back="_handleActionBackOnce"
                 on-ctm-schedule-edit-action-saved="_handleActionSaved">
             </ctm-schedule-edit>
 
-            <ctm-schedule-create id="create" team-id="[[teamId]]" on-ctm-schedule-create-action-cancel="_handleActionCancel"
+            <ctm-schedule-create id="create" team-id="${this.teamId}" on-ctm-schedule-create-action-cancel="_handleActionCancel"
                 on-ctm-schedule-create-action-created="_handleActionCreated">
             </ctm-schedule-create>
 
-            <ctm-schedule-race-list id="race" team-id="[[teamId]]" regatta="[[_regatta]]" page="loading" on-ctm-schedule-race-list-action-back="_handleActionBackOnce"
+            <ctm-schedule-race-list id="race" team-id="${this.teamId}" regatta="${this._regatta}" page="loading" on-ctm-schedule-race-list-action-back="_handleActionBackOnce"
                 on-ctm-schedule-race-list-action-add-race="_handleActionAddedRaces" on-ctm-schedule-race-list-action-fanout-fail="_handleActionFail">
             </ctm-schedule-race-list>
 
-            <ctm-schedule-picture-create id="picture" regatta="[[_regatta]]" team-id="[[teamId]]" on-ctm-schedule-picture-create-action-cancel="_handleActionCanceled"
+            <ctm-schedule-picture-create id="picture" regatta="${this._regatta}" team-id="${this.teamId}" on-ctm-schedule-picture-create-action-cancel="_handleActionCanceled"
                 on-ctm-schedule-picture-create-action-created="_handleActionAddedPicture" on-ctm-schedule-picture-create-action-fanout-fail="_handleActionFail">
             </ctm-schedule-picture-create>
         </iron-pages>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -87,7 +87,7 @@ export class CtmSchedule extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

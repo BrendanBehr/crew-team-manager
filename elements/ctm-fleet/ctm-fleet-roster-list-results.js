@@ -1,13 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import { grid } from '@lit-labs/virtualizer/layouts/grid.js';
 
 import '@polymer/paper-styles/typography';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmFleetRosterListResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -75,33 +76,35 @@ export class CtmFleetRosterListResults extends LitElement {
 
     render() {
         return html`
-
-        <iron-list id="list" items="[[data]]" as="item" selected-items="{{selectedItems}}" selection-enabled multi-selection>
-            <template>
-                <div class$="[[_computedClass(selected)]]" on-tap="_handleItemClick">
-
-                    <ctm-avatar class="athlete-avatar" reveal$="[[_isCheck(selected)]]" value="[[item.firstName]]"></ctm-avatar>
-                    <paper-icon-button class="check-avatar" reveal$="[[_isCheck(selected)]]" icon="check"></paper-icon-button>
-                    <div class="athlete-info">
-                        <div class="athlete-info-name">
-                            [[item.firstName]] [[item.lastName]]
+        <lit-virtualizer
+            .items : ${this.data}
+            .renderItem : ${(item) => {
+                return html`
+                    <div class="${this._computedClass(this.selected)}" @click="${this._handleItemClick}">
+                        <ctm-avatar class="athlete-avatar" reveal="${this._isCheck(this.selected)}" value="${this.item.firstName}"></ctm-avatar>
+                        <paper-icon-button class="check-avatar" reveal="${this._isCheck(this.selected)}" icon="check"></paper-icon-button>
+                        <div class="athlete-info">
+                            <div class="athlete-info-name">
+                                ${this.item.firstName} ${this.item.lastName}
+                            </div>
+                            <div class="athlete-info-location">
+                                ${this.item.streetAddress} ${this.item.city} ${this.item.state}
+                            </div>
                         </div>
-                        <div class="athlete-info-location">
-                            [[item.streetAddress]] [[item.city]] [[item.state]]
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </iron-list>`;
+                    </div>`
+                }
+            }
+            .layout : ${grid()}
+        ></lit-virtualizer>`;
     }
 
     static get observers() {
         return [
-            '_selectedChange(selected)'
+            '_selectedChange(this.selected)'
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,

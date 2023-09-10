@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmRaceEdit extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +57,15 @@ export class CtmRaceEdit extends LitElement {
     
     constructor() {
         super();
+
+        this.edit = {
+            eventName: '',
+            raceTime: '',
+            suggestedLaunchTime: '',
+            bowNumber: 0,
+            created: 0,
+            updated: 0
+        };
     }
 
     render() {
@@ -64,25 +74,25 @@ export class CtmRaceEdit extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Edit</div>
-                    <paper-icon-button id="save" icon="check" on-tap="_handleActionSave"></paper-icon-button>
+                    <paper-icon-button id="save" icon="check" @click="${this._handleActionSave}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="editor">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="event-name" label="event name" value="{{edit.eventName}}"></paper-input>
-                    <paper-input id="race-time" label="race time" value="{{edit.raceTime}}"></paper-input>
-                    <paper-input id="suggested-launch-time" label="suggested launch time" value="{{edit.suggestedLaunchTime}}"></paper-input>
-                    <paper-input id="bow-number" label="bow number" value="{{edit.bowNumber}}"></paper-input>
+                    <paper-input id="event-name" label="event name" value="${this.edit.eventName}"></paper-input>
+                    <paper-input id="race-time" label="race time" value="${this.edit.raceTime}"></paper-input>
+                    <paper-input id="suggested-launch-time" label="suggested launch time" value="${this.edit.suggestedLaunchTime}"></paper-input>
+                    <paper-input id="bow-number" label="bow number" value="${this.edit.bowNumber}"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             edit: {
                 type: Object
@@ -107,7 +117,7 @@ export class CtmRaceEdit extends LitElement {
     }
 
     _handleActionSave(e) {
-        this.edit.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.edit.updated = Timestamp.now();
         this.edit.bowNumber = parseInt(this.edit.bowNumber);
         this.$.firebase.data = JSON.parse(JSON.stringify(this.edit));
         this.$.firebase.saveValue('races', this.race)

@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icons/iron-icons.js';
@@ -13,7 +13,7 @@ import './ctm-compare-list.js';
 import './ctm-compare-detail.js';
 
 export class CtmCompare extends LitElement {
-    static styles = `
+    static styles = css`
     :host {
        background-color: lightslategray;
        @apply(--layout-horizontal);
@@ -41,15 +41,15 @@ export class CtmCompare extends LitElement {
 
   render() {
     return html`
-    <iron-pages id="pages" attr-for-selected="id" selected="[[page]]" selected-attribute="selected">
-        <ctm-compare-list id="list" menu-hidden$="[[wideLayout]]" page="loading" team-id="{{teamId}}" on-ctm-compare-list-results-action-detail="_handleActionDetail">
+    <iron-pages id="pages" attr-for-selected="id" selected="${this.page}" selected-attribute="selected">
+        <ctm-compare-list id="list" menu-hidden="${this.wideLayout}" page="loading" team-id="${this.teamId}" on-ctm-compare-list-results-action-detail="_handleActionDetail">
         </ctm-compare-list>
 
-        <ctm-compare-detail id="detail" athletes="[[_athletes]]" page="loading" team-id="{{teamId}}" on-ctm-compare-detail-action-back="_handleActionBack">
+        <ctm-compare-detail id="detail" athletes="${this._athletes}" page="loading" team-id="${this.teamId}" on-ctm-compare-detail-action-back="_handleActionBack">
         </ctm-compare-detail>
     </iron-pages>
 
-    <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>
+    <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>
     `;
   }
 

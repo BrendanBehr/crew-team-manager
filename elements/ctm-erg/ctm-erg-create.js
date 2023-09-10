@@ -1,4 +1,6 @@
-import {LitElement, html} from 'lit';
+import { LitElement, html, css } from 'lit';
+import { Timestamp } from "firebase/firestore";
+import { getDatabase, ref, set, push, child } from "firebase/database";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +17,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmErgCreate extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
         background-color: lightslategray;
         @apply(--layout-horizontal);
@@ -56,37 +58,47 @@ export class CtmErgCreate extends LitElement {
 
     constructor() {
         super();
+
+        this.create = {
+            number: 0,
+            location: '',
+            model: '',
+            screenType: '',
+            condition: '',
+            created: 0,
+            updated: 0
+        };
     }
-        
+
     render() {
         return html`
             <app-header-layout id="layout">
 
                 <app-header reveals>
                     <app-toolbar id="toolbar">
-                        <paper-icon-button id="cancel" icon="close" on-tap="_handleActionCancel"></paper-icon-button>
+                        <paper-icon-button id="cancel" icon="close" @click="${this._handleActionCancel}"></paper-icon-button>
                         <div main-title id="title">Create</div>
-                        <paper-icon-button id="create" icon="check" on-tap="_handleActionCreate"></paper-icon-button>
+                        <paper-icon-button id="create" icon="check" @click="${this._handleActionCreate}"></paper-icon-button>
                     </app-toolbar>
                 </app-header>
 
                 <div id="creator">
                     <form is="iron-form" id="form" method="post" action="/form/handler">
-                        <paper-input id="number" label="number" value="{{create.number}}"></paper-input>
-                        <paper-dropdown-menu label="location" value="{{create.location}}">
+                        <paper-input id="number" label="number" value="${this.create.number}"></paper-input>
+                        <paper-dropdown-menu label="location" value="${this.create.location}">
                             <paper-listbox slot="dropdown-content" id="location">
                                 <paper-item>Home</paper-item>
                                 <paper-item>Away</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                        <paper-dropdown-menu label="model" value="{{create.model}}">
+                        <paper-dropdown-menu label="model" value="${this.create.model}">
                             <paper-listbox slot="dropdown-content" id="model">
                                 <paper-item>Model C</paper-item>
                                 <paper-item>Model D</paper-item>
                                 <paper-item>More E</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                        <paper-dropdown-menu label="screen-type" value="{{create.screenType}}">
+                        <paper-dropdown-menu label="screen-type" value="${this.create.screenType}">
                             <paper-listbox slot="dropdown-content" id="screen-type">
                                 <paper-item>PM5</paper-item>
                                 <paper-item>PM4</paper-item>
@@ -95,7 +107,7 @@ export class CtmErgCreate extends LitElement {
                                 <paper-item>PM1</paper-item>
                             </paper-listbox>
                         </paper-dropdown-menu>
-                        <paper-dropdown-menu label="condition" value="{{create.condition}}">
+                        <paper-dropdown-menu label="condition" value="${this.create.condition}">
                             <paper-listbox slot="dropdown-content" id="condition">
                                 <paper-item>Very Bad</paper-item>
                                 <paper-item>Bad</paper-item>
@@ -113,19 +125,10 @@ export class CtmErgCreate extends LitElement {
     `;
     }
 
-    static get properties() {
+    static properties() {
         return {
             create: {
-                type: Object,
-                value: {
-                    number: 0,
-                    location: '',
-                    model: '',
-                    screenType: '',
-                    condition: '',
-                    created: 0,
-                    updated: 0
-                }
+                type: Object
             },
 
             teamId: String,
@@ -162,10 +165,23 @@ export class CtmErgCreate extends LitElement {
     }
 
     _handleActionCreate(e) {
-        this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
-        this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.create.updated = Timestamp.now();
+        this.create.created = Timestamp.now();
         this.create.team = this.teamId;
         this.create.number = parseInt(this.create.number);
+
+        let firebase = getDatabase();
+        let ergRef = push(child(ref(firebase, 'ergs')), this.create);
+
+        this.dispatchEvent(new CustomEvent('ctm-erg-create-action-created', {
+            detail: {
+                erg: ergRef.key
+            },
+            bubbles: true,
+            composed: true
+        }));
+        
+        /*
         this.$.firebase.saveValue('ergs')
             .then(() => {
                 this.$.firebase.setStoredValue(this.$.firebase.path, this.create);
@@ -182,8 +198,7 @@ export class CtmErgCreate extends LitElement {
                         composed: true
                     }));
             });
-
-
+        */
     }
 
 }

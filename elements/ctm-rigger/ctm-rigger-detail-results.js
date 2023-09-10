@@ -1,14 +1,14 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
+import '@lit-labs/virtualizer';
 
 import '@polymer/paper-card/paper-card';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmRiggerDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: white;
             @apply(--layout-horizontal);
@@ -52,6 +52,22 @@ export class CtmRiggerDetailResults extends LitElement {
         
     constructor() {
         super();
+
+        this.boat = {
+            name : ''
+        };
+
+        this.data = {
+            side : '',
+            style : '',
+            type : '',
+            seat : ''
+        },
+
+        this.team = {
+            teramName : ''
+        };
+
     }
 
     render() {
@@ -59,28 +75,28 @@ export class CtmRiggerDetailResults extends LitElement {
         <div id="content">
 
             <paper-card id="rigger">
-                <ctm-avatar id="rigger-avatar" value="{{data.side}}" large></ctm-avatar>
+                <ctm-avatar id="rigger-avatar" value="${this.data.side}" large></ctm-avatar>
                 <div id="rigger-name">
-                    [[boat.name]]
+                    ${this.boat.name}
                 </div>
                 <div id="rigger-Details">
                     <div id="subhead">
                         Details:
                     </div>
                     <div id="team">
-                        Team: [[team.teamName]]
+                        Team: ${this.team.teamName}
                     </div>
                     <div id="side">
-                        Side: [[data.side]]
+                        Side: ${this.data.side}
                     </div>
                     <div id="style">
-                        Style: [[data.style]]
+                        Style: ${this.data.style}
                     </div>
                     <div id="type">
-                        Type: [[data.type]]
+                        Type: ${this.data.type}
                     </div>
                     <div id="seat">
-                        Seat: [[data.seat]]
+                        Seat: ${this.data.seat}
                     </div>
                 </div>
 
@@ -88,10 +104,10 @@ export class CtmRiggerDetailResults extends LitElement {
         </div>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
-                type: Object,
+                type: Object
             },
 
             boat: {
@@ -99,13 +115,11 @@ export class CtmRiggerDetailResults extends LitElement {
             },
 
             boatName: {
-                type: String,
-                value: 'none'
+                type: String
             },
 
             team: {
-                type: Object,
-                value: {}
+                type: Object
             }
         }
     }

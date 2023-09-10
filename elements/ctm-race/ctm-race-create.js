@@ -1,4 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
+import { Timestamp  } from "firebase/firestore";
 
 import '@polymer/app-layout/app-layout';
 import '@polymer/app-layout/app-drawer/app-drawer';
@@ -15,7 +16,7 @@ import '@polymer/paper-toggle-button/paper-toggle-button';
 
 
 export class CtmRaceCreate extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -56,6 +57,15 @@ export class CtmRaceCreate extends LitElement {
         
     constructor() {
         super();
+
+        this.create = {
+            eventName: '',
+            raceTime: '',
+            suggestedLaunchTime: '',
+            bowNumber: 0,
+            created: 0,
+            updated: 0
+        }
     }
 
     render() {
@@ -64,36 +74,28 @@ export class CtmRaceCreate extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="cancel" icon="close" on-tap="_handleActionCancel"></paper-icon-button>
+                    <paper-icon-button id="cancel" icon="close" @click="${this._handleActionCancel}"></paper-icon-button>
                     <div main-title id="title">Create</div>
-                    <paper-icon-button id="create" icon="check" on-tap="_handleActionCreate"></paper-icon-button>
+                    <paper-icon-button id="create" icon="check" @click="${this._handleActionCreate}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
 
             <div id="creator">
                 <form is="iron-form" id="form" method="post" action="/form/handler">
-                    <paper-input id="event-name" label="event name" value="{{create.eventName}}"></paper-input>
-                    <paper-input id="race-time" label="race time" value="{{create.raceTime}}"></paper-input>
-                    <paper-input id="suggested-launch-time" label="suggested launch time" value="{{create.suggestedLaunchTime}}"></paper-input>
-                    <paper-input id="bow-number" label="bow number" value="{{create.bowNumber}}"></paper-input>
+                    <paper-input id="event-name" label="event name" value="${this.create.eventName}"></paper-input>
+                    <paper-input id="race-time" label="race time" value="${this.create.raceTime}"></paper-input>
+                    <paper-input id="suggested-launch-time" label="suggested launch time" value="${this.create.suggestedLaunchTime}"></paper-input>
+                    <paper-input id="bow-number" label="bow number" value="${this.create.bowNumber}"></paper-input>
                 </form>
             </div>
 
         </app-header-layout>`;
     }
 
-    static get properties() {
+    static properties() {
         return {
             create: {
                 type: Object,
-                value: {
-                    eventName: '',
-                    raceTime: '',
-                    suggestedLaunchTime: '',
-                    bowNumber: 0,
-                    created: 0,
-                    updated: 0
-                }
             },
 
             teamId: String,
@@ -129,8 +131,8 @@ export class CtmRaceCreate extends LitElement {
     }
 
     _handleActionCreate(e) {
-        this.create.updated = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
-        this.create.created = this.$.firebase.app.firebase_.database.ServerValue.TIMESTAMP;
+        this.create.updated = Timestamp.now();
+        this.create.created = Timestamp.now();
         this.create.team = this.teamId;
         this.create.bowNumber = parseInt(this.create.bowNumber);
         this.$.firebase.saveValue('races')

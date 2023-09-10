@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -16,7 +16,7 @@ import './ctm-rigger-edit';
 import './ctm-rigger-create';
 
 export class CtmRigger extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -51,27 +51,27 @@ export class CtmRigger extends LitElement {
 
     render() {
         return html`
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-            <ctm-rigger-list id="list" menu-hidden$="[[wideLayout]]" on-ctm-rigger-list-results-action-detail="_handleActionDetail"
-                on-ctm-rigger-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+            <ctm-rigger-list id="list" menu-hidden="${this.wideLayout}" on-ctm-rigger-list-results-action-detail="_handleActionDetail"
+                on-ctm-rigger-list-action-create="_handleActionCreate" team-id="${this.teamId}">
             </ctm-rigger-list>
 
-            <ctm-rigger-detail id="detail" rigger="[[_rigger]]" on-ctm-rigger-detail-action-back="_handleActionBack"
+            <ctm-rigger-detail id="detail" rigger="${this._rigger}" on-ctm-rigger-detail-action-back="_handleActionBack"
                 on-ctm-rigger-detail-action-edit="_handleActionEdit" on-ctm-rigger-detail-action-delete="_handleActionDelete"
                 on-ctm-rigger-detail-action-delete-fail="_handleActionFail">
             </ctm-rigger-detail>
 
-            <ctm-rigger-edit edit="[[_edit]]" id="edit" rigger="[[_rigger]]" on-ctm-rigger-edit-action-back="_handleActionBackOnce"
+            <ctm-rigger-edit edit="${this._edit}" id="edit" rigger="${this._rigger}" on-ctm-rigger-edit-action-back="_handleActionBackOnce"
                 on-ctm-rigger-edit-action-saved="_handleActionSaved">
             </ctm-rigger-edit>
 
 
-            <ctm-rigger-create id="create" team-id="[[teamId]]" on-ctm-rigger-create-action-cancel="_handleActionCancel"
+            <ctm-rigger-create id="create" team-id="${this.teamId}" on-ctm-rigger-create-action-cancel="_handleActionCancel"
                 on-ctm-rigger-create-action-created="_handleActionCreated">
             </ctm-rigger-create>
         </iron-pages>
 
-        <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+        <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -80,7 +80,7 @@ export class CtmRigger extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

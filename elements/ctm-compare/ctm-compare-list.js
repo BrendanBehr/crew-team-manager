@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -17,7 +17,7 @@ import './ctm-compare-list-results';
 import './ctm-compare-list-message';
 
 export class CtmCompareList extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -71,9 +71,9 @@ export class CtmCompareList extends LitElement {
 
     render() {
         return html`
-        <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+        <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
             <ctm-compare-list-loading id="loading"></ctm-compare-list-loading>
-            <ctm-compare-list-results id="results" data="[[_data]]" on-ctm-compare-list-results-first-athlete="_handleAthlete1"
+            <ctm-compare-list-results id="results" data="${this._data}" on-ctm-compare-list-results-first-athlete="_handleAthlete1"
                 on-ctm-compare-list-results-second-athlete="_handleAthlete2"></ctm-compare-list-results>
             <ctm-compare-list-message id="message"></ctm-compare-list-message>
         </iron-pages>
@@ -127,7 +127,7 @@ export class CtmCompareList extends LitElement {
     }
 
     _handleActionMenu() {
-        this.dispatchEvent(new CustomEvent(CTMCompareList.is + '-action-menu', {
+        this.dispatchEvent(new CustomEvent(CtmCompareList.is + '-action-menu', {
             bubbles: true,
             composed: true
         }));
@@ -135,7 +135,7 @@ export class CtmCompareList extends LitElement {
 
 
     _handleActionCreate() {
-        this.dispatchEvent(new CustomEvent(CTMCompareList.is + '-action-create', {
+        this.dispatchEvent(new CustomEvent(CtmCompareList.is + '-action-create', {
             bubbles: true,
             composed: true
         }));
@@ -166,7 +166,7 @@ export class CtmCompareList extends LitElement {
     }
 
     _handleActionLogout() {
-        this.dispatchEvent(new CustomEvent(CTMStage.is + '-action-logout', {
+        this.dispatchEvent(new CustomEvent(CtmStage.is + '-action-logout', {
             bubbles: true,
             composed: true
         }));
@@ -176,7 +176,7 @@ export class CtmCompareList extends LitElement {
         const athlete1 = this._athlete1;
         const athlete2 = this._athlete2;
         if (athlete1 && athlete2) {
-            this.dispatchEvent(new CustomEvent(CTMCompareListResults.is + '-action-detail', {
+            this.dispatchEvent(new CustomEvent(CtmCompareListResults.is + '-action-detail', {
                 bubbles: true,
                 composed: true,
                 detail: {
@@ -188,7 +188,7 @@ export class CtmCompareList extends LitElement {
         }
 
         if (!athlete1 || !athlete2) {
-            this.dispatchEvent(new CustomEvent(CTMCompareListResults.is + '-action-toast', {
+            this.dispatchEvent(new CustomEvent(CtmCompareListResults.is + '-action-toast', {
                 bubbles: true,
                 composed: true,
             }));
@@ -197,4 +197,4 @@ export class CtmCompareList extends LitElement {
     }
 
 }
-customElements.define('ctm-compare', CtmCompareList);
+customElements.define('ctm-compare-list', CtmCompareList);

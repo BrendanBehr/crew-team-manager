@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -19,7 +19,7 @@ import './ctm-rigger-detail-results';
 import './ctm-rigger-detail-message';
 
 export class CtmRiggerDetail extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -67,15 +67,15 @@ export class CtmRiggerDetail extends LitElement {
 
             <app-header reveals>
                 <app-toolbar id="toolbar">
-                    <paper-icon-button id="back" icon="arrow-back" on-tap="_handleActionBack"></paper-icon-button>
+                    <paper-icon-button id="back" icon="arrow-back" @click="${this._handleActionBack}"></paper-icon-button>
                     <div main-title id="title">Details</div>
-                    <paper-icon-button id="edit" icon="create" on-tap="_handleActionEdit"></paper-icon-button>
-                    <paper-icon-button id="delete" icon="delete" on-tap="_handleActionDelete"></paper-icon-button>
+                    <paper-icon-button id="edit" icon="create" @click="${this._handleActionEdit}"></paper-icon-button>
+                    <paper-icon-button id="delete" icon="delete" @click="${this._handleActionDelete}"></paper-icon-button>
                 </app-toolbar>
             </app-header>
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
                 <ctm-rigger-detail-loading id="loading"></ctm-rigger-detail-loading>
-                <ctm-rigger-detail-results id="results" data="{{_data}}" boat="{{_boat}}" team="{{_team}}"></ctm-rigger-detail-results>
+                <ctm-rigger-detail-results id="results" data="${this._data}" boat="${this._boat}" team="${this._team}"></ctm-rigger-detail-results>
                 <ctm-rigger-detail-message id="message"></ctm-rigger-detail-message>
             </iron-pages>
         </app-header-layout>`;
@@ -89,7 +89,7 @@ export class CtmRiggerDetail extends LitElement {
 
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

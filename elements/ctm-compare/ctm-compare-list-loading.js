@@ -1,9 +1,9 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/paper-spinner/paper-spinner-lite';
 
-export class CTMCompareListLoading extends LitElement {
-    static styles = `
+export class CtmCompareListLoading extends LitElement {
+    static styles = css`
          :host {
                 background-color: white;
                 @apply(--layout-horizontal);
@@ -37,7 +37,7 @@ export class CTMCompareListLoading extends LitElement {
         return 
     }
 
-    static get properties() {
+    static properties() {
         return {
             data: {
                 type: Object,
@@ -46,4 +46,4 @@ export class CTMCompareListLoading extends LitElement {
     }
 }
 
-customElements.define('ctm-compare-list-loading', CTMCompareListLoading);
+customElements.define('ctm-compare-list-loading', CtmCompareListLoading);

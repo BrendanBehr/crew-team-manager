@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-pages/iron-pages';
@@ -16,7 +16,7 @@ import './ctm-race-edit';
 import './ctm-race-create';
 
 export class CtmRace extends LitElement {
-    static styles = `
+    static styles = css`
         :host {
             background-color: lightslategray;
             @apply(--layout-horizontal);
@@ -51,26 +51,26 @@ export class CtmRace extends LitElement {
 
     render() {
         return html`
-            <iron-pages id="pages" attr-for-selected="id" selected="[[page]]">
-                <ctm-race-list id="list" menu-hidden$="[[wideLayout]]" page="loading" on-ctm-race-list-results-action-detail="_handleActionDetail"
-                    on-ctm-race-list-action-create="_handleActionCreate" team-id="[[teamId]]">
+            <iron-pages id="pages" attr-for-selected="id" selected="${this.page}">
+                <ctm-race-list id="list" menu-hidden="${this.wideLayout}" page="loading" on-ctm-race-list-results-action-detail="_handleActionDetail"
+                    on-ctm-race-list-action-create="_handleActionCreate" team-id="${this.teamId}">
                 </ctm-race-list>
 
-                <ctm-race-detail id="detail" race="[[_race]]" page="loading" on-ctm-race-detail-action-back="_handleActionBack"
+                <ctm-race-detail id="detail" race="${this._race}" page="loading" on-ctm-race-detail-action-back="_handleActionBack"
                     on-ctm-race-detail-action-edit="_handleActionEdit" on-ctm-race-detail-action-delete="_handleActionDelete"
                     on-ctm-race-detail-action-delete-fail="_handleActionFail">
                 </ctm-race-detail>
 
-                <ctm-race-edit edit="[[_edit]]" id="edit" race="[[_race]]" on-ctm-race-edit-action-back="_handleActionBackOnce"
+                <ctm-race-edit edit="${this._edit}" id="edit" race="${this._race}" on-ctm-race-edit-action-back="_handleActionBackOnce"
                     on-ctm-race-edit-action-saved="_handleActionSaved">
                 </ctm-race-edit>
 
-                <ctm-race-create id="create" team-id="[[teamId]]" on-ctm-race-create-action-cancel="_handleActionCancel"
+                <ctm-race-create id="create" team-id="${this.teamId}" on-ctm-race-create-action-cancel="_handleActionCancel"
                     on-ctm-race-create-action-created="_handleActionCreated">
                 </ctm-race-create>
             </iron-pages>
 
-            <paper-toast id="toast" duration="4000">[[_toast]]</paper-toast>`;
+            <paper-toast id="toast" duration="4000">${this._toast}</paper-toast>`;
     }
 
     static get observers() {
@@ -79,7 +79,7 @@ export class CtmRace extends LitElement {
         ]
     }
 
-    static get properties() {
+    static properties() {
         return {
             page: {
                 type: String

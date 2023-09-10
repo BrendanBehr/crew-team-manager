@@ -1,13 +1,13 @@
-import {LitElement, html} from 'lit';
+import {LitElement, html, css } from 'lit';
 
-import '@polymer/iron-list/iron-list';
+import '@lit-labs/virtualizer';
 
 import '@polymer/paper-card/paper-card';
 
 import '../ctm-avatar/ctm-avatar';
 
 export class CtmTeamDetailResults extends LitElement {
-    static styles = `
+    static styles = css`
         <style>
             :host {
             background-color: white;
@@ -67,26 +67,62 @@ export class CtmTeamDetailResults extends LitElement {
     
     constructor() {
         super();
+
+        this.dataOne = {
+            firstName : 'Sample',
+            lastName : 'Name',
+            year : 'Fresh',
+            streetAddress : '123 Name Rd',
+            city : 'City',
+            state : 'State',
+            phone : '1234567890',
+            height : '5\'10',
+            weight : '160',
+            gender : 'M',
+            ergScore : '6:30',
+            side : 'Scull',
+            fundRaising : '$0'
+        };
+
+        this.dataTwo = {
+            firstName : 'Sample',
+            lastName : 'Name',
+            year : 'Fresh',
+            streetAddress : '123 Name Rd',
+            city : 'City',
+            state : 'State',
+            phone : '1234567890',
+            height : '5\'10',
+            weight : '160',
+            gender : 'M',
+            ergScore : '6:30',
+            side : 'Scull',
+            fundRaising : '$0'
+        };
+
+        this.team = {
+            teamName : ''
+        };
     }
     
     render() {
         return html`
         <div id="content-one">
             <paper-card id="athlete">
-                <ctm-avatar id="athlete-avatar" value="[[dataOne.firstName]]" large></ctm-avatar>
+                <ctm-avatar id="athlete-avatar" value="${this.dataOne.firstName}" large></ctm-avatar>
                 <div id="athlete-name">
-                    [[dataOne.firstName]] [[dataOne.lastName]]
-                    <div id="athlete-year">([[dataOne.year]]) </div>
+                    ${this.dataOne.firstName} ${this.dataOne.lastName}
+                    <div id="athlete-year">(${this.dataOne.year}) </div>
                 </div>
                 <div id="athlete-contact">
                     <div id="subhead">
                         Contact information:
                     </div>
                     <div id="location">
-                        [[dataOne.streetAddress]], [[dataOne.city]], [[dataOne.state]]
+                        ${this.dataOne.streetAddress}, ${this.dataOne.city}, ${this.dataOne.state}
                     </div>
                     <div id="phone">
-                        Phone number: [[dataOne.phone]]
+                        Phone number: ${this.dataOne.phone}
                     </div>
                 </div>
                 <div id="athlete-basic">
@@ -94,20 +130,20 @@ export class CtmTeamDetailResults extends LitElement {
                         Basic inforomation:
                     </div>
                     <div id="team">
-                        Team: [[team.teamName]]
+                        Team: ${this.team.teamName}
                     </div>
                     <div id="height">
-                        Height: [[dataOne.height]]
+                        Height: ${this.dataOne.height}
                     </div>
                     <div id="weight">
-                        Weight: [[dataOne.weight]]
+                        Weight: ${this.dataOne.weight}
                     </div>
                     <div id="gender">
-                        Gender: [[dataOne.gender]]
+                        Gender: ${this.dataOne.gender}
                     </div>
 
                     <div id="driver">
-                        Can drive? [[dataOne.driver]]
+                        Can drive? ${this.dataOne.driver}
                     </div>
                 </div>
                 <div id="athlete-row">
@@ -115,13 +151,13 @@ export class CtmTeamDetailResults extends LitElement {
                         Stats:
                     </div>
                     <div id="2k">
-                        2k time: [[dataOne.ergScore]]
+                        2k time: ${this.dataOne.ergScore}
                     </div>
                     <div id="side">
-                        Rowing Side: [[dataOne.side]]
+                        Rowing Side: ${this.dataOne.side}
                     </div>
                     <div id="funds">
-                        Fundraising: [[dataOne.fundRaising]]
+                        Fundraising: ${this.dataOne.fundRaising}
                     </div>
                 </div>
 
@@ -131,20 +167,20 @@ export class CtmTeamDetailResults extends LitElement {
         <div id="content-two">
 
             <paper-card id="athlete">
-                <ctm-avatar id="athlete-avatar" value="[[dataTwo.firstName]]" large></ctm-avatar>
+                <ctm-avatar id="athlete-avatar" value="${this.dataTwo.firstName}" large></ctm-avatar>
                 <div id="athlete-name">
-                    [[dataTwo.firstName]] [[dataTwo.lastName]]
-                    <div id="athlete-year">([[dataTwo.year]]) </div>
+                    ${this.dataTwo.firstName} ${this.dataTwo.lastName}
+                    <div id="athlete-year">(${this.dataTwo.year}) </div>
                 </div>
                 <div id="athlete-contact">
                     <div id="subhead">
                         Contact information:
                     </div>
                     <div id="location">
-                        [[dataTwo.streetAddress]], [[dataTwo.city]], [[dataTwo.state]]
+                        ${this.dataTwo.streetAddress}, ${this.dataTwo.city}, ${this.dataTwo.state}
                     </div>
                     <div id="phone">
-                        Phone number: [[dataTwo.phone]]
+                        Phone number: ${this.dataTwo.phone}
                     </div>
                 </div>
                 <div id="athlete-basic">
@@ -152,20 +188,20 @@ export class CtmTeamDetailResults extends LitElement {
                         Basic inforomation:
                     </div>
                     <div id="team">
-                        Team: [[team.teamName]]
+                        Team: ${this.team.teamName}
                     </div>
                     <div id="height">
-                        Height: [[dataTwo.height]]
+                        Height: ${this.dataTwo.height}
                     </div>
                     <div id="weight">
-                        Weight: [[dataTwo.weight]]
+                        Weight: ${this.dataTwo.weight}
                     </div>
                     <div id="gender">
-                        Gender: [[dataTwo.gender]]
+                        Gender: ${this.dataTwo.gender}
                     </div>
 
                     <div id="driver">
-                        Can drive? [[dataTwo.driver]]
+                        Can drive? ${this.dataTwo.driver}
                     </div>
                 </div>
                 <div id="athlete-row">
@@ -173,13 +209,13 @@ export class CtmTeamDetailResults extends LitElement {
                         Stats:
                     </div>
                     <div id="2k">
-                        2k time: [[dataTwo.ergScore]]
+                        2k time: ${this.dataTwo.ergScore}
                     </div>
                     <div id="side">
-                        Rowing Side: [[dataTwo.side]]
+                        Rowing Side: ${this.dataTwo.side}
                     </div>
                     <div id="funds">
-                        Fundraising: [[dataTwo.fundRaising]]
+                        Fundraising: ${this.dataTwo.fundRaising}
                     </div>
                 </div>
 
@@ -188,7 +224,7 @@ export class CtmTeamDetailResults extends LitElement {
         `;
     }
 
-    static get properties() {
+    static properties() {
         return {
             dataOne: {
                 type: Object,
