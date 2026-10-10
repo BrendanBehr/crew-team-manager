@@ -1,5 +1,8 @@
-ctm-service-account.json
-ctm-firebase-app.json
-node_modules
-.DS_Store
-bower_components
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/V2.0/CrewTeamManagerV2/bin/Debug/net10.0
+/V2.0/CrewTeamManagerV2/.vs
+/V2.0/CrewTeamManagerV2/obj
