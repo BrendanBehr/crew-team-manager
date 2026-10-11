@@ -2,5 +2,6 @@
 {
     public class Telemetry
     {
+        public int? TeamId { get; set; }
     }
 }

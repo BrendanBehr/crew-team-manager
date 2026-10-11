@@ -1,6 +1,6 @@
 ﻿namespace CrewTeamManagerV2.Models
 {
-    public class SpeedCoach
+    public class SpeedCoach : Telemetry
     {
     }
 }
